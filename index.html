@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AG Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0C0C18;--card:#13131F;--raise:#1C1C2E;--surface:#222236;
+  --border:#252538;--purple:#7C3AED;--phi:#A78BFA;--phlo:#C4B5FD;
+  --green:#10B981;--red:#EF4444;--yellow:#F59E0B;--cyan:#06B6D4;
+  --white:#F0EEFF;--muted:#6B7280;--muted2:#9CA3AF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--white);min-height:100vh;display:flex}
+
+/* SIDEBAR */
+.sidebar{
+  width:220px;flex-shrink:0;background:var(--card);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;height:100vh;z-index:50;
+}
+.sb-brand{
+  padding:20px 16px 16px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);
+}
+.sb-mark{
+  width:30px;height:30px;border-radius:8px;flex-shrink:0;
+  background:linear-gradient(135deg,var(--purple),var(--phi));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:.75rem;color:#fff;
+}
+.sb-name{font-size:.88rem;font-weight:700}
+.sb-sub{font-size:.58rem;color:var(--muted)}
+.sb-nav{flex:1;padding:12px 8px;display:flex;flex-direction:column;gap:2px}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 10px;border-radius:9px;
+  font-size:.82rem;font-weight:500;color:var(--muted2);
+  cursor:pointer;border:none;background:transparent;
+  font-family:inherit;transition:all .15s;width:100%;text-align:left;
+}
+.nav-item:hover{background:var(--raise);color:var(--white)}
+.nav-item.active{background:rgba(124,58,237,.18);color:var(--phi);font-weight:600}
+.nav-item svg{flex-shrink:0;opacity:.7}
+.nav-item.active svg{opacity:1}
+.nav-sep{height:1px;background:var(--border);margin:8px 4px}
+.sb-footer{
+  padding:12px 8px;border-top:1px solid var(--border);
+}
+.sb-date{font-size:.68rem;color:var(--muted);padding:6px 10px;line-height:1.5}
+
+/* MAIN */
+.main{margin-left:220px;flex:1;min-height:100vh}
+.view{display:none;padding:32px 36px;max-width:1060px}
+.view.active{display:block}
+
+/* SECTION HEADER */
+.view-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px}
+.view-title{font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
+.view-sub{font-size:.8rem;color:var(--muted);margin-top:3px}
+
+/* BUTTONS */
+.btn{
+  padding:8px 16px;border-radius:9px;font-size:.8rem;font-weight:600;
+  cursor:pointer;border:none;font-family:inherit;
+  transition:all .18s;display:inline-flex;align-items:center;gap:6px;
+}
+.btn-primary{background:var(--purple);color:#fff;box-shadow:0 0 18px rgba(124,58,237,.3)}
+.btn-primary:hover{background:var(--phi);transform:translateY(-1px)}
+.btn-ghost{background:rgba(255,255,255,.05);color:var(--muted2);border:1px solid var(--border)}
+.btn-ghost:hover{color:var(--white);background:rgba(255,255,255,.09)}
+.btn-sm{padding:5px 12px;font-size:.75rem}
+
+/* ── DASHBOARD ────────────────────────────────── */
+.dash-hero{
+  background:linear-gradient(135deg,rgba(124,58,237,.25) 0%,rgba(167,139,250,.08) 50%,rgba(6,182,212,.05) 100%);
+  border:1px solid rgba(124,58,237,.25);
+  border-radius:16px;padding:28px 32px;margin-bottom:24px;
+  position:relative;overflow:hidden;
+}
+.dash-hero::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(124,58,237,.2),transparent 70%);
+  pointer-events:none;
+}
+.dash-greeting{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;margin-bottom:4px}
+.dash-greeting span{background:linear-gradient(135deg,var(--phi),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.dash-sub{font-size:.85rem;color:var(--muted2)}
+.dash-quick-stats{display:flex;gap:24px;margin-top:20px;flex-wrap:wrap}
+.qs{display:flex;flex-direction:column}
+.qs-val{font-size:1.6rem;font-weight:900;line-height:1}
+.qs-lbl{font-size:.68rem;color:var(--muted);margin-top:3px;font-weight:500}
+
+.dash-grid{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:16px;margin-bottom:24px}
+
+/* focus card */
+.focus-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px}
+.card-title{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.focus-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:9px 0;border-bottom:1px solid var(--border);
+  cursor:pointer;transition:opacity .15s;
+}
+.focus-item:last-child{border-bottom:none;padding-bottom:0}
+.focus-item:hover{opacity:.75}
+.fcheck{
+  width:16px;height:16px;border-radius:50%;
+  border:1.5px solid var(--border);flex-shrink:0;margin-top:2px;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;cursor:pointer;
+}
+.fcheck:hover{border-color:var(--green)}
+.fcheck.done{background:var(--green);border-color:var(--green)}
+.focus-text{font-size:.82rem;font-weight:500;line-height:1.4}
+.focus-text.done-text{text-decoration:line-through;color:var(--muted)}
+.focus-meta{font-size:.66rem;color:var(--muted);margin-top:2px}
+
+/* project rings */
+.rings-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px}
+.ring-row{display:flex;align-items:center;gap:12px;padding:7px 0;cursor:pointer;transition:opacity .15s}
+.ring-row:hover{opacity:.75}
+.ring-info{flex:1;min-width:0}
+.ring-name{font-size:.82rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ring-tasks{font-size:.68rem;color:var(--muted);margin-top:2px}
+
+/* today card */
+.today-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:20px}
+.today-ev{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.today-ev:last-child{border-bottom:none;padding-bottom:0}
+.today-ev:hover{opacity:.75}
+.ev-time-badge{
+  font-size:.68rem;font-weight:700;color:var(--muted);
+  min-width:36px;padding-top:2px;
+}
+.ev-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.ev-t{font-size:.8rem;font-weight:600}
+.ev-s{font-size:.67rem;color:var(--muted);margin-top:2px}
+.ev-reuniao{background:rgba(79,70,229,.8)}
+.ev-prazo{background:rgba(239,68,68,.8)}
+.ev-lembrete{background:rgba(245,158,11,.8)}
+.ev-pessoal{background:rgba(16,185,129,.8)}
+.ev-cal-reuniao{background:rgba(79,70,229,.25);color:#818CF8}
+.ev-cal-prazo{background:rgba(239,68,68,.2);color:#FCA5A5}
+.ev-cal-lembrete{background:rgba(245,158,11,.2);color:var(--yellow)}
+.ev-cal-pessoal{background:rgba(16,185,129,.2);color:var(--green)}
+
+/* ── PROJETOS ─────────────────────────────────── */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.proj-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;cursor:pointer;
+  transition:all .2s;
+}
+.proj-card:hover{border-color:rgba(124,58,237,.4);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.proj-cover{
+  height:80px;position:relative;
+  display:flex;align-items:flex-end;padding:12px 16px;
+}
+.proj-cover-blur{position:absolute;inset:0;opacity:.12}
+.proj-status-badge{
+  position:absolute;top:10px;right:12px;
+  font-size:.65rem;font-weight:700;padding:3px 8px;border-radius:20px;
+}
+.psb-ativo{background:rgba(16,185,129,.2);color:var(--green)}
+.psb-pausado{background:rgba(245,158,11,.2);color:var(--yellow)}
+.psb-concluido{background:rgba(107,114,128,.2);color:var(--muted2)}
+.proj-body{padding:14px 16px 16px}
+.proj-name{font-size:.95rem;font-weight:700;margin-bottom:4px}
+.proj-desc{font-size:.75rem;color:var(--muted);line-height:1.5;margin-bottom:12px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.proj-footer{display:flex;align-items:center;justify-content:space-between}
+.proj-prog-text{font-size:.7rem;color:var(--muted)}
+.proj-prog-val{font-size:.82rem;font-weight:700}
+.prog-bar-thin{height:3px;background:var(--raise);border-radius:2px;overflow:hidden;margin-top:8px}
+.prog-fill-thin{height:100%;border-radius:2px;transition:width .5s}
+
+/* ── TAREFAS ─────────────────────────────────── */
+.task-toolbar{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+.search-wrap{position:relative;flex:1;min-width:180px}
+.search-wrap input{
+  width:100%;background:var(--card);border:1.5px solid var(--border);
+  border-radius:9px;padding:8px 12px 8px 34px;font-size:.83rem;
+  color:var(--white);font-family:inherit;outline:none;transition:border-color .2s;
+}
+.search-wrap input:focus{border-color:var(--purple)}
+.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.4;pointer-events:none}
+.filter-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:18px}
+.fbtn{
+  padding:5px 13px;border-radius:20px;font-size:.73rem;font-weight:600;
+  cursor:pointer;border:1.5px solid var(--border);
+  background:transparent;color:var(--muted);font-family:inherit;transition:all .18s;
+}
+.fbtn:hover{color:var(--white);border-color:var(--purple)}
+.fbtn.active{background:var(--purple);color:#fff;border-color:var(--purple)}
+.task-list{display:flex;flex-direction:column;gap:6px}
+.task-row{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;
+  display:flex;align-items:flex-start;gap:11px;
+  cursor:pointer;transition:all .18s;
+}
+.task-row:hover{border-color:rgba(124,58,237,.35);background:var(--raise)}
+.task-row.done-row{opacity:.45}
+.tcheck{
+  width:17px;height:17px;border-radius:50%;border:1.5px solid var(--border);
+  flex-shrink:0;margin-top:2px;transition:all .18s;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.tcheck:hover{border-color:var(--green)}
+.tcheck.checked{background:var(--green);border-color:var(--green)}
+.tbody{flex:1;min-width:0}
+.ttitle{font-size:.86rem;font-weight:600;line-height:1.4}
+.done-row .ttitle{text-decoration:line-through;color:var(--muted)}
+.tmeta{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap}
+.tag{padding:2px 7px;border-radius:20px;font-size:.65rem;font-weight:700}
+.tg-high{background:rgba(239,68,68,.15);color:#FCA5A5}
+.tg-medium{background:rgba(245,158,11,.15);color:var(--yellow)}
+.tg-low{background:rgba(16,185,129,.15);color:var(--green)}
+.tg-proj{background:rgba(124,58,237,.2);color:var(--phlo)}
+.tdue{font-size:.68rem;color:var(--muted);display:flex;align-items:center;gap:3px}
+.tdue.over{color:var(--red)}
+.tact{opacity:0;transition:opacity .15s;flex-shrink:0}
+.task-row:hover .tact{opacity:1}
+.task-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+.tstat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px}
+.tstat-val{font-size:1.5rem;font-weight:800;line-height:1}
+.tstat-lbl{font-size:.68rem;color:var(--muted);margin-top:3px}
+
+/* ── AGENDA ──────────────────────────────────── */
+.cal-layout{display:grid;grid-template-columns:1fr 270px;gap:18px}
+.cal-wrap{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.cal-nav{display:flex;align-items:center;gap:10px;padding:16px 18px;border-bottom:1px solid var(--border)}
+.cal-nav-month{font-size:.92rem;font-weight:700;flex:1}
+.cal-nav-btn{
+  width:26px;height:26px;border-radius:7px;background:var(--raise);
+  border:1px solid var(--border);color:var(--white);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.cal-nav-btn:hover{background:var(--purple);border-color:var(--purple)}
+.cal-wdays{display:grid;grid-template-columns:repeat(7,1fr);background:var(--raise)}
+.cal-wday{
+  padding:8px 4px;text-align:center;font-size:.63rem;
+  font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;
+}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr)}
+.cal-day{
+  min-height:72px;padding:6px;
+  border-right:1px solid var(--border);border-bottom:1px solid var(--border);
+  cursor:pointer;transition:background .12s;
+}
+.cal-day:nth-child(7n){border-right:none}
+.cal-day:hover{background:rgba(124,58,237,.07)}
+.cal-day.other{opacity:.28}
+.cal-day-num{
+  font-size:.78rem;font-weight:600;
+  width:22px;height:22px;display:flex;align-items:center;justify-content:center;
+}
+.cal-day.today .cal-day-num{background:var(--purple);color:#fff;border-radius:50%}
+.cal-day-evs{margin-top:3px;display:flex;flex-direction:column;gap:2px}
+.cal-ev-chip{
+  height:16px;padding:0 5px;border-radius:3px;
+  font-size:.58rem;font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.cal-sidebar{display:flex;flex-direction:column;gap:14px}
+.cal-box{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+.cal-box-title{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:10px}
+.cal-ev-row{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--border);cursor:pointer}
+.cal-ev-row:last-child{border-bottom:none;padding-bottom:0}
+.cal-ev-row:hover{opacity:.75}
+.cal-ev-time{font-size:.68rem;color:var(--muted);font-weight:600;min-width:32px;padding-top:2px}
+.cal-ev-name{font-size:.78rem;font-weight:600}
+.cal-ev-meta{font-size:.64rem;color:var(--muted);margin-top:2px}
+.no-evs{font-size:.75rem;color:var(--muted)}
+
+/* MODAL */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.75);
+  backdrop-filter:blur(5px);z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:24px;width:100%;max-width:450px;
+  transform:translateY(18px);transition:transform .2s;
+}
+.overlay.open .modal{transform:translateY(0)}
+.mhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.mtitle{font-size:.95rem;font-weight:700}
+.mclose{
+  width:26px;height:26px;border-radius:7px;background:var(--raise);
+  border:1px solid var(--border);color:var(--muted);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+  transition:all .15s;font-family:inherit;
+}
+.mclose:hover{color:var(--white);background:var(--purple)}
+.fg{margin-bottom:12px}
+.fl{font-size:.69rem;font-weight:700;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.07em}
+.fi,.fs,.fta{
+  width:100%;background:rgba(255,255,255,.04);border:1.5px solid var(--border);
+  border-radius:9px;padding:9px 12px;font-size:.85rem;color:var(--white);
+  font-family:inherit;outline:none;transition:border-color .2s;
+}
+.fi:focus,.fs:focus,.fta:focus{border-color:var(--purple)}
+.fs option{background:var(--card)}
+.fta{resize:vertical;min-height:72px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fact{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+
+/* COLOR PICKER */
+.colpick{display:flex;gap:7px;flex-wrap:wrap}
+.col{width:21px;height:21px;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .14s}
+.col.sel{border-color:var(--white);transform:scale(1.25)}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:20px;right:20px;
+  background:var(--raise);border:1px solid var(--border);border-radius:10px;
+  padding:10px 15px;font-size:.8rem;font-weight:600;z-index:300;
+  transform:translateY(14px);opacity:0;transition:all .22s;
+  pointer-events:none;display:flex;align-items:center;gap:7px;
+}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{border-left:3px solid var(--green)}
+.toast.err{border-left:3px solid var(--red)}
+
+/* EMPTY */
+.empty{text-align:center;padding:52px 20px;color:var(--muted)}
+.empty-i{font-size:2.4rem;margin-bottom:10px;opacity:.45}
+.empty-t{font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:4px}
+.empty-s{font-size:.76rem}
+
+@media(max-width:900px){
+  .sidebar{transform:translateX(-100%);transition:transform .25s}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .view{padding:20px 16px}
+  .dash-grid{grid-template-columns:1fr}
+  .cal-layout{grid-template-columns:1fr}
+  .task-stats-row{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .frow{grid-template-columns:1fr}
+  .cal-day{min-height:50px}
+  .cal-ev-chip{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-mark">AG</div>
+    <div><div class="sb-name">AG Hub</div><div class="sb-sub">Gestão Pessoal</div></div>
+  </div>
+  <div class="sb-nav">
+    <button class="nav-item active" onclick="go('dash')" id="nav-dash">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </button>
+    <button class="nav-item" onclick="go('projects')" id="nav-projects">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Projetos
+    </button>
+    <button class="nav-item" onclick="go('tasks')" id="nav-tasks">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Tarefas
+      <span id="tasks-badge" style="margin-left:auto;background:var(--purple);color:#fff;font-size:.6rem;padding:1px 6px;border-radius:20px">0</span>
+    </button>
+    <button class="nav-item" onclick="go('agenda')" id="nav-agenda">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Agenda
+    </button>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-date" id="sb-date"></div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- DASHBOARD -->
+  <div class="view active" id="view-dash">
+    <div class="dash-hero">
+      <div class="dash-greeting">Olá, <span id="greet-name">Ricardo</span> 👋</div>
+      <div class="dash-sub" id="greet-sub">Carregando...</div>
+      <div class="dash-quick-stats" id="dash-qs"></div>
+    </div>
+    <div class="dash-grid">
+      <div class="focus-card">
+        <div class="card-title">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Foco do dia
+        </div>
+        <div id="focus-list"></div>
+      </div>
+      <div class="rings-card">
+        <div class="card-title">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Progresso
+        </div>
+        <div id="rings-list"></div>
+      </div>
+      <div class="today-card">
+        <div class="card-title">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+          Hoje
+        </div>
+        <div id="dash-today"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJETOS -->
+  <div class="view" id="view-projects">
+    <div class="view-header">
+      <div><div class="view-title">Projetos</div><div class="view-sub">Visão geral dos seus projetos</div></div>
+      <button class="btn btn-primary" onclick="openProjModal()">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Novo Projeto
+      </button>
+    </div>
+    <div class="proj-grid" id="proj-grid"></div>
+  </div>
+
+  <!-- TAREFAS -->
+  <div class="view" id="view-tasks">
+    <div class="view-header">
+      <div><div class="view-title">Tarefas</div><div class="view-sub" id="tasks-sub">—</div></div>
+      <button class="btn btn-primary" onclick="openTaskModal()">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Nova Tarefa
+      </button>
+    </div>
+    <div class="task-stats-row" id="task-stats"></div>
+    <div class="task-toolbar">
+      <div class="search-wrap">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" id="task-search" placeholder="Buscar tarefas…" oninput="renderTasks()">
+      </div>
+    </div>
+    <div class="filter-row">
+      <button class="fbtn active" onclick="setFilter('all',this)">Todas</button>
+      <button class="fbtn" onclick="setFilter('todo',this)">A Fazer</button>
+      <button class="fbtn" onclick="setFilter('doing',this)">Em Andamento</button>
+      <button class="fbtn" onclick="setFilter('done',this)">Concluídas</button>
+      <button class="fbtn" onclick="setFilter('high',this)">🔴 Alta</button>
+      <button class="fbtn" onclick="setFilter('overdue',this)">⚠ Atrasadas</button>
+    </div>
+    <div class="task-list" id="task-list"></div>
+  </div>
+
+  <!-- AGENDA -->
+  <div class="view" id="view-agenda">
+    <div class="view-header">
+      <div><div class="view-title">Agenda</div><div class="view-sub">Reuniões, prazos e lembretes</div></div>
+      <button class="btn btn-primary" onclick="openEvModal()">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Novo Evento
+      </button>
+    </div>
+    <div class="cal-layout">
+      <div>
+        <div class="cal-wrap">
+          <div class="cal-nav">
+            <button class="cal-nav-btn" onclick="chMonth(-1)"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <div class="cal-nav-month" id="cal-label"></div>
+            <button class="cal-nav-btn" onclick="chMonth(1)"><svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg></button>
+            <button class="btn btn-ghost btn-sm" onclick="calToday()">Hoje</button>
+          </div>
+          <div class="cal-wdays">
+            <div class="cal-wday">D</div><div class="cal-wday">S</div><div class="cal-wday">T</div>
+            <div class="cal-wday">Q</div><div class="cal-wday">Q</div><div class="cal-wday">S</div><div class="cal-wday">S</div>
+          </div>
+          <div class="cal-days" id="cal-days"></div>
+        </div>
+      </div>
+      <div class="cal-sidebar">
+        <div class="cal-box"><div class="cal-box-title">Hoje</div><div id="cal-today"></div></div>
+        <div class="cal-box"><div class="cal-box-title">Próximos</div><div id="cal-upcoming"></div></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- MODAL TAREFA -->
+<div class="overlay" id="m-task">
+  <div class="modal">
+    <div class="mhead"><div class="mtitle" id="mt-title">Nova Tarefa</div><button class="mclose" onclick="closeM('m-task')">×</button></div>
+    <input type="hidden" id="ft-id">
+    <div class="fg"><label class="fl">Título</label><input class="fi" id="ft-title" placeholder="Ex: Preparar relatório" autocomplete="off"></div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Status</label>
+        <select class="fs" id="ft-status"><option value="todo">A Fazer</option><option value="doing">Em Andamento</option><option value="done">Concluída</option></select></div>
+      <div class="fg"><label class="fl">Prioridade</label>
+        <select class="fs" id="ft-prio"><option value="medium">Média</option><option value="high">Alta</option><option value="low">Baixa</option></select></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Projeto</label><select class="fs" id="ft-proj"></select></div>
+      <div class="fg"><label class="fl">Entrega</label><input class="fi" id="ft-due" type="date"></div>
+    </div>
+    <div class="fg"><label class="fl">Notas</label><textarea class="fta" id="ft-notes" placeholder="Detalhes…"></textarea></div>
+    <div class="fact">
+      <button class="btn btn-ghost btn-sm" id="t-del" onclick="delTask()" style="display:none;margin-right:auto">Excluir</button>
+      <button class="btn btn-ghost" onclick="closeM('m-task')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveTask()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PROJETO -->
+<div class="overlay" id="m-proj">
+  <div class="modal">
+    <div class="mhead"><div class="mtitle" id="mp-title">Novo Projeto</div><button class="mclose" onclick="closeM('m-proj')">×</button></div>
+    <input type="hidden" id="fp-id">
+    <div class="fg"><label class="fl">Nome</label><input class="fi" id="fp-name" placeholder="Ex: Site AG 2025" autocomplete="off"></div>
+    <div class="fg"><label class="fl">Descrição</label><textarea class="fta" id="fp-desc" placeholder="Sobre o projeto…"></textarea></div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Status</label>
+        <select class="fs" id="fp-status"><option value="ativo">Ativo</option><option value="pausado">Pausado</option><option value="concluido">Concluído</option></select></div>
+      <div class="fg"><label class="fl">Cor</label>
+        <div class="colpick" id="cp">
+          <div class="col sel" data-c="#7C3AED" style="background:#7C3AED" onclick="pickC(this)"></div>
+          <div class="col" data-c="#4F46E5" style="background:#4F46E5" onclick="pickC(this)"></div>
+          <div class="col" data-c="#06B6D4" style="background:#06B6D4" onclick="pickC(this)"></div>
+          <div class="col" data-c="#10B981" style="background:#10B981" onclick="pickC(this)"></div>
+          <div class="col" data-c="#F59E0B" style="background:#F59E0B" onclick="pickC(this)"></div>
+          <div class="col" data-c="#EF4444" style="background:#EF4444" onclick="pickC(this)"></div>
+          <div class="col" data-c="#EC4899" style="background:#EC4899" onclick="pickC(this)"></div>
+          <div class="col" data-c="#A78BFA" style="background:#A78BFA" onclick="pickC(this)"></div>
+        </div>
+      </div>
+    </div>
+    <div class="fact">
+      <button class="btn btn-ghost btn-sm" id="p-del" onclick="delProj()" style="display:none;margin-right:auto">Excluir</button>
+      <button class="btn btn-ghost" onclick="closeM('m-proj')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveProj()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EVENTO -->
+<div class="overlay" id="m-ev">
+  <div class="modal">
+    <div class="mhead"><div class="mtitle" id="mev-title">Novo Evento</div><button class="mclose" onclick="closeM('m-ev')">×</button></div>
+    <input type="hidden" id="fev-id">
+    <div class="fg"><label class="fl">Título</label><input class="fi" id="fev-title" placeholder="Ex: Reunião com cliente" autocomplete="off"></div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Data</label><input class="fi" id="fev-date" type="date"></div>
+      <div class="fg"><label class="fl">Horário</label><input class="fi" id="fev-time" type="time"></div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Tipo</label>
+        <select class="fs" id="fev-type"><option value="reuniao">Reunião</option><option value="prazo">Prazo</option><option value="lembrete">Lembrete</option><option value="pessoal">Pessoal</option></select></div>
+      <div class="fg"><label class="fl">Duração</label>
+        <select class="fs" id="fev-dur"><option value="">—</option><option value="30">30 min</option><option value="60">1 hora</option><option value="90">1h30</option><option value="120">2 horas</option></select></div>
+    </div>
+    <div class="fg"><label class="fl">Notas</label><textarea class="fta" id="fev-notes" placeholder="Pauta, local, link…"></textarea></div>
+    <div class="fact">
+      <button class="btn btn-ghost btn-sm" id="ev-del" onclick="delEv()" style="display:none;margin-right:auto">Excluir</button>
+      <button class="btn btn-ghost" onclick="closeM('m-ev')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveEv()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="app.js"></script>
+</body>
+</html>
