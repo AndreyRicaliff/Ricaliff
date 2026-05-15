@@ -412,7 +412,7 @@ function delTask() {
 
 // ── CALENDAR ──────────────────────────────────────────────────────
 const MONTHS=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-let calY=new Date().getFullYear(), calM=new Date().getMonth();
+let calY=new Date().getFullYear(), calM=new Date().getMonth(), selectedDay=null;
 
 function chMonth(d){
   calM+=d;
@@ -427,7 +427,7 @@ function renderCal() {
   const first=new Date(calY,calM,1).getDay();
   const days=new Date(calY,calM+1,0).getDate();
   const prev=new Date(calY,calM,0).getDate();
-  const t=today(), evs=DB.events;
+  const t=today(), evs=DB.events, tasks=DB.tasks;
   const cells=Math.ceil((first+days)/7)*7;
   let html='';
   for(let i=0;i<cells;i++){
@@ -436,18 +436,28 @@ function renderCal() {
     else if(i-first>=days){day=i-first-days+1;mo=calM===11?0:calM+1;yr=calM===11?calY+1:calY;other=true;}
     else{day=i-first+1;mo=calM;yr=calY;}
     const ds=`${yr}-${String(mo+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-    const isT=ds===t;
-    const de=evs.filter(e=>e.date===ds).slice(0,2);
-    html+=`<div class="cal-day${other?' other':''}${isT?' today':''}" onclick="clickDay('${ds}')">
+    const isT=ds===t, isSel=ds===selectedDay;
+    const allItems=[
+      ...evs.filter(e=>e.date===ds).map(e=>({...e,_k:'ev'})),
+      ...tasks.filter(k=>k.due===ds&&k.status!=='done').map(k=>({...k,_k:'task'}))
+    ].sort((a,b)=>(a.time||'zz').localeCompare(b.time||'zz'));
+    const MAX=3, visible=allItems.slice(0,MAX), overflow=allItems.length-MAX;
+    html+=`<div class="cal-day${other?' other':''}${isT?' today':''}${isSel?' sel':''}" onclick="clickDay('${ds}')">
       <div class="cal-day-num">${day}</div>
-      <div class="cal-day-evs">${de.map(e=>`<div class="cal-ev-chip ev-cal-${e.type}">${e.time?e.time.slice(0,5)+' ':''}${esc(e.title)}</div>`).join('')}</div>
+      <div class="cal-day-evs">
+        ${visible.map(item=>item._k==='task'
+          ? `<div class="cal-ev-chip cal-task-chip">✓ ${esc(item.title)}</div>`
+          : `<div class="cal-ev-chip ev-cal-${item.type}">${item.time?item.time.slice(0,5)+' ':''}${esc(item.title)}</div>`
+        ).join('')}
+        ${overflow>0?`<div class="cal-overflow">+${overflow} mais</div>`:''}
+      </div>
     </div>`;
   }
   document.getElementById('cal-days').innerHTML=html;
-  renderCalSidebar();
+  selectedDay ? renderDayPanel(selectedDay) : renderCalSidebar();
 }
 
-function clickDay(ds){openEvModal(null,ds);}
+function clickDay(ds){ selectedDay = selectedDay===ds ? null : ds; renderCal(); }
 
 function renderCalSidebar(){
   const t=today();
@@ -455,18 +465,93 @@ function renderCalSidebar(){
     if(a.date!==b.date) return a.date.localeCompare(b.date);
     return (a.time||'').localeCompare(b.time||'');
   });
-  const te=evs.filter(e=>e.date===t);
-  const ue=evs.filter(e=>e.date>t).slice(0,5);
+  const tasks=DB.tasks.filter(k=>k.status!=='done'&&k.due);
 
-  const calToEl=document.getElementById('cal-today');
-  calToEl.innerHTML=te.length
-    ? te.map(e=>calEvRow(e,false)).join('')
-    : '<div class="no-evs">Sem eventos hoje</div>';
+  // Hoje — eventos + tarefas com prazo hoje
+  const todayItems=[
+    ...evs.filter(e=>e.date===t).map(e=>({...e,_k:'ev'})),
+    ...tasks.filter(k=>k.due===t).map(k=>({...k,_k:'task'}))
+  ].sort((a,b)=>(a.time||'zz').localeCompare(b.time||'zz'));
+  document.getElementById('cal-today').innerHTML=todayItems.length
+    ? todayItems.map(item=>item._k==='ev'
+        ? calEvRow(item,false)
+        : `<div class="cal-ev-row" onclick="openTaskModal('${item.id}')">
+            <div class="cal-ev-time" style="color:var(--accent)">✓</div>
+            <div><div class="cal-ev-name">${esc(item.title)}</div>
+            <div class="cal-ev-meta">${DB.projects.find(p=>p.id===item.projectId)?.name||'Sem projeto'}</div></div>
+          </div>`
+      ).join('')
+    : '<div class="no-evs">Dia livre</div>';
 
-  const calUpEl=document.getElementById('cal-upcoming');
-  calUpEl.innerHTML=ue.length
-    ? ue.map(e=>calEvRow(e,true)).join('')
-    : '<div class="no-evs">Nenhum evento futuro</div>';
+  // Próximos — tarefas atrasadas + eventos futuros
+  const overdue=tasks.filter(k=>k.due<t).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,3);
+  const upcoming=evs.filter(e=>e.date>t).slice(0,4);
+  const upItems=[
+    ...overdue.map(k=>({...k,_k:'overdue'})),
+    ...upcoming.map(e=>({...e,_k:'ev'}))
+  ];
+  document.getElementById('cal-upcoming').innerHTML=upItems.length
+    ? upItems.map(item=>item._k==='overdue'
+        ? `<div class="cal-ev-row" onclick="openTaskModal('${item.id}')">
+            <div class="cal-ev-time" style="color:var(--danger);font-size:.6rem">ATRAS.</div>
+            <div><div class="cal-ev-name">${esc(item.title)}</div>
+            <div class="cal-ev-meta">${fmtD(item.due)}</div></div>
+          </div>`
+        : calEvRow(item,true)
+      ).join('')
+    : '<div class="no-evs">Nenhum pendente</div>';
+}
+
+function renderDayPanel(ds){
+  const d=new Date(ds+'T12:00:00');
+  const label=d.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long'});
+  const evs=DB.events.filter(e=>e.date===ds).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+  const tasks=DB.tasks.filter(k=>k.due===ds&&k.status!=='done');
+  const allItems=[
+    ...evs.map(e=>({...e,_k:'ev'})),
+    ...tasks.map(k=>({...k,_k:'task'}))
+  ].sort((a,b)=>(a.time||'zz').localeCompare(b.time||'zz'));
+
+  document.getElementById('cal-box-today').style.display='none';
+  document.getElementById('cal-box-upcoming').style.display='none';
+  const panel=document.getElementById('day-panel');
+  panel.style.display='block';
+  panel.innerHTML=`
+    <div class="day-panel-head">
+      <div class="day-panel-title">${label}</div>
+      <button class="day-panel-close" onclick="clearDayPanel()">×</button>
+    </div>
+    <div class="day-panel-counts">
+      <span>${evs.length} evento${evs.length!==1?'s':''}</span>
+      <span>${tasks.length} tarefa${tasks.length!==1?'s':''}</span>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:12px">
+      <button class="btn btn-primary btn-sm" style="flex:1;justify-content:center" onclick="openEvModal(null,'${ds}')">+ Evento</button>
+      <button class="btn btn-ghost btn-sm" style="flex:1;justify-content:center" onclick="openTaskModal()">+ Tarefa</button>
+    </div>
+    ${allItems.length===0
+      ? '<div class="no-evs">Nada neste dia.</div>'
+      : allItems.map(item=>item._k==='ev'
+          ? calEvRow(item,false)
+          : `<div class="cal-ev-row" onclick="openTaskModal('${item.id}')">
+              <div class="cal-ev-time" style="color:var(--accent)">
+                <svg width="10" height="10" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </div>
+              <div>
+                <div class="cal-ev-name">${esc(item.title)}</div>
+                <div class="cal-ev-meta">${item.priority==='high'?'Alta · ':item.priority==='low'?'Baixa · ':''}${DB.projects.find(p=>p.id===item.projectId)?.name||'Sem projeto'}</div>
+              </div>
+            </div>`
+        ).join('')
+    }`;
+}
+
+function clearDayPanel(){
+  selectedDay=null;
+  document.getElementById('day-panel').style.display='none';
+  document.getElementById('cal-box-today').style.display='';
+  document.getElementById('cal-box-upcoming').style.display='';
+  renderCal();
 }
 
 function calEvRow(e,showDate){
