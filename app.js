@@ -231,7 +231,7 @@ function pickC(el) {
 function saveProj() {
   const name=document.getElementById('fp-name').value.trim();
   if(!name){toast('Nome obrigatório','err');return;}
-  const c=document.querySelector('.col.sel')?.dataset.c||'#7C3AED';
+  const c=document.querySelector('.col.sel')?.dataset.c||'#7048E8';
   const projs=DB.projects, id=document.getElementById('fp-id').value;
   const data={
     id:id||uid(), name,
@@ -597,7 +597,7 @@ function renderGrowth() {
       </div>`).join('');
   }
 
-  const lvlColor = {iniciando:'#6B7280',desenvolvendo:'#F59E0B',avancado:'#10B981',dominando:'#A78BFA'};
+  const lvlColor = {iniciando:'#7A9BC4',desenvolvendo:'#FFBC7D',avancado:'#08C16A',dominando:'#9B6EFF'};
   document.getElementById('domains-list').innerHTML = DOMAINS.map(d => `
     <div class="domain-row">
       <div class="domain-head">
