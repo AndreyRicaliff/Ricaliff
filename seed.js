@@ -2,19 +2,19 @@
 // Forçado toda vez que a versão muda
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '5') return;
+  if (localStorage.getItem('agh_seed_v') === '6') return;
 
   const now = new Date().toISOString();
 
   // ── PROJETOS ─────────────────────────────────────────────────
   const projects = [
-    { id: 'pulsar-rh',      name: 'PULSAR-RH',         description: 'SaaS de People Analytics — eNPS, NR-1, KPIs de RH com IA. Em produção em pulsar-rh.agconsultorialtda.com.', status: 'ativo',    color: '#7048E8', githubUrl: 'https://github.com/AndreyRicaliff/PULSAR-RH',            isPrivate: false, createdAt: now },
+    { id: 'pulsar-rh',      name: 'PULSAR-RH',         description: 'SaaS de People Analytics — eNPS, NR-1, KPIs de RH com IA. Em produção em pulsar-rh.agconsultorialtda.com.', status: 'ativo',    color: '#1A7FFF', githubUrl: 'https://github.com/AndreyRicaliff/PULSAR-RH',            isPrivate: false, createdAt: now },
     { id: 'cliente-varejo',name: 'Cliente Varejo',    description: 'Integração API ERP-externo→Supabase→Lovable. Diagnóstico: quota diária (350 req) esgota em 14h. Aguarda credenciais.', status: 'ativo',    color: '#FF5C5C', githubUrl: null,                                                      isPrivate: false, createdAt: now },
     { id: 'cliente-oficina',  name: 'CLIENTE OFICINA',      description: 'BI de vendas para rede de 6 lojas. Sync Firebird→Supabase 5min + full-year 00:00. Em produção no Windows do cliente.', status: 'ativo',    color: '#FFBC7D', githubUrl: 'https://github.com/AndreyRicaliff/cliente-oficina-backend', isPrivate: true,  createdAt: now },
     { id: 'meet-hub',       name: 'Meet Hub',            description: 'Gravação e transcrição automática de reuniões Google Meet. Deploy DigitalOcean. Teste e2e funcional.', status: 'ativo',    color: '#06B6D4', githubUrl: null,                                                      isPrivate: false, createdAt: now },
     { id: 'ag-converge',    name: 'AG Converge',         description: 'Plataforma própria de eventos AG. RH em Xeque concluído (14/05). Próximo: migrar leads para Supabase.', status: 'ativo',    color: '#08C16A', githubUrl: 'https://github.com/AndreyRicaliff/ag-converge',           isPrivate: false, createdAt: now },
     { id: 'cafe-com-ag',    name: 'Café com AG',         description: 'Calendário editorial do programa semanal de YouTube. Bloqueado: Client ID Google OAuth não configurado.', status: 'pausado',   color: '#EC4899', githubUrl: 'https://github.com/AndreyRicaliff/cafe-com-ag',           isPrivate: false, createdAt: now },
-    { id: 'ag-hub',         name: 'AG Hub',              description: 'Este sistema de gestão pessoal. Deploy Vercel + GitHub. Evolução contínua.', status: 'ativo',    color: '#9B6EFF', githubUrl: 'https://github.com/AndreyRicaliff/ag-hub',                isPrivate: false, createdAt: now },
+    { id: 'ag-hub',         name: 'AG Hub',              description: 'Este sistema de gestão pessoal. Deploy Vercel + GitHub. Evolução contínua.', status: 'ativo',    color: '#4DA8FF', githubUrl: 'https://github.com/AndreyRicaliff/ag-hub',                isPrivate: false, createdAt: now },
     { id: 'ifpb',           name: 'IFPB — Estudos',      description: 'Exercícios e anotações do curso de programação no IFPB. Projeto pessoal, sem pressão.', status: 'ativo',    color: '#7A9BC4', githubUrl: null,                                                      isPrivate: false, createdAt: now },
   ];
 
@@ -181,7 +181,7 @@
   localStorage.setItem('agh_tasks',    JSON.stringify(tasks));
   localStorage.setItem('agh_events',   JSON.stringify(events));
   localStorage.setItem('agh_sessions', JSON.stringify(sessions));
-  localStorage.setItem('agh_seed_v',   '5');
+  localStorage.setItem('agh_seed_v',   '6');
 
   console.log('[AG Hub seed v4]', projects.length, 'projetos ·', tasks.length, 'tarefas ·', events.length, 'eventos ·', sessions.length, 'sessões');
 })();
