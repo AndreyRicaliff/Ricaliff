@@ -6,6 +6,8 @@ const DB = {
   set projects(v){ localStorage.setItem('agh_projects', JSON.stringify(v)) },
   get events()   { return JSON.parse(localStorage.getItem('agh_events')   || '[]') },
   set events(v)  { localStorage.setItem('agh_events',   JSON.stringify(v)) },
+  get studies()  { return JSON.parse(localStorage.getItem('agh_studies')  || '[]') },
+  set studies(v) { localStorage.setItem('agh_studies',  JSON.stringify(v)) },
 };
 
 const uid  = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
@@ -151,6 +153,9 @@ function renderDash() {
         </div>
       </div>`).join('');
   }
+
+  renderFocusSection();
+  renderWeeklyDigest();
 }
 
 // ── PROJECTS ──────────────────────────────────────────────────────
@@ -184,9 +189,10 @@ function renderProjects() {
         <div class="proj-name">${esc(p.name)}</div>
         ${p.description?`<div class="proj-desc">${esc(p.description)}</div>`:''}
         ${p.githubUrl ? `<a class="proj-github" href="${p.githubUrl}" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>${p.isPrivate ? '🔒 ' : ''}GitHub</a>` : ''}
+        ${(()=>{const imp=p.improvements?.filter(Boolean)||[];return imp.length?`<div class="proj-improvements"><span>⚡ ${imp.length} melhoria${imp.length!==1?'s':''} identificada${imp.length!==1?'s':''}</span></div>`:''})()}
         <div class="proj-footer">
           <div>
-            <div class="proj-prog-text">${pt.length} tarefa${pt.length!==1?'s':''}</div>
+            <div class="proj-prog-text">${pt.length} tarefa${pt.length!==1?'s':''} · ${(()=>{const d=projStaleDays(p.id);return d===null?'':d>14?`<span style="color:var(--warn)">sem atividade há ${d}d</span>`:d>7?`<span style="color:var(--muted)">${d}d atrás</span>`:''})()}</div>
             <div class="proj-prog-val" style="color:${p.color}">${pct}%</div>
           </div>
           ${ring(pct,p.color,48)}
@@ -209,6 +215,7 @@ function openProjModal(id) {
     document.getElementById('fp-desc').value =p.description||'';
     document.getElementById('fp-status').value=p.status;
     document.getElementById('p-del').style.display='';
+    document.getElementById('fp-improvements').value=(p.improvements||[]).join('\n');
     document.querySelectorAll('.col').forEach(el=>el.classList.toggle('sel',el.dataset.c===p.color));
   } else {
     document.getElementById('mp-title').textContent='Novo Projeto';
@@ -216,6 +223,7 @@ function openProjModal(id) {
     document.getElementById('fp-name').value='';
     document.getElementById('fp-desc').value='';
     document.getElementById('fp-status').value='ativo';
+    document.getElementById('fp-improvements').value='';
     document.getElementById('p-del').style.display='none';
     document.querySelectorAll('.col').forEach((el,i)=>el.classList.toggle('sel',i===0));
   }
@@ -233,11 +241,17 @@ function saveProj() {
   if(!name){toast('Nome obrigatório','err');return;}
   const c=document.querySelector('.col.sel')?.dataset.c||'#1A7FFF';
   const projs=DB.projects, id=document.getElementById('fp-id').value;
+  const existing=id?projs.find(p=>p.id===id):null;
   const data={
     id:id||uid(), name,
     description:document.getElementById('fp-desc').value.trim(),
     status:document.getElementById('fp-status').value, color:c,
-    createdAt:id?(projs.find(p=>p.id===id)?.createdAt||new Date().toISOString()):new Date().toISOString(),
+    githubUrl: existing?.githubUrl||null,
+    isPrivate: existing?.isPrivate||false,
+    improvements: document.getElementById('fp-improvements').value.trim()
+      .split('\n').map(s=>s.trim()).filter(Boolean),
+    createdAt: existing?.createdAt||new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   };
   if(id){const i=projs.findIndex(p=>p.id===id);projs[i]=data;}
   else projs.unshift(data);
@@ -340,6 +354,7 @@ function toggleT(e,id) {
   const tasks=DB.tasks, tk=tasks.find(x=>x.id===id);
   if(!tk) return;
   tk.status=tk.status==='done'?'todo':'done';
+  tk.updatedAt=new Date().toISOString();
   DB.tasks=tasks;
   if(curView==='tasks') renderTasks();
   if(curView==='dash')  renderDash();
@@ -389,6 +404,7 @@ function saveTask() {
     due:document.getElementById('ft-due').value||null,
     notes:document.getElementById('ft-notes').value.trim(),
     createdAt:id?(tasks.find(t=>t.id===id)?.createdAt||new Date().toISOString()):new Date().toISOString(),
+    updatedAt:new Date().toISOString(),
   };
   if(id){const i=tasks.findIndex(t=>t.id===id);tasks[i]=data;}
   else tasks.unshift(data);
@@ -646,21 +662,24 @@ const SUGGESTIONS = [
 function renderGrowth() {
   const sessions = JSON.parse(localStorage.getItem('agh_sessions') || '[]');
   const totalSess = sessions.length;
-  const thisWeek = sessions.filter(s => {
-    const d = new Date(s.date); const now = new Date();
-    const diff = (now - d) / (1000*60*60*24);
-    return diff <= 7;
-  }).length;
+  const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
+  const waStr = weekAgo.toISOString().slice(0,10);
+  const thisWeek = sessions.filter(s=>s.date>=waStr).length;
   const byType = {};
   sessions.forEach(s => { byType[s.type] = (byType[s.type]||0)+1; });
   const topType = Object.entries(byType).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
+  const studies = DB.studies;
+  const studyHoursTotal = studies.reduce((acc,s)=>acc+(parseFloat(s.hours)||0),0);
+  const studyHoursWeek  = studies.filter(s=>s.date>=waStr).reduce((acc,s)=>acc+(parseFloat(s.hours)||0),0);
 
   document.getElementById('growth-stats').innerHTML = `
-    <div class="tstat"><div class="tstat-val" style="color:var(--phi)">${totalSess}</div><div class="tstat-lbl">Sessões registradas</div></div>
+    <div class="tstat"><div class="tstat-val" style="color:var(--phi)">${totalSess}</div><div class="tstat-lbl">Sessões Claude</div></div>
     <div class="tstat"><div class="tstat-val" style="color:var(--green)">${thisWeek}</div><div class="tstat-lbl">Essa semana</div></div>
-    <div class="tstat"><div class="tstat-val" style="color:var(--cyan);font-size:1rem;padding-top:4px">${DOMAINS.filter(d=>d.level==='avancado'||d.level==='dominando').length}</div><div class="tstat-lbl">Domínios avançados</div></div>
-    <div class="tstat"><div class="tstat-val" style="color:var(--yellow);font-size:.9rem;padding-top:5px">${topType}</div><div class="tstat-lbl">Atividade mais comum</div></div>
+    <div class="tstat"><div class="tstat-val" style="color:var(--cyan)">${studyHoursTotal.toFixed(1)}h</div><div class="tstat-lbl">Total estudado</div></div>
+    <div class="tstat"><div class="tstat-val" style="color:var(--secondary)">${studyHoursWeek.toFixed(1)}h</div><div class="tstat-lbl">Estudando/semana</div></div>
   `;
+
+  renderStudies();
 
   const sl = document.getElementById('sessions-list');
   const sorted = [...sessions].sort((a,b)=>b.date.localeCompare(a.date));
@@ -773,6 +792,7 @@ document.addEventListener('keydown',e=>{
     else if(o.id==='m-proj')    saveProj();
     else if(o.id==='m-ev')      saveEv();
     else if(o.id==='m-session') saveSession();
+    else if(o.id==='m-study')   saveStudy();
   }
 });
 
@@ -785,6 +805,7 @@ function exportData() {
     tasks:    DB.tasks,
     events:   DB.events,
     sessions: JSON.parse(localStorage.getItem('agh_sessions') || '[]'),
+    studies:  DB.studies,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
@@ -811,7 +832,8 @@ function importData() {
         DB.tasks    = data.tasks;
         DB.events   = data.events || [];
         if (data.sessions) localStorage.setItem('agh_sessions', JSON.stringify(data.sessions));
-        localStorage.setItem('agh_seed_v', '4');
+        if (data.studies)  DB.studies = data.studies;
+        localStorage.setItem('agh_seed_v', '7');
         go(curView);
         toast('Dados restaurados com sucesso');
       } catch { toast('Erro ao ler o arquivo', 'err'); }
@@ -819,6 +841,184 @@ function importData() {
     reader.readAsText(file);
   };
   input.click();
+}
+
+// ── FOCUS PROJECT ─────────────────────────────────────────────────
+function getFocusProj() { return localStorage.getItem('agh_focus_proj')||null; }
+function setFocusProj(id) {
+  if(localStorage.getItem('agh_focus_proj')===id) localStorage.removeItem('agh_focus_proj');
+  else localStorage.setItem('agh_focus_proj', id);
+  renderDash();
+}
+
+function renderFocusSection() {
+  const section=document.getElementById('focus-proj-section');
+  if(!section) return;
+  const projs=DB.projects.filter(p=>p.status==='ativo');
+  const focusId=getFocusProj();
+  const tasks=DB.tasks, t=today();
+  const focusTasks=focusId
+    ? tasks.filter(k=>k.projectId===focusId&&k.status!=='done')
+           .sort((a,b)=>{const p={high:0,medium:1,low:2};return (p[a.priority]||1)-(p[b.priority]||1);})
+    : tasks.filter(k=>k.status!=='done'&&(k.priority==='high'||(k.due&&k.due<=t)))
+           .sort((a,b)=>a.due&&b.due?a.due.localeCompare(b.due):a.due?-1:1).slice(0,5);
+  const focusProj=focusId?DB.projects.find(p=>p.id===focusId):null;
+
+  section.innerHTML=`
+    <div class="focus-proj-bar">
+      <span class="focus-label">Foco</span>
+      <div class="focus-btns">
+        ${projs.map(p=>`
+          <button class="fpb-btn${p.id===focusId?' fpb-active':''}"
+            style="${p.id===focusId?`background:${p.color}22;border-color:${p.color};color:${p.color}`:''}"
+            onclick="setFocusProj('${p.id}')">
+            <span class="fpb-dot" style="background:${p.color}"></span>
+            ${esc(p.name.length>16?p.name.slice(0,16)+'…':p.name)}
+          </button>`).join('')}
+      </div>
+    </div>
+    ${focusTasks.length?`<div class="focus-task-list">
+      ${focusTasks.slice(0,6).map(tk=>`
+        <div class="focus-item" onclick="openTaskModal('${tk.id}')">
+          <div class="fcheck" onclick="toggleT(event,'${tk.id}')"></div>
+          <div style="flex:1;min-width:0">
+            <div class="focus-text">${esc(tk.title)}</div>
+            <div class="focus-meta">
+              ${tk.due&&tk.due<t?`<span style="color:var(--danger)">⚠ ${fmtD(tk.due)}</span>`:tk.due?fmtD(tk.due):''}
+              ${tk.priority==='high'?' · <span style="color:var(--danger)">Alta</span>':''}
+              ${!focusId&&tk.projectId?` · <span style="color:var(--muted)">${esc(DB.projects.find(p=>p.id===tk.projectId)?.name||'')}</span>`:''}
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>`:`<div style="font-size:.78rem;color:var(--muted);padding:6px 0">${focusId?'Nenhuma tarefa pendente neste projeto 🎉':'Sem tarefas urgentes ou com prazo hoje'}</div>`}
+  `;
+}
+
+function renderWeeklyDigest() {
+  const el=document.getElementById('weekly-digest');
+  if(!el) return;
+  const weekAgo=new Date();weekAgo.setDate(weekAgo.getDate()-7);
+  const waStr=weekAgo.toISOString().slice(0,10);
+  const t=today();
+  const doneThisWeek=DB.tasks.filter(k=>k.status==='done'&&(k.updatedAt||'').slice(0,10)>=waStr).length;
+  const sessThisWeek=JSON.parse(localStorage.getItem('agh_sessions')||'[]').filter(s=>s.date>=waStr).length;
+  const studyHours=DB.studies.filter(s=>s.date>=waStr).reduce((acc,s)=>acc+(parseFloat(s.hours)||0),0);
+  const overdue=DB.tasks.filter(k=>k.status!=='done'&&k.due&&k.due<t).length;
+  el.innerHTML=`
+    <div class="weekly-digest-card">
+      <div class="card-title">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Essa semana
+      </div>
+      <div class="weekly-row">
+        <div class="wstat"><div class="wstat-val" style="color:var(--accent)">${doneThisWeek}</div><div class="wstat-lbl">tarefas feitas</div></div>
+        <div class="wstat"><div class="wstat-val" style="color:var(--secondary)">${sessThisWeek}</div><div class="wstat-lbl">sessões Claude</div></div>
+        <div class="wstat"><div class="wstat-val" style="color:var(--cyan)">${studyHours.toFixed(1)}h</div><div class="wstat-lbl">estudando</div></div>
+        <div class="wstat"><div class="wstat-val" style="color:${overdue?'var(--danger)':'var(--muted)'}">${overdue}</div><div class="wstat-lbl">atrasadas</div></div>
+      </div>
+    </div>`;
+}
+
+// ── STALENESS ─────────────────────────────────────────────────────
+function projStaleDays(projId) {
+  const tasks=DB.tasks.filter(t=>t.projectId===projId);
+  if(!tasks.length) return null;
+  const dates=tasks.map(t=>t.updatedAt||t.createdAt||'').filter(Boolean).sort().reverse();
+  if(!dates.length) return null;
+  return Math.floor((Date.now()-new Date(dates[0]).getTime())/(1000*60*60*24));
+}
+
+// ── STUDIES ───────────────────────────────────────────────────────
+function renderStudies() {
+  const studies=DB.studies.slice().sort((a,b)=>b.date.localeCompare(a.date));
+  const weekAgo=new Date();weekAgo.setDate(weekAgo.getDate()-7);
+  const waStr=weekAgo.toISOString().slice(0,10);
+  const totalH=studies.reduce((acc,s)=>acc+(parseFloat(s.hours)||0),0);
+  const weekH=studies.filter(s=>s.date>=waStr).reduce((acc,s)=>acc+(parseFloat(s.hours)||0),0);
+  const bySubject={};
+  studies.forEach(s=>{bySubject[s.subject]=(bySubject[s.subject]||0)+(parseFloat(s.hours)||0);});
+
+  const statsEl=document.getElementById('study-stats');
+  if(statsEl) statsEl.innerHTML=`
+    <div class="study-stats-row">
+      <div class="study-stat"><span class="ss-val" style="color:var(--cyan)">${totalH.toFixed(1)}h</span><span class="ss-lbl">total</span></div>
+      <div class="study-stat"><span class="ss-val" style="color:var(--secondary)">${weekH.toFixed(1)}h</span><span class="ss-lbl">essa semana</span></div>
+      <div class="study-stat"><span class="ss-val" style="color:var(--accent)">${studies.length}</span><span class="ss-lbl">sessões</span></div>
+      ${Object.entries(bySubject).sort((a,b)=>b[1]-a[1]).slice(0,2).map(([s,h])=>`<div class="study-stat"><span class="ss-val" style="color:var(--tertiary)">${h.toFixed(1)}h</span><span class="ss-lbl">${esc(s)}</span></div>`).join('')}
+    </div>`;
+
+  const listEl=document.getElementById('studies-list');
+  if(!listEl) return;
+  if(!studies.length){
+    listEl.innerHTML='<div class="empty-s" style="color:var(--muted);font-size:.78rem;padding:8px 0">Nenhum estudo registrado ainda</div>';
+    return;
+  }
+  listEl.innerHTML=studies.map(s=>`
+    <div class="study-card" onclick="openStudyModal('${s.id}')">
+      <div class="study-head">
+        <div class="study-topic">${esc(s.topic)}</div>
+        <span class="study-badge">${esc(s.subject)}</span>
+      </div>
+      <div class="study-meta">
+        <span>${fmtD(s.date)}</span>
+        <span style="color:var(--cyan);font-weight:700">${s.hours}h</span>
+        ${s.notes?`<span style="color:var(--muted);font-size:.63rem">${esc(s.notes).slice(0,80)}${s.notes.length>80?'…':''}</span>`:''}
+      </div>
+    </div>`).join('');
+}
+
+function openStudyModal(id) {
+  if(id){
+    const s=DB.studies.find(x=>x.id===id);
+    if(!s) return;
+    document.getElementById('fst-id').value   =s.id;
+    document.getElementById('fst-topic').value=s.topic;
+    document.getElementById('fst-subj').value =s.subject;
+    document.getElementById('fst-hours').value=s.hours;
+    document.getElementById('fst-date').value =s.date;
+    document.getElementById('fst-notes').value=s.notes||'';
+    document.getElementById('st-del').style.display='';
+  } else {
+    document.getElementById('fst-id').value='';
+    document.getElementById('fst-topic').value='';
+    document.getElementById('fst-subj').value='IFPB';
+    document.getElementById('fst-hours').value='1';
+    document.getElementById('fst-date').value=today();
+    document.getElementById('fst-notes').value='';
+    document.getElementById('st-del').style.display='none';
+  }
+  openM('m-study');
+  setTimeout(()=>document.getElementById('fst-topic').focus(),80);
+}
+
+function saveStudy() {
+  const topic=document.getElementById('fst-topic').value.trim();
+  if(!topic){toast('Tópico obrigatório','err');return;}
+  const studies=DB.studies, id=document.getElementById('fst-id').value;
+  const data={
+    id:id||uid(), topic,
+    subject:document.getElementById('fst-subj').value||'Autodidata',
+    hours:parseFloat(document.getElementById('fst-hours').value)||1,
+    date:document.getElementById('fst-date').value||today(),
+    notes:document.getElementById('fst-notes').value.trim(),
+    createdAt:new Date().toISOString(),
+  };
+  if(id){const i=studies.findIndex(s=>s.id===id);studies[i]=data;}
+  else studies.unshift(data);
+  DB.studies=studies;
+  closeM('m-study');
+  if(curView==='growth') renderGrowth();
+  if(curView==='dash')   renderDash();
+  toast(id?'Estudo atualizado':'Estudo registrado');
+}
+
+function delStudy() {
+  const id=document.getElementById('fst-id').value;
+  if(!id||!confirm('Excluir este registro?')) return;
+  DB.studies=DB.studies.filter(s=>s.id!==id);
+  closeM('m-study');
+  if(curView==='growth') renderGrowth();
+  toast('Registro excluído');
 }
 
 // ── INIT ──────────────────────────────────────────────────────────

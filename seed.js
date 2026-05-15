@@ -1,21 +1,29 @@
-// seed.js v3 — projetos reais AG com histórico completo (done + todo)
+// seed.js v7 — projetos com melhorias + studies IFPB + updatedAt nas tarefas
 // Forçado toda vez que a versão muda
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '6') return;
+  if (localStorage.getItem('agh_seed_v') === '7') return;
 
   const now = new Date().toISOString();
 
   // ── PROJETOS ─────────────────────────────────────────────────
   const projects = [
-    { id: 'pulsar-rh',      name: 'PULSAR-RH',         description: 'SaaS de People Analytics — eNPS, NR-1, KPIs de RH com IA. Em produção em pulsar-rh.agconsultorialtda.com.', status: 'ativo',    color: '#1A7FFF', githubUrl: 'https://github.com/AndreyRicaliff/PULSAR-RH',            isPrivate: false, createdAt: now },
-    { id: 'cliente-varejo',name: 'Cliente Varejo',    description: 'Integração API ERP-externo→Supabase→Lovable. Diagnóstico: quota diária (350 req) esgota em 14h. Aguarda credenciais.', status: 'ativo',    color: '#FF5C5C', githubUrl: null,                                                      isPrivate: false, createdAt: now },
-    { id: 'cliente-oficina',  name: 'CLIENTE OFICINA',      description: 'BI de vendas para rede de 6 lojas. Sync Firebird→Supabase 5min + full-year 00:00. Em produção no Windows do cliente.', status: 'ativo',    color: '#FFBC7D', githubUrl: 'https://github.com/AndreyRicaliff/cliente-oficina-backend', isPrivate: true,  createdAt: now },
-    { id: 'meet-hub',       name: 'Meet Hub',            description: 'Gravação e transcrição automática de reuniões Google Meet. Deploy DigitalOcean. Teste e2e funcional.', status: 'ativo',    color: '#06B6D4', githubUrl: null,                                                      isPrivate: false, createdAt: now },
-    { id: 'ag-converge',    name: 'AG Converge',         description: 'Plataforma própria de eventos AG. RH em Xeque concluído (14/05). Próximo: migrar leads para Supabase.', status: 'ativo',    color: '#08C16A', githubUrl: 'https://github.com/AndreyRicaliff/ag-converge',           isPrivate: false, createdAt: now },
-    { id: 'cafe-com-ag',    name: 'Café com AG',         description: 'Calendário editorial do programa semanal de YouTube. Bloqueado: Client ID Google OAuth não configurado.', status: 'pausado',   color: '#EC4899', githubUrl: 'https://github.com/AndreyRicaliff/cafe-com-ag',           isPrivate: false, createdAt: now },
-    { id: 'ag-hub',         name: 'AG Hub',              description: 'Este sistema de gestão pessoal. Deploy Vercel + GitHub. Evolução contínua.', status: 'ativo',    color: '#4DA8FF', githubUrl: 'https://github.com/AndreyRicaliff/ag-hub',                isPrivate: false, createdAt: now },
-    { id: 'ifpb',           name: 'IFPB — Estudos',      description: 'Exercícios e anotações do curso de programação no IFPB. Projeto pessoal, sem pressão.', status: 'ativo',    color: '#7A9BC4', githubUrl: null,                                                      isPrivate: false, createdAt: now },
+    { id: 'pulsar-rh',       name: 'PULSAR-RH',        description: 'SaaS de People Analytics — eNPS, NR-1, KPIs de RH com IA. Em produção em pulsar-rh.agconsultorialtda.com.', status: 'ativo',    color: '#1A7FFF', githubUrl: 'https://github.com/AndreyRicaliff/PULSAR-RH',            isPrivate: false, createdAt: now, updatedAt: now,
+      improvements: ['Corrigir memory leak no subscription de Realtime (não faz unsubscribe)', 'Remover eval() na função de fórmulas — vulnerabilidade XSS', 'Corrigir cálculo O(n*m) de compliance — usar Map para O(n)', 'Adicionar validação de schema antes de salvar indicadores', 'Implementar ARIA labels nos gráficos Chart.js', 'Padronizar feedback de erro nos formulários', 'Extrair cálculo de compliance para worker assíncrono'] },
+    { id: 'cliente-varejo', name: 'Cliente Varejo',   description: 'Integração API ERP-externo→Supabase→Lovable. Diagnóstico: quota diária (350 req) esgota em 14h. Aguarda credenciais.', status: 'ativo',    color: '#FF5C5C', githubUrl: null,                                                      isPrivate: false, createdAt: now, updatedAt: now,
+      improvements: ['Implementar check de saldo antes de cada ciclo (/v1/saldo-token)', 'Trocar intervalo de 5min para 10min (280→150 req/dia)', 'Adicionar janela de overlap de 10min no sync incremental', 'Full-sync completo às 00:00 (7 dias)', 'Idempotência por ID de atendimento'] },
+    { id: 'cliente-oficina',   name: 'CLIENTE OFICINA',     description: 'BI de vendas para rede de 6 lojas. Sync Firebird→Supabase 5min + full-year 00:00. Em produção no Windows do cliente.', status: 'ativo',    color: '#FFBC7D', githubUrl: 'https://github.com/AndreyRicaliff/cliente-oficina-backend', isPrivate: true,  createdAt: now, updatedAt: now,
+      improvements: ['Preencher store_locations com cidade-base das 6 lojas', 'Rotacionar SUPABASE_SERVICE_ROLE_KEY (higiene)', 'Definir retenção de sale_items (sugestão: 180d, LGPD §8)'] },
+    { id: 'meet-hub',        name: 'Meet Hub',           description: 'Gravação e transcrição automática de reuniões Google Meet. Deploy DigitalOcean. Teste e2e funcional.', status: 'ativo',    color: '#06B6D4', githubUrl: null,                                                      isPrivate: false, createdAt: now, updatedAt: now,
+      improvements: ['Integrar Gemini 1.5 Flash real (remover mock de transcrição)', 'Implementar busca em transcrições', 'Migrar de DigitalOcean para Hetzner (redução de custo)'] },
+    { id: 'ag-converge',     name: 'AG Converge',        description: 'Plataforma própria de eventos AG. RH em Xeque concluído (14/05). Próximo: migrar leads para Supabase.', status: 'ativo',    color: '#08C16A', githubUrl: 'https://github.com/AndreyRicaliff/ag-converge',           isPrivate: false, createdAt: now, updatedAt: now,
+      improvements: ['Exportar leads RH em Xeque: node extrair-leads.js leads-rh-em-xeque.json', 'Migrar localStorage → Supabase (multi-dispositivo, sem perda)', 'Planejar próximo evento'] },
+    { id: 'cafe-com-ag',     name: 'Café com AG',        description: 'Calendário editorial do programa semanal de YouTube. Bloqueado: Client ID Google OAuth não configurado.', status: 'pausado',   color: '#EC4899', githubUrl: 'https://github.com/AndreyRicaliff/cafe-com-ag',           isPrivate: false, createdAt: now, updatedAt: now,
+      improvements: ['Configurar GOOGLE_CLIENT_ID no Google Cloud Console', 'Definir URL de hospedagem (GitHub Pages ou Vercel)', 'Testar login com @agconsultorialtda.com'] },
+    { id: 'ag-hub',          name: 'AG Hub',             description: 'Este sistema de gestão pessoal. Deploy Vercel + GitHub. Evolução contínua.', status: 'ativo',    color: '#4DA8FF', githubUrl: 'https://github.com/AndreyRicaliff/ag-hub',                isPrivate: false, createdAt: now, updatedAt: now,
+      improvements: ['Aplicar CSS gerado pelo Claude Design (visual final)', 'Migrar localStorage → Supabase para acesso multi-dispositivo'] },
+    { id: 'ifpb',            name: 'IFPB — Estudos',     description: 'Exercícios e anotações do curso de programação no IFPB. Projeto pessoal, sem pressão.', status: 'ativo',    color: '#7A9BC4', githubUrl: null,                                                      isPrivate: false, createdAt: now, updatedAt: now,
+      improvements: ['Rodar pnpm install no scaffold TypeScript', 'Completar módulo de Arrays e Funções', 'Iniciar exercícios de POO'] },
   ];
 
   // ── TAREFAS ───────────────────────────────────────────────────
@@ -177,11 +185,22 @@
     { id:'s-12', title:'Cliente Varejo — diagnóstico causa-raiz (quota API esgotada)', projectId:'cliente-varejo', type:'planning', date:'2026-05-15', impact:'alto', notes:'Causa: plano Estratégia = 350 req/dia. Sync 5min consome 288→esgota em 14h. Solução: 10min, 300 req budget.', createdAt: now },
   ];
 
+  // ── ESTUDOS ───────────────────────────────────────────────────────
+  const studies = [
+    { id:'st-01', topic:'Scaffold TypeScript — configuração inicial do projeto IFPB', subject:'IFPB', hours:1.5, date:'2026-05-12', notes:'tsconfig.json, pnpm init, estrutura de pastas src/. Pendente: pnpm install.', createdAt: now },
+    { id:'st-02', topic:'Tipos primitivos e inferência em TypeScript', subject:'IFPB', hours:1, date:'2026-05-13', notes:'string, number, boolean, arrays tipados. Diferença entre any e unknown.', createdAt: now },
+    { id:'st-03', topic:'Funções e closures — conceitos e exercícios práticos', subject:'IFPB', hours:2, date:'2026-05-14', notes:'Arrow functions, parâmetros opcionais, closures com exemplo de contador e memória.', createdAt: now },
+    { id:'st-04', topic:'Claude API — tool use avançado (parallel calls)', subject:'Claude API', hours:1, date:'2026-05-11', notes:'Chamadas paralelas de ferramentas, gerenciamento de tool_use blocks, cost analysis.', createdAt: now },
+    { id:'st-05', topic:'Supabase RLS — políticas para multi-tenant', subject:'Supabase', hours:1.5, date:'2026-05-08', notes:'auth.uid() em RLS, políticas para client_id. Estudo aplicado no PULSAR-RH.', createdAt: now },
+    { id:'st-06', topic:'Docker compose — multi-container (Meet Hub)', subject:'DevOps', hours:1, date:'2026-05-07', notes:'Serviços: api, web, bot, db, redis. Health checks, volumes, network interno.', createdAt: now },
+  ];
+
   localStorage.setItem('agh_projects', JSON.stringify(projects));
   localStorage.setItem('agh_tasks',    JSON.stringify(tasks));
   localStorage.setItem('agh_events',   JSON.stringify(events));
   localStorage.setItem('agh_sessions', JSON.stringify(sessions));
-  localStorage.setItem('agh_seed_v',   '6');
+  localStorage.setItem('agh_studies',  JSON.stringify(studies));
+  localStorage.setItem('agh_seed_v',   '7');
 
-  console.log('[AG Hub seed v4]', projects.length, 'projetos ·', tasks.length, 'tarefas ·', events.length, 'eventos ·', sessions.length, 'sessões');
+  console.log('[AG Hub seed v7]', projects.length, 'projetos ·', tasks.length, 'tarefas ·', events.length, 'eventos ·', sessions.length, 'sessões ·', studies.length, 'estudos');
 })();
