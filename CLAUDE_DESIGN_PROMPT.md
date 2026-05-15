@@ -165,6 +165,43 @@ Inspiração: Satoru Gojo (tratada como referência de design, não como tema de
 - `.colpick` — flex wrap, gap 7px; `.col` — 21px círculo; `.col.sel` — borda branca, scale 1.25
 - `.fact` — flex end, gap 8px
 
+### Focus Project (Dashboard)
+- `#focus-proj-section` — div antes do dash-grid, preenchido via JS
+- `.focus-proj-bar` — flex row, align-items center, gap 10px, fundo `--surface`, borda, border-radius 12px, padding 10px 14px; abaixo dele vem `.focus-task-list`
+- `.focus-label` — "FOCO" em uppercase, 0.68rem, bold, `--muted`
+- `.focus-btns` — flex wrap, gap 6px
+- `.fpb-btn` — pill, 0.72rem, 600, borda `--border`, `--muted2`; `.fpb-active` — borda e cor dinâmica via `style=` inline (JS injeta cor do projeto)
+- `.fpb-dot` — 6×6px círculo colorido dentro do pill
+- `.focus-task-list` — lista de tasks, padding 4px 0; usa `.focus-item`, `.fcheck`, `.focus-text`, `.focus-meta` já definidos acima
+
+### Weekly Digest (Dashboard)
+- `#weekly-digest` — div após dash-grid
+- `.weekly-digest-card` — fundo `--surface`, borda, border-radius 12px, padding 16px 20px
+- `.weekly-row` — flex row, gap 28px, margin-top 10px, flex-wrap
+- `.wstat` — flex column; `.wstat-val` — 1.4rem, 900; `.wstat-lbl` — 0.63rem, `--muted`
+
+### Study Tracker (Crescimento)
+- `#study-stats` — preenchido via JS antes de `#studies-list`
+- `.study-stats-row` — flex row, gap 16px, flex-wrap, fundo `--surface`, borda, border-radius 10px, padding 12px 16px
+- `.study-stat` — flex column; `.ss-val` — 1.3rem, 900; `.ss-lbl` — 0.63rem, `--muted`
+- `.study-card` — fundo `--surface`, borda, border-radius 10px, padding 11px 14px, margin-bottom 7px; hover: borda primary, fundo `--surface2`
+- `.study-head` — flex, space-between, gap 8px, margin-bottom 4px
+- `.study-topic` — 0.83rem, 600, overflow ellipsis (1 linha)
+- `.study-badge` — pill 0.61rem, bold; fundo rgba primary 15%, cor `--secondary`
+- `.study-meta` — flex, gap 10px, 0.67rem, `--muted`, flex-wrap
+
+### Project Improvements
+- `.proj-improvements` — 0.65rem, cor `--warn`, bold, margin-bottom 8px (aparece no proj-body quando projeto tem melhorias)
+
+### Agenda — melhorias
+- `.cal-day.sel` — fundo rgba primary 10%, outline 2px primary
+- `.cal-overflow` — "+N mais" em 0.56rem, bold, `--secondary`
+- `.cal-task-chip` — variante de `.cal-ev-chip`; fundo rgba accent 15%, cor `--accent`
+- `.day-panel-head` — flex, space-between, margin-bottom 6px
+- `.day-panel-title` — 0.78rem, bold, capitalize
+- `.day-panel-close` — botão ×, sem estilo, `--muted`; hover: `--text`
+- `.day-panel-counts` — flex, gap 12px, 0.63rem, `--muted`, margin-bottom 10px
+
 ### Utilitários
 - `.toast` — fixed bottom-right, fundo `--surface2`, borda, border-radius 10px; `.toast.ok` — borda-left accent; `.toast.err` — borda-left danger
 - `.empty` — estado vazio centralizado
