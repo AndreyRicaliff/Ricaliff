@@ -691,6 +691,51 @@ document.addEventListener('keydown',e=>{
   }
 });
 
+// ── BACKUP / RESTORE ──────────────────────────────────────────────
+function exportData() {
+  const data = {
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    projects: DB.projects,
+    tasks:    DB.tasks,
+    events:   DB.events,
+    sessions: JSON.parse(localStorage.getItem('agh_sessions') || '[]'),
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `ag-hub-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  toast('Backup exportado');
+}
+
+function importData() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (!data.projects || !data.tasks) { toast('Arquivo inválido', 'err'); return; }
+        if (!confirm(`Importar backup de ${data.exportedAt?.slice(0,10) || '?'}?\nIsso substituirá todos os dados atuais.`)) return;
+        DB.projects = data.projects;
+        DB.tasks    = data.tasks;
+        DB.events   = data.events || [];
+        if (data.sessions) localStorage.setItem('agh_sessions', JSON.stringify(data.sessions));
+        localStorage.setItem('agh_seed_v', '4');
+        go(curView);
+        toast('Dados restaurados com sucesso');
+      } catch { toast('Erro ao ler o arquivo', 'err'); }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
 // ── INIT ──────────────────────────────────────────────────────────
 (function(){
   document.getElementById('sb-date').textContent =

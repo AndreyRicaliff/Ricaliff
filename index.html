@@ -426,6 +426,16 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
   </div>
   <div class="sb-footer">
     <div class="sb-date" id="sb-date"></div>
+    <div style="display:flex;gap:6px;padding:4px 4px 0">
+      <button onclick="exportData()" title="Exportar backup JSON" class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;font-size:.7rem;padding:6px 8px">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Backup
+      </button>
+      <button onclick="importData()" title="Importar backup JSON" class="btn btn-ghost btn-sm" style="flex:1;justify-content:center;font-size:.7rem;padding:6px 8px">
+        <svg width="11" height="11" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Restaurar
+      </button>
+    </div>
   </div>
 </nav>
 
@@ -435,7 +445,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
   <!-- DASHBOARD -->
   <div class="view active" id="view-dash">
     <div class="dash-hero">
-      <div class="dash-greeting">Olá, <span id="greet-name">Ricardo</span> 👋</div>
+      <div class="dash-greeting">Olá, <span id="greet-name">Ricaliff</span> 👋</div>
       <div class="dash-sub" id="greet-sub">Carregando...</div>
       <div class="dash-quick-stats" id="dash-qs"></div>
     </div>
