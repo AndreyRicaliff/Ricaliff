@@ -336,6 +336,46 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
 .empty-t{font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:4px}
 .empty-s{font-size:.76rem}
 
+/* GROWTH VIEW */
+.growth-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:20px}
+.section-label{font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:12px}
+.session-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:13px 15px;margin-bottom:8px;cursor:pointer;transition:all .18s}
+.session-card:hover{border-color:rgba(124,58,237,.35);background:var(--raise)}
+.session-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.session-title{font-size:.84rem;font-weight:600;flex:1}
+.session-badge{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:20px}
+.sb-feature{background:rgba(124,58,237,.2);color:var(--phi)}
+.sb-bugfix{background:rgba(239,68,68,.15);color:#FCA5A5}
+.sb-refactor{background:rgba(6,182,212,.15);color:var(--cyan)}
+.sb-deploy{background:rgba(245,158,11,.15);color:var(--yellow)}
+.sb-design{background:rgba(236,72,153,.15);color:#F9A8D4}
+.sb-planning{background:rgba(107,114,128,.15);color:var(--muted2)}
+.sb-data{background:rgba(16,185,129,.15);color:var(--green)}
+.session-meta{font-size:.68rem;color:var(--muted);display:flex;gap:10px}
+.impact-alto{color:var(--green)}
+.impact-medio{color:var(--yellow)}
+.impact-baixo{color:var(--muted2)}
+.domain-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.domain-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.domain-name{font-size:.82rem;font-weight:600}
+.domain-level{font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:20px}
+.dl-iniciando{background:rgba(107,114,128,.15);color:var(--muted2)}
+.dl-desenvolvendo{background:rgba(245,158,11,.15);color:var(--yellow)}
+.dl-avancado{background:rgba(16,185,129,.15);color:var(--green)}
+.dl-dominando{background:rgba(124,58,237,.2);color:var(--phi)}
+.domain-bar{height:4px;background:var(--raise);border-radius:2px;overflow:hidden}
+.domain-fill{height:100%;border-radius:2px;transition:width .5s}
+.domain-sub{font-size:.67rem;color:var(--muted);margin-top:5px}
+.suggestion-card{background:var(--raise);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}
+.suggestion-title{font-size:.8rem;font-weight:600;margin-bottom:3px}
+.suggestion-sub{font-size:.68rem;color:var(--muted);line-height:1.5}
+/* proj github link */
+.proj-github{display:inline-flex;align-items:center;gap:4px;font-size:.68rem;color:var(--muted);text-decoration:none;padding:3px 8px;border-radius:6px;border:1px solid var(--border);margin-top:8px;transition:all .15s}
+.proj-github:hover{color:var(--white);border-color:var(--purple)}
+@media(max-width:900px){
+  .growth-grid{grid-template-columns:1fr}
+}
+
 @media(max-width:900px){
   .sidebar{transform:translateX(-100%);transition:transform .25s}
   .sidebar.open{transform:translateX(0)}
@@ -377,6 +417,11 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
     <button class="nav-item" onclick="go('agenda')" id="nav-agenda">
       <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
       Agenda
+    </button>
+    <div class="nav-sep"></div>
+    <button class="nav-item" onclick="go('growth')" id="nav-growth">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      Crescimento
     </button>
   </div>
   <div class="sb-footer">
@@ -490,7 +535,70 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
     </div>
   </div>
 
+  <!-- CRESCIMENTO -->
+  <div class="view" id="view-growth">
+    <div class="view-header">
+      <div><div class="view-title">Crescimento</div><div class="view-sub">Dev + IA — sessões com Claude, domínios e carreira</div></div>
+      <button class="btn btn-primary" onclick="openSessionModal()">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+        Registrar Sessão
+      </button>
+    </div>
+    <div class="stats-row" id="growth-stats"></div>
+    <div class="growth-grid">
+      <div>
+        <div class="section-label">Sessões com Claude</div>
+        <div id="sessions-list"></div>
+      </div>
+      <div>
+        <div class="section-label">Domínios para dominar</div>
+        <div id="domains-list"></div>
+        <div class="section-label" style="margin-top:24px">Próximos passos de carreira</div>
+        <div id="suggestions-list"></div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /main -->
+
+<!-- MODAL SESSION -->
+<div class="overlay" id="m-session">
+  <div class="modal">
+    <div class="mhead"><div class="mtitle">Registrar Sessão Claude</div><button class="mclose" onclick="closeM('m-session')">×</button></div>
+    <input type="hidden" id="fs-id">
+    <div class="fg"><label class="fl">O que foi feito</label><input class="fi" id="fs-title" placeholder="Ex: Correção do bug de sync no PULSAR-RH" autocomplete="off"></div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Projeto</label><select class="fs" id="fs-proj"></select></div>
+      <div class="fg"><label class="fl">Tipo</label>
+        <select class="fs" id="fs-type">
+          <option value="feature">Nova feature</option>
+          <option value="bugfix">Bug fix</option>
+          <option value="refactor">Refactor</option>
+          <option value="deploy">Deploy / infra</option>
+          <option value="design">Design / UI</option>
+          <option value="planning">Planejamento</option>
+          <option value="data">Dados / seed</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="fg"><label class="fl">Data</label><input class="fi" id="fs-date" type="date"></div>
+      <div class="fg"><label class="fl">Impacto</label>
+        <select class="fs" id="fs-impact">
+          <option value="alto">Alto</option>
+          <option value="medio">Médio</option>
+          <option value="baixo">Baixo</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label class="fl">Detalhes / aprendizados</label><textarea class="fta" id="fs-notes" placeholder="O que aprendeu? O que foi difícil?"></textarea></div>
+    <div class="fact">
+      <button class="btn btn-ghost btn-sm" id="s-del" onclick="delSession()" style="display:none;margin-right:auto">Excluir</button>
+      <button class="btn btn-ghost" onclick="closeM('m-session')">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveSession()">Salvar</button>
+    </div>
+  </div>
+</div>
 
 <!-- MODAL TAREFA -->
 <div class="overlay" id="m-task">

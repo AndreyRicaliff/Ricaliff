@@ -26,6 +26,7 @@ function go(view) {
   if (view==='projects') renderProjects();
   if (view==='tasks')    renderTasks();
   if (view==='agenda')   renderCal();
+  if (view==='growth')   renderGrowth();
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────
@@ -182,6 +183,7 @@ function renderProjects() {
       <div class="proj-body">
         <div class="proj-name">${esc(p.name)}</div>
         ${p.description?`<div class="proj-desc">${esc(p.description)}</div>`:''}
+        ${p.githubUrl ? `<a class="proj-github" href="${p.githubUrl}" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>${p.isPrivate ? '🔒 ' : ''}GitHub</a>` : ''}
         <div class="proj-footer">
           <div>
             <div class="proj-prog-text">${pt.length} tarefa${pt.length!==1?'s':''}</div>
@@ -536,15 +538,156 @@ function delEv(){
   toast('Evento excluído');
 }
 
+// ── GROWTH ────────────────────────────────────────────────────────
+const DOMAINS = [
+  { id:'claude-api',   name:'Claude API & Prompt Engineering', level:'avancado',    pct:70, sub:'Uso avançado: tool use, caching, agents. Próximo: batch API, fine-tuning.' },
+  { id:'supabase',     name:'Supabase (PostgreSQL + RLS + Realtime)', level:'avancado', pct:72, sub:'RLS, realtime, Edge Functions. Próximo: pg_cron, particionamento, índices.' },
+  { id:'nodejs-ts',    name:'Node.js + TypeScript',            level:'avancado',    pct:68, sub:'Express, Prisma, Bull. Próximo: Fastify, monorepos, testes de integração.' },
+  { id:'ai-native',    name:'Desenvolvimento AI-native',       level:'desenvolvendo', pct:55, sub:'Integrar IA em produtos reais (PULSAR, Meet Hub). Próximo: agentes autônomos, MCP.' },
+  { id:'devops',       name:'DevOps (Vercel, Docker, DigitalOcean)', level:'desenvolvendo', pct:50, sub:'Deploy, containers, CI/CD básico. Próximo: IaC, monitoramento, alertas.' },
+  { id:'react-fe',     name:'React + TypeScript (Frontend)',   level:'desenvolvendo', pct:45, sub:'Lovable/Vite/Tailwind. Próximo: performance, state management, testes de UI.' },
+  { id:'security',     name:'Segurança (LGPD, RLS, XSS, Audit)', level:'desenvolvendo', pct:52, sub:'Patterns de segurança aplicados no PULSAR-RH. Próximo: OWASP Top 10 completo.' },
+  { id:'system-design',name:'System Design & Arquitetura',     level:'iniciando',   pct:30, sub:'Decisões de trade-off nos projetos AG. Próximo: estudar patterns distribuídos.' },
+];
+
+const SUGGESTIONS = [
+  { title:'Publicar um case técnico no GitHub',      sub:'Documente como resolveu o bug de quota do Cliente Varejo ou o leak de memória do PULSAR-RH. Portfólio real > projetos fictícios.' },
+  { title:'Contribuir para um projeto open source',  sub:'1 PR em Supabase, Prisma ou qualquer ferramenta que você já usa. Visibilidade e aprendizado real.' },
+  { title:'Criar um template AG reutilizável',       sub:'Transforme o padrão Supabase+Vercel em um scaffold público. Acelera próximos projetos e vira portfólio.' },
+  { title:'Estudar MCP (Model Context Protocol)',    sub:'Próxima fronteira de integração IA. Você já usa Claude Code com MCP — aprofundar abre projetos de tooling.' },
+  { title:'Formalizar o processo Dev+IA como método',sub:'Documente como você trabalha com Claude (planejamento → execução → revisão). Pode virar conteúdo ou serviço.' },
+];
+
+function renderGrowth() {
+  const sessions = JSON.parse(localStorage.getItem('agh_sessions') || '[]');
+  const totalSess = sessions.length;
+  const thisWeek = sessions.filter(s => {
+    const d = new Date(s.date); const now = new Date();
+    const diff = (now - d) / (1000*60*60*24);
+    return diff <= 7;
+  }).length;
+  const byType = {};
+  sessions.forEach(s => { byType[s.type] = (byType[s.type]||0)+1; });
+  const topType = Object.entries(byType).sort((a,b)=>b[1]-a[1])[0]?.[0] || '—';
+
+  document.getElementById('growth-stats').innerHTML = `
+    <div class="tstat"><div class="tstat-val" style="color:var(--phi)">${totalSess}</div><div class="tstat-lbl">Sessões registradas</div></div>
+    <div class="tstat"><div class="tstat-val" style="color:var(--green)">${thisWeek}</div><div class="tstat-lbl">Essa semana</div></div>
+    <div class="tstat"><div class="tstat-val" style="color:var(--cyan);font-size:1rem;padding-top:4px">${DOMAINS.filter(d=>d.level==='avancado'||d.level==='dominando').length}</div><div class="tstat-lbl">Domínios avançados</div></div>
+    <div class="tstat"><div class="tstat-val" style="color:var(--yellow);font-size:.9rem;padding-top:5px">${topType}</div><div class="tstat-lbl">Atividade mais comum</div></div>
+  `;
+
+  const sl = document.getElementById('sessions-list');
+  const sorted = [...sessions].sort((a,b)=>b.date.localeCompare(a.date));
+  if(!sorted.length) {
+    sl.innerHTML = `<div class="empty"><div class="empty-i">📋</div><div class="empty-t">Nenhuma sessão registrada</div><div class="empty-s">Clique em "Registrar Sessão" após cada trabalho com Claude</div></div>`;
+  } else {
+    sl.innerHTML = sorted.map(s => `
+      <div class="session-card" onclick="openSessionModal('${s.id}')">
+        <div class="session-head">
+          <div class="session-title">${esc(s.title)}</div>
+          <span class="session-badge sb-${s.type}">${s.type}</span>
+        </div>
+        <div class="session-meta">
+          <span>${fmtD(s.date)}</span>
+          ${s.projectId ? `<span style="color:var(--phi)">${esc(DB.projects.find(p=>p.id===s.projectId)?.name||'')}</span>` : ''}
+          <span class="impact-${s.impact}">impacto ${s.impact}</span>
+        </div>
+        ${s.notes ? `<div style="font-size:.72rem;color:var(--muted);margin-top:5px;line-height:1.5">${esc(s.notes).slice(0,120)}${s.notes.length>120?'…':''}</div>` : ''}
+      </div>`).join('');
+  }
+
+  const lvlColor = {iniciando:'#6B7280',desenvolvendo:'#F59E0B',avancado:'#10B981',dominando:'#A78BFA'};
+  document.getElementById('domains-list').innerHTML = DOMAINS.map(d => `
+    <div class="domain-row">
+      <div class="domain-head">
+        <div class="domain-name">${d.name}</div>
+        <span class="domain-level dl-${d.level}">${d.level}</span>
+      </div>
+      <div class="domain-bar"><div class="domain-fill" style="width:${d.pct}%;background:${lvlColor[d.level]}"></div></div>
+      <div class="domain-sub">${d.sub}</div>
+    </div>`).join('');
+
+  document.getElementById('suggestions-list').innerHTML = SUGGESTIONS.map(s => `
+    <div class="suggestion-card">
+      <div class="suggestion-title">→ ${s.title}</div>
+      <div class="suggestion-sub">${s.sub}</div>
+    </div>`).join('');
+}
+
+function openSessionModal(id) {
+  const projs = DB.projects;
+  const sel = document.getElementById('fs-proj');
+  sel.innerHTML = '<option value="">Sem projeto específico</option>' +
+    projs.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
+
+  if(id) {
+    const s = JSON.parse(localStorage.getItem('agh_sessions')||'[]').find(x=>x.id===id);
+    if(!s) return;
+    document.getElementById('fs-id').value   = s.id;
+    document.getElementById('fs-title').value= s.title;
+    document.getElementById('fs-proj').value = s.projectId||'';
+    document.getElementById('fs-type').value = s.type;
+    document.getElementById('fs-date').value = s.date;
+    document.getElementById('fs-impact').value=s.impact;
+    document.getElementById('fs-notes').value= s.notes||'';
+    document.getElementById('s-del').style.display='';
+  } else {
+    document.getElementById('fs-id').value='';
+    document.getElementById('fs-title').value='';
+    document.getElementById('fs-proj').value='';
+    document.getElementById('fs-type').value='feature';
+    document.getElementById('fs-date').value=today();
+    document.getElementById('fs-impact').value='medio';
+    document.getElementById('fs-notes').value='';
+    document.getElementById('s-del').style.display='none';
+  }
+  openM('m-session');
+  setTimeout(()=>document.getElementById('fs-title').focus(),80);
+}
+
+function saveSession() {
+  const title = document.getElementById('fs-title').value.trim();
+  if(!title){toast('Descreva o que foi feito','err');return;}
+  const sessions = JSON.parse(localStorage.getItem('agh_sessions')||'[]');
+  const id = document.getElementById('fs-id').value;
+  const data = {
+    id: id||uid(), title,
+    projectId: document.getElementById('fs-proj').value||null,
+    type:   document.getElementById('fs-type').value,
+    date:   document.getElementById('fs-date').value||today(),
+    impact: document.getElementById('fs-impact').value,
+    notes:  document.getElementById('fs-notes').value.trim(),
+    createdAt: new Date().toISOString(),
+  };
+  if(id){const i=sessions.findIndex(s=>s.id===id);sessions[i]=data;}
+  else sessions.unshift(data);
+  localStorage.setItem('agh_sessions', JSON.stringify(sessions));
+  closeM('m-session');
+  renderGrowth();
+  toast(id?'Sessão atualizada':'Sessão registrada');
+}
+
+function delSession() {
+  const id=document.getElementById('fs-id').value;
+  if(!id||!confirm('Excluir esta sessão?')) return;
+  const sessions=JSON.parse(localStorage.getItem('agh_sessions')||'[]').filter(s=>s.id!==id);
+  localStorage.setItem('agh_sessions', JSON.stringify(sessions));
+  closeM('m-session');
+  renderGrowth();
+  toast('Sessão excluída');
+}
+
 // ── KEYBOARD ──────────────────────────────────────────────────────
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape') document.querySelectorAll('.overlay.open').forEach(o=>o.classList.remove('open'));
   if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){
     const o=document.querySelector('.overlay.open');
     if(!o) return;
-    if(o.id==='m-task') saveTask();
-    else if(o.id==='m-proj') saveProj();
-    else if(o.id==='m-ev')   saveEv();
+    if(o.id==='m-task')    saveTask();
+    else if(o.id==='m-proj')    saveProj();
+    else if(o.id==='m-ev')      saveEv();
+    else if(o.id==='m-session') saveSession();
   }
 });
 

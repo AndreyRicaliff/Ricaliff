@@ -2,20 +2,20 @@
 // Forçado toda vez que a versão muda
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '3') return;
+  if (localStorage.getItem('agh_seed_v') === '4') return;
 
   const now = new Date().toISOString();
 
   // ── PROJETOS ─────────────────────────────────────────────────
   const projects = [
-    { id: 'pulsar-rh',      name: 'PULSAR-RH',         description: 'SaaS de People Analytics — eNPS, NR-1, KPIs de RH com IA. Em produção em pulsar-rh.agconsultorialtda.com.', status: 'ativo',    color: '#7C3AED', createdAt: now },
-    { id: 'cliente-varejo',name: 'Cliente Varejo',    description: 'Integração API ERP-externo→Supabase→Lovable. Diagnóstico: quota diária (350 req) esgota em 14h. Aguarda credenciais.', status: 'ativo',    color: '#EF4444', createdAt: now },
-    { id: 'cliente-oficina',  name: 'CLIENTE OFICINA',      description: 'BI de vendas para rede de 6 lojas. Sync Firebird→Supabase 5min + full-year 00:00. Em produção no Windows do cliente.', status: 'ativo',    color: '#F59E0B', createdAt: now },
-    { id: 'meet-hub',       name: 'Meet Hub',            description: 'Gravação e transcrição automática de reuniões Google Meet. Deploy DigitalOcean. Teste e2e funcional.', status: 'ativo',    color: '#06B6D4', createdAt: now },
-    { id: 'ag-converge',    name: 'AG Converge',         description: 'Plataforma própria de eventos AG. RH em Xeque concluído (14/05). Próximo: migrar leads para Supabase.', status: 'ativo',    color: '#10B981', createdAt: now },
-    { id: 'cafe-com-ag',    name: 'Café com AG',         description: 'Calendário editorial do programa semanal de YouTube. Bloqueado: Client ID Google OAuth não configurado.', status: 'pausado',   color: '#EC4899', createdAt: now },
-    { id: 'ag-hub',         name: 'AG Hub',              description: 'Este sistema de gestão pessoal. Deploy Vercel + GitHub. Evolução contínua.', status: 'ativo',    color: '#A78BFA', createdAt: now },
-    { id: 'ifpb',           name: 'IFPB — Estudos',      description: 'Exercícios e anotações do curso de programação no IFPB. Projeto pessoal, sem pressão.', status: 'ativo',    color: '#6B7280', createdAt: now },
+    { id: 'pulsar-rh',      name: 'PULSAR-RH',         description: 'SaaS de People Analytics — eNPS, NR-1, KPIs de RH com IA. Em produção em pulsar-rh.agconsultorialtda.com.', status: 'ativo',    color: '#7C3AED', githubUrl: 'https://github.com/AndreyRicaliff/PULSAR-RH',            isPrivate: false, createdAt: now },
+    { id: 'cliente-varejo',name: 'Cliente Varejo',    description: 'Integração API ERP-externo→Supabase→Lovable. Diagnóstico: quota diária (350 req) esgota em 14h. Aguarda credenciais.', status: 'ativo',    color: '#EF4444', githubUrl: null,                                                      isPrivate: false, createdAt: now },
+    { id: 'cliente-oficina',  name: 'CLIENTE OFICINA',      description: 'BI de vendas para rede de 6 lojas. Sync Firebird→Supabase 5min + full-year 00:00. Em produção no Windows do cliente.', status: 'ativo',    color: '#F59E0B', githubUrl: 'https://github.com/AndreyRicaliff/cliente-oficina-backend', isPrivate: true,  createdAt: now },
+    { id: 'meet-hub',       name: 'Meet Hub',            description: 'Gravação e transcrição automática de reuniões Google Meet. Deploy DigitalOcean. Teste e2e funcional.', status: 'ativo',    color: '#06B6D4', githubUrl: null,                                                      isPrivate: false, createdAt: now },
+    { id: 'ag-converge',    name: 'AG Converge',         description: 'Plataforma própria de eventos AG. RH em Xeque concluído (14/05). Próximo: migrar leads para Supabase.', status: 'ativo',    color: '#10B981', githubUrl: 'https://github.com/AndreyRicaliff/ag-converge',           isPrivate: false, createdAt: now },
+    { id: 'cafe-com-ag',    name: 'Café com AG',         description: 'Calendário editorial do programa semanal de YouTube. Bloqueado: Client ID Google OAuth não configurado.', status: 'pausado',   color: '#EC4899', githubUrl: 'https://github.com/AndreyRicaliff/cafe-com-ag',           isPrivate: false, createdAt: now },
+    { id: 'ag-hub',         name: 'AG Hub',              description: 'Este sistema de gestão pessoal. Deploy Vercel + GitHub. Evolução contínua.', status: 'ativo',    color: '#A78BFA', githubUrl: 'https://github.com/AndreyRicaliff/ag-hub',                isPrivate: false, createdAt: now },
+    { id: 'ifpb',           name: 'IFPB — Estudos',      description: 'Exercícios e anotações do curso de programação no IFPB. Projeto pessoal, sem pressão.', status: 'ativo',    color: '#6B7280', githubUrl: null,                                                      isPrivate: false, createdAt: now },
   ];
 
   // ── TAREFAS ───────────────────────────────────────────────────
@@ -161,10 +161,27 @@
     { id: 'ev-7', title: 'Entrega Fase 2 — Novo sync Cliente Varejo', date: '2026-05-28', time: null,    type: 'prazo',   duration: null, notes: 'Sync incremental 10min, 300 req/dia. Testar em produção.', createdAt: now },
   ];
 
+  // ── SESSÕES CLAUDE (histórico real) ──────────────────────────
+  const sessions = [
+    { id:'s-01', title:'AG Hub criado do zero — dashboard, projetos, tarefas, agenda', projectId:'ag-hub', type:'feature', date:'2026-05-15', impact:'alto', notes:'App completo em HTML+JS puro com tema AG. LocalStorage como storage. Sidebar, rings de progresso, calendario.', createdAt: now },
+    { id:'s-02', title:'AG Hub redesign — estilo personal growth app (Linear/Notion)', projectId:'ag-hub', type:'design', date:'2026-05-15', impact:'alto', notes:'Sidebar fixa, dashboard com greeting, rings SVG por projeto, focus do dia. Separação em index.html + app.js.', createdAt: now },
+    { id:'s-03', title:'Deploy Vercel + GitHub do AG Hub', projectId:'ag-hub', type:'deploy', date:'2026-05-15', impact:'alto', notes:'GitHub repo público AndreyRicaliff/ag-hub. Vercel auto-deploy em push main. URL: ag-hub-tan.vercel.app.', createdAt: now },
+    { id:'s-04', title:'Seed com todos os projetos reais AG + histórico done/todo', projectId:'ag-hub', type:'data', date:'2026-05-15', impact:'alto', notes:'8 projetos, 40+ tarefas (concluídas e pendentes), 7 eventos. GitHub URLs. Seção Crescimento com domínios e sessões.', createdAt: now },
+    { id:'s-05', title:'PULSAR-RH — 4 bugs críticos + 3 melhorias (sessão autônoma 4h)', projectId:'pulsar-rh', type:'bugfix', date:'2026-05-11', impact:'alto', notes:'Memory leak realtime, XSS em renderResults, eval disfarçado (new Function), O(n²)→O(n). + ARIA, validação email/CNPJ, disabled async.', createdAt: now },
+    { id:'s-06', title:'PULSAR-RH — sprint1-security completa (3 sprints de features)', projectId:'pulsar-rh', type:'feature', date:'2026-05-08', impact:'alto', notes:'Audit log LGPD, claude-proxy Edge Function, Turnstile captcha, comentários em planos, PDF executivo, branding por cliente, i18n PT/EN/ES.', createdAt: now },
+    { id:'s-07', title:'PULSAR-RH — sync Supabase-first + realtime publication', projectId:'pulsar-rh', type:'bugfix', date:'2026-05-06', impact:'alto', notes:'Commit e9949eb. persistAndCache/removeAndCache. Tabelas na publication supabase_realtime. RLS case-insensitive.', createdAt: now },
+    { id:'s-08', title:'CLIENTE OFICINA — pipeline item-a-item em produção', projectId:'cliente-oficina', type:'feature', date:'2026-05-08', impact:'alto', notes:'sale_items + return_items com custo real. margin_value correto. Retry+backoff+lockfile. 9 tabelas Supabase.', createdAt: now },
+    { id:'s-09', title:'CLIENTE OFICINA — sync incremental 5min + full-year configurados', projectId:'cliente-oficina', type:'deploy', date:'2026-05-06', impact:'alto', notes:'Task Scheduler Windows perpétuo. Oficina-Sync5Min (5min) + Oficina-SyncAnual (00:00). Janela 2d incremental.', createdAt: now },
+    { id:'s-10', title:'Meet Hub — teste e2e 100% funcional', projectId:'meet-hub', type:'bugfix', date:'2026-05-07', impact:'alto', notes:'FFmpeg instalado na API. IDs Prisma consistentes. Mock Gemini para testes. Endpoint /recordings/test/auto funcionando.', createdAt: now },
+    { id:'s-11', title:'AG Converge — sistema de inscrição RH em Xeque', projectId:'ag-converge', type:'feature', date:'2026-05-09', impact:'alto', notes:'3-passos (dados → doação → ingresso). QR code digital. Admin panel. Extrator .xlsx. Supabase project criado.', createdAt: now },
+    { id:'s-12', title:'Cliente Varejo — diagnóstico causa-raiz (quota API esgotada)', projectId:'cliente-varejo', type:'planning', date:'2026-05-15', impact:'alto', notes:'Causa: plano Estratégia = 350 req/dia. Sync 5min consome 288→esgota em 14h. Solução: 10min, 300 req budget.', createdAt: now },
+  ];
+
   localStorage.setItem('agh_projects', JSON.stringify(projects));
   localStorage.setItem('agh_tasks',    JSON.stringify(tasks));
   localStorage.setItem('agh_events',   JSON.stringify(events));
-  localStorage.setItem('agh_seed_v',   '3');
+  localStorage.setItem('agh_sessions', JSON.stringify(sessions));
+  localStorage.setItem('agh_seed_v',   '4');
 
-  console.log('[AG Hub seed v3]', projects.length, 'projetos ·', tasks.length, 'tarefas ·', events.length, 'eventos');
+  console.log('[AG Hub seed v4]', projects.length, 'projetos ·', tasks.length, 'tarefas ·', events.length, 'eventos ·', sessions.length, 'sessões');
 })();
