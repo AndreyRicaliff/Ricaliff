@@ -122,7 +122,7 @@ function go(view) {
   if (view==='projects') renderProjects();
   if (view==='tasks')    renderTasks();
   if (view==='agenda')   renderCal();
-  if (view==='growth')   renderGrowth();
+  if (view==='growth')   { renderGrowth(); renderModules(); }
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────
@@ -898,6 +898,10 @@ function renderModules() {
 
 function renderGrowth() {
   if (SYNC) renderGamification();
+  try { renderGrowthBody(); } catch(e) { console.error('[renderGrowth]', e); }
+}
+
+function renderGrowthBody() {
   const sessions = JSON.parse(localStorage.getItem('agh_sessions') || '[]');
   const totalSess = sessions.length;
   const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
@@ -955,8 +959,6 @@ function renderGrowth() {
       <div class="suggestion-title">→ ${s.title}</div>
       <div class="suggestion-sub">${s.sub}</div>
     </div>`).join('');
-
-  renderModules();
 }
 
 function openSessionModal(id) {
