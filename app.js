@@ -1266,5 +1266,6 @@ function delStudy() {
   document.getElementById('sb-date').textContent =
     new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'});
   renderDash();
+  renderModules();
   loadSync();
 })();
