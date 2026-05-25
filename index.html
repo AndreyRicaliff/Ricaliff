@@ -472,6 +472,25 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
 .xp-entry-date{font-size:.63rem;color:var(--muted)}
 .xp-entry-pts{font-size:.72rem;font-weight:700;color:var(--accent);white-space:nowrap}
 .gam-section{margin-bottom:24px}
+/* ── MODULES ─────────────────────────────────────────────────── */
+.modules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-top:4px}
+.mod-card{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:16px 18px;transition:border-color .2s}
+.mod-card.mod-complete{border-color:var(--green)}
+.mod-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px}
+.mod-icon{font-size:1.4rem;line-height:1;flex-shrink:0;margin-top:3px}
+.mod-info{flex:1;min-width:0}
+.mod-title{font-size:.82rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.mod-sub{font-size:.68rem;color:var(--muted);line-height:1.4}
+.mod-pct{font-size:1rem;font-weight:800;color:var(--muted);flex-shrink:0;margin-top:2px}
+.mod-pct.mod-pct-done{color:var(--green)}
+.mod-bar{height:3px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:12px}
+.mod-bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--cyan));border-radius:99px;transition:width .4s ease}
+.mod-topics{display:flex;flex-direction:column;gap:2px}
+.topic-row{display:flex;align-items:flex-start;gap:7px;padding:5px 6px;border-radius:7px;cursor:pointer;transition:background .12s;user-select:none}
+.topic-row:hover{background:var(--surface3)}
+.topic-name{flex:1;font-size:.74rem;color:var(--text);line-height:1.4}
+.topic-name.topic-done{color:var(--muted);text-decoration:line-through}
+.topic-ex{font-size:.63rem;color:var(--phi);background:rgba(114,144,232,.1);padding:1px 5px;border-radius:4px;flex-shrink:0;white-space:nowrap;align-self:flex-start;margin-top:2px}
 </style>
 </head>
 <body>
@@ -676,6 +695,13 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
         <div class="section-label" style="margin-top:24px">Próximos passos de carreira</div>
         <div id="suggestions-list"></div>
       </div>
+    </div>
+    <div style="margin-top:32px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="section-label">Módulos de Estudo</div>
+        <div id="modules-overall" style="font-size:.7rem;color:var(--muted)"></div>
+      </div>
+      <div class="modules-grid" id="modules-grid"></div>
     </div>
   </div>
 

@@ -756,6 +756,146 @@ const SUGGESTIONS = [
   { title:'Formalizar o processo Dev+IA como método',sub:'Documente como você trabalha com Claude (planejamento → execução → revisão). Pode virar conteúdo ou serviço AG.' },
 ];
 
+// ── MODULES ──────────────────────────────────────────────────────────
+const STATUS_CYCLE = { pending: 'studying', studying: 'mastered', mastered: 'pending' };
+const STATUS_ICON  = { pending: '⬜', studying: '🔵', mastered: '✅' };
+const STATUS_CLR   = { pending: 'var(--muted)', studying: 'var(--phi)', mastered: 'var(--green)' };
+
+const MODULES = [
+  {
+    id: 'js', title: 'JavaScript Moderno', icon: '⚡', desc: 'Base de todos os projetos AG',
+    topics: [
+      { id: 'const-arrow',    title: 'const/let, arrow functions, destructuring',   example: 'ag-hub/app.js' },
+      { id: 'async-await',    title: 'async/await, Promises, Promise.all',          example: 'loadSync(), OFICINA' },
+      { id: 'array-methods',  title: 'map, filter, reduce, find',                   example: 'renderQuests()' },
+      { id: 'optional-ops',   title: '?., ??, spread/rest',                         example: 'PULSAR-RH' },
+      { id: 'fetch-api',      title: 'fetch, headers, tratamento de erros',         example: 'ag-hub-sync' },
+      { id: 'dom-events',     title: 'DOM: querySelector, events, innerHTML',       example: 'app.js renderX()' },
+    ],
+  },
+  {
+    id: 'ts', title: 'TypeScript', icon: '🔷', desc: 'Tipagem para evitar bugs em runtime',
+    topics: [
+      { id: 'basic-types',   title: 'Tipos básicos, interfaces, type aliases' },
+      { id: 'strict-no-any', title: 'strict mode, sem any, unknown + narrowing' },
+      { id: 'utility-types', title: 'Partial, Pick, Omit, Required, Readonly' },
+      { id: 'generics',      title: 'Generics: <T>, constrained generics' },
+      { id: 'discriminated', title: 'Discriminated unions, type guards',           example: 'PULSAR-RH (loading/error/ok)' },
+    ],
+  },
+  {
+    id: 'supabase', title: 'Supabase', icon: '🗄️', desc: 'Backend de PULSAR-RH, OFICINA, Varejo',
+    topics: [
+      { id: 'crud',       title: 'CRUD: select, insert, update, delete',           example: 'PULSAR-RH indicadores' },
+      { id: 'auth',       title: 'Auth: signIn, getSession, onAuthStateChange',    example: 'PULSAR-RH portais' },
+      { id: 'rls',        title: 'Row Level Security: policies, roles',            example: 'dados isolados por empresa' },
+      { id: 'realtime',   title: 'Realtime: subscribe, channel, unsubscribe',     example: 'fix leak PULSAR-RH' },
+      { id: 'migrations', title: 'Migrations: db push, diff, reset' },
+      { id: 'types-gen',  title: 'Gerar tipos TS: supabase gen types',            example: 'PULSAR-RH tipagem' },
+    ],
+  },
+  {
+    id: 'html-css', title: 'HTML + CSS + Vanilla JS', icon: '🎨', desc: 'Stack do ag-hub, Café com AG',
+    topics: [
+      { id: 'semantics',    title: 'HTML5 semântico, ARIA, acessibilidade' },
+      { id: 'layout',       title: 'Flexbox e CSS Grid sem framework',             example: 'ag-hub layout' },
+      { id: 'css-vars',     title: 'CSS Custom Properties, dark mode',             example: 'ag-hub :root vars' },
+      { id: 'spa-vanilla',  title: 'SPA sem framework: views, nav, estado',       example: 'ag-hub go() + views' },
+      { id: 'localstorage', title: 'localStorage, JSON.parse/stringify',           example: 'ag-hub DB object' },
+      { id: 'responsive',   title: 'Responsive: media queries, mobile-first' },
+    ],
+  },
+  {
+    id: 'git-deploy', title: 'Git + Deploy', icon: '🚀', desc: 'Controle de versão e entrega',
+    topics: [
+      { id: 'git-core',      title: 'commit, branch, merge, rebase, log' },
+      { id: 'conv-commits',  title: 'Conventional Commits: feat/fix/chore',       example: 'todos os projetos AG' },
+      { id: 'gitignore-env', title: '.gitignore, .env, segurança no repo',        example: 'pre-commit hook AG' },
+      { id: 'vercel',        title: 'Vercel: deploy preview + prod, env vars',    example: 'ag-hub, Café com AG' },
+      { id: 'ci-cd',         title: 'CI/CD: workflow, triggers, secrets' },
+    ],
+  },
+  {
+    id: 'node-api', title: 'Node.js + Express', icon: '🟢', desc: 'Backend das APIs AG',
+    topics: [
+      { id: 'express-basics',    title: 'Rotas, middleware, req/res, status codes' },
+      { id: 'env-validation',    title: 'Validar env vars no startup com Zod',    example: 'Meet Hub API' },
+      { id: 'error-handling',    title: 'Error middleware, try/catch em boundary' },
+      { id: 'async-node',        title: 'Async no Express, sem forEach+await' },
+      { id: 'graceful-shutdown', title: 'SIGTERM → fechar DB → process.exit(0)',  example: 'Meet Hub' },
+    ],
+  },
+  {
+    id: 'clean-code', title: 'Clean Code', icon: '✨', desc: 'Princípios aplicados em toda sessão',
+    topics: [
+      { id: 'srp',          title: 'SRP: uma função, uma responsabilidade' },
+      { id: 'dry-kiss',     title: 'DRY, KISS, YAGNI: sem abstração prematura' },
+      { id: 'early-return', title: 'Early return, guard clauses, nesting < 2 níveis' },
+      { id: 'naming',       title: 'Nomes que explicam sem comentário' },
+      { id: 'code-smells',  title: 'God object, dead code, shotgun surgery' },
+      { id: 'testing',      title: 'Testes: arrange/act/assert, sem mocks internos' },
+    ],
+  },
+];
+
+function getModProgress()        { return JSON.parse(localStorage.getItem('agh_modules') || '{}'); }
+function saveModProgress(data)   { localStorage.setItem('agh_modules', JSON.stringify(data)); }
+function topicStatus(p, mid, tid){ return p[mid]?.[tid] ?? 'pending'; }
+
+function toggleTopic(modId, topicId) {
+  const p = getModProgress();
+  const cur = topicStatus(p, modId, topicId);
+  if (!p[modId]) p[modId] = {};
+  p[modId][topicId] = STATUS_CYCLE[cur];
+  saveModProgress(p);
+  renderModules();
+}
+
+function modPct(mod, p) {
+  const done = mod.topics.filter(t => topicStatus(p, mod.id, t.id) === 'mastered').length;
+  return Math.round((done / mod.topics.length) * 100);
+}
+
+function renderTopicRow(modId, t, p) {
+  const s  = topicStatus(p, modId, t.id);
+  const ex = t.example ? `<span class="topic-ex">${esc(t.example)}</span>` : '';
+  return `<div class="topic-row" onclick="toggleTopic('${modId}','${t.id}')">
+    <span style="color:${STATUS_CLR[s]};flex-shrink:0">${STATUS_ICON[s]}</span>
+    <span class="topic-name ${s === 'mastered' ? 'topic-done' : ''}">${esc(t.title)}</span>
+    ${ex}
+  </div>`;
+}
+
+function renderModuleCard(mod, p) {
+  const pct     = modPct(mod, p);
+  const topics  = mod.topics.map(t => renderTopicRow(mod.id, t, p)).join('');
+  const done    = pct === 100;
+  return `<div class="mod-card ${done ? 'mod-complete' : ''}">
+    <div class="mod-head">
+      <span class="mod-icon">${mod.icon}</span>
+      <div class="mod-info">
+        <div class="mod-title">${esc(mod.title)}</div>
+        <div class="mod-sub">${esc(mod.desc)}</div>
+      </div>
+      <div class="mod-pct ${done ? 'mod-pct-done' : ''}">${pct}%</div>
+    </div>
+    <div class="mod-bar"><div class="mod-bar-fill" style="width:${pct}%"></div></div>
+    <div class="mod-topics">${topics}</div>
+  </div>`;
+}
+
+function renderModules() {
+  const p         = getModProgress();
+  const total     = MODULES.reduce((a, m) => a + m.topics.length, 0);
+  const mastered  = MODULES.reduce((a, m) =>
+    a + m.topics.filter(t => topicStatus(p, m.id, t.id) === 'mastered').length, 0);
+  const overall   = Math.round((mastered / total) * 100);
+  document.getElementById('modules-overall').textContent =
+    `${mastered}/${total} tópicos dominados · ${overall}% do objetivo`;
+  document.getElementById('modules-grid').innerHTML =
+    MODULES.map(m => renderModuleCard(m, p)).join('');
+}
+
 function renderGrowth() {
   if (SYNC) renderGamification();
   const sessions = JSON.parse(localStorage.getItem('agh_sessions') || '[]');
@@ -815,6 +955,8 @@ function renderGrowth() {
       <div class="suggestion-title">→ ${s.title}</div>
       <div class="suggestion-sub">${s.sub}</div>
     </div>`).join('');
+
+  renderModules();
 }
 
 function openSessionModal(id) {
