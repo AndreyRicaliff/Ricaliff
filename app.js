@@ -1,3 +1,96 @@
+// ── SYNC (gamificação — carregado de /data/sync.json) ─────────────
+let SYNC = null;
+
+async function loadSync() {
+  try {
+    const r = await fetch('/data/sync.json?v=' + Date.now());
+    if (!r.ok) return;
+    SYNC = await r.json();
+    renderGamification();
+  } catch {}
+}
+
+function renderGamification() {
+  if (!SYNC) return;
+  renderPlayerCard();
+  renderQuests();
+  renderAchievements();
+  renderXpLog();
+}
+
+function renderPlayerCard() {
+  const p = SYNC.player;
+  const levels = SYNC.levels || [];
+  const nextLv = levels.find(l => l.xpMin > p.xp);
+  const xpToNext = nextLv ? nextLv.xpMin : p.xp + 1000;
+  const pct = Math.min(100, Math.round(((p.xp - (levels.find(l => l.level === p.level)?.xpMin || 0)) /
+    (xpToNext - (levels.find(l => l.level === p.level)?.xpMin || 0))) * 100));
+
+  document.getElementById('player-card-wrap').innerHTML = `
+    <div class="player-card">
+      <div class="player-avatar">⚡</div>
+      <div class="player-info">
+        <div class="player-name">${esc(p.name)}</div>
+        <div class="player-title">${esc(p.title)}</div>
+        <div class="xp-bar-wrap">
+          <div class="xp-bar"><div class="xp-bar-fill" style="width:${pct}%"></div></div>
+          <div class="xp-label">${p.xp} / ${xpToNext} XP</div>
+        </div>
+      </div>
+      <div class="player-stats">
+        <div class="player-level">Lv${p.level}</div>
+        <div class="player-level-lbl">nível</div>
+        <div class="streak-badge" style="margin-top:6px">🔥 ${p.streak}d</div>
+      </div>
+    </div>`;
+}
+
+function renderQuests() {
+  const active = (SYNC.quests || []).filter(q => q.status !== 'done');
+  const done   = (SYNC.quests || []).filter(q => q.status === 'done');
+  if (!active.length && !done.length) return;
+  document.getElementById('quests-section').style.display = '';
+  document.getElementById('quests-list').innerHTML =
+    [...active, ...done].map(q => `
+      <div class="quest-card ${q.status === 'done' ? 'done' : ''}">
+        <div class="quest-icon">${q.icon || '🎯'}</div>
+        <div class="quest-body">
+          <div class="quest-title">${esc(q.title)} ${q.status === 'done' ? '✓' : ''}</div>
+          <div class="quest-desc">${esc(q.desc)}</div>
+          ${q.hint && q.status !== 'done' ? `<div class="quest-hint">${esc(q.hint)}</div>` : ''}
+        </div>
+        <div class="quest-xp">+${q.xp} XP</div>
+      </div>`).join('');
+}
+
+function renderAchievements() {
+  const achs = SYNC.achievements || [];
+  if (!achs.length) return;
+  document.getElementById('achievements-section').style.display = '';
+  document.getElementById('achievements-grid').innerHTML = achs.map(a => `
+    <div class="achievement-card">
+      <div class="ach-icon">${a.icon}</div>
+      <div class="ach-info">
+        <div class="ach-name">${esc(a.name)}</div>
+        <div class="ach-desc">${esc(a.desc)}</div>
+        <div class="ach-date">${fmtD(a.unlockedAt)}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderXpLog() {
+  const log = (SYNC.recentActivity || []).slice(0, 8);
+  if (!log.length) return;
+  document.getElementById('xp-log-section').style.display = '';
+  document.getElementById('xp-log-list').innerHTML = log.map(e => `
+    <div class="xp-entry">
+      <div class="xp-entry-icon">${e.icon || '✅'}</div>
+      <div class="xp-entry-desc">${esc(e.title)}</div>
+      <div class="xp-entry-date">${fmtD(e.date)}</div>
+      <div class="xp-entry-pts">+${e.xp}</div>
+    </div>`).join('');
+}
+
 // ── DATA ─────────────────────────────────────────────────────────
 const DB = {
   get tasks()    { return JSON.parse(localStorage.getItem('agh_tasks')    || '[]') },
@@ -641,22 +734,25 @@ function delEv(){
 
 // ── GROWTH ────────────────────────────────────────────────────────
 const DOMAINS = [
-  { id:'claude-api',   name:'Claude API & Prompt Engineering', level:'avancado',    pct:70, sub:'Uso avançado: tool use, caching, agents. Próximo: batch API, fine-tuning.' },
-  { id:'supabase',     name:'Supabase (PostgreSQL + RLS + Realtime)', level:'avancado', pct:72, sub:'RLS, realtime, Edge Functions. Próximo: pg_cron, particionamento, índices.' },
-  { id:'nodejs-ts',    name:'Node.js + TypeScript',            level:'avancado',    pct:68, sub:'Express, Prisma, Bull. Próximo: Fastify, monorepos, testes de integração.' },
-  { id:'ai-native',    name:'Desenvolvimento AI-native',       level:'desenvolvendo', pct:55, sub:'Integrar IA em produtos reais (PULSAR, Meet Hub). Próximo: agentes autônomos, MCP.' },
+  { id:'claude-api',   name:'Claude API & Prompt Engineering',      level:'avancado',      pct:70, sub:'Tool use, caching, agents. Próximo: batch API, fine-tuning.' },
+  { id:'supabase',     name:'Supabase (PostgreSQL + RLS + Realtime)',level:'avancado',      pct:72, sub:'RLS, realtime, Edge Functions. Próximo: pg_cron, particionamento, índices.' },
+  { id:'nodejs-ts',    name:'Node.js + TypeScript',                  level:'avancado',      pct:68, sub:'Express, Prisma, Bull. Próximo: Fastify, monorepos, testes de integração.' },
+  { id:'clean-code',   name:'Clean Code & Boas Práticas',            level:'desenvolvendo', pct:60, sub:'SRP, early return, nomes, sem any, Promise.all, N+1. Próximo: aplicar em código real consistentemente.' },
+  { id:'security',     name:'Segurança (LGPD, secrets, XSS, RLS)',   level:'desenvolvendo', pct:55, sub:'.env, menor privilégio, Privacy by Design, OWASP. Próximo: OWASP Top 10 completo, pen test básico.' },
+  { id:'ai-native',    name:'Desenvolvimento AI-native',             level:'desenvolvendo', pct:55, sub:'IA em produtos reais (PULSAR, Meet Hub). Próximo: agentes autônomos, MCP.' },
   { id:'devops',       name:'DevOps (Vercel, Docker, DigitalOcean)', level:'desenvolvendo', pct:50, sub:'Deploy, containers, CI/CD básico. Próximo: IaC, monitoramento, alertas.' },
-  { id:'react-fe',     name:'React + TypeScript (Frontend)',   level:'desenvolvendo', pct:45, sub:'Lovable/Vite/Tailwind. Próximo: performance, state management, testes de UI.' },
-  { id:'security',     name:'Segurança (LGPD, RLS, XSS, Audit)', level:'desenvolvendo', pct:52, sub:'Patterns de segurança aplicados no PULSAR-RH. Próximo: OWASP Top 10 completo.' },
-  { id:'system-design',name:'System Design & Arquitetura',     level:'iniciando',   pct:30, sub:'Decisões de trade-off nos projetos AG. Próximo: estudar patterns distribuídos.' },
+  { id:'react-fe',     name:'React + TypeScript (Frontend)',         level:'desenvolvendo', pct:45, sub:'Lovable/Vite/Tailwind. Próximo: performance, state management, testes de UI.' },
+  { id:'system-design',name:'System Design & Arquitetura',           level:'iniciando',     pct:32, sub:'Trade-offs, ADRs, SOLID/DRY/KISS/YAGNI. Próximo: patterns distribuídos, microsserviços vs monolito.' },
+  { id:'testes',       name:'Testes (unitários, integração, e2e)',   level:'iniciando',     pct:20, sub:'Teoria estudada. Próximo: primeiro teste real num projeto AG — começar pelo PULSAR-RH.' },
 ];
 
+// Atualizado por /mentor em 2026-05-25
 const SUGGESTIONS = [
-  { title:'Publicar um case técnico no GitHub',      sub:'Documente como resolveu o bug de quota do Cliente Varejo ou o leak de memória do PULSAR-RH. Portfólio real > projetos fictícios.' },
-  { title:'Contribuir para um projeto open source',  sub:'1 PR em Supabase, Prisma ou qualquer ferramenta que você já usa. Visibilidade e aprendizado real.' },
-  { title:'Criar um template AG reutilizável',       sub:'Transforme o padrão Supabase+Vercel em um scaffold público. Acelera próximos projetos e vira portfólio.' },
-  { title:'Estudar MCP (Model Context Protocol)',    sub:'Próxima fronteira de integração IA. Você já usa Claude Code com MCP — aprofundar abre projetos de tooling.' },
-  { title:'Formalizar o processo Dev+IA como método',sub:'Documente como você trabalha com Claude (planejamento → execução → revisão). Pode virar conteúdo ou serviço.' },
+  { title:'Escrever o primeiro teste real',          sub:'Escolha uma função crítica do PULSAR-RH (validação de dados, cálculo de indicador) e escreva o primeiro teste unitário. Teoria virou prática.' },
+  { title:'Aplicar /revisao num projeto real',       sub:'Rode /revisao no PULSAR-RH ou Cliente Varejo e corrija os achados 🔴. Aprendizado de clean code fixado em código que você conhece.' },
+  { title:'Publicar um case técnico no GitHub',      sub:'Documente o bug de quota do Cliente Varejo ou o leak do PULSAR-RH. Portfólio real > projetos fictícios.' },
+  { title:'Estudar MCP (Model Context Protocol)',    sub:'Você já usa Claude Code com MCP — aprofundar abre projetos de tooling e integração IA de próximo nível.' },
+  { title:'Formalizar o processo Dev+IA como método',sub:'Documente como você trabalha com Claude (planejamento → execução → revisão). Pode virar conteúdo ou serviço AG.' },
 ];
 
 function renderGrowth() {
@@ -1026,4 +1122,5 @@ function delStudy() {
   document.getElementById('sb-date').textContent =
     new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'});
   renderDash();
+  loadSync();
 })();

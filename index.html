@@ -432,6 +432,46 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
   .cal-day{min-height:50px}
   .cal-ev-chip{display:none}
 }
+/* ── GAMIFICATION ─────────────────────────────────────────────── */
+.player-card{background:linear-gradient(135deg,var(--surface2),var(--surface3));border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:20px}
+.player-avatar{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.player-info{flex:1;min-width:0}
+.player-name{font-size:1rem;font-weight:700;color:var(--text)}
+.player-title{font-size:.72rem;color:var(--secondary);font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
+.xp-bar-wrap{display:flex;align-items:center;gap:8px}
+.xp-bar{flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden}
+.xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--cyan));border-radius:99px;transition:width .6s ease}
+.xp-label{font-size:.65rem;color:var(--muted);white-space:nowrap}
+.player-stats{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.player-level{font-size:2rem;font-weight:900;color:var(--primary);line-height:1}
+.player-level-lbl{font-size:.6rem;color:var(--muted);text-align:center}
+.streak-badge{display:flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:.7rem;font-weight:600;color:var(--warn)}
+
+.achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:24px}
+.achievement-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
+.achievement-card.locked{opacity:.35}
+.ach-icon{font-size:1.4rem;line-height:1;flex-shrink:0}
+.ach-info{min-width:0}
+.ach-name{font-size:.75rem;font-weight:700;color:var(--text);margin-bottom:2px}
+.ach-desc{font-size:.65rem;color:var(--muted);line-height:1.4}
+.ach-date{font-size:.6rem;color:var(--secondary);margin-top:4px}
+
+.quest-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:flex-start;gap:12px}
+.quest-card.done{opacity:.45;border-color:var(--accent)}
+.quest-icon{font-size:1.3rem;flex-shrink:0;margin-top:1px}
+.quest-body{flex:1;min-width:0}
+.quest-title{font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:3px}
+.quest-desc{font-size:.68rem;color:var(--muted);line-height:1.4;margin-bottom:4px}
+.quest-hint{font-size:.64rem;color:var(--muted2);font-style:italic}
+.quest-xp{font-size:.7rem;font-weight:700;color:var(--warn);white-space:nowrap;margin-top:2px}
+
+.xp-entry{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.xp-entry:last-child{border-bottom:none}
+.xp-entry-icon{font-size:1rem;width:24px;text-align:center;flex-shrink:0}
+.xp-entry-desc{flex:1;font-size:.72rem;color:var(--text)}
+.xp-entry-date{font-size:.63rem;color:var(--muted)}
+.xp-entry-pts{font-size:.72rem;font-weight:700;color:var(--accent);white-space:nowrap}
+.gam-section{margin-bottom:24px}
 </style>
 </head>
 <body>
@@ -604,6 +644,20 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
           + Sessão Claude
         </button>
       </div>
+    </div>
+    <!-- GAMIFICATION -->
+    <div id="player-card-wrap"></div>
+    <div class="gam-section" id="quests-section" style="display:none">
+      <div class="section-label" style="margin-bottom:10px">Missões Ativas</div>
+      <div id="quests-list"></div>
+    </div>
+    <div class="gam-section" id="achievements-section" style="display:none">
+      <div class="section-label" style="margin-bottom:10px">Conquistas</div>
+      <div class="achievements-grid" id="achievements-grid"></div>
+    </div>
+    <div class="gam-section" id="xp-log-section" style="display:none">
+      <div class="section-label" style="margin-bottom:10px">Atividade Recente</div>
+      <div id="xp-log-list"></div>
     </div>
     <div class="task-stats-row" id="growth-stats" style="margin-bottom:20px"></div>
     <div style="margin-bottom:20px">

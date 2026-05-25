@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "lastSync": "2026-05-25T21:00:00",
+    "syncedBy": "claude",
+    "version": 1
+  },
+  "player": {
+    "name": "Ricalfiff",
+    "level": 3,
+    "title": "Desenvolvedor Jr",
+    "xp": 940,
+    "xpToNext": 1300,
+    "streak": 1,
+    "longestStreak": 1,
+    "lastActiveDate": "2026-05-25"
+  },
+  "levels": [
+    { "level": 1, "title": "Iniciante",           "xpMin": 0    },
+    { "level": 2, "title": "Aprendiz",             "xpMin": 301  },
+    { "level": 3, "title": "Desenvolvedor Jr",     "xpMin": 701  },
+    { "level": 4, "title": "Desenvolvedor",        "xpMin": 1301 },
+    { "level": 5, "title": "Desenvolvedor Pleno",  "xpMin": 2201 },
+    { "level": 6, "title": "Sênior",               "xpMin": 3501 },
+    { "level": 7, "title": "Tech Lead",            "xpMin": 5501 },
+    { "level": 8, "title": "Arquiteto",            "xpMin": 8501 }
+  ],
+  "xpRules": {
+    "feat":      50,
+    "bugfix":    30,
+    "deploy":   100,
+    "test":      80,
+    "learning":  40,
+    "review":    20,
+    "security":  50,
+    "migration": 40,
+    "refactor":  25,
+    "revisao":   60
+  },
+  "xpLog": [
+    { "date": "2026-05-25", "xp": 100, "type": "deploy",   "desc": "CLIENTE OFICINA — sync incremental em produção" },
+    { "date": "2026-05-25", "xp": 100, "type": "deploy",   "desc": "Meet Hub — e2e funcional em produção" },
+    { "date": "2026-05-25", "xp": 150, "type": "feat",     "desc": "PULSAR-RH — sprint completo (features + segurança)" },
+    { "date": "2026-05-25", "xp": 150, "type": "feat",     "desc": "Sistema Claude (CLAUDE.md, skills, hooks, NKB)" },
+    { "date": "2026-05-25", "xp": 200, "type": "learning", "desc": "Clean Code deep dive — 15 conceitos aplicados ao CLAUDE.md" },
+    { "date": "2026-05-25", "xp": 240, "type": "feat",     "desc": "Skills: /revisao, /debug, /supabase, /pre-deploy, /mentor, pre-commit hook" }
+  ],
+  "achievements": [
+    {
+      "id": "first-deploy",
+      "name": "Ao Vivo",
+      "icon": "🚀",
+      "desc": "Primeiro deploy em produção",
+      "unlockedAt": "2026-05-08",
+      "xp": 100
+    },
+    {
+      "id": "multi-project",
+      "name": "Multi-Project",
+      "icon": "⚡",
+      "desc": "5+ projetos em produção simultâneos",
+      "unlockedAt": "2026-05-15",
+      "xp": 150
+    },
+    {
+      "id": "guardian",
+      "name": "Guardião",
+      "icon": "🛡️",
+      "desc": "Configurou pre-commit hook de segurança global",
+      "unlockedAt": "2026-05-25",
+      "xp": 80
+    },
+    {
+      "id": "clean-coder",
+      "name": "Clean Coder",
+      "icon": "✨",
+      "desc": "Estudou e aplicou 15 princípios de clean code",
+      "unlockedAt": "2026-05-25",
+      "xp": 100
+    },
+    {
+      "id": "system-builder",
+      "name": "Arquiteto do Sistema",
+      "icon": "🧠",
+      "desc": "Criou CLAUDE.md completo com regras de comportamento automático",
+      "unlockedAt": "2026-05-25",
+      "xp": 120
+    }
+  ],
+  "quests": [
+    {
+      "id": "first-test",
+      "title": "Primeiro Teste Real",
+      "desc": "Escreva um teste unitário num projeto AG",
+      "icon": "🧪",
+      "xp": 200,
+      "status": "active",
+      "hint": "Comece pelo PULSAR-RH — escolha uma função de validação"
+    },
+    {
+      "id": "zero-any",
+      "title": "Zero any",
+      "desc": "Elimine todos os `any` explícitos do PULSAR-RH",
+      "icon": "🎯",
+      "xp": 150,
+      "status": "active",
+      "hint": "Rode /revisao no PULSAR-RH e corrija os achados de tipagem"
+    },
+    {
+      "id": "deploy-with-skill",
+      "title": "Deploy Consciente",
+      "desc": "Use /pre-deploy antes do próximo deploy em produção",
+      "icon": "🔒",
+      "xp": 80,
+      "status": "active",
+      "hint": "Na próxima vez que for subir código, rode /pre-deploy primeiro"
+    },
+    {
+      "id": "debug-skill",
+      "title": "Debugger Metódico",
+      "desc": "Use /debug num bug real seguindo as 6 etapas",
+      "icon": "🔍",
+      "xp": 100,
+      "status": "active",
+      "hint": "Próximo bug que aparecer — não pule para o fix direto"
+    }
+  ],
+  "recentActivity": [
+    { "date": "2026-05-25", "type": "learning", "icon": "📚", "title": "Clean Code deep dive",                  "xp": 200 },
+    { "date": "2026-05-25", "type": "feat",     "icon": "⚙️",  "title": "6 skills criadas + pre-commit hook",    "xp": 240 },
+    { "date": "2026-05-25", "type": "feat",     "icon": "🧠",  "title": "Sistema de mentoria (NKB + /mentor)",   "xp": 80  },
+    { "date": "2026-05-25", "type": "deploy",   "icon": "🚀",  "title": "Meet Hub e2e em produção",              "xp": 100 },
+    { "date": "2026-05-08", "type": "deploy",   "icon": "🚀",  "title": "CLIENTE OFICINA sync em produção",        "xp": 100 }
+  ]
+}
