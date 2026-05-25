@@ -7,7 +7,8 @@ async function loadSync() {
     if (!r.ok) return;
     SYNC = await r.json();
     renderGamification();
-  } catch {}
+    if (curView === 'growth') renderGrowth();
+  } catch(e) { console.warn('[sync] falha ao carregar sync.json:', e); }
 }
 
 function renderGamification() {
@@ -756,6 +757,7 @@ const SUGGESTIONS = [
 ];
 
 function renderGrowth() {
+  if (SYNC) renderGamification();
   const sessions = JSON.parse(localStorage.getItem('agh_sessions') || '[]');
   const totalSess = sessions.length;
   const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
