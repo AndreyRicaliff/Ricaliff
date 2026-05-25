@@ -757,90 +757,239 @@ const SUGGESTIONS = [
 ];
 
 // ── MODULES ──────────────────────────────────────────────────────────
+const expandedTopics = new Set();
 const STATUS_CYCLE = { pending: 'studying', studying: 'mastered', mastered: 'pending' };
 const STATUS_ICON  = { pending: '⬜', studying: '🔵', mastered: '✅' };
 const STATUS_CLR   = { pending: 'var(--muted)', studying: 'var(--phi)', mastered: 'var(--green)' };
 
-const MODULES = [
-  {
-    id: 'js', title: 'JavaScript Moderno', icon: '⚡', desc: 'Base de todos os projetos AG',
-    topics: [
-      { id: 'const-arrow',    title: 'const/let, arrow functions, destructuring',   example: 'ag-hub/app.js' },
-      { id: 'async-await',    title: 'async/await, Promises, Promise.all',          example: 'loadSync(), OFICINA' },
-      { id: 'array-methods',  title: 'map, filter, reduce, find',                   example: 'renderQuests()' },
-      { id: 'optional-ops',   title: '?., ??, spread/rest',                         example: 'PULSAR-RH' },
-      { id: 'fetch-api',      title: 'fetch, headers, tratamento de erros',         example: 'ag-hub-sync' },
-      { id: 'dom-events',     title: 'DOM: querySelector, events, innerHTML',       example: 'app.js renderX()' },
-    ],
+const MODULE_GRAD = {
+  js: 'linear-gradient(135deg, #FF9500 0%, #FFCC02 100%)',
+  ts: 'linear-gradient(135deg, #0079FF 0%, #00B4FF 100%)',
+  supabase: 'linear-gradient(135deg, #00B45E 0%, #3ECF8E 100%)',
+  'html-css': 'linear-gradient(135deg, #E91E8C 0%, #FF6CAB 100%)',
+  'git-deploy': 'linear-gradient(135deg, #FF4500 0%, #FF8C00 100%)',
+  'node-api': 'linear-gradient(135deg, #38A169 0%, #68D391 100%)',
+  'clean-code': 'linear-gradient(135deg, #7C3AED 0%, #B794F4 100%)',
+};
+
+const MODULE_SVG = {
+  js: '<path d="M6 9l6 6 6-6M12 3v15" stroke-linecap="round" stroke-linejoin="round"/>',
+  ts: '<path d="M7 7h10v10H7zM12 7v10M9 12h6" stroke-linecap="round" stroke-linejoin="round"/>',
+  supabase: '<path d="M8 8v8a2 2 0 002 2h4a2 2 0 002-2v-8M6 8h12M9 4h6a2 2 0 012 2v2H9V6a2 2 0 012-2z" stroke-linecap="round" stroke-linejoin="round"/>',
+  'html-css': '<path d="M9 8h6M9 12h6M9 16h3M6 7l-1 12a1 1 0 001 1h12a1 1 0 001-1l-1-12" stroke-linecap="round" stroke-linejoin="round"/>',
+  'git-deploy': '<path d="M9 15l-5-5m0 0l5-5M4 10h12m-4 9l8-8m0 0l-8-8" stroke-linecap="round" stroke-linejoin="round"/>',
+  'node-api': '<path d="M9 5l3 3 3-3M9 11l3 3 3-3M6 8h12" stroke-linecap="round" stroke-linejoin="round"/>',
+  'clean-code': '<path d="M9 7l-3 3 3 3m6-6l3 3-3 3M15 4l-6 16" stroke-linecap="round" stroke-linejoin="round"/>',
+};
+
+const STUDY_MATERIAL = {
+  'js-const-arrow': {
+    concept: 'Use const por padrão para todo dado que não será reatribuído. Arrow functions herdam this do escopo pai, diferente de function declarations.',
+    code: 'const users = [{id: 1, name: "Ana"}];\nconst active = users.filter(u => u.id > 0);\nconst Component = () => ({ render: () => this.el }); // this = window',
+    tip: 'const impediu bug? Sim. Refatore var em const, let so se ja testou reatribuição.'
   },
-  {
-    id: 'ts', title: 'TypeScript', icon: '🔷', desc: 'Tipagem para evitar bugs em runtime',
-    topics: [
-      { id: 'basic-types',   title: 'Tipos básicos, interfaces, type aliases' },
-      { id: 'strict-no-any', title: 'strict mode, sem any, unknown + narrowing' },
-      { id: 'utility-types', title: 'Partial, Pick, Omit, Required, Readonly' },
-      { id: 'generics',      title: 'Generics: <T>, constrained generics' },
-      { id: 'discriminated', title: 'Discriminated unions, type guards',           example: 'PULSAR-RH (loading/error/ok)' },
-    ],
+  'js-async-await': {
+    concept: 'async/await é açúcar sintático para Promises. Sempre use Promise.all() para operações independentes em paralelo, não await sequencial.',
+    code: 'const [users, posts] = await Promise.all([\n  fetch(\'/api/users\').then(r => r.json()),\n  fetch(\'/api/posts\').then(r => r.json())\n]);',
+    tip: 'Múltiplos awaits sequenciais = latência acumulada. Promise.all paraleliza.'
   },
-  {
-    id: 'supabase', title: 'Supabase', icon: '🗄️', desc: 'Backend de PULSAR-RH, OFICINA, Varejo',
-    topics: [
-      { id: 'crud',       title: 'CRUD: select, insert, update, delete',           example: 'PULSAR-RH indicadores' },
-      { id: 'auth',       title: 'Auth: signIn, getSession, onAuthStateChange',    example: 'PULSAR-RH portais' },
-      { id: 'rls',        title: 'Row Level Security: policies, roles',            example: 'dados isolados por empresa' },
-      { id: 'realtime',   title: 'Realtime: subscribe, channel, unsubscribe',     example: 'fix leak PULSAR-RH' },
-      { id: 'migrations', title: 'Migrations: db push, diff, reset' },
-      { id: 'types-gen',  title: 'Gerar tipos TS: supabase gen types',            example: 'PULSAR-RH tipagem' },
-    ],
+  'js-array-methods': {
+    concept: 'map, filter, reduce, find não mutam o array original. Retornam novo array ou valor. Compor métodos evita loops aninhados.',
+    code: 'const data = [1, 2, 3, 4];\nconst result = data\n  .filter(n => n > 2)\n  .map(n => n * 2)\n  .reduce((sum, n) => sum + n, 0); // 14',
+    tip: 'Evite forEach para transformar dados — use map. forEach só para side effects (log, render).'
   },
-  {
-    id: 'html-css', title: 'HTML + CSS + Vanilla JS', icon: '🎨', desc: 'Stack do ag-hub, Café com AG',
-    topics: [
-      { id: 'semantics',    title: 'HTML5 semântico, ARIA, acessibilidade' },
-      { id: 'layout',       title: 'Flexbox e CSS Grid sem framework',             example: 'ag-hub layout' },
-      { id: 'css-vars',     title: 'CSS Custom Properties, dark mode',             example: 'ag-hub :root vars' },
-      { id: 'spa-vanilla',  title: 'SPA sem framework: views, nav, estado',       example: 'ag-hub go() + views' },
-      { id: 'localstorage', title: 'localStorage, JSON.parse/stringify',           example: 'ag-hub DB object' },
-      { id: 'responsive',   title: 'Responsive: media queries, mobile-first' },
-    ],
+  'js-optional-ops': {
+    concept: 'obj?.prop retorna undefined se obj é null/undefined, sem erro. ?? escolhe default so se valor é null/undefined, nunca 0 ou false.',
+    code: 'const user = response?.data?.user; // sem erro se response ausente\nconst age = obj.age ?? 18; // usa 18 se age undefined, nao se age = 0',
+    tip: 'Trocar a && b && c por a?.b?.c. && deveria ser === 0, ?. sempre seguro.'
   },
-  {
-    id: 'git-deploy', title: 'Git + Deploy', icon: '🚀', desc: 'Controle de versão e entrega',
-    topics: [
-      { id: 'git-core',      title: 'commit, branch, merge, rebase, log' },
-      { id: 'conv-commits',  title: 'Conventional Commits: feat/fix/chore',       example: 'todos os projetos AG' },
-      { id: 'gitignore-env', title: '.gitignore, .env, segurança no repo',        example: 'pre-commit hook AG' },
-      { id: 'vercel',        title: 'Vercel: deploy preview + prod, env vars',    example: 'ag-hub, Café com AG' },
-      { id: 'ci-cd',         title: 'CI/CD: workflow, triggers, secrets' },
-    ],
+  'js-fetch-api': {
+    concept: 'Sempre verificar response.ok antes de chamar response.json(). 404 nao rejeita Promise automaticamente.',
+    code: 'const r = await fetch(\'/api/data\');\nif (!r.ok) throw new Error(`${r.status}: ${r.statusText}`);\nconst data = await r.json();',
+    tip: 'Esqueceu de r.ok? Seu catch recebe JSON de erro do servidor, acha erro no formato errado.'
   },
-  {
-    id: 'node-api', title: 'Node.js + Express', icon: '🟢', desc: 'Backend das APIs AG',
-    topics: [
-      { id: 'express-basics',    title: 'Rotas, middleware, req/res, status codes' },
-      { id: 'env-validation',    title: 'Validar env vars no startup com Zod',    example: 'Meet Hub API' },
-      { id: 'error-handling',    title: 'Error middleware, try/catch em boundary' },
-      { id: 'async-node',        title: 'Async no Express, sem forEach+await' },
-      { id: 'graceful-shutdown', title: 'SIGTERM → fechar DB → process.exit(0)',  example: 'Meet Hub' },
-    ],
+  'js-dom-events': {
+    concept: 'Event delegation: escuta em elemento pai, check e.target. querySelector via classe/id. innerHTML = XSS se conteúdo vem de usuario.',
+    code: 'parent.addEventListener("click", (e) => {\n  if (e.target.matches(".btn-delete")) deleteItem(e.target.dataset.id);\n});\nconst html = esc(userContent); // sempre escapar',
+    tip: 'innerHTML sem esc() = XSS vulnerability. Use textContent para texto, esc() antes de innerHTML.'
   },
-  {
-    id: 'clean-code', title: 'Clean Code', icon: '✨', desc: 'Princípios aplicados em toda sessão',
-    topics: [
-      { id: 'srp',          title: 'SRP: uma função, uma responsabilidade' },
-      { id: 'dry-kiss',     title: 'DRY, KISS, YAGNI: sem abstração prematura' },
-      { id: 'early-return', title: 'Early return, guard clauses, nesting < 2 níveis' },
-      { id: 'naming',       title: 'Nomes que explicam sem comentário' },
-      { id: 'code-smells',  title: 'God object, dead code, shotgun surgery' },
-      { id: 'testing',      title: 'Testes: arrange/act/assert, sem mocks internos' },
-    ],
+  'ts-basic-types': {
+    concept: 'interface descreve forma fixa de objeto (contratos). type é mais geral (unions, generics). Prefer interface para modelos de dados.',
+    code: 'interface User { id: number; name: string; email: string; }\ntype Status = "pending" | "active" | "deleted";\nconst user: User = { id: 1, name: "Ana", email: "a@x.com" };',
+    tip: 'Nome de interface = capitalize. Se precisa de union (type A | type B), use type. Objeto com forma fixa = interface.'
   },
-];
+  'ts-strict-no-any': {
+    concept: 'any desativa type checking. unknown força narrowing via typeof/type guard. strict: true pega bugs que any esconde.',
+    code: 'let data: unknown = JSON.parse(str);\nif (typeof data === "object" && data !== null) {\n  const obj = data as Record<string, unknown>;\n}',
+    tip: 'any = silenciar tipo. unknown = "nao sei o tipo ainda, prove o tipo antes de usar". Usar unknown em boundary.'
+  },
+  'ts-utility-types': {
+    concept: 'Partial<T> = todos campos opcionais. Pick<T, Keys> = só alguns campos. Omit<T, Keys> = tudo menos estes campos. Readonly, Required.',
+    code: 'interface User { id: number; name: string; email: string; }\ntype CreateUser = Omit<User, "id">;\ntype UserPreview = Pick<User, "name" | "email">;',
+    tip: 'Nao duplicar tipos manualmente. Utility types extraem tipo derivado. Refactor: se User muda, CreateUser acompanha.'
+  },
+  'ts-generics': {
+    concept: '<T> = tipo parametrizado. Reutiliza funcao sem perder tipagem. <T extends Base> = constraina tipo valido.',
+    code: 'function wrap<T>(value: T): { value: T } { return { value }; }\nfunction getById<T extends { id: number }>(items: T[], id: number): T | undefined {\n  return items.find(i => i.id === id);\n}',
+    tip: 'Generics evitam any quando reutiliza logica com tipos diferentes. Constrains garantem propriedades disponiveis.'
+  },
+  'ts-discriminated': {
+    concept: 'Union com campo literal (kind/type) permite type narrowing seguro. Eliminanda estados invalidos (data + error juntos).',
+    code: 'type State = { kind: "loading" } | { kind: "ok"; data: User } | { kind: "error"; error: string };\nif (state.kind === "ok") console.log(state.data);',
+    tip: 'default: satisfies never no switch pega caso novo nao tratado em compile time.'
+  },
+  'supabase-crud': {
+    concept: 'Fluent API: select().eq().order() retorna QueryBuilder. .data ao final retorna array. Sempre tratar erro.',
+    code: 'const { data, error } = await supabase\n  .from("users")\n  .select("id, name, email")\n  .eq("status", "active")\n  .order("created_at", { ascending: false });',
+    tip: 'select("*") retorna todas colunas. Especifica colunas — menor payload, melhor cache.'
+  },
+  'supabase-auth': {
+    concept: 'onAuthStateChange é o unico source of truth de sessao. Chama callback ao login/logout. Session pode ser null mesmo dentro do app.',
+    code: 'supabase.auth.onAuthStateChange((event, session) => {\n  if (session) { setUser(session.user); } else { setUser(null); }\n});',
+    tip: 'Nao guardique sessao em estado local — onAuthStateChange cuida. signOut() emite evento que listener processa.'
+  },
+  'supabase-rls': {
+    concept: 'RLS habilitado = sem policy = bloqueado. Escreve policy por role. usuarios query so dados seu. Sem RLS = todos vem via API.',
+    code: 'CREATE POLICY "users_select_own"\n  ON users FOR SELECT TO authenticated\n  USING (auth.uid() = user_id);',
+    tip: 'RLS enabled sem policies = tudo bloqueado. Use Supabase Dashboard SQL Editor para testar policy.'
+  },
+  'supabase-realtime': {
+    concept: 'channel.subscribe() retorna RemoveChannelFunc. Sempre chamar no cleanup (React useEffect). Sem cleanup = memory leak.',
+    code: 'useEffect(() => {\n  const unsub = supabase.channel("users").on("*", payload => console.log(payload)).subscribe();\n  return () => unsub();\n}, []);',
+    tip: 'Realtime = WebSocket. Sem unsubscribe = conexão aberta. Teste com DevTools Network tab WebSocket.'
+  },
+  'supabase-migrations': {
+    concept: 'Nunca editar migration ja aplicada em prod. Cria migration nova para reverter. `supabase db push` aplica local.',
+    code: 'npx supabase migration new add_users_table\n# edita migrations/..._add_users_table.sql\nnpx supabase db push',
+    tip: 'Migration versionada = source of truth. Prod diverge de local? supabase migration list mostra state.'
+  },
+  'supabase-types-gen': {
+    concept: 'supabase gen types gera tipos TS da schema atual. Roda apos migration. Importa types em API/SPA.',
+    code: 'npx supabase gen types typescript --project-id YOUR_ID > src/types/supabase.ts\nimport type { Database } from "./types/supabase";',
+    tip: 'Rodou migration mas tipos desincronizados? Roda gen types. CI pode rodar isso automaticamente.'
+  },
+  'html-semantics': {
+    concept: '<section>, <article>, <main>, <header>, <nav> descrevem estrutura. aria-label em ícones. Semantica = acessibilidade + SEO.',
+    code: '<main role="main"><section><header><h1>Titulo</h1></header><article>...</article></section></main>\n<button aria-label="Fechar modal">×</button>',
+    tip: 'Nunca divs aninhadas sem semântica. Leitores de tela (screen readers) contam na estrutura HTML.'
+  },
+  'html-layout': {
+    concept: 'Grid para layout 2D (tabela-like). Flexbox para layout 1D (horizontal/vertical). Grid + Flexbox = combinados para responsivo.',
+    code: 'display: grid; grid-template-columns: 1fr 1fr; gap: 16px; /* 2D */\n.card { display: flex; flex-direction: column; gap: 8px; } /* 1D */\n@media (max-width: 600px) { grid-template-columns: 1fr; }',
+    tip: 'Sidebar + main? Grid. Card internamente? Flex. Mobile-first: comeca 1 coluna, media query expande.'
+  },
+  'html-css-vars': {
+    concept: 'CSS Custom Properties em :root reutilizaem em todo CSS. Dark mode = trocar valores no :root. Nao repete cor hardcoded.',
+    code: ':root { --primary: #7048E8; --text: #EEF5FF; --bg: #0A0F1A; }\nbody { color: var(--text); background: var(--bg); }\n.btn { background: var(--primary); }',
+    tip: 'Trocar de tema? Escreve novo :root[data-theme="light"]. JS troca atributo, CSS pega novas vars.'
+  },
+  'html-spa-vanilla': {
+    concept: 'go(view) muda display das views. classList.add/remove("active") para ui. Estado em const DB = {}. Sem virtual DOM.',
+    code: 'const go = (view) => { document.querySelectorAll(".view").forEach(v => v.classList.remove("active")); document.getElementById(`view-${view}`).classList.add("active"); curView = view; };\ngo("dash");',
+    tip: 'Sem framework = controle completo. Mas sem reactivity — renderiza tudo manualmente ao estado mudar.'
+  },
+  'html-localstorage': {
+    concept: 'localStorage.setItem(key, JSON.stringify(obj)). localStorage.getItem(key) retorna string. Parse antes de usar.',
+    code: 'const DB = { data: [] };\nDB.data = [1, 2, 3];\nlocalStorage.setItem("db", JSON.stringify(DB));\nconst restored = JSON.parse(localStorage.getItem("db"));',
+    tip: 'LocalStorage persiste apos reload. Nunca guarda objetos diretos — JSON.stringify. Limite: ~5MB por origin.'
+  },
+  'html-responsive': {
+    concept: 'Mobile-first: escreve CSS para tela pequena, @media (min-width) expande. Nao usa max-width (media queries opostas).',
+    code: '.card { grid-template-columns: 1fr; }\n@media (min-width: 600px) { .card { grid-template-columns: 1fr 1fr; } }\n@media (min-width: 1200px) { .card { grid-template-columns: 1fr 1fr 1fr; } }',
+    tip: 'Começa mobile (constraints forçam prioridade). Depois adiciona layout richter em breakpoints maiores.'
+  },
+  'git-git-core': {
+    concept: 'git commit cria snapshot. git branch isola trabalho. git rebase lineariza history (reescreve commit). git merge junta branches.',
+    code: 'git checkout -b feat/xyz\ngit add file.js\ngit commit -m "feat: descricao"\ngit rebase main  # lineariza\ngit merge feat/xyz  # se nao ff',
+    tip: 'git log --oneline mostra historico. git rebase evita merge commits. Commit atomico = uma mudanca logica.'
+  },
+  'git-conv-commits': {
+    concept: 'feat: nova funcionalidade. fix: corrige bug. chore: deps, config. docs: docs. test: testes. Escopo em parenteses: feat(api): ...',
+    code: 'feat(modules): adiciona icones svg e material de estudo\nfix(supabase): corrige realtime leak\nchore(deps): bump prisma 5.10\ndocs(readme): explica setup chrome profile',
+    tip: 'Commit message narra POR QUE, nao O QUE (o que esta no diff). historia linear = git log e git bisect ficam faceis.'
+  },
+  'git-gitignore-env': {
+    concept: '.gitignore antes do primeiro commit. .env, node_modules, dist/ nunca commitam. .env.example sem valores, documenta variaveis.',
+    code: '# .gitignore\n.env\n.env.local\nnode_modules/\ndist/\n*.pem\nchrome-profile-*',
+    tip: 'Fez commit do .env? git rm --cached .env, limpa historico: git filter-repo --path .env. Revogar chaves!'
+  },
+  'git-vercel': {
+    concept: 'Vercel: deploy automatico em push. Variáveis de ambiente no dashboard (nao no .env). Preview URL por PR. Dominio customizado.',
+    code: '# push para main\ngit push origin main\n# Vercel auto-deploys a https://prod.vercel.app\n# PR cria preview URL automaticamente',
+    tip: 'Sem env vars no .env para prod. Vercel dashboard > Settings > Environment Variables. Secrets = nao aparece em logs.'
+  },
+  'git-ci-cd': {
+    concept: '.github/workflows/deploy.yml roda apos push. Testa, builda, deploya. Secrets no repo settings (repository secrets, nao env vars).',
+    code: 'name: Deploy\non: [push]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - run: npm test\n      - run: npm run build',
+    tip: 'CI roda a cada push — fail rápido invalida merge. Usa GitHub Secrets para API keys, nao hardcoded.'
+  },
+  'node-express-basics': {
+    concept: 'app.get(path, (req, res) => {}). Status codes semânticos: 200 ok, 201 created, 400 bad request, 404 not found, 500 server error.',
+    code: 'app.get("/users/:id", (req, res) => {\n  const user = findUser(req.params.id);\n  if (!user) return res.status(404).json({ error: "not found" });\n  res.json(user);\n});',
+    tip: '404 vs 400: 404 = recurso nao existe. 400 = request invalido (parametro errado, tipo errado).'
+  },
+  'node-env-validation': {
+    concept: 'zod.parse(process.env) no startup — falha rápido se var faltando. Nao deixa app rodar sem config valida.',
+    code: 'import z from "zod";\nconst env = z.object({ PORT: z.string().default("3000"), DB_URL: z.string() }).parse(process.env);\nconst PORT = parseInt(env.PORT);',
+    tip: 'Falha no startup > silenciar variaveis faltando em producao e descobrir em crash aleatorio.'
+  },
+  'node-error-handling': {
+    concept: 'Error middleware no Express: (err, req, res, next) => {}. Trata erros nao capturados. Nunca catch vazio.',
+    code: 'app.use((err, req, res, next) => {\n  console.error("[error]", err);\n  res.status(500).json({ error: err.message });\n});\napp.get("/", (req, res, next) => {\n  try { ... } catch(e) { next(e); }\n});',
+    tip: 'throw de rota sem try/catch crashes app se nao tem error middleware. Express chama next(error).'
+  },
+  'node-async-node': {
+    concept: 'async/await em handler do Express. Sempre try/catch ou next(error). Nao forEach+await — Map/Promise.all.',
+    code: 'app.post("/users", async (req, res, next) => {\n  try {\n    const users = await Promise.all(req.body.map(u => createUser(u)));\n    res.json(users);\n  } catch (e) { next(e); }\n});',
+    tip: 'forEach(async...) = roda em paralelo, mas codigo continua. Nao espera. Use Promise.all se precisa de sequence.'
+  },
+  'node-graceful-shutdown': {
+    concept: 'process.on("SIGTERM") fecha conexões antes de exit. Node em container recebe SIGTERM, nao SIGKILL direto.',
+    code: 'const server = app.listen(3000);\nprocess.on("SIGTERM", () => {\n  console.log("Shutting down...");\n  server.close(() => { db.end(); process.exit(0); });\n});',
+    tip: 'Sem graceful shutdown = conexões abertas, dados incompletos. Deploy sem downtime usa SIGTERM.'
+  },
+  'clean-srp': {
+    concept: 'Uma funcao, uma responsabilidade. Se precisas de "e" pra descrever, ela faz coisa demais. Extrai subfuncoes.',
+    code: 'function validateAndSaveUser(data) { ... } // faz 2 coisas\n// Melhor:\nfunction validateUser(data) { ... }\nfunction saveUser(data) { ... }',
+    tip: 'Teste facil? Sim. Descreve em 1 frase? Sim. SRP ok. Teste dificil + "e" na descricao = violado SRP.'
+  },
+  'clean-dry-kiss': {
+    concept: 'DRY = Nao repete codigo. Mas copiar 2x eh ok, 3x extrai. KISS = simplifica, YAGNI = so implementa que eh necessario.',
+    code: '// Duplicacao 1 e 2: let estar, eh novo codigo\n// Duplicacao 3: const format = (x) => x.toUpperCase();\n// YAGNI: nao cria plugin system se so eh 1 lugar usa',
+    tip: 'Abstracoes prematuras = mais bug, nao menos. Espera padrao emergir antes de extrair.'
+  },
+  'clean-early-return': {
+    concept: 'Early return elimina else, reduz nesting. Valida condicoes invalidas no comeco, retorna cedo.',
+    code: 'function process(data) {\n  if (!data) return null;\n  if (data.length === 0) return [];\n  return transform(data);\n}\n// sem if-else-if- outro else',
+    tip: 'Nesting > 2 niveis? Refactora com early return ou extrai funcao. Ler de cima a baixo = claro.'
+  },
+  'clean-naming': {
+    concept: 'Nomes descrevem O QUE E POR QUE. Sem abreviacoes. Sem generico (data, temp, x). getUser > u, calculateTotalPrice > price.',
+    code: 'const users = fetch("/api/users"); // users: array, nao 1 user\nconst isActive = user.status === "active"; // boolean comeca com is/has/can\nconst formatCurrency = (n) => ...;',
+    tip: 'Nome ruim = comenta O QUE faz. Nome bom = comenta NAO eh necessario. Nome = self-documenting.'
+  },
+  'clean-code-smells': {
+    concept: 'God object = sabe demais. Dead code = nada chama. Shotgun surgery = 1 mudanca = 5 arquivos. Feature envy = usa dados doutro mais que proprio.',
+    code: 'class User { getFullName, validate, save, delete, checkPermission ... } // god object\n// Melhor: User + UserValidator + UserRepository + PermissionChecker',
+    tip: 'Code smell = alerta, nao erro. Revisar em PR se eh problema real ou design aceitavel pro escopo.'
+  },
+  'clean-testing': {
+    concept: 'Arrange, Act, Assert. Testa COMPORTAMENTO, nao implementacao. Nao mocka modulos internos — mocka boundary (DB, API externa).',
+    code: 'test("should return 404 when user not found", () => {\n  // Arrange\n  const id = "nonexistent";\n  // Act\n  const user = findUser(id);\n  // Assert\n  expect(user).toBeUndefined();\n});',
+    tip: 'Teste que mocka findUserById interno = muito fragil. Testa resultado, nao como eh feito.'
+  },
+};
 
 function getModProgress()        { return JSON.parse(localStorage.getItem('agh_modules') || '{}'); }
 function saveModProgress(data)   { localStorage.setItem('agh_modules', JSON.stringify(data)); }
 function topicStatus(p, mid, tid){ return p[mid]?.[tid] ?? 'pending'; }
+
+function buildModIcon(mod) {
+  const svg = MODULE_SVG[mod.id] || '';
+  return `<div class="mod-icon-box" style="background: ${MODULE_GRAD[mod.id] || 'var(--primary)'}">
+    <svg class="mod-icon-svg" viewBox="0 0 24 24">${svg}</svg>
+  </div>`;
+}
 
 function toggleTopic(modId, topicId) {
   const p = getModProgress();
@@ -851,28 +1000,50 @@ function toggleTopic(modId, topicId) {
   renderModules();
 }
 
+function toggleTopicExpand(modId, topicId) {
+  const key = `${modId}-${topicId}`;
+  if (expandedTopics.has(key)) {
+    expandedTopics.delete(key);
+  } else {
+    expandedTopics.add(key);
+  }
+  const el = document.getElementById(`material-${key}`);
+  if (el) el.classList.toggle('open');
+}
+
+function renderTopicMaterial(t) {
+  const mat = STUDY_MATERIAL[t.id] || { concept: 'Material em construção', code: '', tip: '' };
+  return `<div class="tm-concept">${esc(mat.concept)}</div>
+    ${mat.code ? `<pre class="tm-code">${esc(mat.code)}</pre>` : ''}
+    ${mat.tip ? `<div class="tm-tip">${esc(mat.tip)}</div>` : ''}`;
+}
+
+function renderTopicRow(modId, t, p) {
+  const s = topicStatus(p, modId, t.id);
+  const key = `${modId}-${t.id}`;
+  const isOpen = expandedTopics.has(key);
+  return `<div class="topic-row">
+    <span class="topic-status-icon" style="color:${STATUS_CLR[s]};cursor:pointer;margin-right:4px" onclick="toggleTopic('${modId}','${t.id}')">${STATUS_ICON[s]}</span>
+    <span class="topic-name ${s === 'mastered' ? 'topic-done' : ''}" style="flex:1;cursor:pointer" onclick="toggleTopicExpand('${modId}','${t.id}')">${esc(t.title)}</span>
+    ${isOpen ? '<span style="color:var(--muted);font-size:.65rem">⬆</span>' : '<span style="color:var(--muted);font-size:.65rem">⬇</span>'}
+    <div class="topic-material ${isOpen ? 'open' : ''}" id="material-${key}">
+      ${renderTopicMaterial(t)}
+    </div>
+  </div>`;
+}
+
 function modPct(mod, p) {
   const done = mod.topics.filter(t => topicStatus(p, mod.id, t.id) === 'mastered').length;
   return Math.round((done / mod.topics.length) * 100);
 }
 
-function renderTopicRow(modId, t, p) {
-  const s  = topicStatus(p, modId, t.id);
-  const ex = t.example ? `<span class="topic-ex">${esc(t.example)}</span>` : '';
-  return `<div class="topic-row" onclick="toggleTopic('${modId}','${t.id}')">
-    <span style="color:${STATUS_CLR[s]};flex-shrink:0">${STATUS_ICON[s]}</span>
-    <span class="topic-name ${s === 'mastered' ? 'topic-done' : ''}">${esc(t.title)}</span>
-    ${ex}
-  </div>`;
-}
-
-function renderModuleCard(mod, p) {
-  const pct     = modPct(mod, p);
-  const topics  = mod.topics.map(t => renderTopicRow(mod.id, t, p)).join('');
-  const done    = pct === 100;
-  return `<div class="mod-card ${done ? 'mod-complete' : ''}">
+function renderModuleCard(mod, p, idx) {
+  const pct = modPct(mod, p);
+  const done = pct === 100;
+  const topics = mod.topics.map(t => renderTopicRow(mod.id, t, p)).join('');
+  return `<div class="mod-card ${done ? 'mod-complete' : ''}" data-index="${idx}">
     <div class="mod-head">
-      <span class="mod-icon">${mod.icon}</span>
+      ${buildModIcon(mod)}
       <div class="mod-info">
         <div class="mod-title">${esc(mod.title)}</div>
         <div class="mod-sub">${esc(mod.desc)}</div>
@@ -884,16 +1055,93 @@ function renderModuleCard(mod, p) {
   </div>`;
 }
 
+const MODULES = [
+  {
+    id: 'js', title: 'JavaScript Moderno', desc: 'Base de todos os projetos AG',
+    topics: [
+      { id: 'const-arrow' },
+      { id: 'async-await' },
+      { id: 'array-methods' },
+      { id: 'optional-ops' },
+      { id: 'fetch-api' },
+      { id: 'dom-events' },
+    ],
+  },
+  {
+    id: 'ts', title: 'TypeScript', desc: 'Tipagem para evitar bugs em runtime',
+    topics: [
+      { id: 'basic-types' },
+      { id: 'strict-no-any' },
+      { id: 'utility-types' },
+      { id: 'generics' },
+      { id: 'discriminated' },
+    ],
+  },
+  {
+    id: 'supabase', title: 'Supabase', desc: 'Backend de PULSAR-RH, OFICINA, Varejo',
+    topics: [
+      { id: 'crud' },
+      { id: 'auth' },
+      { id: 'rls' },
+      { id: 'realtime' },
+      { id: 'migrations' },
+      { id: 'types-gen' },
+    ],
+  },
+  {
+    id: 'html-css', title: 'HTML + CSS + Vanilla JS', desc: 'Stack do ag-hub, Café com AG',
+    topics: [
+      { id: 'semantics' },
+      { id: 'layout' },
+      { id: 'css-vars' },
+      { id: 'spa-vanilla' },
+      { id: 'localstorage' },
+      { id: 'responsive' },
+    ],
+  },
+  {
+    id: 'git-deploy', title: 'Git + Deploy', desc: 'Controle de versão e entrega',
+    topics: [
+      { id: 'git-core' },
+      { id: 'conv-commits' },
+      { id: 'gitignore-env' },
+      { id: 'vercel' },
+      { id: 'ci-cd' },
+    ],
+  },
+  {
+    id: 'node-api', title: 'Node.js + Express', desc: 'Backend das APIs AG',
+    topics: [
+      { id: 'express-basics' },
+      { id: 'env-validation' },
+      { id: 'error-handling' },
+      { id: 'async-node' },
+      { id: 'graceful-shutdown' },
+    ],
+  },
+  {
+    id: 'clean-code', title: 'Clean Code', desc: 'Princípios aplicados em toda sessão',
+    topics: [
+      { id: 'srp' },
+      { id: 'dry-kiss' },
+      { id: 'early-return' },
+      { id: 'naming' },
+      { id: 'code-smells' },
+      { id: 'testing' },
+    ],
+  },
+];
+
 function renderModules() {
-  const p         = getModProgress();
-  const total     = MODULES.reduce((a, m) => a + m.topics.length, 0);
-  const mastered  = MODULES.reduce((a, m) =>
+  const p = getModProgress();
+  const total = MODULES.reduce((a, m) => a + m.topics.length, 0);
+  const mastered = MODULES.reduce((a, m) =>
     a + m.topics.filter(t => topicStatus(p, m.id, t.id) === 'mastered').length, 0);
-  const overall   = Math.round((mastered / total) * 100);
+  const overall = Math.round((mastered / total) * 100);
   document.getElementById('modules-overall').textContent =
     `${mastered}/${total} tópicos dominados · ${overall}% do objetivo`;
   document.getElementById('modules-grid').innerHTML =
-    MODULES.map(m => renderModuleCard(m, p)).join('');
+    MODULES.map((m, i) => renderModuleCard(m, p, i)).join('');
 }
 
 function renderGrowth() {

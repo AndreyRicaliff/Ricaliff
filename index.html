@@ -491,6 +491,62 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
 .topic-name{flex:1;font-size:.74rem;color:var(--text);line-height:1.4}
 .topic-name.topic-done{color:var(--muted);text-decoration:line-through}
 .topic-ex{font-size:.63rem;color:var(--phi);background:rgba(114,144,232,.1);padding:1px 5px;border-radius:4px;flex-shrink:0;white-space:nowrap;align-self:flex-start;margin-top:2px}
+
+/* ── MODULE ICONS SVG ─────────────────────────────── */
+.mod-icon-box{
+  width:44px;height:44px;border-radius:12px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;margin-top:2px;
+}
+.mod-icon-svg{width:28px;height:28px;stroke:white;fill:none;stroke-width:1.8}
+
+/* ── ANIMATIONS ──────────────────────────────────── */
+@keyframes slideUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes barFill{
+  from{width:0}
+}
+.mod-card{animation:slideUp .4s ease forwards}
+.mod-bar-fill{animation:barFill .8s ease}
+
+/* ── TOPIC MATERIAL (EXPANDABLE) ────────────────── */
+.topic-row{position:relative}
+.topic-row .topic-status-icon{cursor:pointer;transition:transform .15s}
+.topic-row .topic-status-icon:hover{transform:scale(1.1)}
+.topic-material{
+  display:none;padding:12px 8px 8px 28px;
+  border-left:2px solid var(--border);margin-left:6px;font-size:.75rem;
+  color:var(--text);line-height:1.6;
+}
+.topic-material.open{display:block}
+.tm-concept{margin-bottom:8px;color:var(--muted2)}
+.tm-code{
+  background:var(--surface3);border:1px solid var(--border);
+  border-radius:6px;padding:10px;font-family:'Courier New',monospace;
+  font-size:.7rem;overflow-x:auto;margin:8px 0;line-height:1.5;
+  color:var(--cyan);white-space:pre-wrap;word-break:break-all;
+}
+.tm-tip{
+  background:rgba(8,193,106,.1);border-left:3px solid var(--green);
+  padding:8px 10px;margin-top:8px;border-radius:4px;
+  font-style:italic;color:var(--green);
+}
+
+/* ── STAGGER ANIMATION (via data-index) ─────────── */
+.mod-card[data-index="0"]{animation-delay:0ms}
+.mod-card[data-index="1"]{animation-delay:80ms}
+.mod-card[data-index="2"]{animation-delay:160ms}
+.mod-card[data-index="3"]{animation-delay:240ms}
+.mod-card[data-index="4"]{animation-delay:320ms}
+.mod-card[data-index="5"]{animation-delay:400ms}
+.mod-card[data-index="6"]{animation-delay:480ms}
+
+/* ── HOVER EFFECTS ───────────────────────────────── */
+.mod-card{transition:all .2s}
+.mod-card:hover{transform:translateY(-2px)}
+.mod-card:hover .mod-icon-box{filter:brightness(1.15)}
 </style>
 </head>
 <body>
