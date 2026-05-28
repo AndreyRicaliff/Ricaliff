@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-05-26T15:49:13",
+    "lastSync": "2026-05-28T17:20:37",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricalfiff",
     "level": 3,
     "title": "Desenvolvedor Jr",
-    "xp": 990,
+    "xp": 1020,
     "xpToNext": 1301,
-    "streak": 2,
+    "streak": 1,
     "longestStreak": 2,
-    "lastActiveDate": "2026-05-26"
+    "lastActiveDate": "2026-05-28"
   },
   "levels": [
     {
@@ -69,6 +69,12 @@
     "revisao": 60
   },
   "xpLog": [
+    {
+      "date": "2026-05-28",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "PULSAR-RH: fix crash (duplicate const SyntaxError), XSS (URL params), O(n²) performance in results render + dashboard"
+    },
     {
       "date": "2026-05-26",
       "xp": 50,
@@ -193,6 +199,13 @@
     }
   ],
   "recentActivity": [
+    {
+      "date": "2026-05-28",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "PULSAR-RH: fix crash (duplicate const SyntaxError), XSS (URL params), O(n²) performance in results render + dashboard",
+      "xp": 30
+    },
     {
       "date": "2026-05-26",
       "type": "feat",
