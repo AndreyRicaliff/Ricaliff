@@ -8,6 +8,10 @@ async function loadSync() {
     SYNC = await r.json();
     renderGamification();
     if (curView === 'growth') renderGrowth();
+    // Propaga streaks de sync.json para localStorage se ainda não inicializados
+    if (!localStorage.getItem('agh_streaks') && SYNC?.player?.streaks) {
+      localStorage.setItem('agh_streaks', JSON.stringify(SYNC.player.streaks));
+    }
   } catch(e) { console.warn('[sync] falha ao carregar sync.json:', e); }
 }
 
@@ -2526,6 +2530,507 @@ function notificarCrossQuest(moduloId) {
   }
 }
 
+// ── STREAKS ───────────────────────────────────────────────────────
+const STREAK_DEFAULTS = {
+  geral:    { atual: 0, recorde: 0, ultimoDia: null },
+  estudo:   { atual: 0, recorde: 0, ultimoDia: null },
+  semIa:    { atual: 0, recorde: 0, ultimoDia: null },
+  decisoes: { atual: 0, recorde: 0, ultimoDia: null },
+};
+
+function getStreaks() {
+  const raw = localStorage.getItem('agh_streaks');
+  if (!raw) return JSON.parse(JSON.stringify(STREAK_DEFAULTS));
+  return { ...JSON.parse(JSON.stringify(STREAK_DEFAULTS)), ...JSON.parse(raw) };
+}
+
+function saveStreaks(data) {
+  localStorage.setItem('agh_streaks', JSON.stringify(data));
+}
+
+// Avança ou quebra streak de um tipo ao registrar atividade no dia
+function updateStreak(tipo) {
+  const streaks = getStreaks();
+  const s = streaks[tipo];
+  if (!s) return;
+  const t = today();
+  const ontem = new Date(); ontem.setDate(ontem.getDate() - 1);
+  const ontemStr = ontem.toISOString().slice(0, 10);
+
+  if (s.ultimoDia === t) return; // já foi registrado hoje
+
+  if (s.ultimoDia === ontemStr) {
+    s.atual += 1;
+  } else if (s.ultimoDia !== t) {
+    s.atual = 1; // reinicia se pulou dia (ou nunca teve)
+  }
+
+  s.recorde = Math.max(s.recorde, s.atual);
+  s.ultimoDia = t;
+  streaks[tipo] = s;
+  saveStreaks(streaks);
+}
+
+// ── POMODORO ──────────────────────────────────────────────────────
+const POMO_DURATIONS = { foco: 25 * 60, break: 5 * 60, sagrada: 30 * 60 };
+const POMO_KEY = 'agh_pomo_session';
+const POMO_LOG_KEY = 'agh_pomo_log';
+
+let pomoRafId = null;
+
+function getPomoCurrent() {
+  const raw = localStorage.getItem(POMO_KEY);
+  return raw ? JSON.parse(raw) : null;
+}
+
+function savePomoCurrent(data) {
+  localStorage.setItem(POMO_KEY, JSON.stringify(data));
+}
+
+function clearPomoCurrent() {
+  localStorage.removeItem(POMO_KEY);
+}
+
+function getPomoDayCount() {
+  const t = today();
+  const log = JSON.parse(localStorage.getItem(POMO_LOG_KEY) || '[]');
+  return log.filter(e => e.date === t && e.type === 'foco' && e.completed).length;
+}
+
+function getPomoStreakDays() {
+  const log = JSON.parse(localStorage.getItem(POMO_LOG_KEY) || '[]');
+  const dias = [...new Set(log.filter(e => e.completed && e.type === 'foco').map(e => e.date))].sort().reverse();
+  if (!dias.length) return 0;
+  let streak = 0;
+  const now = new Date();
+  for (let i = 0; i < dias.length; i++) {
+    const expected = new Date(now);
+    expected.setDate(expected.getDate() - i);
+    if (dias[i] === expected.toISOString().slice(0, 10)) {
+      streak++;
+    } else {
+      break;
+    }
+  }
+  return streak;
+}
+
+function logPomoEntry(type, completed, duration) {
+  const log = JSON.parse(localStorage.getItem(POMO_LOG_KEY) || '[]');
+  log.unshift({ date: today(), type, completed, duration, completedAt: new Date().toISOString() });
+  localStorage.setItem(POMO_LOG_KEY, JSON.stringify(log.slice(0, 200)));
+}
+
+function requestNotificationPermission(cb) {
+  if (!('Notification' in window)) return cb && cb();
+  if (Notification.permission === 'granted') return cb && cb();
+  if (Notification.permission === 'denied') return cb && cb();
+  Notification.requestPermission().then(() => cb && cb());
+}
+
+function sendNotification(title, body) {
+  if (Notification.permission !== 'granted') return;
+  new Notification(title, { body, icon: '/favicon.png' });
+}
+
+function pomoSecondsRemaining(session) {
+  const elapsed = Math.floor((Date.now() - session.startedAt) / 1000);
+  return Math.max(0, session.totalSeconds - elapsed);
+}
+
+function formatPomoTime(secs) {
+  const m = Math.floor(secs / 60).toString().padStart(2, '0');
+  const s = (secs % 60).toString().padStart(2, '0');
+  return `${m}:${s}`;
+}
+
+function updatePomoDisplay() {
+  const session = getPomoCurrent();
+  const timeEl = document.getElementById('pomo-time-display');
+  const typeEl = document.getElementById('pomo-type-label');
+  if (!timeEl) return;
+
+  if (!session) {
+    timeEl.textContent = '25:00';
+    timeEl.className = 'pomodoro-time';
+    if (typeEl) typeEl.textContent = 'pronto';
+    document.getElementById('pomodoro-fab')?.classList.remove('active-session');
+    document.body.classList.remove('pomo-running');
+    updatePomoBtns(null);
+    updatePomoStats();
+    return;
+  }
+
+  const rem = pomoSecondsRemaining(session);
+  timeEl.textContent = formatPomoTime(rem);
+  timeEl.className = 'pomodoro-time' + (rem < 60 ? ' warn' : '');
+  if (typeEl) {
+    const labels = { foco: 'foco 25min', break: 'break 5min', sagrada: 'hora sagrada 30min' };
+    typeEl.textContent = labels[session.type] || session.type;
+  }
+  document.getElementById('pomodoro-fab')?.classList.add('active-session');
+  if (session.type === 'foco') document.body.classList.add('pomo-running');
+
+  if (rem <= 0) {
+    onPomoComplete(session);
+    return;
+  }
+
+  pomoRafId = requestAnimationFrame(updatePomoDisplay);
+}
+
+function onPomoComplete(session) {
+  cancelAnimationFrame(pomoRafId);
+  clearPomoCurrent();
+  logPomoEntry(session.type, true, session.totalSeconds);
+  document.body.classList.remove('pomo-running');
+  document.getElementById('pomodoro-fab')?.classList.remove('active-session');
+
+  if (session.type === 'foco') {
+    addXpTrilha(20, 'pomodoro foco completo');
+    updateStreak('geral');
+    sendNotification('Pomodoro completo!', 'Foco de 25min concluido. Tome um break.');
+    toast('Pomodoro! +20 XP +1 INT', 'ok');
+  } else if (session.type === 'break') {
+    sendNotification('Break encerrado!', 'Hora de voltar ao foco.');
+    toast('Break encerrado — de volta ao trabalho!');
+  } else if (session.type === 'sagrada') {
+    completarHoraSagrada();
+    return;
+  }
+
+  updatePomoDisplay();
+  updatePomoStats();
+}
+
+function updatePomoBtns(session) {
+  const focoBtn = document.getElementById('pomo-btn-foco');
+  const breakBtn = document.getElementById('pomo-btn-break');
+  const sagradaBtn = document.getElementById('pomo-btn-sagrada');
+  if (!focoBtn) return;
+
+  if (session) {
+    focoBtn.textContent = '⏹ Parar';
+    focoBtn.className = 'pomo-btn running';
+    focoBtn.onclick = () => pararPomodoro(session);
+    breakBtn.style.display = 'none';
+    sagradaBtn.style.display = 'none';
+  } else {
+    focoBtn.textContent = '▶ Foco 25min';
+    focoBtn.className = 'pomo-btn';
+    focoBtn.onclick = () => iniciarPomodoro('foco');
+    breakBtn.style.display = '';
+    sagradaBtn.style.display = '';
+  }
+}
+
+function updatePomoStats() {
+  const el = document.getElementById('pomo-stats');
+  if (!el) return;
+  const count = getPomoDayCount();
+  const streakDias = getPomoStreakDays();
+  el.innerHTML = `Hoje: ${count} pomodoro${count !== 1 ? 's' : ''}<br>Streak foco: ${streakDias} dia${streakDias !== 1 ? 's' : ''}`;
+}
+
+function iniciarPomodoro(type) {
+  const existing = getPomoCurrent();
+  if (existing) pararPomodoro(existing);
+
+  const doStart = () => {
+    const session = {
+      type,
+      startedAt: Date.now(),
+      totalSeconds: POMO_DURATIONS[type],
+    };
+    savePomoCurrent(session);
+    cancelAnimationFrame(pomoRafId);
+    pomoRafId = requestAnimationFrame(updatePomoDisplay);
+    updatePomoBtns(session);
+  };
+
+  // Pede permissão só na primeira vez que o usuário inicia pomodoro
+  if (Notification.permission === 'default') {
+    requestNotificationPermission(doStart);
+  } else {
+    doStart();
+  }
+}
+
+function pararPomodoro(session) {
+  cancelAnimationFrame(pomoRafId);
+  logPomoEntry(session?.type || 'foco', false, 0);
+  clearPomoCurrent();
+  document.body.classList.remove('pomo-running');
+  document.getElementById('pomodoro-fab')?.classList.remove('active-session');
+  updatePomoDisplay();
+  toast('Pomodoro interrompido');
+}
+
+function togglePomodoroPanel() {
+  const panel = document.getElementById('pomodoro-panel');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    // Retoma display se havia sessão ativa
+    const session = getPomoCurrent();
+    if (session && !pomoRafId) {
+      pomoRafId = requestAnimationFrame(updatePomoDisplay);
+    }
+    updatePomoStats();
+    updatePomoBtns(session);
+  }
+}
+
+// Fecha painel ao clicar fora
+document.addEventListener('click', e => {
+  const panel = document.getElementById('pomodoro-panel');
+  const fab = document.getElementById('pomodoro-fab');
+  if (!panel || !fab) return;
+  if (!panel.contains(e.target) && e.target !== fab) {
+    panel.classList.remove('open');
+  }
+});
+
+// ── HORA SAGRADA ──────────────────────────────────────────────────
+const HORA_SAGRADA_KEY = 'agh_hora_sagrada';
+
+function getHoraSagrada() {
+  const raw = localStorage.getItem(HORA_SAGRADA_KEY);
+  return raw ? JSON.parse(raw) : null;
+}
+
+function iniciarHoraSagrada() {
+  // Fecha painel do pomodoro
+  document.getElementById('pomodoro-panel')?.classList.remove('open');
+  document.getElementById('standup-overlay')?.classList.remove('open');
+  iniciarPomodoro('sagrada');
+  showHoraSagradaBanner();
+}
+
+function iniciarHoraSagradaFromStandup() {
+  closeStandup();
+  iniciarHoraSagrada();
+}
+
+function showHoraSagradaBanner() {
+  const banner = document.getElementById('hora-sagrada-banner');
+  if (banner) banner.classList.add('active');
+  tickHoraSagradaBanner();
+}
+
+function tickHoraSagradaBanner() {
+  const session = getPomoCurrent();
+  const timerEl = document.getElementById('hora-sagrada-timer');
+  if (!timerEl) return;
+  if (!session || session.type !== 'sagrada') {
+    document.getElementById('hora-sagrada-banner')?.classList.remove('active');
+    return;
+  }
+  const rem = pomoSecondsRemaining(session);
+  timerEl.textContent = formatPomoTime(rem);
+  if (rem > 0) setTimeout(tickHoraSagradaBanner, 1000);
+}
+
+function interromperHoraSagrada() {
+  const session = getPomoCurrent();
+  if (session && session.type === 'sagrada') {
+    const elapsed = Math.floor((Date.now() - session.startedAt) / 1000);
+    logPomoEntry('sagrada', false, elapsed);
+    // Registra como interrompida — honestidade > gamificar batota
+    const log = JSON.parse(localStorage.getItem('agh_hora_sagrada_log') || '[]');
+    log.unshift({ date: today(), status: 'interrompida', duration: elapsed, completedAt: new Date().toISOString() });
+    localStorage.setItem('agh_hora_sagrada_log', JSON.stringify(log.slice(0, 100)));
+    clearPomoCurrent();
+    cancelAnimationFrame(pomoRafId);
+    document.body.classList.remove('pomo-running');
+  }
+  document.getElementById('hora-sagrada-banner')?.classList.remove('active');
+  document.getElementById('pomodoro-fab')?.classList.remove('active-session');
+  updatePomoDisplay();
+  toast('Hora Sagrada interrompida — registrada sem XP');
+}
+
+function completarHoraSagrada() {
+  // Registra no log de hora sagrada
+  const log = JSON.parse(localStorage.getItem('agh_hora_sagrada_log') || '[]');
+  log.unshift({ date: today(), status: 'completa', duration: 1800, completedAt: new Date().toISOString() });
+  localStorage.setItem('agh_hora_sagrada_log', JSON.stringify(log.slice(0, 100)));
+
+  updateStreak('semIa');
+  updateStreak('geral');
+
+  // +50 XP +5 INT +3 CON (registra no xp trilha local)
+  addXpTrilha(50, 'hora sagrada completa');
+
+  document.getElementById('hora-sagrada-banner')?.classList.remove('active');
+  document.body.classList.remove('pomo-running');
+  document.getElementById('pomodoro-fab')?.classList.remove('active-session');
+  sendNotification('Hora Sagrada concluida!', '+50 XP +5 INT +3 CON. Voce no comando.');
+  toast('Hora Sagrada completa! +50 XP +5 INT +3 CON', 'ok');
+  updatePomoDisplay();
+  updatePomoStats();
+}
+
+// ── DAILY STANDUP ─────────────────────────────────────────────────
+function buildOntemItems(ontemStr) {
+  const xpLog = SYNC?.xpLog || [];
+  const trilhaLog = JSON.parse(localStorage.getItem('trilhaXpLog') || '[]');
+  const ontemXp = xpLog.filter(e => e.date === ontemStr);
+  const ontemTrilha = trilhaLog.filter(e => e.date === ontemStr);
+  const ontemPomo = JSON.parse(localStorage.getItem(POMO_LOG_KEY) || '[]')
+    .filter(e => e.date === ontemStr && e.completed);
+
+  const items = [];
+  const commits = ontemXp.filter(e => ['feat','bugfix','deploy'].includes(e.type));
+  if (commits.length) items.push({ icon: '⚙', text: `${commits.length} atividade(s) registrada(s)` });
+
+  const leituras = ontemTrilha.filter(e => e.desc?.startsWith('lido'));
+  if (leituras.length) items.push({ icon: '📚', text: `${leituras.length} módulo(s) lido(s)` });
+
+  const checkpoints = ontemTrilha.filter(e => e.desc?.startsWith('checkpoint'));
+  if (checkpoints.length) items.push({ icon: '🎓', text: `${checkpoints.length} checkpoint(s)` });
+
+  const foco = ontemPomo.filter(e => e.type === 'foco');
+  if (foco.length) {
+    const mins = foco.reduce((acc, e) => acc + Math.floor(e.duration / 60), 0);
+    items.push({ icon: '⏱', text: `${foco.length} pomodoro(s) · ${mins}min de foco` });
+  }
+
+  if (!items.length) items.push({ icon: '😴', text: 'Nenhuma atividade registrada ontem' });
+  return items;
+}
+
+function buildSugestoes(t) {
+  const sugs = [];
+  if (TRILHA_DATA) {
+    const proxModulo = findProxModulo(loadTrilhaProgress());
+    if (proxModulo) sugs.push(`Próximo módulo: "${proxModulo}" (trilha de estudo)`);
+  }
+  const horaSagradaHoje = JSON.parse(localStorage.getItem('agh_hora_sagrada_log') || '[]')
+    .some(e => e.date === t);
+  if (!horaSagradaHoje) sugs.push('Hora Sagrada 30min (ainda não fez hoje)');
+  DB.tasks.filter(k => k.status !== 'done' && k.priority === 'high').slice(0, 2)
+    .forEach(tk => sugs.push(`Tarefa alta: "${tk.title}"`));
+  return sugs.slice(0, 3);
+}
+
+function buildStandupBody() {
+  const t = today();
+  const ontem = new Date(); ontem.setDate(ontem.getDate() - 1);
+  const ontemStr = ontem.toISOString().slice(0, 10);
+
+  const ontemItems = buildOntemItems(ontemStr);
+  const sugestoes = buildSugestoes(t);
+  const streaks = getStreaks();
+  const sg = streaks.geral    || STREAK_DEFAULTS.geral;
+  const se = streaks.estudo   || STREAK_DEFAULTS.estudo;
+  const ss = streaks.semIa    || STREAK_DEFAULTS.semIa;
+  const sd = streaks.decisoes || STREAK_DEFAULTS.decisoes;
+
+  return `
+    <div class="standup-section">
+      <div class="standup-section-label">Ontem</div>
+      ${ontemItems.map(i => `
+        <div class="standup-item">
+          <span class="standup-item-icon">${i.icon}</span>
+          <span>${esc(i.text)}</span>
+        </div>`).join('')}
+    </div>
+    <div class="standup-section">
+      <div class="standup-section-label">Streaks</div>
+      <div class="streak-cards">
+        ${buildStreakCard('🔥', sg, 'Geral')}
+        ${buildStreakCard('📖', se, 'Estudo')}
+        ${buildStreakCard('🚫', ss, 'Sem-IA')}
+        ${buildStreakCard('✍', sd, 'Decisoes')}
+      </div>
+    </div>
+    ${sugestoes.length ? `
+    <div class="standup-section">
+      <div class="standup-section-label">Hoje sugiro priorizar</div>
+      ${sugestoes.map(s => `
+        <div class="standup-suggest">
+          <span class="standup-suggest-arrow">▶</span>
+          <span>${esc(s)}</span>
+        </div>`).join('')}
+    </div>` : ''}
+  `;
+}
+
+function buildStreakCard(icon, streak, label) {
+  return `
+    <div class="streak-card" title="Recorde: ${streak.recorde} dias">
+      <span class="streak-card-icon">${icon}</span>
+      <span class="streak-card-val">${streak.atual}</span>
+      <span class="streak-card-lbl">${esc(label)}</span>
+      <span class="streak-card-rec">rec: ${streak.recorde}</span>
+    </div>`;
+}
+
+function findProxModulo(progress) {
+  if (!TRILHA_DATA) return null;
+  for (const trilha of TRILHA_DATA.trilhas) {
+    for (const m of trilha.modulos) {
+      if (!progress[m.id]) return m.titulo;
+    }
+  }
+  return null;
+}
+
+function openStandup() {
+  const el = document.getElementById('standup-overlay');
+  const dateEl = document.getElementById('standup-date');
+  const bodyEl = document.getElementById('standup-body');
+  if (!el) return;
+
+  const now = new Date();
+  if (dateEl) dateEl.textContent = now.toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  if (bodyEl) bodyEl.innerHTML = buildStandupBody();
+  el.classList.add('open');
+}
+
+function closeStandup() {
+  document.getElementById('standup-overlay')?.classList.remove('open');
+  localStorage.setItem('lastStandupDate', today());
+}
+
+function checkStandupOnLoad() {
+  const last = localStorage.getItem('lastStandupDate');
+  if (last === today()) return; // já mostrou hoje
+  // Aguarda TRILHA_DATA carregar para ter sugestões melhores
+  setTimeout(openStandup, 600);
+}
+
+// ── DAILY REFLECTION ─────────────────────────────────────────────
+function openReflectionModal() {
+  closeStandup();
+  document.getElementById('ref-melhor').value = '';
+  document.getElementById('ref-falhou').value = '';
+  document.getElementById('reflection-overlay').classList.add('open');
+}
+
+function closeReflection() {
+  document.getElementById('reflection-overlay').classList.remove('open');
+}
+
+function saveReflection() {
+  const melhor = document.getElementById('ref-melhor').value.trim();
+  const falhou = document.getElementById('ref-falhou').value.trim();
+  if (!melhor && !falhou) { toast('Preencha ao menos um campo', 'err'); return; }
+
+  const log = JSON.parse(localStorage.getItem('agh_reflection_log') || '[]');
+  log.unshift({ date: today(), melhor, falhou, savedAt: new Date().toISOString() });
+  localStorage.setItem('agh_reflection_log', JSON.stringify(log.slice(0, 90)));
+
+  addXpTrilha(30, 'daily reflection');
+  updateStreak('geral');
+  closeReflection();
+  toast('Reflection salvo! +30 XP +2 WIS', 'ok');
+}
+
+document.querySelectorAll('.reflection-overlay').forEach(o =>
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); })
+);
+
 // ── INIT ──────────────────────────────────────────────────────────
 (function(){
   // Configura marked.js para renderizar markdown das trilhas
@@ -2538,4 +3043,23 @@ function notificarCrossQuest(moduloId) {
   renderDash();
   renderModules();
   loadSync();
+
+  // Retoma pomodoro se estava ativo quando a tab foi fechada
+  const existingSession = getPomoCurrent();
+  if (existingSession) {
+    const rem = pomoSecondsRemaining(existingSession);
+    if (rem > 0) {
+      pomoRafId = requestAnimationFrame(updatePomoDisplay);
+      if (existingSession.type === 'sagrada') showHoraSagradaBanner();
+      if (existingSession.type === 'foco') document.body.classList.add('pomo-running');
+      document.getElementById('pomodoro-fab')?.classList.add('active-session');
+    } else {
+      // Sessão terminou enquanto tab estava fechada — registra como completa
+      logPomoEntry(existingSession.type, true, existingSession.totalSeconds);
+      clearPomoCurrent();
+    }
+  }
+
+  // Standup: verifica 1s após init para dar tempo ao TRILHA_DATA carregar
+  checkStandupOnLoad();
 })();

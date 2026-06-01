@@ -31,7 +31,13 @@
       { "id": "frontend-rogue",    "label": "Frontend Rogue",     "icon": "🗡", "desc": "Bônus DEX e INT — agilidade e conhecimento",               "bonus": { "dex": 1.1,  "int": 1.05 } },
       { "id": "fullstack-paladin", "label": "Full-stack Paladin", "icon": "🛡", "desc": "Bônus equilibrado em todos",                                "bonus": { "str": 1.03, "dex": 1.03, "int": 1.03, "wis": 1.03, "cha": 1.03, "con": 1.03 } },
       { "id": "secops-warlock",    "label": "SecOps Warlock",     "icon": "🔮", "desc": "Bônus WIS e CHA — sabedoria que se comunica",              "bonus": { "wis": 1.1,  "cha": 1.1  } }
-    ]
+    ],
+    "streaks": {
+      "geral":    { "atual": 4, "recorde": 7,  "ultimoDia": "2026-06-01" },
+      "estudo":   { "atual": 3, "recorde": 5,  "ultimoDia": "2026-05-31" },
+      "semIa":    { "atual": 1, "recorde": 1,  "ultimoDia": "2026-05-30" },
+      "decisoes": { "atual": 2, "recorde": 3,  "ultimoDia": "2026-05-31" }
+    }
   },
   "attributeRules": {
     "feat":       { "str": 3 },
