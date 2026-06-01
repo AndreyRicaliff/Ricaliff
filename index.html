@@ -434,8 +434,9 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
   .cal-ev-chip{display:none}
 }
 /* ── GAMIFICATION ─────────────────────────────────────────────── */
-.player-card{background:linear-gradient(135deg,var(--surface2),var(--surface3));border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:20px;display:flex;align-items:center;gap:20px}
-.player-avatar{width:56px;height:56px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.player-card{background:linear-gradient(135deg,var(--surface2),var(--surface3));border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:20px}
+.player-card-top{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.player-avatar{width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0}
 .player-info{flex:1;min-width:0}
 .player-name{font-size:1rem;font-weight:700;color:var(--text)}
 .player-title{font-size:.72rem;color:var(--secondary);font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em}
@@ -443,10 +444,53 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
 .xp-bar{flex:1;height:6px;background:var(--border);border-radius:99px;overflow:hidden}
 .xp-bar-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--cyan));border-radius:99px;transition:width .6s ease}
 .xp-label{font-size:.65rem;color:var(--muted);white-space:nowrap}
-.player-stats{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.player-stats-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
 .player-level{font-size:2rem;font-weight:900;color:var(--primary);line-height:1}
 .player-level-lbl{font-size:.6rem;color:var(--muted);text-align:center}
 .streak-badge{display:flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--border);border-radius:99px;padding:3px 10px;font-size:.7rem;font-weight:600;color:var(--warn)}
+
+/* ── ATTRIBUTES ───────────────────────────────────────────────── */
+.attr-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+@media(min-width:640px){.attr-grid{grid-template-columns:repeat(3,1fr)}}
+.attr-row{display:flex;align-items:center;gap:7px}
+.attr-icon{font-size:.9rem;flex-shrink:0;width:18px;text-align:center}
+.attr-label{font-size:.63rem;color:var(--muted);min-width:80px;flex-shrink:0}
+.attr-bar-wrap{flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden;min-width:30px}
+.attr-bar-fill{height:100%;border-radius:99px;transition:width .5s ease}
+.attr-val{font-size:.68rem;font-weight:700;min-width:22px;text-align:right;flex-shrink:0}
+.attr-bonus{font-size:.58rem;color:var(--muted);white-space:nowrap;min-width:32px;text-align:right}
+
+.player-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap;gap:6px}
+.player-next-lv{font-size:.68rem;color:var(--muted)}
+.player-next-lv span{color:var(--secondary);font-weight:600}
+.build-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(26,127,255,.12);border:1px solid rgba(26,127,255,.25);border-radius:99px;padding:3px 10px;font-size:.68rem;font-weight:600;color:var(--secondary);cursor:pointer;transition:all .15s;border-style:none;font-family:inherit}
+.build-badge:hover{background:rgba(26,127,255,.22);outline:1px solid var(--primary)}
+
+/* ── BUILD MODAL ─────────────────────────────────────────────── */
+.build-list{display:flex;flex-direction:column;gap:10px;margin-bottom:4px}
+.build-option{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border-radius:11px;border:1.5px solid var(--border);cursor:pointer;transition:all .15s;background:var(--surface2)}
+.build-option:hover{border-color:var(--primary);background:rgba(26,127,255,.07)}
+.build-option.active{border-color:var(--primary);background:rgba(26,127,255,.12)}
+.build-icon{font-size:1.4rem;flex-shrink:0;width:28px;text-align:center;margin-top:2px}
+.build-info{flex:1;min-width:0}
+.build-name{font-size:.82rem;font-weight:700;margin-bottom:2px}
+.build-desc{font-size:.68rem;color:var(--muted);line-height:1.4}
+.build-bonus-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}
+.build-bonus-tag{font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:20px;background:rgba(26,127,255,.15);color:var(--secondary)}
+
+/* ── SKILL TREE SVG ──────────────────────────────────────────── */
+.skill-tree-wrap{overflow:hidden;position:relative;background:var(--surface);border:1px solid var(--border);border-radius:12px;cursor:grab;user-select:none}
+.skill-tree-wrap:active{cursor:grabbing}
+.skill-tree-svg{display:block;touch-action:none}
+.st-node{cursor:pointer}
+.st-node circle{transition:r .15s,opacity .15s}
+.st-node:hover circle{r:13}
+.st-node:hover .st-ring{opacity:1}
+.st-ring{opacity:0;transition:opacity .15s}
+.st-tooltip{position:absolute;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 10px;font-size:.72rem;font-weight:600;color:var(--text);pointer-events:none;z-index:10;white-space:nowrap;max-width:200px;white-space:normal;line-height:1.4;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+.trilha-tree-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:8px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--muted2);font-family:inherit;transition:all .15s}
+.trilha-tree-btn:hover{color:var(--text);border-color:var(--primary)}
+.trilha-tree-btn.active{background:rgba(26,127,255,.12);color:var(--secondary);border-color:var(--primary)}
 
 .achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:24px}
 .achievement-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
@@ -894,8 +938,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
         <div class="view-title">Estudos</div>
         <div class="view-sub">11 trilhas · 70 módulos · sistema de aprendizado defensável em entrevista</div>
       </div>
+      <div id="trilha-tree-toggle" style="display:flex;gap:8px;align-items:center"></div>
     </div>
     <div id="trilha-body"></div>
+    <div id="st-tooltip-el" class="st-tooltip" style="display:none"></div>
   </div>
 
 </div><!-- /main -->
@@ -1017,6 +1063,19 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
       <button class="btn btn-ghost btn-sm" id="ev-del" onclick="delEv()" style="display:none;margin-right:auto">Excluir</button>
       <button class="btn btn-ghost" onclick="closeM('m-ev')">Cancelar</button>
       <button class="btn btn-primary" onclick="saveEv()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL BUILD -->
+<div class="overlay" id="m-build">
+  <div class="modal" style="max-width:480px">
+    <div class="mhead"><div class="mtitle">Trocar Build</div><button class="mclose" onclick="closeM('m-build')">×</button></div>
+    <div style="font-size:.75rem;color:var(--muted);margin-bottom:14px">Escolha a especialização que reflete como você quer evoluir. Bônus aplicados a partir da próxima ação.</div>
+    <div class="build-list" id="build-list"></div>
+    <div style="display:flex;justify-content:flex-end;margin-top:16px;gap:8px">
+      <button class="btn btn-ghost" onclick="closeM('m-build')">Cancelar</button>
+      <button class="btn btn-primary" onclick="confirmBuild()">Confirmar</button>
     </div>
   </div>
 </div>

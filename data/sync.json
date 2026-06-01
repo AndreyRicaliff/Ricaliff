@@ -12,7 +12,41 @@
     "xpToNext": 2201,
     "streak": 1,
     "longestStreak": 2,
-    "lastActiveDate": "2026-06-01"
+    "lastActiveDate": "2026-06-01",
+    "attributes": {
+      "int": { "value": 0, "label": "Inteligência", "icon": "🧠", "rule": "+2 por módulo lido, +5 por checkpoint" },
+      "str": { "value": 0, "label": "Throughput",   "icon": "💪", "rule": "+3 por feat, +5 por deploy" },
+      "dex": { "value": 0, "label": "Velocidade",   "icon": "⚡", "rule": "+4 por bugfix, +2 por refactor" },
+      "wis": { "value": 0, "label": "Sabedoria",    "icon": "🦉", "rule": "+5 por entrada DECISIONS.md, +3 por revisao" },
+      "cha": { "value": 0, "label": "Carisma",      "icon": "🗣", "rule": "+10 por post LinkedIn, +20 por talk, +30 por PR OSS" },
+      "con": { "value": 0, "label": "Constituição", "icon": "🛡", "rule": "+1 por dia de streak ativo" }
+    },
+    "build": {
+      "id": "backend-mage",
+      "label": "Backend Mage",
+      "bonus": { "str": 1.1, "wis": 1.05 }
+    },
+    "availableBuilds": [
+      { "id": "backend-mage",      "label": "Backend Mage",       "icon": "🧙", "desc": "Bônus STR e WIS — para quem foca em entregar e decidir",  "bonus": { "str": 1.1,  "wis": 1.05 } },
+      { "id": "frontend-rogue",    "label": "Frontend Rogue",     "icon": "🗡", "desc": "Bônus DEX e INT — agilidade e conhecimento",               "bonus": { "dex": 1.1,  "int": 1.05 } },
+      { "id": "fullstack-paladin", "label": "Full-stack Paladin", "icon": "🛡", "desc": "Bônus equilibrado em todos",                                "bonus": { "str": 1.03, "dex": 1.03, "int": 1.03, "wis": 1.03, "cha": 1.03, "con": 1.03 } },
+      { "id": "secops-warlock",    "label": "SecOps Warlock",     "icon": "🔮", "desc": "Bônus WIS e CHA — sabedoria que se comunica",              "bonus": { "wis": 1.1,  "cha": 1.1  } }
+    ]
+  },
+  "attributeRules": {
+    "feat":       { "str": 3 },
+    "bugfix":     { "dex": 4 },
+    "deploy":     { "str": 5, "con": 1 },
+    "test":       { "wis": 3 },
+    "learning":   { "int": 3 },
+    "review":     { "wis": 3 },
+    "security":   { "wis": 3, "con": 1 },
+    "migration":  { "str": 2, "wis": 2 },
+    "refactor":   { "dex": 2 },
+    "revisao":    { "wis": 5 },
+    "lido":       { "int": 2 },
+    "checkpoint": { "int": 5 },
+    "decision":   { "wis": 5 }
   },
   "levels": [
     {
