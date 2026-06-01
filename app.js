@@ -19,31 +19,204 @@ function renderGamification() {
   renderXpLog();
 }
 
+// ── ATTRIBUTES ───────────────────────────────────────────────────
+
+// Carrega atributos do localStorage (sobrepõe values do sync.json para persistir ganhos locais)
+function loadAttrState() {
+  const saved = JSON.parse(localStorage.getItem('agh_attrs') ?? 'null');
+  if (!SYNC?.player?.attributes) return null;
+  if (!saved) return JSON.parse(JSON.stringify(SYNC.player.attributes));
+  // Mescla: usa structure do sync.json mas valores do localStorage quando existirem
+  const base = JSON.parse(JSON.stringify(SYNC.player.attributes));
+  Object.keys(base).forEach(k => {
+    if (saved[k] !== undefined) base[k].value = saved[k];
+  });
+  return base;
+}
+
+function saveAttrState(attrs) {
+  const vals = {};
+  Object.keys(attrs).forEach(k => { vals[k] = attrs[k].value; });
+  localStorage.setItem('agh_attrs', JSON.stringify(vals));
+}
+
+// Retorna o build ativo (localStorage sobrepõe sync.json para permitir troca sem editar o arquivo)
+function getActiveBuild() {
+  const saved = localStorage.getItem('agh_build');
+  const builds = SYNC?.player?.availableBuilds ?? [];
+  const id = saved ?? SYNC?.player?.build?.id ?? 'backend-mage';
+  return builds.find(b => b.id === id) ?? builds[0] ?? { id, label: id, bonus: {}, icon: '⚡' };
+}
+
+function addAttribute(attr, rawVal, source) {
+  if (!SYNC?.player?.attributes) return;
+  const attrs = loadAttrState();
+  if (!attrs[attr]) return;
+
+  const build = getActiveBuild();
+  const mult = build?.bonus?.[attr] ?? 1;
+  const finalVal = Math.round(rawVal * mult);
+  attrs[attr].value = (attrs[attr].value ?? 0) + finalVal;
+  saveAttrState(attrs);
+
+  // Log dos últimos 50 eventos
+  const log = JSON.parse(localStorage.getItem('attributeLog') ?? '[]');
+  log.unshift({ attr, val: finalVal, source, date: today() });
+  localStorage.setItem('attributeLog', JSON.stringify(log.slice(0, 50)));
+
+  const bonusStr = mult > 1 ? ` (×${mult.toFixed(2)} build)` : '';
+  toast(`${attrs[attr].icon} +${finalVal} ${attr.toUpperCase()}${bonusStr} — ${source}`);
+}
+
+function applyAttributeRules(type) {
+  if (!SYNC?.attributeRules) return;
+  const rules = SYNC.attributeRules[type] ?? {};
+  Object.entries(rules).forEach(([attr, val]) => addAttribute(attr, val, type));
+}
+
+// ── PLAYER CARD (RPG) ─────────────────────────────────────────────
+
 function renderPlayerCard() {
-  const p = SYNC.player;
-  const levels = SYNC.levels || [];
+  if (!SYNC?.player) return;
+  const p      = SYNC.player;
+  const levels = SYNC.levels ?? [];
   const nextLv = levels.find(l => l.xpMin > p.xp);
   const xpToNext = nextLv ? nextLv.xpMin : p.xp + 1000;
-  const pct = Math.min(100, Math.round(((p.xp - (levels.find(l => l.level === p.level)?.xpMin || 0)) /
-    (xpToNext - (levels.find(l => l.level === p.level)?.xpMin || 0))) * 100));
+  const curLvXp  = levels.find(l => l.level === p.level)?.xpMin ?? 0;
+  const xpPct    = Math.min(100, Math.round(((p.xp - curLvXp) / (xpToNext - curLvXp)) * 100));
 
-  document.getElementById('player-card-wrap').innerHTML = `
-    <div class="player-card">
+  const attrs = loadAttrState();
+  const build = getActiveBuild();
+
+  if (!attrs) {
+    // Fallback: render simples sem atributos (sync.json antigo)
+    document.getElementById('player-card-wrap').innerHTML = renderPlayerCardLegacy(p, xpPct, xpToNext);
+    return;
+  }
+
+  document.getElementById('player-card-wrap').innerHTML =
+    renderPlayerCardRpg(p, attrs, build, xpPct, xpToNext);
+}
+
+function renderPlayerCardLegacy(p, xpPct, xpToNext) {
+  return `<div class="player-card">
+    <div class="player-card-top">
       <div class="player-avatar">⚡</div>
       <div class="player-info">
         <div class="player-name">${esc(p.name)}</div>
         <div class="player-title">${esc(p.title)}</div>
         <div class="xp-bar-wrap">
-          <div class="xp-bar"><div class="xp-bar-fill" style="width:${pct}%"></div></div>
+          <div class="xp-bar"><div class="xp-bar-fill" style="width:${xpPct}%"></div></div>
           <div class="xp-label">${p.xp} / ${xpToNext} XP</div>
         </div>
       </div>
-      <div class="player-stats">
+      <div class="player-stats-right">
         <div class="player-level">Lv${p.level}</div>
         <div class="player-level-lbl">nível</div>
         <div class="streak-badge" style="margin-top:6px">🔥 ${p.streak}d</div>
       </div>
+    </div>
+  </div>`;
+}
+
+function renderPlayerCardRpg(p, attrs, build, xpPct, xpToNext) {
+  const vals = Object.values(attrs).map(a => a.value ?? 0);
+  const maxVal = Math.max(...vals, 1);
+  const minVal = Math.min(...vals);
+  const maxAttr = Object.keys(attrs).find(k => (attrs[k].value ?? 0) === maxVal);
+  const minAttr = Object.keys(attrs).find(k => (attrs[k].value ?? 0) === minVal);
+
+  const attrRows = Object.entries(attrs).map(([key, a]) => {
+    const val = a.value ?? 0;
+    const pct = Math.min(100, Math.round((val / Math.max(maxVal, 1)) * 100));
+    const isMax = key === maxAttr;
+    const isMin = key === minAttr && val < maxVal;
+    const color = isMax ? 'var(--accent)' : isMin ? 'var(--danger)' : 'var(--primary)';
+    const mult  = build?.bonus?.[key] ?? 1;
+    const bonusLabel = mult > 1 ? `+${Math.round((mult - 1) * 100)}%` : '';
+    return `<div class="attr-row">
+      <span class="attr-icon">${a.icon}</span>
+      <span class="attr-label">${esc(a.label)}</span>
+      <div class="attr-bar-wrap">
+        <div class="attr-bar-fill" style="width:${pct}%;background:${color}"></div>
+      </div>
+      <span class="attr-val" style="color:${color}">${val}</span>
+      <span class="attr-bonus" style="color:${mult>1?'var(--accent)':'var(--muted)'}">${bonusLabel}</span>
     </div>`;
+  }).join('');
+
+  // Identifica os 2 atributos mais fracos para o hint de próximo nível
+  const sorted = Object.entries(attrs).sort((a, b) => (a[1].value ?? 0) - (b[1].value ?? 0));
+  const hints  = sorted.slice(0, 2).map(([k, a]) => `${a.icon} ${k.toUpperCase()} ${(a.value ?? 0) + 10}`);
+
+  return `<div class="player-card">
+    <div class="player-card-top">
+      <div class="player-avatar">${build.icon ?? '⚡'}</div>
+      <div class="player-info">
+        <div class="player-name">${esc(p.name)} — ${esc(build.label)}</div>
+        <div class="player-title">Lv${p.level} · ${esc(p.title)}</div>
+        <div class="xp-bar-wrap">
+          <div class="xp-bar"><div class="xp-bar-fill" style="width:${xpPct}%"></div></div>
+          <div class="xp-label">${p.xp} / ${xpToNext} XP</div>
+        </div>
+      </div>
+      <div class="player-stats-right">
+        <div class="player-level">Lv${p.level}</div>
+        <div class="player-level-lbl">nível</div>
+        <div class="streak-badge" style="margin-top:6px">🔥 ${p.streak}d</div>
+      </div>
+    </div>
+    <div class="attr-grid">${attrRows}</div>
+    <div class="player-card-footer">
+      <div class="player-next-lv">Próximo nível: <span>${hints.join(' ou ')}</span></div>
+      <button class="build-badge" onclick="openBuildModal()">
+        ${build.icon} ${esc(build.label)} · Trocar Build
+      </button>
+    </div>
+  </div>`;
+}
+
+// ── BUILD MODAL ───────────────────────────────────────────────────
+
+let _pendingBuildId = null;
+
+function openBuildModal() {
+  if (!SYNC?.player?.availableBuilds) return;
+  const current = getActiveBuild();
+  _pendingBuildId = current.id;
+
+  document.getElementById('build-list').innerHTML =
+    SYNC.player.availableBuilds.map(b => {
+      const bonusTags = Object.entries(b.bonus ?? {})
+        .map(([k, v]) => `<span class="build-bonus-tag">${k.toUpperCase()} +${Math.round((v-1)*100)}%</span>`)
+        .join('');
+      return `<div class="build-option${b.id === current.id ? ' active' : ''}"
+          onclick="selectBuildOption('${b.id}', this)">
+          <div class="build-icon">${b.icon}</div>
+          <div class="build-info">
+            <div class="build-name">${esc(b.label)}</div>
+            <div class="build-desc">${esc(b.desc)}</div>
+            <div class="build-bonus-tags">${bonusTags}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+  openM('m-build');
+}
+
+function selectBuildOption(id, el) {
+  _pendingBuildId = id;
+  document.querySelectorAll('.build-option').forEach(o => o.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function confirmBuild() {
+  if (!_pendingBuildId) return;
+  localStorage.setItem('agh_build', _pendingBuildId);
+  closeM('m-build');
+  renderPlayerCard();
+  const b = getActiveBuild();
+  toast(`Build: ${b.icon} ${b.label}`);
 }
 
 function renderQuests() {
@@ -1679,18 +1852,14 @@ async function renderTrilha() {
   renderTrilhaMapa();
 }
 
+let _trilhaTreeMode = false; // false = lista, true = skill tree
+
 function renderTrilhaMapa() {
   if (!TRILHA_DATA) return;
-  const progress = loadTrilhaProgress();
-  const total = TRILHA_DATA.trilhas.reduce((a, t) => a + t.totalModulos, 0);
-  const lidos = TRILHA_DATA.trilhas.reduce((a, t) => {
-    const p = calcularProgressoTrilha(t.id, progress);
-    return a + p.lidos;
-  }, 0);
-  const checkpoints = TRILHA_DATA.trilhas.reduce((a, t) => {
-    const p = calcularProgressoTrilha(t.id, progress);
-    return a + p.checkpoints;
-  }, 0);
+  const progress   = loadTrilhaProgress();
+  const total      = TRILHA_DATA.trilhas.reduce((a, t) => a + t.totalModulos, 0);
+  const lidos      = TRILHA_DATA.trilhas.reduce((a, t) => a + calcularProgressoTrilha(t.id, progress).lidos, 0);
+  const checkpoints= TRILHA_DATA.trilhas.reduce((a, t) => a + calcularProgressoTrilha(t.id, progress).checkpoints, 0);
 
   document.getElementById('trilha-header').innerHTML = `
     <div>
@@ -1699,12 +1868,223 @@ function renderTrilhaMapa() {
         ${TRILHA_DATA.totalTrilhas} trilhas · ${total} módulos ·
         ${lidos} lidos · ${checkpoints} checkpoints
       </div>
+    </div>
+    <div id="trilha-tree-toggle" style="display:flex;gap:8px;align-items:center">
+      <button class="trilha-tree-btn${!_trilhaTreeMode ? ' active' : ''}" onclick="_trilhaTreeMode=false;renderTrilhaMapa()">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Grade
+      </button>
+      <button class="trilha-tree-btn${_trilhaTreeMode ? ' active' : ''}" onclick="_trilhaTreeMode=true;renderTrilhaMapa()">
+        <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 14h8M8 14a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm8 0a2 2 0 1 0 4 0 2 2 0 0 0-4 0"/></svg>
+        Skill Tree
+      </button>
     </div>`;
 
-  document.getElementById('trilha-body').innerHTML =
-    `<div class="trilha-grid">
-      ${TRILHA_DATA.trilhas.map(t => buildTrilhaCard(t, progress)).join('')}
+  if (_trilhaTreeMode) {
+    renderSkillTree(progress);
+  } else {
+    document.getElementById('trilha-body').innerHTML =
+      `<div class="trilha-grid">
+        ${TRILHA_DATA.trilhas.map(t => buildTrilhaCard(t, progress)).join('')}
+      </div>`;
+  }
+}
+
+// ── SKILL TREE (SVG inline, colunas por trilha) ───────────────────
+//
+// Layout escolhido: colunas verticais — cada trilha é uma coluna.
+// Alternativa seria radial (centro-saída), mas com 11 trilhas ficaria
+// muito apertado sem lib. Colunas permitem ler sequência 01→02→...
+// e pré-requisitos como linhas tracejadas entre colunas.
+// Pan/zoom via pointer events — sem lib.
+
+const ST_NODE_R   = 10;   // raio do nó
+const ST_COL_W    = 90;   // largura de cada coluna
+const ST_ROW_H    = 52;   // altura entre nós
+const ST_PAD_X    = 50;   // padding horizontal
+const ST_PAD_Y    = 50;   // padding vertical
+
+// Pré-requisitos entre trilhas: linhas tracejadas
+const ST_PREREQS  = [
+  ['00-fundamentos', '10-codigo-limpo'],
+  ['00-fundamentos', '30-banco'],
+  ['00-fundamentos', '50-backend'],
+  ['10-codigo-limpo','20-arquitetura'],
+  ['30-banco',       '80-system-design'],
+  ['50-backend',     '70-devops'],
+  ['00-fundamentos', '60-seguranca'],
+  ['00-fundamentos', '90-entrevista'],
+  ['90-entrevista',  '95-diferencial'],
+];
+
+function stNodeColor(status) {
+  if (status === 'checkpoint') return 'var(--accent)';
+  if (status === 'lido')       return 'var(--primary)';
+  return 'var(--border)';
+}
+
+function stTextColor(status) {
+  if (status === 'checkpoint' || status === 'lido') return 'var(--text)';
+  return 'var(--muted)';
+}
+
+function buildSkillTreeSvg(progress) {
+  const trilhas = TRILHA_DATA.trilhas;
+  const cols    = trilhas.length;
+  const maxRows = Math.max(...trilhas.map(t => t.modulos.length));
+  const W = ST_PAD_X * 2 + cols * ST_COL_W;
+  const H = ST_PAD_Y * 2 + maxRows * ST_ROW_H;
+
+  // Calcula centros dos nós: { moduloId: {cx,cy} }
+  const centers = {};
+  trilhas.forEach((trilha, ci) => {
+    const cx = ST_PAD_X + ci * ST_COL_W + ST_COL_W / 2;
+    trilha.modulos.forEach((m, ri) => {
+      const cy = ST_PAD_Y + ri * ST_ROW_H;
+      centers[m.id] = { cx, cy };
+    });
+  });
+
+  // Linhas de sequência dentro de cada trilha
+  const seqLines = trilhas.flatMap(trilha =>
+    trilha.modulos.slice(0, -1).map((m, i) => {
+      const a = centers[m.id];
+      const b = centers[trilha.modulos[i + 1].id];
+      return `<line x1="${a.cx}" y1="${a.cy}" x2="${b.cx}" y2="${b.cy}"
+        stroke="var(--border)" stroke-width="1.5" stroke-opacity=".6"/>`;
+    })
+  );
+
+  // Linhas tracejadas pré-requisito (última linha da trilha origem → primeira da destino)
+  const prereqLines = ST_PREREQS.flatMap(([fromId, toId]) => {
+    const fromTrilha = trilhas.find(t => t.id === fromId);
+    const toTrilha   = trilhas.find(t => t.id === toId);
+    if (!fromTrilha || !toTrilha) return [];
+    const lastMod  = fromTrilha.modulos.at(-1);
+    const firstMod = toTrilha.modulos[0];
+    if (!lastMod || !firstMod) return [];
+    const a = centers[lastMod.id];
+    const b = centers[firstMod.id];
+    return [`<line x1="${a.cx}" y1="${a.cy}" x2="${b.cx}" y2="${b.cy}"
+      stroke="rgba(26,127,255,.3)" stroke-width="1" stroke-dasharray="4 3"/>`];
+  });
+
+  // Cabeçalhos de trilha
+  const headers = trilhas.map((trilha, ci) => {
+    const cx = ST_PAD_X + ci * ST_COL_W + ST_COL_W / 2;
+    const cy = ST_PAD_Y - 24;
+    return `<text x="${cx}" y="${cy}" text-anchor="middle" font-size="14" font-family="Inter,system-ui,sans-serif">${trilha.icone}</text>`;
+  });
+
+  // Nós
+  const nodes = trilhas.flatMap(trilha =>
+    trilha.modulos.map(m => {
+      const status = progress[m.id] ?? 'pending';
+      const { cx, cy } = centers[m.id];
+      const fill   = stNodeColor(status);
+      const fillOpacity = status === 'pending' ? '0.15' : '0.9';
+      const stroke = status === 'pending' ? 'var(--border)' : fill;
+      const checkmark = status === 'checkpoint'
+        ? `<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="9" fill="white" font-weight="700" font-family="Inter,system-ui,sans-serif">✓</text>`
+        : status === 'lido'
+        ? `<circle cx="${cx}" cy="${cy}" r="4" fill="white" fill-opacity=".7"/>`
+        : '';
+      // safe: m.id é só letras/números/hífens do trilha-index.json
+      return `<g class="st-node" data-modulo-id="${m.id}" data-titulo="${m.titulo.replace(/"/g, '&quot;')}">
+        <circle class="st-ring" cx="${cx}" cy="${cy}" r="${ST_NODE_R + 4}" fill="none" stroke="${stroke}" stroke-width="1.5" stroke-opacity=".4"/>
+        <circle cx="${cx}" cy="${cy}" r="${ST_NODE_R}" fill="${fill}" fill-opacity="${fillOpacity}" stroke="${stroke}" stroke-width="1.5"/>
+        ${checkmark}
+      </g>`;
+    })
+  );
+
+  return { svg: [...prereqLines, ...seqLines, ...headers, ...nodes].join('\n'), W, H, centers };
+}
+
+// Estado de pan/zoom do skill tree
+let _stTransform = { x: 0, y: 0, scale: 1 };
+let _stDrag      = null;
+
+function renderSkillTree(progress) {
+  const { svg, W, H } = buildSkillTreeSvg(progress);
+
+  document.getElementById('trilha-body').innerHTML = `
+    <div class="skill-tree-wrap" id="st-wrap" style="height:520px">
+      <svg class="skill-tree-svg" id="st-svg"
+        viewBox="0 0 ${W} ${H}" width="${W}" height="${H}"
+        xmlns="http://www.w3.org/2000/svg">
+        <g id="st-canvas" transform="translate(${_stTransform.x},${_stTransform.y}) scale(${_stTransform.scale})">
+          ${svg}
+        </g>
+      </svg>
     </div>`;
+
+  attachSkillTreeEvents();
+}
+
+function attachSkillTreeEvents() {
+  const wrap = document.getElementById('st-wrap');
+  const canvas = document.getElementById('st-canvas');
+  const tip    = document.getElementById('st-tooltip-el');
+  if (!wrap) return;
+
+  // Delegação de click nos nós
+  wrap.addEventListener('click', e => {
+    const node = e.target.closest('.st-node');
+    if (!node) return;
+    const id = node.dataset.moduloId;
+    if (!id || !TRILHA_DATA) return;
+    for (const trilha of TRILHA_DATA.trilhas) {
+      if (trilha.modulos.find(m => m.id === id)) {
+        renderTrilhaModulo(id, trilha.id);
+        return;
+      }
+    }
+  });
+
+  // Tooltip via mousemove
+  wrap.addEventListener('mousemove', e => {
+    const node = e.target.closest('.st-node');
+    if (!node || !tip) return;
+    const titulo = node.dataset.titulo ?? '';
+    const id     = node.dataset.moduloId ?? '';
+    const prog   = loadTrilhaProgress();
+    const status = prog[id] ?? 'pendente';
+    tip.textContent = `${titulo} · ${status}`;
+    tip.style.display = 'block';
+    const rect = wrap.getBoundingClientRect();
+    tip.style.left = (e.clientX - rect.left + 12) + 'px';
+    tip.style.top  = (e.clientY - rect.top  - 8)  + 'px';
+  });
+  wrap.addEventListener('mouseleave', () => { if (tip) tip.style.display = 'none'; });
+
+  // Zoom via wheel
+  wrap.addEventListener('wheel', e => {
+    e.preventDefault();
+    const delta  = e.deltaY > 0 ? -0.1 : 0.1;
+    _stTransform.scale = Math.max(0.4, Math.min(2, _stTransform.scale + delta));
+    applyStTransform();
+  }, { passive: false });
+
+  // Pan via pointer drag
+  wrap.addEventListener('pointerdown', e => {
+    if (e.target.closest('.st-node')) return;
+    _stDrag = { startX: e.clientX - _stTransform.x, startY: e.clientY - _stTransform.y };
+    wrap.setPointerCapture(e.pointerId);
+  });
+  wrap.addEventListener('pointermove', e => {
+    if (!_stDrag) return;
+    _stTransform.x = e.clientX - _stDrag.startX;
+    _stTransform.y = e.clientY - _stDrag.startY;
+    applyStTransform();
+  });
+  wrap.addEventListener('pointerup', () => { _stDrag = null; });
+}
+
+function applyStTransform() {
+  const c = document.getElementById('st-canvas');
+  if (c) c.setAttribute('transform',
+    `translate(${_stTransform.x},${_stTransform.y}) scale(${_stTransform.scale})`);
 }
 
 function renderTrilhaModulos(trilhaId) {
@@ -1807,8 +2187,8 @@ function marcarLido(moduloId) {
   if (progress[moduloId]) return; // já tem status, não sobrescreve
   progress[moduloId] = 'lido';
   saveTrilhaProgress(progress);
-  // +20 XP só na primeira vez
   addXpTrilha(20, 'lido: ' + (moduloNome(moduloId) || moduloId));
+  addAttribute('int', 2, 'leitura: ' + (moduloNome(moduloId) || moduloId));
 }
 
 function marcarCheckpoint(moduloId) {
@@ -1817,15 +2197,15 @@ function marcarCheckpoint(moduloId) {
   if (atual === 'checkpoint') {
     progress[moduloId] = 'lido';
     saveTrilhaProgress(progress);
-    toast('Checkpoint removido (-40 XP)');
+    toast('Checkpoint removido');
     addXpTrilha(-40, 'checkpoint removido: ' + (moduloNome(moduloId) || moduloId));
   } else {
     const eraLido = atual === 'lido';
     progress[moduloId] = 'checkpoint';
     saveTrilhaProgress(progress);
-    toast('Checkpoint marcado! +40 XP ✓', 'ok');
     addXpTrilha(40, 'checkpoint: ' + (moduloNome(moduloId) || moduloId));
     if (!eraLido) addXpTrilha(20, 'lido: ' + (moduloNome(moduloId) || moduloId));
+    addAttribute('int', 5, 'checkpoint: ' + (moduloNome(moduloId) || moduloId));
     verificarConquistasTrilha(progress);
   }
   // Atualiza UI no contexto atual sem recarregar tudo
