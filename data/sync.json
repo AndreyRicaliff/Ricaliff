@@ -236,6 +236,22 @@
       "desc": "Todas as trilhas de prioridade alta (00, 10, 30, 60, 90) com checkpoint completo",
       "unlockedAt": null,
       "xp": 0
+    },
+    {
+      "id": "primeira-side-quest",
+      "name": "Aplicação Real",
+      "icon": "🎯",
+      "desc": "Cumpriu sua primeira side quest cruzada (módulo aplicado em projeto AG)",
+      "unlockedAt": null,
+      "xp": 50
+    },
+    {
+      "id": "quest-board-pulsar",
+      "name": "PULSAR Dominado",
+      "icon": "📊",
+      "desc": "Completou todas as side quests do PULSAR-RH",
+      "unlockedAt": null,
+      "xp": 100
     }
   ],
   "quests": [

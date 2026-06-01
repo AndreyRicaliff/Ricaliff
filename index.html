@@ -665,6 +665,88 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
   .trilha-grid{grid-template-columns:1fr}
   #trilha-md-content{padding:16px}
 }
+
+/* ── QUEST BOARD ──────────────────────────────────────────────── */
+.qb-summary{display:flex;gap:20px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 18px;margin-bottom:22px}
+.qb-stat{display:flex;flex-direction:column}
+.qb-stat-val{font-size:1.4rem;font-weight:900;line-height:1;color:var(--primary)}
+.qb-stat-lbl{font-size:.64rem;color:var(--muted);margin-top:2px;font-weight:500}
+
+.qb-proj-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;overflow:hidden;margin-bottom:14px;
+  transition:box-shadow .2s;
+}
+.qb-proj-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.3)}
+.qb-proj-header{
+  display:flex;align-items:center;gap:12px;
+  padding:16px 18px 12px;
+  border-top:3px solid var(--primary);
+}
+.qb-proj-header.prio-alta{border-top-color:var(--danger)}
+.qb-proj-header.prio-media{border-top-color:var(--warn)}
+.qb-proj-header.prio-baixa{border-top-color:var(--muted)}
+.qb-proj-icon{font-size:1.5rem;line-height:1;flex-shrink:0}
+.qb-proj-info{flex:1;min-width:0}
+.qb-proj-name{font-size:.95rem;font-weight:700;margin-bottom:2px}
+.qb-proj-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.qb-prio-badge{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:20px}
+.qb-prio-alta{background:rgba(255,92,92,.15);color:var(--danger)}
+.qb-prio-media{background:rgba(255,188,125,.15);color:var(--warn)}
+.qb-prio-baixa{background:rgba(92,130,184,.15);color:var(--muted2)}
+.qb-last-activity{font-size:.65rem;color:var(--muted)}
+.qb-stack-chips{display:flex;gap:4px;flex-wrap:wrap}
+.qb-chip{font-size:.6rem;padding:1px 6px;border-radius:10px;border:1px solid var(--border);color:var(--muted2)}
+
+.qb-proj-body{padding:0 18px 16px}
+
+.qb-hp-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.qb-hp-label{font-size:.68rem;color:var(--muted);min-width:100px}
+.qb-hp-bar{flex:1;height:5px;background:var(--border);border-radius:99px;overflow:hidden}
+.qb-hp-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--primary),var(--cyan));transition:width .5s}
+.qb-hp-fill.prio-alta{background:linear-gradient(90deg,var(--danger),var(--warn))}
+.qb-hp-pct{font-size:.68rem;font-weight:700;color:var(--secondary);min-width:28px;text-align:right}
+
+.qb-section-lbl{font-size:.66rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin:10px 0 6px}
+
+.qb-sidequest-item{
+  display:flex;align-items:center;gap:10px;
+  padding:7px 8px;border-radius:8px;
+  cursor:pointer;transition:background .12s;
+}
+.qb-sidequest-item:hover{background:var(--surface2)}
+.qb-sidequest-item.sq-done{opacity:.45}
+.qb-sq-circle{
+  width:16px;height:16px;border-radius:50%;
+  border:1.5px solid var(--border);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;transition:all .15s;
+}
+.qb-sidequest-item:not(.sq-done) .qb-sq-circle:hover{border-color:var(--accent);background:rgba(8,193,106,.1)}
+.qb-sq-circle.sq-done-circle{background:var(--accent);border-color:var(--accent);color:#fff}
+.qb-sq-text{flex:1;font-size:.77rem;color:var(--text);line-height:1.4}
+.qb-sq-text.sq-done-text{text-decoration:line-through;color:var(--muted)}
+.qb-sq-xp{font-size:.67rem;font-weight:700;color:var(--warn);white-space:nowrap}
+
+.qb-bounty-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 10px;border-radius:8px;
+  cursor:pointer;transition:background .12s;
+  background:rgba(255,188,125,.04);border:1px solid rgba(255,188,125,.12);
+  margin-bottom:5px;
+}
+.qb-bounty-item:hover{background:rgba(255,188,125,.09);border-color:rgba(255,188,125,.25)}
+.qb-bounty-item.bnt-done{opacity:.4;border-color:var(--border);background:transparent}
+.qb-bounty-icon{font-size:.9rem;flex-shrink:0}
+.qb-bounty-text{flex:1;font-size:.78rem;font-weight:500;color:var(--text)}
+.qb-bounty-text.bnt-done-text{text-decoration:line-through;color:var(--muted)}
+.qb-bounty-xp{font-size:.7rem;font-weight:700;color:var(--warn);white-space:nowrap}
+
+@media(max-width:700px){
+  .qb-proj-card{margin-bottom:10px}
+  .qb-proj-header{padding:12px 14px 10px}
+  .qb-proj-body{padding:0 14px 14px}
+}
 </style>
 </head>
 <body>
@@ -697,6 +779,10 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
     <button class="nav-item" onclick="go('growth')" id="nav-growth">
       <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       Crescimento
+    </button>
+    <button class="nav-item" onclick="go('quest-board')" id="nav-quest-board">
+      <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+      Quest Board
     </button>
     <button class="nav-item" onclick="go('trilha')" id="nav-trilha">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -885,6 +971,17 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
         <div id="suggestions-list"></div>
       </div>
     </div>
+  </div>
+
+  <!-- QUEST BOARD -->
+  <div class="view" id="view-quest-board">
+    <div class="view-header">
+      <div>
+        <div class="view-title">Quest Board</div>
+        <div class="view-sub" id="qb-sub">Conectando projetos AG com a trilha de estudos</div>
+      </div>
+    </div>
+    <div id="qb-body"></div>
   </div>
 
   <!-- ESTUDOS / TRILHA -->
