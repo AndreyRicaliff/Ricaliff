@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-01T01:16:27",
+    "lastSync": "2026-06-01T01:29:16",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 3,
     "title": "Desenvolvedor Jr",
-    "xp": 1170,
+    "xp": 1220,
     "xpToNext": 1301,
     "streak": 1,
     "longestStreak": 2,
@@ -69,6 +69,12 @@
     "revisao": 60
   },
   "xpLog": [
+    {
+      "date": "2026-06-01",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Sistema de aprendizado 100%: 79 arquivos, 11 trilhas, 51 DECISIONS, 3 skills"
+    },
     {
       "date": "2026-06-01",
       "xp": 20,
@@ -143,6 +149,14 @@
     }
   ],
   "achievements": [
+    {
+      "id": "trilha-completa",
+      "name": "Trilha Pronta",
+      "icon": "🎓",
+      "desc": "Sistema de estudo + portfolio defensavel construido em 1 sessao",
+      "unlockedAt": "2026-06-01",
+      "xp": 0
+    },
     {
       "id": "first-deploy",
       "name": "Ao Vivo",
@@ -225,6 +239,13 @@
   "recentActivity": [
     {
       "date": "2026-06-01",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "Sistema de aprendizado 100%: 79 arquivos, 11 trilhas, 51 DECISIONS, 3 skills",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-01",
       "type": "review",
       "icon": "👁️",
       "title": "Sessao 6: 5 lacunas DECISIONS.md fechadas com motivacao em 1a pessoa confirmada",
@@ -285,13 +306,6 @@
       "icon": "🧠",
       "title": "Sistema de mentoria (NKB + /mentor)",
       "xp": 80
-    },
-    {
-      "date": "2026-05-25",
-      "type": "deploy",
-      "icon": "🚀",
-      "title": "Meet Hub e2e em produção",
-      "xp": 100
     }
   ]
 }
