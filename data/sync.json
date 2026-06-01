@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-05-28T17:20:37",
+    "lastSync": "2026-06-01T00:40:44",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricalfiff",
     "level": 3,
     "title": "Desenvolvedor Jr",
-    "xp": 1020,
+    "xp": 1060,
     "xpToNext": 1301,
     "streak": 1,
     "longestStreak": 2,
-    "lastActiveDate": "2026-05-28"
+    "lastActiveDate": "2026-06-01"
   },
   "levels": [
     {
@@ -69,6 +69,12 @@
     "revisao": 60
   },
   "xpLog": [
+    {
+      "date": "2026-06-01",
+      "xp": 40,
+      "type": "learning",
+      "desc": "trilha de fundamentos + mentoria em contexto + decision log estabelecidos"
+    },
     {
       "date": "2026-05-28",
       "xp": 30,
@@ -199,6 +205,13 @@
     }
   ],
   "recentActivity": [
+    {
+      "date": "2026-06-01",
+      "type": "learning",
+      "icon": "📚",
+      "title": "trilha de fundamentos + mentoria em contexto + decision log estabelecidos",
+      "xp": 40
+    },
     {
       "date": "2026-05-28",
       "type": "bugfix",
