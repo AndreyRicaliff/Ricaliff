@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-01T01:03:23",
+    "lastSync": "2026-06-01T01:16:27",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 3,
     "title": "Desenvolvedor Jr",
-    "xp": 1150,
+    "xp": 1170,
     "xpToNext": 1301,
     "streak": 1,
     "longestStreak": 2,
@@ -69,6 +69,12 @@
     "revisao": 60
   },
   "xpLog": [
+    {
+      "date": "2026-06-01",
+      "xp": 20,
+      "type": "review",
+      "desc": "Sessao 6: 5 lacunas DECISIONS.md fechadas com motivacao em 1a pessoa confirmada"
+    },
     {
       "date": "2026-06-01",
       "xp": 50,
@@ -219,6 +225,13 @@
   "recentActivity": [
     {
       "date": "2026-06-01",
+      "type": "review",
+      "icon": "👁️",
+      "title": "Sessao 6: 5 lacunas DECISIONS.md fechadas com motivacao em 1a pessoa confirmada",
+      "xp": 20
+    },
+    {
+      "date": "2026-06-01",
       "type": "feat",
       "icon": "⚙️",
       "title": "DECISIONS.md retroativo em 8 projetos AG: 50 entradas reconstruidas com fonte",
@@ -278,13 +291,6 @@
       "type": "deploy",
       "icon": "🚀",
       "title": "Meet Hub e2e em produção",
-      "xp": 100
-    },
-    {
-      "date": "2026-05-08",
-      "type": "deploy",
-      "icon": "🚀",
-      "title": "CLIENTE OFICINA sync em produção",
       "xp": 100
     }
   ]
