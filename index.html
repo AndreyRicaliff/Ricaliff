@@ -665,6 +665,163 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
   .trilha-grid{grid-template-columns:1fr}
   #trilha-md-content{padding:16px}
 }
+
+/* ── DAILY STANDUP ─────────────────────────────────────────────── */
+.standup-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.82);
+  backdrop-filter:blur(8px);z-index:500;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.standup-overlay.open{opacity:1;pointer-events:all}
+.standup-modal{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;padding:28px 30px;width:100%;max-width:520px;
+  transform:translateY(20px);transition:transform .25s;
+  max-height:90vh;overflow-y:auto;
+}
+.standup-overlay.open .standup-modal{transform:translateY(0)}
+.standup-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:20px;
+}
+.standup-title{font-size:1rem;font-weight:800;letter-spacing:-.01em}
+.standup-date{font-size:.72rem;color:var(--muted)}
+.standup-section{margin-bottom:18px}
+.standup-section-label{
+  font-size:.63rem;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.09em;margin-bottom:8px;
+}
+.standup-item{
+  display:flex;align-items:center;gap:8px;
+  font-size:.82rem;color:var(--text);padding:4px 0;
+}
+.standup-item-icon{font-size:1rem;width:22px;text-align:center;flex-shrink:0}
+.streak-cards{display:flex;gap:8px;flex-wrap:wrap}
+.streak-card{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:10px;padding:8px 12px;
+  display:flex;flex-direction:column;align-items:center;
+  min-width:72px;cursor:default;transition:border-color .15s;
+}
+.streak-card:hover{border-color:var(--primary)}
+.streak-card-icon{font-size:1.1rem;line-height:1;margin-bottom:2px}
+.streak-card-val{font-size:1.3rem;font-weight:900;line-height:1;color:var(--warn)}
+.streak-card-lbl{font-size:.6rem;color:var(--muted);margin-top:2px;text-align:center}
+.streak-card-rec{
+  font-size:.55rem;color:var(--muted2);margin-top:2px;
+  background:var(--surface3);border-radius:4px;padding:1px 4px;
+}
+.standup-suggest{
+  background:var(--surface2);border:1px solid rgba(26,127,255,.2);
+  border-radius:10px;padding:10px 12px;margin-bottom:6px;
+  font-size:.8rem;color:var(--text);display:flex;align-items:flex-start;gap:8px;
+}
+.standup-suggest-arrow{color:var(--primary);font-weight:800;flex-shrink:0}
+.standup-actions{display:flex;gap:8px;margin-top:20px;justify-content:flex-end;flex-wrap:wrap}
+
+/* ── POMODORO FAB + PANEL ──────────────────────────────────────── */
+.pomodoro-fab{
+  position:fixed;bottom:24px;right:24px;z-index:400;
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,var(--primary),var(--cyan));
+  border:none;cursor:pointer;font-size:1.4rem;
+  box-shadow:0 4px 20px rgba(26,127,255,.45);
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .18s,box-shadow .18s;
+  font-family:inherit;
+}
+.pomodoro-fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(26,127,255,.6)}
+.pomodoro-fab.active-session{
+  box-shadow:0 0 0 3px var(--primary),0 4px 20px rgba(26,127,255,.4);
+}
+.pomodoro-panel{
+  position:fixed;bottom:90px;right:24px;z-index:400;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:20px;width:220px;
+  box-shadow:0 8px 40px rgba(0,0,0,.5);
+  display:none;
+}
+.pomodoro-panel.open{display:block}
+.pomodoro-timer-wrap{
+  text-align:center;margin-bottom:16px;padding:14px;
+  background:var(--surface2);border-radius:12px;
+}
+.pomodoro-time{
+  font-size:2.4rem;font-weight:900;letter-spacing:.04em;
+  color:var(--text);font-variant-numeric:tabular-nums;line-height:1;
+}
+.pomodoro-time.warn{color:var(--warn)}
+.pomodoro-time.done{color:var(--accent)}
+.pomodoro-type-label{
+  font-size:.65rem;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.08em
+}
+.pomodoro-btns{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.pomo-btn{
+  width:100%;padding:7px 10px;border-radius:8px;font-size:.75rem;font-weight:600;
+  cursor:pointer;border:1.5px solid var(--border);background:var(--surface2);
+  color:var(--text);font-family:inherit;transition:all .15s;
+  display:flex;align-items:center;gap:6px;
+}
+.pomo-btn:hover{background:var(--surface3);border-color:var(--primary)}
+.pomo-btn.running{background:rgba(255,92,92,.1);border-color:var(--danger);color:var(--danger)}
+.pomo-btn.sagrada{background:rgba(8,193,106,.08);border-color:var(--accent);color:var(--accent)}
+.pomo-stats{font-size:.65rem;color:var(--muted);text-align:center;
+  padding-top:12px;border-top:1px solid var(--border);line-height:1.6}
+
+/* ── HORA SAGRADA BANNER ───────────────────────────────────────── */
+.hora-sagrada-banner{
+  position:fixed;top:0;left:240px;right:0;z-index:300;
+  background:rgba(8,193,106,.12);border-bottom:1px solid rgba(8,193,106,.3);
+  padding:7px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:.78rem;font-weight:600;color:var(--accent);
+  transform:translateY(-100%);transition:transform .3s;
+  backdrop-filter:blur(4px);
+}
+.hora-sagrada-banner.active{transform:translateY(0)}
+.hora-sagrada-left{display:flex;align-items:center;gap:10px;flex:1}
+.hora-sagrada-timer{
+  font-size:.82rem;font-weight:900;
+  font-variant-numeric:tabular-nums;
+  background:rgba(8,193,106,.15);
+  border:1px solid rgba(8,193,106,.3);
+  border-radius:6px;padding:2px 8px;
+}
+.hora-sagrada-close{
+  background:none;border:none;color:var(--muted);cursor:pointer;
+  font-family:inherit;font-size:.75rem;padding:0;
+  transition:color .15s;
+}
+.hora-sagrada-close:hover{color:var(--danger)}
+@media(max-width:900px){
+  .hora-sagrada-banner{left:0}
+}
+
+/* ── PULSE ANIMATION (tela em sessão foco) ─────────────────────── */
+@keyframes borderPulse{
+  0%,100%{box-shadow:inset 0 0 0 2px rgba(26,127,255,0)}
+  50%{box-shadow:inset 0 0 0 2px rgba(26,127,255,.25)}
+}
+body.pomo-running::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:350;
+  animation:borderPulse 3s ease-in-out infinite;
+}
+
+/* ── DAILY REFLECTION ─────────────────────────────────────────── */
+.reflection-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.75);
+  backdrop-filter:blur(5px);z-index:510;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;opacity:0;pointer-events:none;transition:opacity .2s;
+}
+.reflection-overlay.open{opacity:1;pointer-events:all}
+.reflection-modal{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:26px 28px;width:100%;max-width:460px;
+  transform:translateY(14px);transition:transform .2s;
+}
+.reflection-overlay.open .reflection-modal{transform:translateY(0)}
 </style>
 </head>
 <body>
@@ -1053,6 +1210,74 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- HORA SAGRADA BANNER -->
+<div class="hora-sagrada-banner" id="hora-sagrada-banner">
+  <div class="hora-sagrada-left">
+    <span>🚫 Hora Sagrada ativa — sem IA. Você no comando.</span>
+    <span class="hora-sagrada-timer" id="hora-sagrada-timer">30:00</span>
+  </div>
+  <button class="hora-sagrada-close" onclick="interromperHoraSagrada()" title="Interromper">Interromper</button>
+</div>
+
+<!-- POMODORO FAB -->
+<button class="pomodoro-fab" id="pomodoro-fab" onclick="togglePomodoroPanel()" title="Pomodoro">🍅</button>
+
+<!-- POMODORO PANEL -->
+<div class="pomodoro-panel" id="pomodoro-panel">
+  <div class="pomodoro-timer-wrap">
+    <div class="pomodoro-time" id="pomo-time-display">25:00</div>
+    <div class="pomodoro-type-label" id="pomo-type-label">pronto</div>
+  </div>
+  <div class="pomodoro-btns" id="pomo-btns">
+    <button class="pomo-btn" id="pomo-btn-foco" onclick="iniciarPomodoro('foco')">▶ Foco 25min</button>
+    <button class="pomo-btn" id="pomo-btn-break" onclick="iniciarPomodoro('break')">▶ Break 5min</button>
+    <button class="pomo-btn sagrada" id="pomo-btn-sagrada" onclick="iniciarHoraSagrada()">🚫 Hora Sagrada 30min</button>
+  </div>
+  <div class="pomo-stats" id="pomo-stats">Carregando...</div>
+</div>
+
+<!-- DAILY STANDUP MODAL -->
+<div class="standup-overlay" id="standup-overlay">
+  <div class="standup-modal">
+    <div class="standup-head">
+      <div>
+        <div class="standup-title">Daily Standup</div>
+        <div class="standup-date" id="standup-date"></div>
+      </div>
+      <button class="mclose" onclick="closeStandup()">×</button>
+    </div>
+    <div id="standup-body"></div>
+    <div class="standup-actions">
+      <button class="btn btn-ghost" onclick="openReflectionModal()">✍ Reflection</button>
+      <button class="btn btn-ghost" onclick="iniciarHoraSagradaFromStandup()">🚫 Hora Sagrada</button>
+      <button class="btn btn-primary" onclick="closeStandup()">Vamos lá</button>
+    </div>
+  </div>
+</div>
+
+<!-- DAILY REFLECTION MODAL -->
+<div class="reflection-overlay" id="reflection-overlay">
+  <div class="reflection-modal">
+    <div class="mhead">
+      <div class="mtitle">✍ Daily Reflection</div>
+      <button class="mclose" onclick="closeReflection()">×</button>
+    </div>
+    <div class="fg">
+      <label class="fl">O que você fez de melhor hoje?</label>
+      <textarea class="fta" id="ref-melhor" placeholder="Maior conquista do dia…" style="min-height:80px"></textarea>
+    </div>
+    <div class="fg">
+      <label class="fl">O que falhou ou não foi feito?</label>
+      <textarea class="fta" id="ref-falhou" placeholder="O que ficou pra trás e por quê…" style="min-height:80px"></textarea>
+    </div>
+    <div class="fact">
+      <button class="btn btn-ghost" onclick="closeReflection()">Cancelar</button>
+      <button class="btn btn-primary" onclick="saveReflection()">Salvar +30 XP</button>
+    </div>
+  </div>
+</div>
+
 <script src="seed.js"></script>
 <script src="app.js"></script>
 </body>

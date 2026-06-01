@@ -12,7 +12,13 @@
     "xpToNext": 2201,
     "streak": 1,
     "longestStreak": 2,
-    "lastActiveDate": "2026-06-01"
+    "lastActiveDate": "2026-06-01",
+    "streaks": {
+      "geral":    { "atual": 4, "recorde": 7,  "ultimoDia": "2026-06-01" },
+      "estudo":   { "atual": 3, "recorde": 5,  "ultimoDia": "2026-05-31" },
+      "semIa":    { "atual": 1, "recorde": 1,  "ultimoDia": "2026-05-30" },
+      "decisoes": { "atual": 2, "recorde": 3,  "ultimoDia": "2026-05-31" }
+    }
   },
   "levels": [
     {
