@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-01T02:08:38",
+    "lastSync": "2026-06-01T02:17:49",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,51 +8,169 @@
     "name": "Ricalfiff",
     "level": 4,
     "title": "Desenvolvedor",
-    "xp": 1370,
+    "xp": 1470,
     "xpToNext": 2201,
     "streak": 1,
     "longestStreak": 2,
     "lastActiveDate": "2026-06-01",
     "attributes": {
-      "int": { "value": 0, "label": "Inteligência", "icon": "🧠", "rule": "+2 por módulo lido, +5 por checkpoint" },
-      "str": { "value": 0, "label": "Throughput",   "icon": "💪", "rule": "+3 por feat, +5 por deploy" },
-      "dex": { "value": 0, "label": "Velocidade",   "icon": "⚡", "rule": "+4 por bugfix, +2 por refactor" },
-      "wis": { "value": 0, "label": "Sabedoria",    "icon": "🦉", "rule": "+5 por entrada DECISIONS.md, +3 por revisao" },
-      "cha": { "value": 0, "label": "Carisma",      "icon": "🗣", "rule": "+10 por post LinkedIn, +20 por talk, +30 por PR OSS" },
-      "con": { "value": 0, "label": "Constituição", "icon": "🛡", "rule": "+1 por dia de streak ativo" }
+      "int": {
+        "value": 0,
+        "label": "Inteligência",
+        "icon": "🧠",
+        "rule": "+2 por módulo lido, +5 por checkpoint"
+      },
+      "str": {
+        "value": 0,
+        "label": "Throughput",
+        "icon": "💪",
+        "rule": "+3 por feat, +5 por deploy"
+      },
+      "dex": {
+        "value": 0,
+        "label": "Velocidade",
+        "icon": "⚡",
+        "rule": "+4 por bugfix, +2 por refactor"
+      },
+      "wis": {
+        "value": 0,
+        "label": "Sabedoria",
+        "icon": "🦉",
+        "rule": "+5 por entrada DECISIONS.md, +3 por revisao"
+      },
+      "cha": {
+        "value": 0,
+        "label": "Carisma",
+        "icon": "🗣",
+        "rule": "+10 por post LinkedIn, +20 por talk, +30 por PR OSS"
+      },
+      "con": {
+        "value": 0,
+        "label": "Constituição",
+        "icon": "🛡",
+        "rule": "+1 por dia de streak ativo"
+      }
     },
     "build": {
       "id": "backend-mage",
       "label": "Backend Mage",
-      "bonus": { "str": 1.1, "wis": 1.05 }
+      "bonus": {
+        "str": 1.1,
+        "wis": 1.05
+      }
     },
     "availableBuilds": [
-      { "id": "backend-mage",      "label": "Backend Mage",       "icon": "🧙", "desc": "Bônus STR e WIS — para quem foca em entregar e decidir",  "bonus": { "str": 1.1,  "wis": 1.05 } },
-      { "id": "frontend-rogue",    "label": "Frontend Rogue",     "icon": "🗡", "desc": "Bônus DEX e INT — agilidade e conhecimento",               "bonus": { "dex": 1.1,  "int": 1.05 } },
-      { "id": "fullstack-paladin", "label": "Full-stack Paladin", "icon": "🛡", "desc": "Bônus equilibrado em todos",                                "bonus": { "str": 1.03, "dex": 1.03, "int": 1.03, "wis": 1.03, "cha": 1.03, "con": 1.03 } },
-      { "id": "secops-warlock",    "label": "SecOps Warlock",     "icon": "🔮", "desc": "Bônus WIS e CHA — sabedoria que se comunica",              "bonus": { "wis": 1.1,  "cha": 1.1  } }
+      {
+        "id": "backend-mage",
+        "label": "Backend Mage",
+        "icon": "🧙",
+        "desc": "Bônus STR e WIS — para quem foca em entregar e decidir",
+        "bonus": {
+          "str": 1.1,
+          "wis": 1.05
+        }
+      },
+      {
+        "id": "frontend-rogue",
+        "label": "Frontend Rogue",
+        "icon": "🗡",
+        "desc": "Bônus DEX e INT — agilidade e conhecimento",
+        "bonus": {
+          "dex": 1.1,
+          "int": 1.05
+        }
+      },
+      {
+        "id": "fullstack-paladin",
+        "label": "Full-stack Paladin",
+        "icon": "🛡",
+        "desc": "Bônus equilibrado em todos",
+        "bonus": {
+          "str": 1.03,
+          "dex": 1.03,
+          "int": 1.03,
+          "wis": 1.03,
+          "cha": 1.03,
+          "con": 1.03
+        }
+      },
+      {
+        "id": "secops-warlock",
+        "label": "SecOps Warlock",
+        "icon": "🔮",
+        "desc": "Bônus WIS e CHA — sabedoria que se comunica",
+        "bonus": {
+          "wis": 1.1,
+          "cha": 1.1
+        }
+      }
     ],
     "streaks": {
-      "geral":    { "atual": 4, "recorde": 7,  "ultimoDia": "2026-06-01" },
-      "estudo":   { "atual": 3, "recorde": 5,  "ultimoDia": "2026-05-31" },
-      "semIa":    { "atual": 1, "recorde": 1,  "ultimoDia": "2026-05-30" },
-      "decisoes": { "atual": 2, "recorde": 3,  "ultimoDia": "2026-05-31" }
+      "geral": {
+        "atual": 4,
+        "recorde": 7,
+        "ultimoDia": "2026-06-01"
+      },
+      "estudo": {
+        "atual": 3,
+        "recorde": 5,
+        "ultimoDia": "2026-05-31"
+      },
+      "semIa": {
+        "atual": 1,
+        "recorde": 1,
+        "ultimoDia": "2026-05-30"
+      },
+      "decisoes": {
+        "atual": 2,
+        "recorde": 3,
+        "ultimoDia": "2026-05-31"
+      }
     }
   },
   "attributeRules": {
-    "feat":       { "str": 3 },
-    "bugfix":     { "dex": 4 },
-    "deploy":     { "str": 5, "con": 1 },
-    "test":       { "wis": 3 },
-    "learning":   { "int": 3 },
-    "review":     { "wis": 3 },
-    "security":   { "wis": 3, "con": 1 },
-    "migration":  { "str": 2, "wis": 2 },
-    "refactor":   { "dex": 2 },
-    "revisao":    { "wis": 5 },
-    "lido":       { "int": 2 },
-    "checkpoint": { "int": 5 },
-    "decision":   { "wis": 5 }
+    "feat": {
+      "str": 3
+    },
+    "bugfix": {
+      "dex": 4
+    },
+    "deploy": {
+      "str": 5,
+      "con": 1
+    },
+    "test": {
+      "wis": 3
+    },
+    "learning": {
+      "int": 3
+    },
+    "review": {
+      "wis": 3
+    },
+    "security": {
+      "wis": 3,
+      "con": 1
+    },
+    "migration": {
+      "str": 2,
+      "wis": 2
+    },
+    "refactor": {
+      "dex": 2
+    },
+    "revisao": {
+      "wis": 5
+    },
+    "lido": {
+      "int": 2
+    },
+    "checkpoint": {
+      "int": 5
+    },
+    "decision": {
+      "wis": 5
+    }
   },
   "levels": [
     {
@@ -111,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-01",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "RPG completo no AG Hub: 6 atributos + 4 builds + skill tree + quest board cruzado (122 side quests) + daily standup + pomodoro + hora sagrada + 4 streaks"
+    },
     {
       "date": "2026-06-01",
       "xp": 50,
@@ -203,6 +327,14 @@
     }
   ],
   "achievements": [
+    {
+      "id": "rpg-completo",
+      "name": "RPG Completo",
+      "icon": "🎲",
+      "desc": "3 niveis de gamificacao em paralelo via Opus + worktrees",
+      "unlockedAt": "2026-06-01",
+      "xp": 0
+    },
     {
       "id": "trilha-completa",
       "name": "Trilha Pronta",
@@ -341,6 +473,13 @@
   "recentActivity": [
     {
       "date": "2026-06-01",
+      "type": "deploy",
+      "icon": "🚀",
+      "title": "RPG completo no AG Hub: 6 atributos + 4 builds + skill tree + quest board cruzado (122 side quests) + daily standup + pomodoro + hora sagrada + 4 streaks",
+      "xp": 100
+    },
+    {
+      "date": "2026-06-01",
       "type": "feat",
       "icon": "⚙️",
       "title": "Daily Ritual: Standup modal, Pomodoro FAB, Hora Sagrada e Streaks multiplos",
@@ -401,13 +540,6 @@
       "icon": "⚙️",
       "title": "PDI e Processos DP: módulos completos implementados (renderPdi, renderProcessos, savePdi, saveProcesso, deletePdi, deleteProcesso, _diSubTab, _pSubTab); tooltips ? corrigidos (data-tip); client-modules.js truncado restaurado; client-collabs.js código órfão removido",
       "xp": 50
-    },
-    {
-      "date": "2026-05-25",
-      "type": "learning",
-      "icon": "📚",
-      "title": "Clean Code deep dive",
-      "xp": 200
     }
   ]
 }
