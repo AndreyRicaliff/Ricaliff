@@ -295,8 +295,9 @@ function go(view) {
   if (view==='projects') renderProjects();
   if (view==='tasks')    renderTasks();
   if (view==='agenda')   renderCal();
-  if (view==='growth')   { renderGrowth(); renderModules(); }
-  if (view==='trilha')   renderTrilha();
+  if (view==='growth')       { renderGrowth(); renderModules(); }
+  if (view==='quest-board')  renderQuestBoard();
+  if (view==='trilha')       renderTrilha();
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────
@@ -2220,6 +2221,8 @@ function marcarCheckpoint(moduloId) {
     );
     btn.textContent = isNowCheck ? '✓ Checkpoint' : '+ Checkpoint';
   });
+  // Cross-quest: notifica Quest Board se este módulo é side quest de algum projeto
+  if (isNowCheck) queueMicrotask(() => notificarCrossQuest(moduloId));
 }
 
 function moduloNome(moduloId) {
@@ -2291,6 +2294,235 @@ function verificarConquistasTrilha(progress) {
   });
   if (todasAlta && desbloquear('trilha-portfolio')) {
     toast('💼 Conquista: Portfólio Defensável!', 'ok');
+  }
+}
+
+// ── QUEST BOARD ───────────────────────────────────────────────────
+
+let QUEST_BOARD_DATA = null;
+
+function loadQuestBoardProgress() {
+  return JSON.parse(localStorage.getItem('questBoardProgress') || '{}');
+}
+
+function saveQuestBoardProgress(progress) {
+  localStorage.setItem('questBoardProgress', JSON.stringify(progress));
+}
+
+async function loadQuestBoard() {
+  if (QUEST_BOARD_DATA) return QUEST_BOARD_DATA;
+  try {
+    const r = await fetch('/data/quest-board.json?v=' + Date.now());
+    if (!r.ok) throw new Error(`${r.status}`);
+    QUEST_BOARD_DATA = await r.json();
+    return QUEST_BOARD_DATA;
+  } catch(e) {
+    console.warn('[quest-board] falha ao carregar quest-board.json:', e);
+    return null;
+  }
+}
+
+function buildSideQuestItem(sq, projId, progress) {
+  const key = `sq:${projId}:${sq.id}`;
+  const done = progress[key] || sq.concluida;
+  const projIdSafe = esc(projId);
+  const sqIdSafe = sq.id.replace(/'/g, "\\'");
+  return `
+    <div class="qb-sidequest-item ${done ? 'sq-done' : ''}"
+         onclick="concluirSideQuest('${projIdSafe}','${sqIdSafe}')">
+      <div class="qb-sq-circle ${done ? 'sq-done-circle' : ''}">${done ? '&#10003;' : ''}</div>
+      <div class="qb-sq-text ${done ? 'sq-done-text' : ''}">${esc(sq.titulo)}</div>
+      <div class="qb-sq-xp">+${sq.xpBase + sq.xpBonus} XP</div>
+    </div>`;
+}
+
+function buildBountyItem(b, projId, progress) {
+  const key = `bnt:${projId}:${b.id}`;
+  const done = progress[key] || b.concluida;
+  const projIdSafe = esc(projId);
+  const bntIdSafe = b.id.replace(/'/g, "\\'");
+  return `
+    <div class="qb-bounty-item ${done ? 'bnt-done' : ''}"
+         onclick="concluirBounty('${projIdSafe}','${bntIdSafe}')">
+      <div class="qb-bounty-icon">&#x1F4B0;</div>
+      <div class="qb-bounty-text ${done ? 'bnt-done-text' : ''}">${esc(b.titulo)}</div>
+      <div class="qb-bounty-xp">+${b.xp} XP</div>
+    </div>`;
+}
+
+function buildQuestCardHeader(proj, prioClass, atividadeLabel) {
+  return `
+    <div class="qb-proj-header ${prioClass}">
+      <div class="qb-proj-icon">${proj.icone}</div>
+      <div class="qb-proj-info">
+        <div class="qb-proj-name">${esc(proj.nome)}</div>
+        <div class="qb-proj-meta">
+          <span class="qb-prio-badge qb-prio-${proj.prioridade}">${proj.prioridade}</span>
+          ${atividadeLabel ? `<span class="qb-last-activity">Última atividade: ${esc(atividadeLabel)}</span>` : ''}
+        </div>
+      </div>
+      <div class="qb-stack-chips">
+        ${proj.stack.map(s => `<span class="qb-chip">${esc(s)}</span>`).join('')}
+      </div>
+    </div>`;
+}
+
+function buildProjetoQuestCard(proj, progress) {
+  const hpPct = proj.hp.max ? Math.round((proj.hp.atual / proj.hp.max) * 100) : 0;
+  const prioClass = `prio-${proj.prioridade}`;
+  const completedSQ = proj.sideQuests.filter(sq =>
+    progress[`sq:${proj.id}:${sq.id}`] || sq.concluida
+  ).length;
+
+  const diasAtiv = proj.ultimaAtividade
+    ? Math.floor((Date.now() - new Date(proj.ultimaAtividade)) / 86400000)
+    : null;
+  const atividadeLabel = diasAtiv !== null
+    ? (diasAtiv === 0 ? 'hoje' : `${diasAtiv}d atrás`)
+    : '';
+
+  const sidequestsHtml = proj.sideQuests.map(sq => buildSideQuestItem(sq, proj.id, progress)).join('');
+  const bountiesHtml = proj.bounties.map(b => buildBountyItem(b, proj.id, progress)).join('');
+
+  return `
+    <div class="qb-proj-card">
+      ${buildQuestCardHeader(proj, prioClass, atividadeLabel)}
+      <div class="qb-proj-body">
+        <div class="qb-hp-row">
+          <div class="qb-hp-label">${esc(proj.hp.label)}</div>
+          <div class="qb-hp-bar"><div class="qb-hp-fill ${prioClass}" style="width:${hpPct}%"></div></div>
+          <div class="qb-hp-pct">${hpPct}%</div>
+        </div>
+        <div class="qb-section-lbl">&#9654; Side quests (${completedSQ}/${proj.sideQuests.length})</div>
+        ${sidequestsHtml}
+        <div class="qb-section-lbl" style="margin-top:12px">&#x1F4B0; Bounties extras</div>
+        ${bountiesHtml}
+      </div>
+    </div>`;
+}
+
+async function renderQuestBoard() {
+  const data = await loadQuestBoard();
+  if (!data) {
+    document.getElementById('qb-body').innerHTML =
+      '<div class="empty"><div class="empty-i">&#127919;</div><div class="empty-t">Erro ao carregar Quest Board</div><div class="empty-s">Verifique se data/quest-board.json existe</div></div>';
+    return;
+  }
+
+  const progress = loadQuestBoardProgress();
+
+  const totalSQ = data.projetos.reduce((a, p) => a + p.sideQuests.length, 0);
+  const completedSQ = data.projetos.reduce((a, p) =>
+    a + p.sideQuests.filter(sq => progress[`sq:${p.id}:${sq.id}`] || sq.concluida).length, 0
+  );
+  const totalBounties = data.projetos.reduce((a, p) => a + p.bounties.length, 0);
+  const completedBounties = data.projetos.reduce((a, p) =>
+    a + p.bounties.filter(b => progress[`bnt:${p.id}:${b.id}`] || b.concluida).length, 0
+  );
+
+  document.getElementById('qb-sub').textContent =
+    `${data.projetos.length} projetos · ${totalSQ - completedSQ} side quests disponíveis · XP×2 quando vinculadas`;
+
+  document.getElementById('qb-body').innerHTML = `
+    <div class="qb-summary">
+      <div class="qb-stat"><div class="qb-stat-val">${data.projetos.length}</div><div class="qb-stat-lbl">projetos</div></div>
+      <div class="qb-stat"><div class="qb-stat-val" style="color:var(--accent)">${completedSQ}</div><div class="qb-stat-lbl">side quests concluídas</div></div>
+      <div class="qb-stat"><div class="qb-stat-val" style="color:var(--warn)">${totalSQ - completedSQ}</div><div class="qb-stat-lbl">side quests abertas</div></div>
+      <div class="qb-stat"><div class="qb-stat-val" style="color:var(--secondary)">${completedBounties}/${totalBounties}</div><div class="qb-stat-lbl">bounties</div></div>
+    </div>
+    ${data.projetos.map(p => buildProjetoQuestCard(p, progress)).join('')}
+  `;
+}
+
+function concluirSideQuest(projetoId, questId) {
+  const progress = loadQuestBoardProgress();
+  const key = `sq:${projetoId}:${questId}`;
+  if (progress[key]) return;
+
+  progress[key] = true;
+  saveQuestBoardProgress(progress);
+
+  const proj = QUEST_BOARD_DATA?.projetos?.find(p => p.id === projetoId);
+  const sq = proj?.sideQuests?.find(s => s.id === questId);
+  const xpTotal = sq ? (sq.xpBase + sq.xpBonus) : 80;
+  const projNome = proj?.nome || projetoId;
+
+  addXpTrilha(xpTotal, `side quest ${projNome}: ${questId}`);
+  toast(`Side quest concluída! +${xpTotal} XP (${esc(projNome)})`, 'ok');
+
+  verificarConquistaQuestBoard(projetoId, progress);
+  renderQuestBoard();
+}
+
+function concluirBounty(projetoId, bountyId) {
+  const progress = loadQuestBoardProgress();
+  const key = `bnt:${projetoId}:${bountyId}`;
+  if (progress[key]) return;
+
+  progress[key] = true;
+  saveQuestBoardProgress(progress);
+
+  const proj = QUEST_BOARD_DATA?.projetos?.find(p => p.id === projetoId);
+  const bounty = proj?.bounties?.find(b => b.id === bountyId);
+  const xp = bounty?.xp || 60;
+  const projNome = proj?.nome || projetoId;
+
+  addXpTrilha(xp, `bounty ${projNome}: ${bountyId}`);
+  toast(`Bounty coletada! +${xp} XP (${esc(projNome)})`, 'ok');
+
+  renderQuestBoard();
+}
+
+function verificarConquistaQuestBoard(projetoId, progress) {
+  const conquistas = JSON.parse(localStorage.getItem('trilhaConquistas') || '[]');
+
+  const desbloquear = (id) => {
+    if (conquistas.includes(id)) return false;
+    conquistas.push(id);
+    localStorage.setItem('trilhaConquistas', JSON.stringify(conquistas));
+    return true;
+  };
+
+  if (desbloquear('primeira-side-quest')) {
+    toast('Conquista: Aplicação Real!', 'ok');
+  }
+
+  if (!QUEST_BOARD_DATA) return;
+  const proj = QUEST_BOARD_DATA.projetos.find(p => p.id === projetoId);
+  if (!proj) return;
+
+  const todasConcluidas = proj.sideQuests.every(
+    sq => progress[`sq:${projetoId}:${sq.id}`] || sq.concluida
+  );
+  if (todasConcluidas && projetoId === 'PULSAR-RH' && desbloquear('quest-board-pulsar')) {
+    toast('Conquista: PULSAR Dominado!', 'ok');
+  }
+}
+
+// Integração: marcarCheckpoint → Quest Board cross-XP
+// Não sobrescreve — wraps via reatribuição após execução do módulo trilha.
+// queueMicrotask garante que roda depois da lógica original.
+function notificarCrossQuest(moduloId) {
+  if (!QUEST_BOARD_DATA) return;
+  const progress = loadQuestBoardProgress();
+  const trilhaProgress = loadTrilhaProgress();
+
+  if (trilhaProgress[moduloId] !== 'checkpoint') return;
+
+  for (const proj of QUEST_BOARD_DATA.projetos) {
+    const sq = proj.sideQuests.find(s => s.id === moduloId);
+    if (!sq) continue;
+    const key = `sq:${proj.id}:${sq.id}`;
+    if (progress[key]) continue;
+
+    progress[key] = true;
+    saveQuestBoardProgress(progress);
+
+    const xpBonus = sq.xpBonus;
+    addXpTrilha(xpBonus, `cross-quest bonus ${proj.nome}: ${moduloId}`);
+    setTimeout(() => {
+      toast(`Side quest do ${esc(proj.nome)} cumprida! +${xpBonus} XP cruzado.`, 'ok');
+    }, 650);
   }
 }
 
