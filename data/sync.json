@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-01T00:40:44",
+    "lastSync": "2026-06-01T00:55:05",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 3,
     "title": "Desenvolvedor Jr",
-    "xp": 1060,
+    "xp": 1100,
     "xpToNext": 1301,
     "streak": 1,
     "longestStreak": 2,
@@ -69,6 +69,12 @@
     "revisao": 60
   },
   "xpLog": [
+    {
+      "date": "2026-06-01",
+      "xp": 40,
+      "type": "learning",
+      "desc": "trilha de estudo finalizada: 27 arquivos, 4 trilhas completas (00,10,90,95) + 7 stubs estruturados"
+    },
     {
       "date": "2026-06-01",
       "xp": 40,
@@ -205,6 +211,13 @@
     }
   ],
   "recentActivity": [
+    {
+      "date": "2026-06-01",
+      "type": "learning",
+      "icon": "📚",
+      "title": "trilha de estudo finalizada: 27 arquivos, 4 trilhas completas (00,10,90,95) + 7 stubs estruturados",
+      "xp": 40
+    },
     {
       "date": "2026-06-01",
       "type": "learning",
