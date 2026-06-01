@@ -66,7 +66,9 @@
     "security": 50,
     "migration": 40,
     "refactor": 25,
-    "revisao": 60
+    "revisao": 60,
+    "checkpoint": 40,
+    "lido": 20
   },
   "xpLog": [
     {
@@ -196,6 +198,38 @@
       "desc": "Criou CLAUDE.md completo com regras de comportamento automático",
       "unlockedAt": "2026-05-25",
       "xp": 120
+    },
+    {
+      "id": "trilha-primeira",
+      "name": "Primeira Trilha",
+      "icon": "🎓",
+      "desc": "Concluiu 1 trilha completa (todos os módulos com checkpoint)",
+      "unlockedAt": null,
+      "xp": 0
+    },
+    {
+      "id": "trilha-diferencial",
+      "name": "Diferencial Dominado",
+      "icon": "⚡",
+      "desc": "Concluiu a trilha 95-diferencial inteira — o que sobrevive ao Claude",
+      "unlockedAt": null,
+      "xp": 0
+    },
+    {
+      "id": "trilha-maratonista",
+      "name": "Maratonista",
+      "icon": "🏃",
+      "desc": "10 módulos com checkpoint numa mesma sessão",
+      "unlockedAt": null,
+      "xp": 0
+    },
+    {
+      "id": "trilha-portfolio",
+      "name": "Portfólio Defensável",
+      "icon": "💼",
+      "desc": "Todas as trilhas de prioridade alta (00, 10, 30, 60, 90) com checkpoint completo",
+      "unlockedAt": null,
+      "xp": 0
     }
   ],
   "quests": [

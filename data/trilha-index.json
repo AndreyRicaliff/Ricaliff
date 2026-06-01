@@ -1,0 +1,536 @@
+{
+  "geradoEm": "2026-06-01T01:40:17-03:00",
+  "totalTrilhas": 11,
+  "trilhas": [
+    {
+      "id": "00-fundamentos",
+      "nome": "Fundamentos",
+      "foco": "Base que TODA entrevista j\u00fanior cobra",
+      "icone": "\ud83c\udfaf",
+      "prioridade": "alta",
+      "totalModulos": 6,
+      "modulos": [
+        {
+          "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
+          "arquivo": "01-tipos-memoria-valor-referencia.md",
+          "titulo": "01 \u2014 Tipos, Mem\u00f3ria, Valor vs Refer\u00eancia",
+          "caminho": "/trilha/00-fundamentos/01-tipos-memoria-valor-referencia.md"
+        },
+        {
+          "id": "00-fundamentos/02-async-event-loop-promises.md",
+          "arquivo": "02-async-event-loop-promises.md",
+          "titulo": "02 \u2014 Async, Event Loop e Promises",
+          "caminho": "/trilha/00-fundamentos/02-async-event-loop-promises.md"
+        },
+        {
+          "id": "00-fundamentos/03-http-rest-status-codes.md",
+          "arquivo": "03-http-rest-status-codes.md",
+          "titulo": "03 \u2014 HTTP, REST e Status Codes",
+          "caminho": "/trilha/00-fundamentos/03-http-rest-status-codes.md"
+        },
+        {
+          "id": "00-fundamentos/04-sql-vs-nosql-quando-cada.md",
+          "arquivo": "04-sql-vs-nosql-quando-cada.md",
+          "titulo": "04 \u2014 SQL vs NoSQL: Quando Usar Cada",
+          "caminho": "/trilha/00-fundamentos/04-sql-vs-nosql-quando-cada.md"
+        },
+        {
+          "id": "00-fundamentos/05-auth-oauth-jwt-session.md",
+          "arquivo": "05-auth-oauth-jwt-session.md",
+          "titulo": "05 \u2014 Auth: OAuth, JWT e Session",
+          "caminho": "/trilha/00-fundamentos/05-auth-oauth-jwt-session.md"
+        },
+        {
+          "id": "00-fundamentos/06-git-fluxo-rebase-merge.md",
+          "arquivo": "06-git-fluxo-rebase-merge.md",
+          "titulo": "06 \u2014 Git: Fluxo, Rebase, Merge e Ferramentas",
+          "caminho": "/trilha/00-fundamentos/06-git-fluxo-rebase-merge.md"
+        }
+      ]
+    },
+    {
+      "id": "10-codigo-limpo",
+      "nome": "C\u00f3digo Limpo",
+      "foco": "Teoria por tr\u00e1s das regras do CLAUDE.md",
+      "icone": "\ud83e\uddf9",
+      "prioridade": "alta",
+      "totalModulos": 4,
+      "modulos": [
+        {
+          "id": "10-codigo-limpo/01-srp-funcoes-curtas.md",
+          "arquivo": "01-srp-funcoes-curtas.md",
+          "titulo": "01 \u2014 SRP e Fun\u00e7\u00f5es Curtas",
+          "caminho": "/trilha/10-codigo-limpo/01-srp-funcoes-curtas.md"
+        },
+        {
+          "id": "10-codigo-limpo/02-early-return-guard-clauses.md",
+          "arquivo": "02-early-return-guard-clauses.md",
+          "titulo": "02 \u2014 Early Return e Guard Clauses",
+          "caminho": "/trilha/10-codigo-limpo/02-early-return-guard-clauses.md"
+        },
+        {
+          "id": "10-codigo-limpo/03-nomes-vs-comentarios.md",
+          "arquivo": "03-nomes-vs-comentarios.md",
+          "titulo": "03 \u2014 Nomes vs Coment\u00e1rios",
+          "caminho": "/trilha/10-codigo-limpo/03-nomes-vs-comentarios.md"
+        },
+        {
+          "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
+          "arquivo": "04-abstracao-regra-dos-3.md",
+          "titulo": "04 \u2014 Abstra\u00e7\u00e3o e a Regra dos 3",
+          "caminho": "/trilha/10-codigo-limpo/04-abstracao-regra-dos-3.md"
+        }
+      ]
+    },
+    {
+      "id": "20-arquitetura",
+      "nome": "Arquitetura",
+      "foco": "SOLID, camadas, ADRs, padr\u00f5es",
+      "icone": "\ud83c\udfdb\ufe0f",
+      "prioridade": "media",
+      "totalModulos": 7,
+      "modulos": [
+        {
+          "id": "20-arquitetura/01-solid-na-pratica.md",
+          "arquivo": "01-solid-na-pratica.md",
+          "titulo": "01 \u2014 SOLID na Pr\u00e1tica",
+          "caminho": "/trilha/20-arquitetura/01-solid-na-pratica.md"
+        },
+        {
+          "id": "20-arquitetura/02-camadas-controller-service-repository.md",
+          "arquivo": "02-camadas-controller-service-repository.md",
+          "titulo": "02 \u2014 Camadas: Controller / Service / Repository",
+          "caminho": "/trilha/20-arquitetura/02-camadas-controller-service-repository.md"
+        },
+        {
+          "id": "20-arquitetura/03-monolito-vs-microsservico.md",
+          "arquivo": "03-monolito-vs-microsservico.md",
+          "titulo": "03 \u2014 Monolito vs Microsservi\u00e7o",
+          "caminho": "/trilha/20-arquitetura/03-monolito-vs-microsservico.md"
+        },
+        {
+          "id": "20-arquitetura/04-padroes-comunicacao.md",
+          "arquivo": "04-padroes-comunicacao.md",
+          "titulo": "04 \u2014 Padr\u00f5es de Comunica\u00e7\u00e3o",
+          "caminho": "/trilha/20-arquitetura/04-padroes-comunicacao.md"
+        },
+        {
+          "id": "20-arquitetura/05-adrs-architecture-decision-records.md",
+          "arquivo": "05-adrs-architecture-decision-records.md",
+          "titulo": "05 \u2014 ADRs: Architecture Decision Records",
+          "caminho": "/trilha/20-arquitetura/05-adrs-architecture-decision-records.md"
+        },
+        {
+          "id": "20-arquitetura/06-design-patterns-uteis.md",
+          "arquivo": "06-design-patterns-uteis.md",
+          "titulo": "06 \u2014 Design Patterns \u00dateis",
+          "caminho": "/trilha/20-arquitetura/06-design-patterns-uteis.md"
+        },
+        {
+          "id": "20-arquitetura/07-modularidade-pacotes.md",
+          "arquivo": "07-modularidade-pacotes.md",
+          "titulo": "07 \u2014 Modularidade e Pacotes",
+          "caminho": "/trilha/20-arquitetura/07-modularidade-pacotes.md"
+        }
+      ]
+    },
+    {
+      "id": "30-banco",
+      "nome": "Banco de Dados",
+      "foco": "Postgres, \u00edndices, N+1, transactions, RLS",
+      "icone": "\ud83d\uddc4\ufe0f",
+      "prioridade": "alta",
+      "totalModulos": 8,
+      "modulos": [
+        {
+          "id": "30-banco/01-indices-quando-e-quais.md",
+          "arquivo": "01-indices-quando-e-quais.md",
+          "titulo": "01 \u2014 \u00cdndices: quando e quais",
+          "caminho": "/trilha/30-banco/01-indices-quando-e-quais.md"
+        },
+        {
+          "id": "30-banco/02-explain-analyze-query-plan.md",
+          "arquivo": "02-explain-analyze-query-plan.md",
+          "titulo": "02 \u2014 EXPLAIN ANALYZE e query plan",
+          "caminho": "/trilha/30-banco/02-explain-analyze-query-plan.md"
+        },
+        {
+          "id": "30-banco/03-n-plus-1-e-como-evitar.md",
+          "arquivo": "03-n-plus-1-e-como-evitar.md",
+          "titulo": "03 \u2014 N+1 e como evitar",
+          "caminho": "/trilha/30-banco/03-n-plus-1-e-como-evitar.md"
+        },
+        {
+          "id": "30-banco/04-transactions-isolation-levels.md",
+          "arquivo": "04-transactions-isolation-levels.md",
+          "titulo": "04 \u2014 Transactions e isolation levels",
+          "caminho": "/trilha/30-banco/04-transactions-isolation-levels.md"
+        },
+        {
+          "id": "30-banco/05-rls-row-level-security.md",
+          "arquivo": "05-rls-row-level-security.md",
+          "titulo": "05 \u2014 RLS: Row Level Security",
+          "caminho": "/trilha/30-banco/05-rls-row-level-security.md"
+        },
+        {
+          "id": "30-banco/06-particionamento-e-retencao.md",
+          "arquivo": "06-particionamento-e-retencao.md",
+          "titulo": "06 \u2014 Particionamento e reten\u00e7\u00e3o",
+          "caminho": "/trilha/30-banco/06-particionamento-e-retencao.md"
+        },
+        {
+          "id": "30-banco/07-migrations-versionadas.md",
+          "arquivo": "07-migrations-versionadas.md",
+          "titulo": "07 \u2014 Migrations versionadas",
+          "caminho": "/trilha/30-banco/07-migrations-versionadas.md"
+        },
+        {
+          "id": "30-banco/08-backup-e-recovery.md",
+          "arquivo": "08-backup-e-recovery.md",
+          "titulo": "08 \u2014 Backup e recovery",
+          "caminho": "/trilha/30-banco/08-backup-e-recovery.md"
+        }
+      ]
+    },
+    {
+      "id": "40-frontend",
+      "nome": "Frontend",
+      "foco": "React render cycle, hooks, performance",
+      "icone": "\ud83c\udfa8",
+      "prioridade": "media",
+      "totalModulos": 7,
+      "modulos": [
+        {
+          "id": "40-frontend/01-render-cycle-e-reconciliation.md",
+          "arquivo": "01-render-cycle-e-reconciliation.md",
+          "titulo": "01 \u2014 Render Cycle e Reconciliation",
+          "caminho": "/trilha/40-frontend/01-render-cycle-e-reconciliation.md"
+        },
+        {
+          "id": "40-frontend/02-hooks-essenciais.md",
+          "arquivo": "02-hooks-essenciais.md",
+          "titulo": "02 \u2014 Hooks Essenciais",
+          "caminho": "/trilha/40-frontend/02-hooks-essenciais.md"
+        },
+        {
+          "id": "40-frontend/03-quando-memoizar-e-quando-nao.md",
+          "arquivo": "03-quando-memoizar-e-quando-nao.md",
+          "titulo": "03 \u2014 Quando Memoizar e Quando N\u00e3o",
+          "caminho": "/trilha/40-frontend/03-quando-memoizar-e-quando-nao.md"
+        },
+        {
+          "id": "40-frontend/04-state-management.md",
+          "arquivo": "04-state-management.md",
+          "titulo": "04 \u2014 State Management",
+          "caminho": "/trilha/40-frontend/04-state-management.md"
+        },
+        {
+          "id": "40-frontend/05-acessibilidade-aria.md",
+          "arquivo": "05-acessibilidade-aria.md",
+          "titulo": "05 \u2014 Acessibilidade e ARIA",
+          "caminho": "/trilha/40-frontend/05-acessibilidade-aria.md"
+        },
+        {
+          "id": "40-frontend/06-performance-web.md",
+          "arquivo": "06-performance-web.md",
+          "titulo": "06 \u2014 Performance Web",
+          "caminho": "/trilha/40-frontend/06-performance-web.md"
+        },
+        {
+          "id": "40-frontend/07-testes-ui.md",
+          "arquivo": "07-testes-ui.md",
+          "titulo": "07 \u2014 Testes de UI",
+          "caminho": "/trilha/40-frontend/07-testes-ui.md"
+        }
+      ]
+    },
+    {
+      "id": "50-backend",
+      "nome": "Backend",
+      "foco": "Express, Prisma, queues, idempot\u00eancia",
+      "icone": "\u2699\ufe0f",
+      "prioridade": "media",
+      "totalModulos": 8,
+      "modulos": [
+        {
+          "id": "50-backend/01-express-estrutura-middlewares.md",
+          "arquivo": "01-express-estrutura-middlewares.md",
+          "titulo": "01 \u2014 Express: Estrutura e Middlewares",
+          "caminho": "/trilha/50-backend/01-express-estrutura-middlewares.md"
+        },
+        {
+          "id": "50-backend/02-prisma-typesafe-orm.md",
+          "arquivo": "02-prisma-typesafe-orm.md",
+          "titulo": "02 \u2014 Prisma: ORM Type-Safe",
+          "caminho": "/trilha/50-backend/02-prisma-typesafe-orm.md"
+        },
+        {
+          "id": "50-backend/03-queues-bull-redis.md",
+          "arquivo": "03-queues-bull-redis.md",
+          "titulo": "03 \u2014 Filas com Bull e Redis",
+          "caminho": "/trilha/50-backend/03-queues-bull-redis.md"
+        },
+        {
+          "id": "50-backend/04-idempotencia-em-apis.md",
+          "arquivo": "04-idempotencia-em-apis.md",
+          "titulo": "04 \u2014 Idempot\u00eancia em APIs",
+          "caminho": "/trilha/50-backend/04-idempotencia-em-apis.md"
+        },
+        {
+          "id": "50-backend/05-rate-limit-e-throttle.md",
+          "arquivo": "05-rate-limit-e-throttle.md",
+          "titulo": "05 \u2014 Rate Limit e Throttle",
+          "caminho": "/trilha/50-backend/05-rate-limit-e-throttle.md"
+        },
+        {
+          "id": "50-backend/06-graceful-shutdown-sigterm.md",
+          "arquivo": "06-graceful-shutdown-sigterm.md",
+          "titulo": "06 \u2014 Graceful Shutdown e SIGTERM",
+          "caminho": "/trilha/50-backend/06-graceful-shutdown-sigterm.md"
+        },
+        {
+          "id": "50-backend/07-logging-estruturado-pino.md",
+          "arquivo": "07-logging-estruturado-pino.md",
+          "titulo": "07 \u2014 Logging Estruturado com Pino",
+          "caminho": "/trilha/50-backend/07-logging-estruturado-pino.md"
+        },
+        {
+          "id": "50-backend/08-validation-zod-em-boundary.md",
+          "arquivo": "08-validation-zod-em-boundary.md",
+          "titulo": "08 \u2014 Valida\u00e7\u00e3o com Zod em Boundary",
+          "caminho": "/trilha/50-backend/08-validation-zod-em-boundary.md"
+        }
+      ]
+    },
+    {
+      "id": "60-seguranca",
+      "nome": "Seguran\u00e7a",
+      "foco": "OWASP, LGPD, XSS, SQLi, secrets",
+      "icone": "\ud83d\udd12",
+      "prioridade": "alta",
+      "totalModulos": 8,
+      "modulos": [
+        {
+          "id": "60-seguranca/01-owasp-top-10-resumo.md",
+          "arquivo": "01-owasp-top-10-resumo.md",
+          "titulo": "01 \u2014 OWASP Top 10: Mapa do Territ\u00f3rio",
+          "caminho": "/trilha/60-seguranca/01-owasp-top-10-resumo.md"
+        },
+        {
+          "id": "60-seguranca/02-xss-stored-reflected-dom.md",
+          "arquivo": "02-xss-stored-reflected-dom.md",
+          "titulo": "02 \u2014 XSS: Stored, Reflected e DOM-Based",
+          "caminho": "/trilha/60-seguranca/02-xss-stored-reflected-dom.md"
+        },
+        {
+          "id": "60-seguranca/03-sql-injection-prepared-statements.md",
+          "arquivo": "03-sql-injection-prepared-statements.md",
+          "titulo": "03 \u2014 SQL Injection e Prepared Statements",
+          "caminho": "/trilha/60-seguranca/03-sql-injection-prepared-statements.md"
+        },
+        {
+          "id": "60-seguranca/04-csrf-e-samesite-cookies.md",
+          "arquivo": "04-csrf-e-samesite-cookies.md",
+          "titulo": "04 \u2014 CSRF e SameSite Cookies",
+          "caminho": "/trilha/60-seguranca/04-csrf-e-samesite-cookies.md"
+        },
+        {
+          "id": "60-seguranca/05-secrets-management-env-rotacao.md",
+          "arquivo": "05-secrets-management-env-rotacao.md",
+          "titulo": "05 \u2014 Secrets Management e Rota\u00e7\u00e3o",
+          "caminho": "/trilha/60-seguranca/05-secrets-management-env-rotacao.md"
+        },
+        {
+          "id": "60-seguranca/06-lgpd-na-pratica.md",
+          "arquivo": "06-lgpd-na-pratica.md",
+          "titulo": "06 \u2014 LGPD na Pr\u00e1tica",
+          "caminho": "/trilha/60-seguranca/06-lgpd-na-pratica.md"
+        },
+        {
+          "id": "60-seguranca/07-auditoria-logs-imutavel.md",
+          "arquivo": "07-auditoria-logs-imutavel.md",
+          "titulo": "07 \u2014 Auditoria e Logs Imut\u00e1veis",
+          "caminho": "/trilha/60-seguranca/07-auditoria-logs-imutavel.md"
+        },
+        {
+          "id": "60-seguranca/08-dependency-vulnerabilities.md",
+          "arquivo": "08-dependency-vulnerabilities.md",
+          "titulo": "08 \u2014 Vulnerabilidades em Depend\u00eancias",
+          "caminho": "/trilha/60-seguranca/08-dependency-vulnerabilities.md"
+        }
+      ]
+    },
+    {
+      "id": "70-devops",
+      "nome": "DevOps",
+      "foco": "Docker, CI/CD, observabilidade",
+      "icone": "\ud83d\udce6",
+      "prioridade": "baixa",
+      "totalModulos": 6,
+      "modulos": [
+        {
+          "id": "70-devops/01-docker-imagem-camadas-cache.md",
+          "arquivo": "01-docker-imagem-camadas-cache.md",
+          "titulo": "01 \u2014 Docker: Imagem, Camadas e Cache",
+          "caminho": "/trilha/70-devops/01-docker-imagem-camadas-cache.md"
+        },
+        {
+          "id": "70-devops/02-docker-compose-dev-vs-prod.md",
+          "arquivo": "02-docker-compose-dev-vs-prod.md",
+          "titulo": "02 \u2014 Docker Compose: Dev vs. Prod",
+          "caminho": "/trilha/70-devops/02-docker-compose-dev-vs-prod.md"
+        },
+        {
+          "id": "70-devops/03-ci-cd-github-actions.md",
+          "arquivo": "03-ci-cd-github-actions.md",
+          "titulo": "03 \u2014 CI/CD com GitHub Actions",
+          "caminho": "/trilha/70-devops/03-ci-cd-github-actions.md"
+        },
+        {
+          "id": "70-devops/04-deploy-vercel-edge.md",
+          "arquivo": "04-deploy-vercel-edge.md",
+          "titulo": "04 \u2014 Deploy no Vercel e Edge Runtime",
+          "caminho": "/trilha/70-devops/04-deploy-vercel-edge.md"
+        },
+        {
+          "id": "70-devops/05-observabilidade-logs-e-metricas.md",
+          "arquivo": "05-observabilidade-logs-e-metricas.md",
+          "titulo": "05 \u2014 Observabilidade: Logs e M\u00e9tricas",
+          "caminho": "/trilha/70-devops/05-observabilidade-logs-e-metricas.md"
+        },
+        {
+          "id": "70-devops/06-iac-introducao-terraform.md",
+          "arquivo": "06-iac-introducao-terraform.md",
+          "titulo": "06 \u2014 IaC: Introdu\u00e7\u00e3o ao Terraform",
+          "caminho": "/trilha/70-devops/06-iac-introducao-terraform.md"
+        }
+      ]
+    },
+    {
+      "id": "80-system-design",
+      "nome": "System Design",
+      "foco": "Cache, fila, replica\u00e7\u00e3o, CAP",
+      "icone": "\ud83c\udf10",
+      "prioridade": "baixa",
+      "totalModulos": 8,
+      "modulos": [
+        {
+          "id": "80-system-design/01-cache-estrategias.md",
+          "arquivo": "01-cache-estrategias.md",
+          "titulo": "01 \u2014 Cache: Estrat\u00e9gias e Trade-offs",
+          "caminho": "/trilha/80-system-design/01-cache-estrategias.md"
+        },
+        {
+          "id": "80-system-design/02-filas-quando-e-como.md",
+          "arquivo": "02-filas-quando-e-como.md",
+          "titulo": "02 \u2014 Filas: Quando e Como Usar",
+          "caminho": "/trilha/80-system-design/02-filas-quando-e-como.md"
+        },
+        {
+          "id": "80-system-design/03-replicacao-leader-follower.md",
+          "arquivo": "03-replicacao-leader-follower.md",
+          "titulo": "03 \u2014 Replica\u00e7\u00e3o Leader-Follower",
+          "caminho": "/trilha/80-system-design/03-replicacao-leader-follower.md"
+        },
+        {
+          "id": "80-system-design/04-cap-theorem-na-pratica.md",
+          "arquivo": "04-cap-theorem-na-pratica.md",
+          "titulo": "04 \u2014 CAP Theorem na Pr\u00e1tica",
+          "caminho": "/trilha/80-system-design/04-cap-theorem-na-pratica.md"
+        },
+        {
+          "id": "80-system-design/05-load-balancing.md",
+          "arquivo": "05-load-balancing.md",
+          "titulo": "05 \u2014 Load Balancing",
+          "caminho": "/trilha/80-system-design/05-load-balancing.md"
+        },
+        {
+          "id": "80-system-design/06-escalabilidade-horizontal-vs-vertical.md",
+          "arquivo": "06-escalabilidade-horizontal-vs-vertical.md",
+          "titulo": "06 \u2014 Escalabilidade: Horizontal vs Vertical",
+          "caminho": "/trilha/80-system-design/06-escalabilidade-horizontal-vs-vertical.md"
+        },
+        {
+          "id": "80-system-design/07-idempotencia-e-deduplicacao.md",
+          "arquivo": "07-idempotencia-e-deduplicacao.md",
+          "titulo": "07 \u2014 Idempot\u00eancia e Deduplica\u00e7\u00e3o",
+          "caminho": "/trilha/80-system-design/07-idempotencia-e-deduplicacao.md"
+        },
+        {
+          "id": "80-system-design/08-design-de-sistema-exemplo.md",
+          "arquivo": "08-design-de-sistema-exemplo.md",
+          "titulo": "08 \u2014 Design de Sistema: Meet Hub do Zero",
+          "caminho": "/trilha/80-system-design/08-design-de-sistema-exemplo.md"
+        }
+      ]
+    },
+    {
+      "id": "90-entrevista",
+      "nome": "Entrevista",
+      "foco": "Banco de 40 perguntas + pitch dos 8 projetos AG + mock",
+      "icone": "\ud83c\udfa4",
+      "prioridade": "alta",
+      "totalModulos": 3,
+      "modulos": [
+        {
+          "id": "90-entrevista/perguntas-junior.md",
+          "arquivo": "perguntas-junior.md",
+          "titulo": "Banco de Perguntas \u2014 Dev J\u00fanior",
+          "caminho": "/trilha/90-entrevista/perguntas-junior.md"
+        },
+        {
+          "id": "90-entrevista/simulacao.md",
+          "arquivo": "simulacao.md",
+          "titulo": "Mock Interview \u2014 Roteiro de Simula\u00e7\u00e3o",
+          "caminho": "/trilha/90-entrevista/simulacao.md"
+        },
+        {
+          "id": "90-entrevista/walkthrough-projetos.md",
+          "arquivo": "walkthrough-projetos.md",
+          "titulo": "Walkthrough de Projetos AG \u2014 Como Apresentar em Entrevista",
+          "caminho": "/trilha/90-entrevista/walkthrough-projetos.md"
+        }
+      ]
+    },
+    {
+      "id": "95-diferencial",
+      "nome": "Diferencial",
+      "foco": "O que sobrevive ao Claude \u2014 prioridade m\u00e1xima",
+      "icone": "\u26a1",
+      "prioridade": "maxima",
+      "totalModulos": 5,
+      "modulos": [
+        {
+          "id": "95-diferencial/01-fundamentos-sem-ia.md",
+          "arquivo": "01-fundamentos-sem-ia.md",
+          "titulo": "01 \u2014 Fundamentos sem IA",
+          "caminho": "/trilha/95-diferencial/01-fundamentos-sem-ia.md"
+        },
+        {
+          "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "arquivo": "02-decisoes-em-primeira-pessoa.md",
+          "titulo": "02 \u2014 Decis\u00f5es em primeira pessoa",
+          "caminho": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md"
+        },
+        {
+          "id": "95-diferencial/03-quando-nao-usar-claude.md",
+          "arquivo": "03-quando-nao-usar-claude.md",
+          "titulo": "03 \u2014 Quando n\u00e3o usar Claude",
+          "caminho": "/trilha/95-diferencial/03-quando-nao-usar-claude.md"
+        },
+        {
+          "id": "95-diferencial/04-comunicacao-publica.md",
+          "arquivo": "04-comunicacao-publica.md",
+          "titulo": "04 \u2014 Comunica\u00e7\u00e3o p\u00fablica",
+          "caminho": "/trilha/95-diferencial/04-comunicacao-publica.md"
+        },
+        {
+          "id": "95-diferencial/05-raciocinio-em-problema-novo.md",
+          "arquivo": "05-raciocinio-em-problema-novo.md",
+          "titulo": "05 \u2014 Racioc\u00ednio em problema novo",
+          "caminho": "/trilha/95-diferencial/05-raciocinio-em-problema-novo.md"
+        }
+      ]
+    }
+  ]
+}

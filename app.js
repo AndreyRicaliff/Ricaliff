@@ -123,6 +123,7 @@ function go(view) {
   if (view==='tasks')    renderTasks();
   if (view==='agenda')   renderCal();
   if (view==='growth')   { renderGrowth(); renderModules(); }
+  if (view==='trilha')   renderTrilha();
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────
@@ -784,205 +785,289 @@ const MODULE_SVG = {
 
 const STUDY_MATERIAL = {
   'js-const-arrow': {
-    concept: 'Use const por padrão para todo dado que não será reatribuído. Arrow functions herdam this do escopo pai, diferente de function declarations.',
-    code: 'const users = [{id: 1, name: "Ana"}];\nconst active = users.filter(u => u.id > 0);\nconst Component = () => ({ render: () => this.el }); // this = window',
-    tip: 'const impediu bug? Sim. Refatore var em const, let so se ja testou reatribuição.'
+    concept: 'Use const por padrão para todo valor que não será reatribuído. Arrow functions herdam o this do escopo pai — diferente de function declarations que criam seu próprio this.',
+    code: 'const users = [{ id: 1, name: "Ana" }];\nconst active = users.filter(u => u.id > 0);\n\n// Arrow herda this do escopo externo:\nconst handler = () => this.state; // this = contexto pai\nfunction Handler() { this.state = {}; } // this = instância',
+    mistake: 'Usar var em vez de const/let. var tem escopo de função e sofre hoisting — cria bugs difíceis de rastrear. let para reatribuição, const para todo o resto.',
+    exercise: 'Abra app.js do ag-hub. Localize qualquer var restante e substitua por const ou let conforme necessidade de reatribuição.',
+    tip: 'Se tentou usar const e deu erro de reatribuição, aí sim usa let. Senão, const sempre.',
   },
   'js-async-await': {
-    concept: 'async/await é açúcar sintático para Promises. Sempre use Promise.all() para operações independentes em paralelo, não await sequencial.',
-    code: 'const [users, posts] = await Promise.all([\n  fetch(\'/api/users\').then(r => r.json()),\n  fetch(\'/api/posts\').then(r => r.json())\n]);',
-    tip: 'Múltiplos awaits sequenciais = latência acumulada. Promise.all paraleliza.'
+    concept: 'async/await é açúcar sintático para Promises. Sempre use Promise.all() para operações independentes em paralelo — awaits sequenciais acumulam latência.',
+    code: '// Ruim: sequencial (300ms + 200ms = 500ms)\nconst users = await fetchUsers();\nconst posts = await fetchPosts();\n\n// Bom: paralelo (max 300ms)\nconst [users, posts] = await Promise.all([\n  fetchUsers(),\n  fetchPosts(),\n]);',
+    mistake: 'Usar await dentro de forEach — o callback é async mas forEach não espera. O código continua antes das Promises resolverem.',
+    exercise: 'Em ag-hub app.js, loadSync() faz fetch e depois processa. Os dois passos são dependentes? Poderiam ser paralelos?',
+    tip: 'Múltiplos awaits sequenciais independentes = latência acumulada. Promise.all paraleliza.',
   },
   'js-array-methods': {
-    concept: 'map, filter, reduce, find não mutam o array original. Retornam novo array ou valor. Compor métodos evita loops aninhados.',
-    code: 'const data = [1, 2, 3, 4];\nconst result = data\n  .filter(n => n > 2)\n  .map(n => n * 2)\n  .reduce((sum, n) => sum + n, 0); // 14',
-    tip: 'Evite forEach para transformar dados — use map. forEach só para side effects (log, render).'
+    concept: 'map, filter, reduce, find não mutam o array original — retornam novo array ou valor. Compor métodos evita loops aninhados e torna o fluxo de dados explícito.',
+    code: 'const orders = [{ value: 100, paid: true }, { value: 200, paid: false }];\n\nconst revenue = orders\n  .filter(o => o.paid)\n  .map(o => o.value)\n  .reduce((sum, v) => sum + v, 0); // 100',
+    mistake: 'Usar forEach para transformar dados — forEach só para side effects (log, render, evento). Para transformação: map. Para filtro: filter.',
+    exercise: 'Em app.js linha ~1138, a lógica de mastered usa filter+length. Tente reescrever usando reduce em vez de duas variáveis separadas.',
+    tip: 'Encadeamento de métodos = pipeline de dados legível. Evita variáveis temporárias.',
   },
   'js-optional-ops': {
-    concept: 'obj?.prop retorna undefined se obj é null/undefined, sem erro. ?? escolhe default so se valor é null/undefined, nunca 0 ou false.',
-    code: 'const user = response?.data?.user; // sem erro se response ausente\nconst age = obj.age ?? 18; // usa 18 se age undefined, nao se age = 0',
-    tip: 'Trocar a && b && c por a?.b?.c. && deveria ser === 0, ?. sempre seguro.'
+    concept: 'obj?.prop retorna undefined se obj é null/undefined, sem TypeError. ?? escolhe default só se o valor é null/undefined — diferente de || que também substitui 0 e false.',
+    code: 'const city = user?.address?.city; // undefined se user null\nconst age = data.age ?? 18; // 18 só se age for undefined/null\nconst score = data.score || 0; // PROBLEMA: substitui 0 também!',
+    mistake: 'Usar || para defaults quando 0 ou false são valores válidos. score || 0 retorna 0 mesmo se score já é 0 — use ?? para checar apenas null/undefined.',
+    exercise: 'Em sync.json do ag-hub, o player tem xpToNext. No código que lê esse campo, verificar se usa || ou ??. Se for ||, pode ter bug quando xpToNext = 0.',
+    tip: 'Trocar a && b && c.d por a?.b?.c?.d. && é para booleanos, ?. é para navegação segura em objetos.',
   },
   'js-fetch-api': {
-    concept: 'Sempre verificar response.ok antes de chamar response.json(). 404 nao rejeita Promise automaticamente.',
-    code: 'const r = await fetch(\'/api/data\');\nif (!r.ok) throw new Error(`${r.status}: ${r.statusText}`);\nconst data = await r.json();',
-    tip: 'Esqueceu de r.ok? Seu catch recebe JSON de erro do servidor, acha erro no formato errado.'
+    concept: 'Sempre verificar response.ok antes de chamar response.json(). Status 404 e 400 não rejeitam a Promise — só erros de rede rejeitam.',
+    code: 'async function getData(url) {\n  const r = await fetch(url);\n  if (!r.ok) throw new Error(`${r.status}: ${r.statusText}`);\n  return r.json();\n}',
+    mistake: 'Chamar r.json() sem checar r.ok. Se o servidor retorna { error: "not found" } com status 404, a Promise resolve normalmente — código trata erro como dado válido.',
+    exercise: 'loadSync() em app.js faz fetch de sync.json. Adicionar verificação de r.ok e throw com status + url para facilitar debug de deploy.',
+    tip: 'fetch() rejeita Promise apenas em erro de rede. Status 4xx/5xx = response.ok é false, mas Promise resolve.',
   },
   'js-dom-events': {
-    concept: 'Event delegation: escuta em elemento pai, check e.target. querySelector via classe/id. innerHTML = XSS se conteúdo vem de usuario.',
-    code: 'parent.addEventListener("click", (e) => {\n  if (e.target.matches(".btn-delete")) deleteItem(e.target.dataset.id);\n});\nconst html = esc(userContent); // sempre escapar',
-    tip: 'innerHTML sem esc() = XSS vulnerability. Use textContent para texto, esc() antes de innerHTML.'
+    concept: 'Event delegation: escuta em elemento pai, filtra por e.target. Evita reattach de listeners ao re-renderizar. innerHTML com conteúdo de usuário = XSS.',
+    code: 'document.getElementById("list").addEventListener("click", (e) => {\n  if (e.target.matches(".btn-delete")) {\n    deleteItem(e.target.dataset.id);\n  }\n});\n\n// Sempre escapar antes de innerHTML:\nel.innerHTML = `<span>${esc(userInput)}</span>`;',
+    mistake: 'Adicionar addEventListener dentro de renderX() sem remover o anterior — a cada re-render, novo listener é adicionado no mesmo elemento, causando execução múltipla.',
+    exercise: 'Em app.js, a função esc() está definida? Localizar onde está e verificar se dados externos (sync.json) passam por ela antes de ir para innerHTML.',
+    tip: 'innerHTML sem esc() = XSS. Use textContent para texto puro. esc() obrigatório ao interpolar dado externo.',
   },
   'ts-basic-types': {
-    concept: 'interface descreve forma fixa de objeto (contratos). type é mais geral (unions, generics). Prefer interface para modelos de dados.',
-    code: 'interface User { id: number; name: string; email: string; }\ntype Status = "pending" | "active" | "deleted";\nconst user: User = { id: 1, name: "Ana", email: "a@x.com" };',
-    tip: 'Nome de interface = capitalize. Se precisa de union (type A | type B), use type. Objeto com forma fixa = interface.'
+    concept: 'interface descreve forma fixa de objeto — ideal para modelos de dados e contratos. type é mais geral: unions, intersections, tipos derivados.',
+    code: 'interface User { id: number; name: string; email: string; }\ntype Status = "pending" | "active" | "deleted";\ntype UserWithStatus = User & { status: Status };\n\nconst user: User = { id: 1, name: "Ana", email: "a@ag.com" };',
+    mistake: 'Criar tipos duplicados em dois arquivos diferentes. Quando User muda em um, o outro fica desatualizado e TypeScript não avisa.',
+    exercise: 'No PULSAR-RH, existe um tipo User definido em mais de um arquivo? Se sim, criar types/user.ts compartilhado e importar nos dois.',
+    tip: 'Nome de interface = PascalCase. Se precisa de union (A | B), use type. Objeto com forma fixa = interface.',
   },
   'ts-strict-no-any': {
-    concept: 'any desativa type checking. unknown força narrowing via typeof/type guard. strict: true pega bugs que any esconde.',
-    code: 'let data: unknown = JSON.parse(str);\nif (typeof data === "object" && data !== null) {\n  const obj = data as Record<string, unknown>;\n}',
-    tip: 'any = silenciar tipo. unknown = "nao sei o tipo ainda, prove o tipo antes de usar". Usar unknown em boundary.'
+    concept: 'any desativa toda verificação de tipo — é pior que JavaScript puro. unknown força narrowing explícito antes do uso. strict: true pega bugs que any silencia.',
+    code: 'let data: unknown = JSON.parse(rawStr);\n\n// Narrowing obrigatório:\nif (typeof data === "object" && data !== null && "id" in data) {\n  const id = (data as { id: number }).id;\n}',
+    mistake: 'Usar any para "resolver" erro de tipo rapidamente. O erro desaparece, mas o bug permanece — TS não vai mais avisar sobre uso incorreto desse valor.',
+    exercise: 'Abrir qualquer arquivo .ts do PULSAR-RH e rodar: grep -n ": any" src/. Cada hit = dívida técnica. Escolher um e substituir por unknown com narrowing.',
+    tip: 'any = silenciar tipo. unknown = "não sei o tipo ainda, prove antes de usar". Sempre prefira unknown em dados externos (API, localStorage).',
   },
   'ts-utility-types': {
-    concept: 'Partial<T> = todos campos opcionais. Pick<T, Keys> = só alguns campos. Omit<T, Keys> = tudo menos estes campos. Readonly, Required.',
-    code: 'interface User { id: number; name: string; email: string; }\ntype CreateUser = Omit<User, "id">;\ntype UserPreview = Pick<User, "name" | "email">;',
-    tip: 'Nao duplicar tipos manualmente. Utility types extraem tipo derivado. Refactor: se User muda, CreateUser acompanha.'
+    concept: 'Partial, Pick, Omit, Readonly, Required derivam tipos sem duplicar. Quando o tipo base muda, os derivados acompanham automaticamente.',
+    code: 'interface User { id: number; name: string; email: string; }\n\ntype CreateUser = Omit<User, "id">; // sem id\ntype UserPreview = Pick<User, "name" | "email">; // só esses\ntype UpdateUser = Partial<User>; // todos opcionais',
+    mistake: 'Criar CreateUserData: { name: string; email: string } manualmente em vez de Omit<User, "id">. Quando User ganha campo obrigatório, CreateUserData não atualiza.',
+    exercise: 'No PULSAR-RH, existe algum tipo de formulário que é basicamente User sem id? Substituir por Omit<User, "id">.',
+    tip: 'Nunca duplicar tipo manualmente. Utility types extraem tipo derivado. Base muda, derivados acompanham.',
   },
   'ts-generics': {
-    concept: '<T> = tipo parametrizado. Reutiliza funcao sem perder tipagem. <T extends Base> = constraina tipo valido.',
-    code: 'function wrap<T>(value: T): { value: T } { return { value }; }\nfunction getById<T extends { id: number }>(items: T[], id: number): T | undefined {\n  return items.find(i => i.id === id);\n}',
-    tip: 'Generics evitam any quando reutiliza logica com tipos diferentes. Constrains garantem propriedades disponiveis.'
+    concept: '<T> parametriza função ou classe com tipo. Reutiliza lógica sem perder type safety. <T extends Base> restringe T a tipos que têm certas propriedades.',
+    code: 'function getById<T extends { id: number }>(items: T[], id: number): T | undefined {\n  return items.find(i => i.id === id);\n}\n\nconst user = getById(users, 1); // infere T = User',
+    mistake: 'Usar any como workaround quando generics seriam corretos. getById(items: any[], ...) perde o tipo de retorno — não sabe mais que é User.',
+    exercise: 'Criar função wrap<T>(value: T): { value: T; timestamp: Date } e testar com string, number e User. Verificar que o tipo inferido está correto.',
+    tip: 'Generics evitam any quando reutiliza lógica com tipos diferentes. Constraints garantem propriedades disponíveis.',
   },
   'ts-discriminated': {
-    concept: 'Union com campo literal (kind/type) permite type narrowing seguro. Eliminanda estados invalidos (data + error juntos).',
-    code: 'type State = { kind: "loading" } | { kind: "ok"; data: User } | { kind: "error"; error: string };\nif (state.kind === "ok") console.log(state.data);',
-    tip: 'default: satisfies never no switch pega caso novo nao tratado em compile time.'
+    concept: 'Union com campo literal discriminante (kind/type) permite narrowing seguro no switch/if. Elimina estados impossíveis como loading=true e data=X juntos.',
+    code: 'type State =\n  | { kind: "loading" }\n  | { kind: "ok"; data: User[] }\n  | { kind: "error"; error: string };\n\nif (state.kind === "ok") {\n  console.log(state.data); // type-safe\n}',
+    mistake: 'Estado com isLoading: boolean + data: T | null + error: string | null separados. Isso permite estados impossíveis: isLoading=true e data="valor" ao mesmo tempo.',
+    exercise: 'Em ag-hub app.js, loadSync() tem estados implícitos (SYNC definido/não). Como ficaria como discriminated union em TypeScript?',
+    tip: 'default: satisfies never no switch pega caso novo não tratado em compile time — evita bugs silenciosos ao adicionar novo estado.',
   },
   'supabase-crud': {
-    concept: 'Fluent API: select().eq().order() retorna QueryBuilder. .data ao final retorna array. Sempre tratar erro.',
-    code: 'const { data, error } = await supabase\n  .from("users")\n  .select("id, name, email")\n  .eq("status", "active")\n  .order("created_at", { ascending: false });',
-    tip: 'select("*") retorna todas colunas. Especifica colunas — menor payload, melhor cache.'
+    concept: 'Fluent API: .from().select().eq().order() encadeia o query builder. .data retorna array ou null. Sempre tratar error antes de usar data.',
+    code: 'const { data, error } = await supabase\n  .from("employees")\n  .select("id, name, department_id")\n  .eq("active", true)\n  .order("name");\n\nif (error) throw error;\nreturn data ?? [];',
+    mistake: 'Usar select("*") em tabela com muitas colunas. Retorna dados desnecessários, aumenta payload e pode expor campos sensíveis.',
+    exercise: 'No PULSAR-RH, localizar a query de lista de colaboradores. Está usando select("*")? Substituir por seleção explícita das colunas usadas na UI.',
+    tip: 'select("*") = todos os campos. Especifique colunas — menor payload, melhor cache, sem vazamento acidental de dados.',
   },
   'supabase-auth': {
-    concept: 'onAuthStateChange é o unico source of truth de sessao. Chama callback ao login/logout. Session pode ser null mesmo dentro do app.',
-    code: 'supabase.auth.onAuthStateChange((event, session) => {\n  if (session) { setUser(session.user); } else { setUser(null); }\n});',
-    tip: 'Nao guardique sessao em estado local — onAuthStateChange cuida. signOut() emite evento que listener processa.'
+    concept: 'onAuthStateChange é o único source of truth de sessão — dispara em login, logout, refresh e expiração. Session pode ser null mesmo após login em tab nova.',
+    code: 'supabase.auth.onAuthStateChange((event, session) => {\n  if (session) {\n    setUser(session.user);\n  } else {\n    setUser(null);\n    router.push("/login");\n  }\n});',
+    mistake: 'Guardar sessão em variável local fora do listener. onAuthStateChange pode atualizar a sessão (refresh token) sem que o estado local saiba.',
+    exercise: 'No PULSAR-RH, o login multi-portal (admin/rh/gestor) — cada portal tem seu próprio onAuthStateChange? Verificar se um portal faz signOut e corrompe sessão do outro.',
+    tip: 'Não guarde sessão em estado local. onAuthStateChange é a fonte. signOut() emite evento que o listener processa.',
   },
   'supabase-rls': {
-    concept: 'RLS habilitado = sem policy = bloqueado. Escreve policy por role. usuarios query so dados seu. Sem RLS = todos vem via API.',
-    code: 'CREATE POLICY "users_select_own"\n  ON users FOR SELECT TO authenticated\n  USING (auth.uid() = user_id);',
-    tip: 'RLS enabled sem policies = tudo bloqueado. Use Supabase Dashboard SQL Editor para testar policy.'
+    concept: 'RLS habilitado sem nenhuma policy = tudo bloqueado para authenticated e anon. Policy define quem vê o quê. auth.uid() retorna o UUID do usuário logado.',
+    code: '-- Ver só os próprios registros:\nCREATE POLICY "select_own_data"\n  ON employee_evaluations FOR SELECT\n  TO authenticated\n  USING (auth.uid() = user_id);\n\n-- Admin vê tudo:\n-- USING (auth.uid() IN (SELECT user_id FROM admins));',
+    mistake: 'Desabilitar RLS "temporariamente" para resolver bug de acesso. Isso expõe todos os dados via API pública sem autenticação.',
+    exercise: 'No PULSAR-RH, abrir Supabase Dashboard > Authentication > Policies. Quais tabelas estão sem policy mas com RLS habilitado?',
+    tip: 'RLS enabled sem policies = tudo bloqueado. Use SQL Editor do Dashboard: SELECT * FROM tabela AS authenticated_user.',
   },
   'supabase-realtime': {
-    concept: 'channel.subscribe() retorna RemoveChannelFunc. Sempre chamar no cleanup (React useEffect). Sem cleanup = memory leak.',
-    code: 'useEffect(() => {\n  const unsub = supabase.channel("users").on("*", payload => console.log(payload)).subscribe();\n  return () => unsub();\n}, []);',
-    tip: 'Realtime = WebSocket. Sem unsubscribe = conexão aberta. Teste com DevTools Network tab WebSocket.'
+    concept: 'channel.subscribe() abre WebSocket. Sem cleanup (removeChannel no unmount/destroy) = memory leak acumulando conexões abertas.',
+    code: '// React:\nuseEffect(() => {\n  const channel = supabase\n    .channel("evaluations")\n    .on("postgres_changes",\n      { event: "*", schema: "public", table: "evaluations" },\n      payload => updateState(payload))\n    .subscribe();\n  return () => supabase.removeChannel(channel);\n}, []);',
+    mistake: 'Não fazer cleanup do canal. Em SPAs com muitas navegações, cada montagem cria novo WebSocket sem fechar o anterior.',
+    exercise: 'No PULSAR-RH, existe algum useEffect com .channel().subscribe()? Verificar se todos têm o return () => supabase.removeChannel(channel).',
+    tip: 'Realtime = WebSocket. Sem unsubscribe = conexão persistindo. Testar: DevTools > Network > WS — deve ter só uma conexão por canal.',
   },
   'supabase-migrations': {
-    concept: 'Nunca editar migration ja aplicada em prod. Cria migration nova para reverter. `supabase db push` aplica local.',
-    code: 'npx supabase migration new add_users_table\n# edita migrations/..._add_users_table.sql\nnpx supabase db push',
-    tip: 'Migration versionada = source of truth. Prod diverge de local? supabase migration list mostra state.'
+    concept: 'Migrations são o source of truth do schema. Nunca editar migration já aplicada em prod. Para reverter: nova migration. supabase db push aplica localmente.',
+    code: '# Criar nova migration:\nnpx supabase migration new add_risk_score\n\n# Editar o arquivo gerado em supabase/migrations/\n# Aplicar localmente:\nnpx supabase db push\n\n# Ver estado das migrations:\nnpx supabase migration list',
+    mistake: 'Fazer ALTER TABLE direto no Supabase Dashboard SQL Editor sem criar migration. O banco local e produção ficam fora de sincronia.',
+    exercise: 'No PULSAR-RH, rodar "supabase migration list" — todas as migrations locais aparecem como applied em prod? Listar diferenças se houver.',
+    tip: 'Prod diverge de local? supabase migration list mostra o estado de cada migration. Migration versionada em git = diff do schema auditável.',
   },
   'supabase-types-gen': {
-    concept: 'supabase gen types gera tipos TS da schema atual. Roda apos migration. Importa types em API/SPA.',
-    code: 'npx supabase gen types typescript --project-id YOUR_ID > src/types/supabase.ts\nimport type { Database } from "./types/supabase";',
-    tip: 'Rodou migration mas tipos desincronizados? Roda gen types. CI pode rodar isso automaticamente.'
+    concept: 'supabase gen types gera tipos TypeScript do schema atual. Roda após cada migration. Importar Database type para ter autocomplete e type safety em queries.',
+    code: '# Gerar tipos:\nnpx supabase gen types typescript \\\n  --project-id SEU_PROJECT_ID \\\n  > src/types/supabase.ts\n\n# Usar no código:\nimport type { Database } from "@/types/supabase";\ntype Employee = Database["public"]["Tables"]["employees"]["Row"];',
+    mistake: 'Usar interface Employee manual desincronizada da tabela real. Quando o schema muda, TypeScript não avisa que Employee está desatualizado.',
+    exercise: 'No PULSAR-RH, verificar se src/types/supabase.ts existe. Está desatualizado? Rodar gen types e comparar diff — especialmente após migrations recentes.',
+    tip: 'Rodou migration mas tipos antigos? Roda gen types. CI pode fazer isso automaticamente a cada migration aplicada.',
   },
   'html-semantics': {
-    concept: '<section>, <article>, <main>, <header>, <nav> descrevem estrutura. aria-label em ícones. Semantica = acessibilidade + SEO.',
-    code: '<main role="main"><section><header><h1>Titulo</h1></header><article>...</article></section></main>\n<button aria-label="Fechar modal">×</button>',
-    tip: 'Nunca divs aninhadas sem semântica. Leitores de tela (screen readers) contam na estrutura HTML.'
+    concept: '<section>, <article>, <main>, <header>, <nav> descrevem a estrutura do documento. Leitores de tela navegam por landmarks semânticos. Divs sem semântica não ajudam.',
+    code: '<main>\n  <nav aria-label="Menu principal">...</nav>\n  <section aria-labelledby="dash-title">\n    <h1 id="dash-title">Dashboard</h1>\n    <article>...</article>\n  </section>\n</main>\n<button aria-label="Fechar modal">×</button>',
+    mistake: 'Usar <div class="button"> em vez de <button>. Buttons têm comportamento nativo (foco por teclado, Enter/Space ativam) que divs não têm.',
+    exercise: 'Em index.html do ag-hub, verificar se os botões do nav são <button> ou <a> ou <div>. Se forem divs, qual o impacto na navegação por teclado?',
+    tip: 'Nunca usar div onde existe tag semântica. Screen readers navegam por h1-h6, nav, main, section — estrutura boa = app mais acessível.',
   },
   'html-layout': {
-    concept: 'Grid para layout 2D (tabela-like). Flexbox para layout 1D (horizontal/vertical). Grid + Flexbox = combinados para responsivo.',
-    code: 'display: grid; grid-template-columns: 1fr 1fr; gap: 16px; /* 2D */\n.card { display: flex; flex-direction: column; gap: 8px; } /* 1D */\n@media (max-width: 600px) { grid-template-columns: 1fr; }',
-    tip: 'Sidebar + main? Grid. Card internamente? Flex. Mobile-first: comeca 1 coluna, media query expande.'
+    concept: 'Grid para layout 2D (linhas e colunas). Flexbox para layout 1D (só horizontal ou só vertical). Combinados: Grid para estrutura macro, Flex para alinhamento interno.',
+    code: '/* Grid: estrutura da página */\n.page { display: grid; grid-template-columns: 240px 1fr; }\n\n/* Flex: itens dentro de um card */\n.card-header {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}',
+    mistake: 'Usar Flexbox para grade de cards (2D) — resulta em quebra de linha imprevisível. Grid é feito para isso: grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)).',
+    exercise: 'A .modules-grid em index.html usa qual propriedade? Verificar se auto-fill/auto-fit está sendo usado. Em mobile (375px), colapsa para 1 coluna?',
+    tip: 'Sidebar + main? Grid. Card internamente? Flex. Mobile-first: começa 1 coluna, media query expande para 2 ou 3.',
   },
   'html-css-vars': {
-    concept: 'CSS Custom Properties em :root reutilizaem em todo CSS. Dark mode = trocar valores no :root. Nao repete cor hardcoded.',
-    code: ':root { --primary: #7048E8; --text: #EEF5FF; --bg: #0A0F1A; }\nbody { color: var(--text); background: var(--bg); }\n.btn { background: var(--primary); }',
-    tip: 'Trocar de tema? Escreve novo :root[data-theme="light"]. JS troca atributo, CSS pega novas vars.'
+    concept: 'CSS Custom Properties em :root reutilizáveis em todo CSS. Mudar um valor no :root = muda em todos os elementos. Ideal para temas e tokens de design.',
+    code: ':root {\n  --primary: #1A7FFF;\n  --bg: #050C1A;\n  --text: #EEF5FF;\n  --radius: 8px;\n}\n\n.card {\n  background: var(--bg);\n  color: var(--text);\n  border-radius: var(--radius);\n}',
+    mistake: 'Copiar valores de cor hardcoded em vários lugares (#1A7FFF aqui, #1a7fff lá, rgba(26,127,255,.1) acolá). Quando a cor muda, precisa buscar todos os lugares.',
+    exercise: 'Em index.html, contar quantas vezes #1A7FFF aparece fora das definições de --primary. Cada ocorrência é uma dívida técnica.',
+    tip: 'Trocar de tema? Escrever novo :root[data-theme="light"] e trocar o atributo via JS. Todos os elementos pegam as novas vars automaticamente.',
   },
   'html-spa-vanilla': {
-    concept: 'go(view) muda display das views. classList.add/remove("active") para ui. Estado em const DB = {}. Sem virtual DOM.',
-    code: 'const go = (view) => { document.querySelectorAll(".view").forEach(v => v.classList.remove("active")); document.getElementById(`view-${view}`).classList.add("active"); curView = view; };\ngo("dash");',
-    tip: 'Sem framework = controle completo. Mas sem reactivity — renderiza tudo manualmente ao estado mudar.'
+    concept: 'SPA sem framework: go(view) troca display das divs, curView rastreia estado, renderX() popula innerHTML. Sem reactivity automática — re-render manual a cada mudança.',
+    code: 'let curView = "dash";\n\nfunction go(view) {\n  document.querySelectorAll(".view").forEach(v =>\n    v.classList.remove("active"));\n  document.getElementById(`view-${view}`).classList.add("active");\n  curView = view;\n  if (view === "growth") { renderGrowth(); renderModules(); }\n}',
+    mistake: 'Adicionar listeners diretamente em renderX() sem verificar se já existem — a cada navegação, os eventos se acumulam no mesmo elemento.',
+    exercise: 'Em app.js, a função go() chama renderModules() diretamente. Por que isso foi necessário além de renderGrowth()? Qual bug isso corrigiu?',
+    tip: 'Sem framework = controle total, mas re-render manual. Estado muda? Chama a função de render correspondente.',
   },
   'html-localstorage': {
-    concept: 'localStorage.setItem(key, JSON.stringify(obj)). localStorage.getItem(key) retorna string. Parse antes de usar.',
-    code: 'const DB = { data: [] };\nDB.data = [1, 2, 3];\nlocalStorage.setItem("db", JSON.stringify(DB));\nconst restored = JSON.parse(localStorage.getItem("db"));',
-    tip: 'LocalStorage persiste apos reload. Nunca guarda objetos diretos — JSON.stringify. Limite: ~5MB por origin.'
+    concept: 'localStorage persiste entre reloads e sessões. Só armazena strings — JSON.stringify ao salvar, JSON.parse ao ler. Limite de ~5MB por origin.',
+    code: 'function saveProgress(data) {\n  localStorage.setItem("agh_modules", JSON.stringify(data));\n}\n\nfunction getProgress() {\n  return JSON.parse(localStorage.getItem("agh_modules") ?? "{}"); \n}',
+    mistake: 'localStorage.setItem("key", objeto) — salva "[object Object]" em vez do JSON. Sempre JSON.stringify ao escrever.',
+    exercise: 'No ag-hub, listar todas as chaves localStorage: DevTools > Application > Local Storage. Quantas chaves existem? Estão todas documentadas no código?',
+    tip: 'localStorage nunca guarda objetos diretamente. JSON.stringify ao salvar, JSON.parse ao ler. Erro "undefined" ao ler = parse de string null.',
   },
   'html-responsive': {
-    concept: 'Mobile-first: escreve CSS para tela pequena, @media (min-width) expande. Nao usa max-width (media queries opostas).',
-    code: '.card { grid-template-columns: 1fr; }\n@media (min-width: 600px) { .card { grid-template-columns: 1fr 1fr; } }\n@media (min-width: 1200px) { .card { grid-template-columns: 1fr 1fr 1fr; } }',
-    tip: 'Começa mobile (constraints forçam prioridade). Depois adiciona layout richter em breakpoints maiores.'
+    concept: 'Mobile-first: CSS base para tela pequena, @media (min-width: X) adiciona layout maior. Mobile-first força priorização do conteúdo essencial.',
+    code: '/* Base: mobile */\n.grid { grid-template-columns: 1fr; gap: 12px; }\n\n/* Tablet: 2 colunas */\n@media (min-width: 600px) {\n  .grid { grid-template-columns: 1fr 1fr; }\n}\n\n/* Desktop: 3 colunas */\n@media (min-width: 1200px) {\n  .grid { grid-template-columns: repeat(3, 1fr); }\n}',
+    mistake: 'Desktop-first com @media (max-width: X) — o CSS começa complexo e vai simplificando. Mais difícil de manter. Mobile-first é progressivo: começa simples.',
+    exercise: 'Em index.html, verificar a .modules-grid. Ela usa @media (min-width) ou (max-width)? Em tela de 375px (iPhone SE), fica usável?',
+    tip: 'Começa mobile (constraints forçam prioridade de conteúdo). Depois adiciona richeza em breakpoints maiores.',
   },
   'git-git-core': {
-    concept: 'git commit cria snapshot. git branch isola trabalho. git rebase lineariza history (reescreve commit). git merge junta branches.',
-    code: 'git checkout -b feat/xyz\ngit add file.js\ngit commit -m "feat: descricao"\ngit rebase main  # lineariza\ngit merge feat/xyz  # se nao ff',
-    tip: 'git log --oneline mostra historico. git rebase evita merge commits. Commit atomico = uma mudanca logica.'
+    concept: 'git commit = snapshot do estado. git branch isola trabalho paralelo. git rebase lineariza histórico reescrevendo commits. git merge junta branches preservando histórico.',
+    code: 'git checkout -b feat/study-modules\ngit add app.js index.html\ngit commit -m "feat(modules): adiciona material de estudo expandido"\ngit rebase main\ngit push origin feat/study-modules',
+    mistake: 'Trabalhar direto na branch main. Um commit com bug em main = produção quebrada antes de qualquer review.',
+    exercise: 'No ag-hub, quantos commits foram feitos direto em main? git log --oneline origin/main | head -20. Qual seria a branch correta para cada um?',
+    tip: 'git log --oneline mostra histórico. git rebase evita merge commits. Commit atômico = uma mudança lógica, reversível individualmente.',
   },
   'git-conv-commits': {
-    concept: 'feat: nova funcionalidade. fix: corrige bug. chore: deps, config. docs: docs. test: testes. Escopo em parenteses: feat(api): ...',
-    code: 'feat(modules): adiciona icones svg e material de estudo\nfix(supabase): corrige realtime leak\nchore(deps): bump prisma 5.10\ndocs(readme): explica setup chrome profile',
-    tip: 'Commit message narra POR QUE, nao O QUE (o que esta no diff). historia linear = git log e git bisect ficam faceis.'
+    concept: 'feat: nova funcionalidade. fix: corrige bug. chore: deps, config. docs: documentação. refactor: sem mudança de comportamento. Escopo em parênteses opcional.',
+    code: 'feat(modules): adiciona ícones SVG e material de estudo\nfix(sync): corrige cálculo de streak quando dia pula\nchore(deps): atualiza supabase-js para 2.39\ndocs(readme): adiciona instruções de setup local\nrefactor(render): extrai renderTopicMaterial para função separada',
+    mistake: 'Mensagem de commit descrevendo O QUÊ: "add button" ou "fix bug". Descreva O POR QUÊ: "fix: corrige crash ao navegar sem SYNC carregado".',
+    exercise: 'No ag-hub, git log --oneline. Identificar commits sem prefixo convencional. Qual seria o prefixo correto para cada um?',
+    tip: 'Commit message narra POR QUÊ, não O QUÊ (o que está no diff). Histórico linear = git bisect acha bugs em minutos.',
   },
   'git-gitignore-env': {
-    concept: '.gitignore antes do primeiro commit. .env, node_modules, dist/ nunca commitam. .env.example sem valores, documenta variaveis.',
-    code: '# .gitignore\n.env\n.env.local\nnode_modules/\ndist/\n*.pem\nchrome-profile-*',
-    tip: 'Fez commit do .env? git rm --cached .env, limpa historico: git filter-repo --path .env. Revogar chaves!'
+    concept: '.gitignore antes do primeiro commit. .env, node_modules/, dist/ nunca entram no git. .env.example documenta variáveis sem valores reais.',
+    code: '# .gitignore\n.env\n.env.local\n.env.*.local\nnode_modules/\ndist/\nbuild/\n*.pem\n.DS_Store\n\n# .env.example (commitado, sem valores)\nSUPABASE_URL=\nSUPABASE_ANON_KEY=\nPORT=3000',
+    mistake: 'Fazer commit do .env com chaves reais. Mesmo que você delete no próximo commit, o git history preserva o arquivo — chaves comprometidas para sempre.',
+    exercise: 'Verificar o .gitignore do ag-hub: git check-ignore -v .env. Se não está ignorado, adicionar e verificar git status.',
+    tip: 'Fez commit de .env? git rm --cached .env imediatamente. Depois limpar histórico e revogar todas as chaves do arquivo.',
   },
   'git-vercel': {
-    concept: 'Vercel: deploy automatico em push. Variáveis de ambiente no dashboard (nao no .env). Preview URL por PR. Dominio customizado.',
-    code: '# push para main\ngit push origin main\n# Vercel auto-deploys a https://prod.vercel.app\n# PR cria preview URL automaticamente',
-    tip: 'Sem env vars no .env para prod. Vercel dashboard > Settings > Environment Variables. Secrets = nao aparece em logs.'
+    concept: 'Vercel detecta push em main e faz deploy automático. PRs geram preview URLs. Env vars configuradas no dashboard, não no .env commitado.',
+    code: '# Push para main = deploy em produção:\ngit push origin main\n\n# Verificar se deploy chegou:\ncurl -s https://ag-hub-tan.vercel.app/app.js | grep "MODULE_SVG"\n\n# Variáveis de ambiente:\n# Vercel Dashboard > Settings > Environment Variables',
+    mistake: 'Colocar variáveis de ambiente diretamente no .env commitado ou hardcoded no código. Vercel Dashboard tem o campo certo para isso.',
+    exercise: 'No ag-hub, verificar se o último push chegou ao Vercel: curl -s URL | grep algum trecho único do código. Se não chegou, verificar o log de deploy no dashboard.',
+    tip: 'Preview URL por PR = testar antes de chegar em main. Variáveis de prod no dashboard = nunca no repositório.',
   },
   'git-ci-cd': {
-    concept: '.github/workflows/deploy.yml roda apos push. Testa, builda, deploya. Secrets no repo settings (repository secrets, nao env vars).',
-    code: 'name: Deploy\non: [push]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - run: npm test\n      - run: npm run build',
-    tip: 'CI roda a cada push — fail rápido invalida merge. Usa GitHub Secrets para API keys, nao hardcoded.'
+    concept: '.github/workflows/*.yml define pipeline. Roda em cada push: instala deps, testa, builda, deploya. Secrets do repositório via ${{ secrets.NOME }}.',
+    code: 'name: CI\non:\n  push:\n    branches: [main]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: npm ci\n      - run: npm test\n      - run: npm run build',
+    mistake: 'Colocar API keys diretamente no yml. GitHub Actions logs são visíveis — secrets expostos. Use ${{ secrets.NOME_DA_KEY }} sempre.',
+    exercise: 'Criar .github/workflows/check.yml no ag-hub que rode "node --check app.js" a cada push para detectar syntax errors antes do deploy.',
+    tip: 'CI roda a cada push — fail rápido bloqueia merge. GitHub Secrets para API keys, nunca hardcoded no yml.',
   },
   'node-express-basics': {
-    concept: 'app.get(path, (req, res) => {}). Status codes semânticos: 200 ok, 201 created, 400 bad request, 404 not found, 500 server error.',
-    code: 'app.get("/users/:id", (req, res) => {\n  const user = findUser(req.params.id);\n  if (!user) return res.status(404).json({ error: "not found" });\n  res.json(user);\n});',
-    tip: '404 vs 400: 404 = recurso nao existe. 400 = request invalido (parametro errado, tipo errado).'
+    concept: 'app.get/post/put/delete(path, handler). Status codes: 200 ok, 201 criado, 400 request inválido, 401 não autenticado, 403 sem permissão, 404 não encontrado, 500 erro interno.',
+    code: 'app.get("/employees/:id", async (req, res) => {\n  const employee = await findEmployee(req.params.id);\n  if (!employee) return res.status(404).json({ error: "not found" });\n  res.json(employee);\n});\n\napp.post("/employees", async (req, res) => {\n  const employee = await createEmployee(req.body);\n  res.status(201).json(employee);\n});',
+    mistake: 'Retornar 200 para erro: res.json({ success: false, error: "..." }) com status 200. Clientes precisam do status code para saber se deu certo.',
+    exercise: 'Se o ag-hub tivesse uma API Express, qual seria a rota para buscar o perfil do player? Escrever o handler completo com status codes corretos.',
+    tip: '404 vs 400: 404 = recurso não existe. 400 = request inválido (parâmetro com tipo errado, campo obrigatório ausente).',
   },
   'node-env-validation': {
-    concept: 'zod.parse(process.env) no startup — falha rápido se var faltando. Nao deixa app rodar sem config valida.',
-    code: 'import z from "zod";\nconst env = z.object({ PORT: z.string().default("3000"), DB_URL: z.string() }).parse(process.env);\nconst PORT = parseInt(env.PORT);',
-    tip: 'Falha no startup > silenciar variaveis faltando em producao e descobrir em crash aleatorio.'
+    concept: 'Validar todas as env vars no startup com Zod ou joi — se uma variável obrigatória faltar, a aplicação falha imediatamente com mensagem clara.',
+    code: 'import { z } from "zod";\n\nconst env = z.object({\n  PORT: z.string().default("3000"),\n  SUPABASE_URL: z.string().url(),\n  SUPABASE_SERVICE_KEY: z.string().min(20),\n}).parse(process.env);\n\nexport default env;',
+    mistake: 'Ler process.env.SUPABASE_URL no meio de um handler de rota. Se a variável está ausente, o erro ocorre quando aquela rota é chamada — difícil de diagnosticar.',
+    exercise: 'No PULSAR-RH, onde process.env é lido pela primeira vez? Está em um arquivo de configuração centralizado ou espalhado pelo código?',
+    tip: 'Falha no startup > silenciar variável faltando e descobrir em crash aleatório em produção depois.',
   },
   'node-error-handling': {
-    concept: 'Error middleware no Express: (err, req, res, next) => {}. Trata erros nao capturados. Nunca catch vazio.',
-    code: 'app.use((err, req, res, next) => {\n  console.error("[error]", err);\n  res.status(500).json({ error: err.message });\n});\napp.get("/", (req, res, next) => {\n  try { ... } catch(e) { next(e); }\n});',
-    tip: 'throw de rota sem try/catch crashes app se nao tem error middleware. Express chama next(error).'
+    concept: 'Error middleware Express: 4 parâmetros (err, req, res, next). Centraliza tratamento de erros. next(err) encaminha para o middleware. Sem ele, crashes não retornam JSON.',
+    code: '// No final, após todas as rotas:\napp.use((err, req, res, next) => {\n  console.error("[error]", { path: req.path, message: err.message });\n  res.status(err.status ?? 500).json({\n    error: err.message ?? "Internal server error",\n  });\n});',
+    mistake: 'catch vazio ou só console.log sem relançar. O erro some, a rota trava esperando resposta, o cliente recebe timeout.',
+    exercise: 'Escrever um wrapper asyncRoute(fn) que envolve handlers async para chamar next(error) automaticamente sem try/catch em cada rota.',
+    tip: 'throw em rota async sem try/catch = crash não capturado no Express 4. Express 5 captura automaticamente. No 4, use wrapper ou try/catch.',
   },
   'node-async-node': {
-    concept: 'async/await em handler do Express. Sempre try/catch ou next(error). Nao forEach+await — Map/Promise.all.',
-    code: 'app.post("/users", async (req, res, next) => {\n  try {\n    const users = await Promise.all(req.body.map(u => createUser(u)));\n    res.json(users);\n  } catch (e) { next(e); }\n});',
-    tip: 'forEach(async...) = roda em paralelo, mas codigo continua. Nao espera. Use Promise.all se precisa de sequence.'
+    concept: 'async/await em handlers Express. forEach com async não funciona — forEach não espera. Promise.all para paralelo, for...of para sequencial com dependência.',
+    code: '// forEach com await: não funciona\nreq.body.ids.forEach(async (id) => {\n  await processItem(id); // forEach não espera\n});\n\n// Correto — paralelo:\nconst results = await Promise.all(\n  req.body.ids.map(id => processItem(id))\n);',
+    mistake: 'forEach(async ...) — o código continua antes das Promises resolverem. Parece funcionar em teste, quebra em produção com dados reais.',
+    exercise: 'No PULSAR-RH ou OFICINA, existe algum forEach(async...) no código? grep -r "forEach(async" src/. Se sim, substituir por Promise.all + map.',
+    tip: 'forEach(async): fire and forget. Para esperar: Promise.all(arr.map(async x => ...)). Para sequencial com dependência: for...of.',
   },
   'node-graceful-shutdown': {
-    concept: 'process.on("SIGTERM") fecha conexões antes de exit. Node em container recebe SIGTERM, nao SIGKILL direto.',
-    code: 'const server = app.listen(3000);\nprocess.on("SIGTERM", () => {\n  console.log("Shutting down...");\n  server.close(() => { db.end(); process.exit(0); });\n});',
-    tip: 'Sem graceful shutdown = conexões abertas, dados incompletos. Deploy sem downtime usa SIGTERM.'
+    concept: 'SIGTERM é enviado pelo container/orquestrador antes de matar o processo. Usar para fechar servidor e encerrar conexões DB — evita requests pendentes e dados corrompidos.',
+    code: 'const server = app.listen(PORT);\n\nprocess.on("SIGTERM", () => {\n  server.close(async () => {\n    await db.end();\n    process.exit(0);\n  });\n});',
+    mistake: 'Ignorar SIGTERM e deixar o container receber SIGKILL depois do timeout. Conexões abertas com DB, requests pela metade, possível corrupção de dados.',
+    exercise: 'Em qualquer API Node.js que você escrever, adicionar o handler de SIGTERM como padrão antes de subir para produção.',
+    tip: 'SIGTERM = aviso prévio de encerramento. SIGKILL = morte imediata. Containers enviam SIGTERM, esperam X segundos, então SIGKILL.',
   },
   'clean-srp': {
-    concept: 'Uma funcao, uma responsabilidade. Se precisas de "e" pra descrever, ela faz coisa demais. Extrai subfuncoes.',
-    code: 'function validateAndSaveUser(data) { ... } // faz 2 coisas\n// Melhor:\nfunction validateUser(data) { ... }\nfunction saveUser(data) { ... }',
-    tip: 'Teste facil? Sim. Descreve em 1 frase? Sim. SRP ok. Teste dificil + "e" na descricao = violado SRP.'
+    concept: 'Uma função, uma responsabilidade. Se precisa de "e" para descrever o que faz, está fazendo coisas demais. Extrai subfunções.',
+    code: '// Violação: valida E salva E notifica\nfunction processUser(data) {\n  if (!data.email) throw new Error();\n  db.save(data);\n  sendEmail(data.email);\n}\n\n// SRP:\nfunction validateUser(data) { ... }\nfunction saveUser(data) { ... }\nfunction notifyUser(email) { ... }',
+    mistake: 'Função renderAndFetchData() — busca dados E renderiza tela. Quando a renderização muda, a lógica de fetch é impactada desnecessariamente.',
+    exercise: 'Em app.js, a função renderGrowth() chama renderGamification() e renderGrowthBody(). Isso é SRP violado ou responsabilidades relacionadas? Argumentar a decisão.',
+    tip: 'Teste fácil = SRP ok. Descreve em 1 frase sem "e"? SRP ok. Difícil de nomear = função fazendo coisa demais.',
   },
   'clean-dry-kiss': {
-    concept: 'DRY = Nao repete codigo. Mas copiar 2x eh ok, 3x extrai. KISS = simplifica, YAGNI = so implementa que eh necessario.',
-    code: '// Duplicacao 1 e 2: let estar, eh novo codigo\n// Duplicacao 3: const format = (x) => x.toUpperCase();\n// YAGNI: nao cria plugin system se so eh 1 lugar usa',
-    tip: 'Abstracoes prematuras = mais bug, nao menos. Espera padrao emergir antes de extrair.'
+    concept: 'DRY: não repetir código — mas só extrai na 3ª duplicação (2× pode ser coincidência). KISS: solução mais simples que funciona. YAGNI: só implementa o necessário agora.',
+    code: '// Duplicação ×2: ok, pode ser coincidência\n// Duplicação ×3: extrai\nconst format = (date) => date.toISOString().slice(0, 10);\n\n// YAGNI: não cria plugin system para 1 caso de uso\n// KISS: função direta > classe abstrata > factory > strategy',
+    mistake: 'Criar abstração genérica antes de ver o segundo uso real. Premature abstraction = mais código para manter, não menos bug.',
+    exercise: 'Em app.js, existe alguma lógica de formatação de data repetida? Identificar e medir: vale extrair ou é só uma linha simples?',
+    tip: 'Abstrações prematuras = mais bug, não menos. Espera padrão emergir na 3ª ocorrência antes de extrair.',
   },
   'clean-early-return': {
-    concept: 'Early return elimina else, reduz nesting. Valida condicoes invalidas no comeco, retorna cedo.',
-    code: 'function process(data) {\n  if (!data) return null;\n  if (data.length === 0) return [];\n  return transform(data);\n}\n// sem if-else-if- outro else',
-    tip: 'Nesting > 2 niveis? Refactora com early return ou extrai funcao. Ler de cima a baixo = claro.'
+    concept: 'Guard clauses no início da função verificam condições inválidas e retornam cedo. Elimina else e reduz nesting. Caminho feliz fica no nível zero de indentação.',
+    code: 'function processOrder(order) {\n  if (!order) return null;\n  if (order.cancelled) return { status: "cancelled" };\n  if (order.items.length === 0) return { status: "empty" };\n\n  // caminho feliz sem nesting\n  return calculateTotal(order);\n}',
+    mistake: 'if (condition) { grande bloco } else { outro grande bloco } — o else pode ser evitado se o if faz return/throw. Eliminar else sempre que possível.',
+    exercise: 'Em app.js, a função renderTopicRow tem ifs aninhados? Se sim, aplicar early return para achatar o nesting.',
+    tip: 'Nesting > 2 níveis? Refatora com early return ou extrai função. Leitura de cima a baixo sem indentação profunda = claro.',
   },
   'clean-naming': {
-    concept: 'Nomes descrevem O QUE E POR QUE. Sem abreviacoes. Sem generico (data, temp, x). getUser > u, calculateTotalPrice > price.',
-    code: 'const users = fetch("/api/users"); // users: array, nao 1 user\nconst isActive = user.status === "active"; // boolean comeca com is/has/can\nconst formatCurrency = (n) => ...;',
-    tip: 'Nome ruim = comenta O QUE faz. Nome bom = comenta NAO eh necessario. Nome = self-documenting.'
+    concept: 'Nomes descrevem O QUÊ e POR QUÊ. Sem abreviações. Sem genéricos (data, temp, x). Booleanos começam com is/has/can. Funções são verbos.',
+    code: 'const isActive = user.status === "active"; // boolean\nconst hasPermission = roles.includes("admin"); // boolean\nconst formatCurrency = (n) => ...; // verbo + substantivo\nconst employees = await fetchEmployees(); // plural = coleção',
+    mistake: 'Nomear variável como "data" ou "result" — não informa o tipo de dado. employeeList, orderSummary, validationErrors são autoexplicativos.',
+    exercise: 'Em app.js, localizar todas as variáveis de 1-2 letras (exceto loops com i, j). Nomear explicitamente e verificar se o código fica mais legível.',
+    tip: 'Nome ruim = comentário explicando O QUÊ faz. Nome bom = comentário desnecessário. Nome = self-documenting.',
   },
   'clean-code-smells': {
-    concept: 'God object = sabe demais. Dead code = nada chama. Shotgun surgery = 1 mudanca = 5 arquivos. Feature envy = usa dados doutro mais que proprio.',
-    code: 'class User { getFullName, validate, save, delete, checkPermission ... } // god object\n// Melhor: User + UserValidator + UserRepository + PermissionChecker',
-    tip: 'Code smell = alerta, nao erro. Revisar em PR se eh problema real ou design aceitavel pro escopo.'
+    concept: 'God object: classe que sabe de tudo. Dead code: nada chama. Shotgun surgery: 1 mudança = 5 arquivos. Feature envy: função usa mais dados de outro módulo que do próprio.',
+    code: '// God object:\nclass User {\n  getFullName() {}\n  validateEmail() {}\n  saveToDatabase() {}\n  sendNotification() {}\n  checkPermission() {}\n}\n\n// Melhor:\nclass User { getFullName() {} }\nclass UserValidator { validate() {} }\nclass UserRepository { save() {} }',
+    mistake: 'Ignorar code smell porque "funciona". Code smell = dívida técnica que cresce. Feature envy especialmente — indica abstração no lugar errado.',
+    exercise: 'Em app.js, a função renderModuleCard faz muita coisa? Contar as responsabilidades. Se passar de 3, identificar o que pode ser extraído.',
+    tip: 'Code smell = alerta, não erro obrigatório. Revisar em PR: é problema real ou design aceitável para o escopo?',
   },
   'clean-testing': {
-    concept: 'Arrange, Act, Assert. Testa COMPORTAMENTO, nao implementacao. Nao mocka modulos internos — mocka boundary (DB, API externa).',
-    code: 'test("should return 404 when user not found", () => {\n  // Arrange\n  const id = "nonexistent";\n  // Act\n  const user = findUser(id);\n  // Assert\n  expect(user).toBeUndefined();\n});',
-    tip: 'Teste que mocka findUserById interno = muito fragil. Testa resultado, nao como eh feito.'
+    concept: 'Arrange, Act, Assert: prepara estado, executa ação, verifica resultado. Testa COMPORTAMENTO observável, não implementação interna. Mock só em boundary (DB, API externa).',
+    code: 'test("should return mastered topics count correctly", () => {\n  // Arrange\n  const progress = { js: { "const-arrow": "mastered" } };\n  const mod = MODULES.find(m => m.id === "js");\n\n  // Act\n  const pct = modPct(mod, progress);\n\n  // Assert\n  expect(pct).toBe(Math.round(1 / 6 * 100));\n});',
+    mistake: 'Mockar funções internas do módulo. Se o teste verifica que findUser() foi chamada com certo argumento, está testando implementação — refactor quebra o teste sem mudar comportamento.',
+    exercise: 'Escrever 1 teste para modPct() do ag-hub: módulo com 6 tópicos onde 3 estão mastered. Verificar se retorna 50.',
+    tip: 'Teste frágil = testa implementação. Teste robusto = testa comportamento. Refactor não deve quebrar testes, só adição de funcionalidade.',
   },
 };
 
-function getModProgress()        { return JSON.parse(localStorage.getItem('agh_modules') || '{}'); }
+function getModProgress()        { return JSON.parse(localStorage.getItem('agh_modules') ?? '{}'); }
 function saveModProgress(data)   { localStorage.setItem('agh_modules', JSON.stringify(data)); }
 function topicStatus(p, mid, tid){ return p[mid]?.[tid] ?? 'pending'; }
+function getTopicNote(key)       { return JSON.parse(localStorage.getItem('agh_topic_notes') ?? '{}')[key] ?? ''; }
+function saveTopicNote(key, val) {
+  const notes = JSON.parse(localStorage.getItem('agh_topic_notes') ?? '{}');
+  notes[key] = val;
+  localStorage.setItem('agh_topic_notes', JSON.stringify(notes));
+}
 
 function buildModIcon(mod) {
   const svg = MODULE_SVG[mod.id] || '';
@@ -1011,11 +1096,16 @@ function toggleTopicExpand(modId, topicId) {
   if (el) el.classList.toggle('open');
 }
 
-function renderTopicMaterial(t) {
-  const mat = STUDY_MATERIAL[t.id] || { concept: 'Material em construção', code: '', tip: '' };
+function renderTopicMaterial(modId, t) {
+  const key = `${modId}-${t.id}`;
+  const mat = STUDY_MATERIAL[key] ?? { concept: 'Material em construção', code: '', tip: '' };
+  const note = getTopicNote(key);
   return `<div class="tm-concept">${esc(mat.concept)}</div>
     ${mat.code ? `<pre class="tm-code">${esc(mat.code)}</pre>` : ''}
-    ${mat.tip ? `<div class="tm-tip">${esc(mat.tip)}</div>` : ''}`;
+    ${mat.mistake ? `<div class="tm-block tm-block-err"><div class="tm-lbl">Erro comum</div>${esc(mat.mistake)}</div>` : ''}
+    ${mat.exercise ? `<div class="tm-block tm-block-ex"><div class="tm-lbl">Exercício</div>${esc(mat.exercise)}</div>` : ''}
+    ${mat.tip ? `<div class="tm-tip">${esc(mat.tip)}</div>` : ''}
+    <textarea class="tm-textarea" placeholder="Suas anotações sobre este tópico..." oninput="saveTopicNote('${key}',this.value)">${esc(note)}</textarea>`;
 }
 
 function renderTopicRow(modId, t, p) {
@@ -1511,8 +1601,326 @@ function delStudy() {
   toast('Registro excluído');
 }
 
+// ── TRILHA / ESTUDOS ──────────────────────────────────────────────
+
+let TRILHA_DATA = null;
+
+// Cores por prioridade (borda-topo dos cards)
+const TRILHA_COR_PRIORIDADE = {
+  maxima: 'var(--danger)',
+  alta:   'var(--danger)',
+  media:  'var(--warn)',
+  baixa:  'var(--muted)',
+};
+
+async function loadTrilhaIndex() {
+  if (TRILHA_DATA) return TRILHA_DATA;
+  try {
+    const r = await fetch('/data/trilha-index.json?v=' + Date.now());
+    if (!r.ok) throw new Error(`${r.status}`);
+    TRILHA_DATA = await r.json();
+    return TRILHA_DATA;
+  } catch(e) {
+    console.warn('[trilha] falha ao carregar trilha-index.json:', e);
+    return null;
+  }
+}
+
+function loadTrilhaProgress() {
+  return JSON.parse(localStorage.getItem('trilhaProgress') || '{}');
+}
+
+function saveTrilhaProgress(progress) {
+  localStorage.setItem('trilhaProgress', JSON.stringify(progress));
+}
+
+function calcularProgressoTrilha(trilhaId, progress) {
+  const trilha = TRILHA_DATA?.trilhas?.find(t => t.id === trilhaId);
+  if (!trilha) return { lidos: 0, checkpoints: 0, total: 0, percentual: 0 };
+  const total = trilha.modulos.length;
+  const lidos = trilha.modulos.filter(m =>
+    progress[m.id] === 'lido' || progress[m.id] === 'checkpoint'
+  ).length;
+  const checkpoints = trilha.modulos.filter(m => progress[m.id] === 'checkpoint').length;
+  const percentual = total ? Math.round((lidos / total) * 100) : 0;
+  return { lidos, checkpoints, total, percentual };
+}
+
+function buildTrilhaCard(trilha, progress) {
+  const { lidos, checkpoints, total, percentual } = calcularProgressoTrilha(trilha.id, progress);
+  const corBorda = TRILHA_COR_PRIORIDADE[trilha.prioridade] || 'var(--muted)';
+  const badgeClass = `trilha-badge-${trilha.prioridade}`;
+  const badgeLabel = trilha.prioridade === 'maxima' ? '⚡ máxima' : trilha.prioridade;
+
+  return `
+    <div class="trilha-card" onclick="renderTrilhaModulos('${trilha.id}')"
+      style="border-top:3px solid ${corBorda}">
+      <div class="trilha-card-icon">${trilha.icone}</div>
+      <div class="trilha-card-nome">${esc(trilha.nome)}</div>
+      <div class="trilha-card-foco">${esc(trilha.foco)}</div>
+      <span class="trilha-badge ${badgeClass}">${esc(badgeLabel)}</span>
+      <div class="trilha-progress-bar">
+        <div class="trilha-progress-fill" style="width:${percentual}%"></div>
+      </div>
+      <div class="trilha-progress-text">
+        <span>${lidos}/${total} lidos · ${checkpoints} checkpoint${checkpoints!==1?'s':''}</span>
+        <span>${percentual}%</span>
+      </div>
+    </div>`;
+}
+
+async function renderTrilha() {
+  const data = await loadTrilhaIndex();
+  if (!data) {
+    document.getElementById('trilha-body').innerHTML =
+      '<div class="empty"><div class="empty-i">📚</div><div class="empty-t">Erro ao carregar trilhas</div><div class="empty-s">Verifique se data/trilha-index.json existe</div></div>';
+    return;
+  }
+  renderTrilhaMapa();
+}
+
+function renderTrilhaMapa() {
+  if (!TRILHA_DATA) return;
+  const progress = loadTrilhaProgress();
+  const total = TRILHA_DATA.trilhas.reduce((a, t) => a + t.totalModulos, 0);
+  const lidos = TRILHA_DATA.trilhas.reduce((a, t) => {
+    const p = calcularProgressoTrilha(t.id, progress);
+    return a + p.lidos;
+  }, 0);
+  const checkpoints = TRILHA_DATA.trilhas.reduce((a, t) => {
+    const p = calcularProgressoTrilha(t.id, progress);
+    return a + p.checkpoints;
+  }, 0);
+
+  document.getElementById('trilha-header').innerHTML = `
+    <div>
+      <div class="view-title">Estudos</div>
+      <div class="view-sub">
+        ${TRILHA_DATA.totalTrilhas} trilhas · ${total} módulos ·
+        ${lidos} lidos · ${checkpoints} checkpoints
+      </div>
+    </div>`;
+
+  document.getElementById('trilha-body').innerHTML =
+    `<div class="trilha-grid">
+      ${TRILHA_DATA.trilhas.map(t => buildTrilhaCard(t, progress)).join('')}
+    </div>`;
+}
+
+function renderTrilhaModulos(trilhaId) {
+  if (!TRILHA_DATA) return;
+  const trilha = TRILHA_DATA.trilhas.find(t => t.id === trilhaId);
+  if (!trilha) return;
+  const progress = loadTrilhaProgress();
+
+  const buildStatusEl = (moduloId) => {
+    const st = progress[moduloId];
+    if (st === 'checkpoint') return '<div class="trilha-status trilha-status-checkpoint">✓</div>';
+    if (st === 'lido')       return '<div class="trilha-status trilha-status-lido">◐</div>';
+    return '<div class="trilha-status">○</div>';
+  };
+
+  const buildCheckBtn = (moduloId) => {
+    const isCheck = progress[moduloId] === 'checkpoint';
+    const cls = isCheck ? 'trilha-checkpoint-btn-on' : 'trilha-checkpoint-btn-off';
+    const label = isCheck ? '✓ Checkpoint' : '+ Checkpoint';
+    return `<button class="trilha-checkpoint-btn ${cls} btn-sm"
+      onclick="event.stopPropagation();marcarCheckpoint('${moduloId}')">${label}</button>`;
+  };
+
+  document.getElementById('trilha-header').innerHTML = `
+    <div style="width:100%">
+      <button class="trilha-back-btn" onclick="renderTrilhaMapa()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Voltar ao mapa
+      </button>
+      <div class="trilha-modulos-header">
+        <span style="font-size:1.4rem">${trilha.icone}</span>
+        <div class="trilha-modulos-titulo">${esc(trilha.nome)}</div>
+        <span style="font-size:.75rem;color:var(--muted)">${trilha.foco}</span>
+      </div>
+    </div>`;
+
+  document.getElementById('trilha-body').innerHTML = trilha.modulos.map(m => `
+    <div class="trilha-modulo-item">
+      ${buildStatusEl(m.id)}
+      <div class="trilha-modulo-titulo">${esc(m.titulo)}</div>
+      <div class="trilha-modulo-actions">
+        ${buildCheckBtn(m.id)}
+        <button class="btn btn-ghost btn-sm"
+          onclick="event.stopPropagation();renderTrilhaModulo('${m.id}','${trilhaId}')">Abrir</button>
+      </div>
+    </div>`).join('');
+}
+
+async function renderTrilhaModulo(moduloId, trilhaId) {
+  if (!TRILHA_DATA) return;
+  const trilha = TRILHA_DATA.trilhas.find(t => t.id === trilhaId);
+  const modulo = trilha?.modulos.find(m => m.id === moduloId);
+  if (!modulo) return;
+
+  marcarLido(moduloId);
+
+  document.getElementById('trilha-header').innerHTML = `
+    <div style="width:100%">
+      <button class="trilha-back-btn" onclick="renderTrilhaModulos('${trilhaId}')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Voltar para módulos
+      </button>
+      <div class="trilha-reader-header" style="margin-top:8px">
+        <div class="trilha-reader-titulo">${esc(modulo.titulo)}</div>
+        <div id="trilha-ck-btn-wrap"></div>
+      </div>
+    </div>`;
+
+  updateCheckpointBtn(moduloId);
+
+  document.getElementById('trilha-body').innerHTML =
+    '<div id="trilha-md-content"><div style="color:var(--muted);text-align:center;padding:40px">Carregando...</div></div>';
+
+  try {
+    const r = await fetch(modulo.caminho + '?v=' + Date.now());
+    if (!r.ok) throw new Error(`${r.status}`);
+    const md = await r.text();
+    const html = marked.parse(md);
+    document.getElementById('trilha-md-content').innerHTML = html;
+  } catch(e) {
+    document.getElementById('trilha-md-content').innerHTML =
+      `<div style="color:var(--muted);text-align:center;padding:40px">
+        Arquivo não encontrado: ${esc(modulo.caminho)}
+      </div>`;
+  }
+}
+
+function updateCheckpointBtn(moduloId) {
+  const wrap = document.getElementById('trilha-ck-btn-wrap');
+  if (!wrap) return;
+  const isCheck = loadTrilhaProgress()[moduloId] === 'checkpoint';
+  const cls = isCheck ? 'trilha-checkpoint-btn-on' : 'trilha-checkpoint-btn-off';
+  const label = isCheck ? '✓ Checkpoint ativo' : '+ Marcar checkpoint';
+  wrap.innerHTML = `<button class="trilha-checkpoint-btn ${cls}"
+    onclick="marcarCheckpoint('${moduloId}')">${label}</button>`;
+}
+
+function marcarLido(moduloId) {
+  const progress = loadTrilhaProgress();
+  if (progress[moduloId]) return; // já tem status, não sobrescreve
+  progress[moduloId] = 'lido';
+  saveTrilhaProgress(progress);
+  // +20 XP só na primeira vez
+  addXpTrilha(20, 'lido: ' + (moduloNome(moduloId) || moduloId));
+}
+
+function marcarCheckpoint(moduloId) {
+  const progress = loadTrilhaProgress();
+  const atual = progress[moduloId];
+  if (atual === 'checkpoint') {
+    progress[moduloId] = 'lido';
+    saveTrilhaProgress(progress);
+    toast('Checkpoint removido (-40 XP)');
+    addXpTrilha(-40, 'checkpoint removido: ' + (moduloNome(moduloId) || moduloId));
+  } else {
+    const eraLido = atual === 'lido';
+    progress[moduloId] = 'checkpoint';
+    saveTrilhaProgress(progress);
+    toast('Checkpoint marcado! +40 XP ✓', 'ok');
+    addXpTrilha(40, 'checkpoint: ' + (moduloNome(moduloId) || moduloId));
+    if (!eraLido) addXpTrilha(20, 'lido: ' + (moduloNome(moduloId) || moduloId));
+    verificarConquistasTrilha(progress);
+  }
+  // Atualiza UI no contexto atual sem recarregar tudo
+  updateCheckpointBtn(moduloId);
+  // Atualiza botão na lista de módulos se estiver visível
+  const ckBtns = document.querySelectorAll(`[onclick*="marcarCheckpoint('${moduloId}')"]`);
+  const isNowCheck = progress[moduloId] === 'checkpoint';
+  ckBtns.forEach(btn => {
+    btn.className = btn.className.replace(
+      /trilha-checkpoint-btn-(on|off)/,
+      isNowCheck ? 'trilha-checkpoint-btn-on' : 'trilha-checkpoint-btn-off'
+    );
+    btn.textContent = isNowCheck ? '✓ Checkpoint' : '+ Checkpoint';
+  });
+}
+
+function moduloNome(moduloId) {
+  if (!TRILHA_DATA) return moduloId;
+  for (const trilha of TRILHA_DATA.trilhas) {
+    const m = trilha.modulos.find(x => x.id === moduloId);
+    if (m) return m.titulo;
+  }
+  return moduloId;
+}
+
+// Adiciona XP usando o sistema existente de SYNC (via xpLog no recentActivity)
+// Como SYNC é readonly (vem de sync.json), gravamos em localStorage separado
+// e exibimos toast. O sync.json é atualizado pelo script ag-hub-sync.sh.
+function addXpTrilha(xp, desc) {
+  if (xp <= 0) return;
+  // Registra no localStorage para histórico local
+  const log = JSON.parse(localStorage.getItem('trilhaXpLog') || '[]');
+  log.unshift({ date: today(), xp, desc });
+  localStorage.setItem('trilhaXpLog', JSON.stringify(log.slice(0, 50)));
+}
+
+function verificarConquistasTrilha(progress) {
+  const desbloqueadas = JSON.parse(localStorage.getItem('trilhaConquistas') || '[]');
+
+  const desbloquear = (id) => {
+    if (desbloqueadas.includes(id)) return false;
+    desbloqueadas.push(id);
+    localStorage.setItem('trilhaConquistas', JSON.stringify(desbloqueadas));
+    return true;
+  };
+
+  if (!TRILHA_DATA) return;
+
+  // trilha-primeira: concluiu 1 trilha completa (todos com checkpoint)
+  const trilhaCompleta = TRILHA_DATA.trilhas.find(t =>
+    t.modulos.every(m => progress[m.id] === 'checkpoint')
+  );
+  if (trilhaCompleta && desbloquear('trilha-primeira')) {
+    toast('🎓 Conquista: Primeira Trilha!', 'ok');
+  }
+
+  // trilha-diferencial: todos os módulos de 95-diferencial com checkpoint
+  const diferencial = TRILHA_DATA.trilhas.find(t => t.id === '95-diferencial');
+  if (diferencial && diferencial.modulos.every(m => progress[m.id] === 'checkpoint')) {
+    if (desbloquear('trilha-diferencial')) {
+      toast('⚡ Conquista: Diferencial Dominado!', 'ok');
+    }
+  }
+
+  // trilha-maratonista: 10 checkpoints marcados no mesmo dia
+  const hoje = today();
+  const checkpointHoje = Object.entries(progress)
+    .filter(([, v]) => v === 'checkpoint')
+    .length;
+  // Simplificação: conta total de checkpoints acumulados (não temos timestamp por módulo)
+  // Rastreia via localStorage de sessão
+  const sessaoCheckpoints = parseInt(sessionStorage.getItem('trilhaCheckpointsHoje') || '0') + 1;
+  sessionStorage.setItem('trilhaCheckpointsHoje', String(sessaoCheckpoints));
+  if (sessaoCheckpoints >= 10 && desbloquear('trilha-maratonista')) {
+    toast('🏃 Conquista: Maratonista!', 'ok');
+  }
+
+  // trilha-portfolio: trilhas de prioridade alta (00, 10, 30, 60, 90) com checkpoint completo
+  const trilhasAlta = ['00-fundamentos', '10-codigo-limpo', '30-banco', '60-seguranca', '90-entrevista'];
+  const todasAlta = trilhasAlta.every(tid => {
+    const t = TRILHA_DATA.trilhas.find(x => x.id === tid);
+    return t && t.modulos.every(m => progress[m.id] === 'checkpoint');
+  });
+  if (todasAlta && desbloquear('trilha-portfolio')) {
+    toast('💼 Conquista: Portfólio Defensável!', 'ok');
+  }
+}
+
 // ── INIT ──────────────────────────────────────────────────────────
 (function(){
+  // Configura marked.js para renderizar markdown das trilhas
+  if (typeof marked !== 'undefined') {
+    marked.setOptions({ breaks: true, gfm: true });
+  }
+
   document.getElementById('sb-date').textContent =
     new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'});
   renderDash();
