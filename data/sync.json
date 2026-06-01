@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-01T00:55:05",
+    "lastSync": "2026-06-01T01:03:23",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 3,
     "title": "Desenvolvedor Jr",
-    "xp": 1100,
+    "xp": 1150,
     "xpToNext": 1301,
     "streak": 1,
     "longestStreak": 2,
@@ -69,6 +69,12 @@
     "revisao": 60
   },
   "xpLog": [
+    {
+      "date": "2026-06-01",
+      "xp": 50,
+      "type": "feat",
+      "desc": "DECISIONS.md retroativo em 8 projetos AG: 50 entradas reconstruidas com fonte"
+    },
     {
       "date": "2026-06-01",
       "xp": 40,
@@ -211,6 +217,13 @@
     }
   ],
   "recentActivity": [
+    {
+      "date": "2026-06-01",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "DECISIONS.md retroativo em 8 projetos AG: 50 entradas reconstruidas com fonte",
+      "xp": 50
+    },
     {
       "date": "2026-06-01",
       "type": "learning",
