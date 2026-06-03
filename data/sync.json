@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-03T15:03:34",
+    "lastSync": "2026-06-03T16:50:23",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 4,
     "title": "Desenvolvedor",
-    "xp": 1720,
+    "xp": 1800,
     "xpToNext": 2201,
     "streak": 3,
     "longestStreak": 3,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-03",
+      "xp": 80,
+      "type": "test",
+      "desc": "ag-financeiro: 21 testes da logica pura (mapper, raizes, analyze)"
+    },
     {
       "date": "2026-06-03",
       "xp": 50,
@@ -517,6 +523,13 @@
   "recentActivity": [
     {
       "date": "2026-06-03",
+      "type": "test",
+      "icon": "🧪",
+      "title": "ag-financeiro: 21 testes da logica pura (mapper, raizes, analyze)",
+      "xp": 80
+    },
+    {
+      "date": "2026-06-03",
       "type": "feat",
       "icon": "⚙️",
       "title": "AG Financeiro: scaffold modular 3 camadas + adapter Omie discovery",
@@ -577,13 +590,6 @@
       "icon": "🚀",
       "title": "Trilha integrada ao AG Hub: view Estudos gamificada com 70 modulos",
       "xp": 100
-    },
-    {
-      "date": "2026-06-01",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "Sistema de aprendizado 100%: 79 arquivos, 11 trilhas, 51 DECISIONS, 3 skills",
-      "xp": 50
     }
   ]
 }
