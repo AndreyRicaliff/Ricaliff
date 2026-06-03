@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-02T15:19:06",
+    "lastSync": "2026-06-03T15:03:34",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricalfiff",
     "level": 4,
     "title": "Desenvolvedor",
-    "xp": 1670,
+    "xp": 1720,
     "xpToNext": 2201,
-    "streak": 2,
-    "longestStreak": 2,
-    "lastActiveDate": "2026-06-02",
+    "streak": 3,
+    "longestStreak": 3,
+    "lastActiveDate": "2026-06-03",
     "attributes": {
       "int": {
         "value": 0,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-03",
+      "xp": 50,
+      "type": "feat",
+      "desc": "AG Financeiro: scaffold modular 3 camadas + adapter Omie discovery"
+    },
     {
       "date": "2026-06-02",
       "xp": 30,
@@ -510,6 +516,13 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-06-03",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "AG Financeiro: scaffold modular 3 camadas + adapter Omie discovery",
+      "xp": 50
+    },
+    {
       "date": "2026-06-02",
       "type": "bugfix",
       "icon": "🐛",
@@ -571,13 +584,6 @@
       "icon": "⚙️",
       "title": "Sistema de aprendizado 100%: 79 arquivos, 11 trilhas, 51 DECISIONS, 3 skills",
       "xp": 50
-    },
-    {
-      "date": "2026-06-01",
-      "type": "review",
-      "icon": "👁️",
-      "title": "Sessao 6: 5 lacunas DECISIONS.md fechadas com motivacao em 1a pessoa confirmada",
-      "xp": 20
     }
   ]
 }
