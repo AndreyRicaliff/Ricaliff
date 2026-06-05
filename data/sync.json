@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-05T11:59:27",
+    "lastSync": "2026-06-05T11:59:32",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 2700,
+    "xp": 2750,
     "xpToNext": 3501,
     "streak": 5,
     "longestStreak": 5,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-05",
+      "xp": 50,
+      "type": "feat",
+      "desc": "CRM: drag empresa->cliente + filtros arrastaveis com views salvas"
+    },
     {
       "date": "2026-06-05",
       "xp": 50,
@@ -615,6 +621,13 @@
       "date": "2026-06-05",
       "type": "feat",
       "icon": "⚙️",
+      "title": "CRM: drag empresa->cliente + filtros arrastaveis com views salvas",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-05",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[ag-flow-boost] drag companies into board + draggable filter views",
       "xp": 50
     },
@@ -673,13 +686,6 @@
       "icon": "🚀",
       "title": "Painel AG v0.1.0 no ar: repo privado GitHub + deploy Vercel (ag-painel.vercel.app), fundacao canonica mergeada via PR",
       "xp": 100
-    },
-    {
-      "date": "2026-06-05",
-      "type": "test",
-      "icon": "🧪",
-      "title": "10 testes dos adapters canonicos Omie/Nibo (vitest)",
-      "xp": 80
     }
   ]
 }
