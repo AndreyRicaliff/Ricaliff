@@ -1,15 +1,15 @@
 {
   "meta": {
-    "lastSync": "2026-06-05T01:29:52",
+    "lastSync": "2026-06-05T01:42:07",
     "syncedBy": "claude",
     "version": 1
   },
   "player": {
     "name": "Ricalfiff",
-    "level": 4,
-    "title": "Desenvolvedor",
-    "xp": 2160,
-    "xpToNext": 2201,
+    "level": 5,
+    "title": "Desenvolvedor Pleno",
+    "xp": 2260,
+    "xpToNext": 3501,
     "streak": 5,
     "longestStreak": 5,
     "lastActiveDate": "2026-06-05",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-05",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "Painel AG v0.1.0 no ar: repo privado GitHub + deploy Vercel (ag-painel.vercel.app), fundacao canonica mergeada via PR"
+    },
     {
       "date": "2026-06-05",
       "xp": 80,
@@ -559,6 +565,13 @@
   "recentActivity": [
     {
       "date": "2026-06-05",
+      "type": "deploy",
+      "icon": "🚀",
+      "title": "Painel AG v0.1.0 no ar: repo privado GitHub + deploy Vercel (ag-painel.vercel.app), fundacao canonica mergeada via PR",
+      "xp": 100
+    },
+    {
+      "date": "2026-06-05",
       "type": "test",
       "icon": "🧪",
       "title": "10 testes dos adapters canonicos Omie/Nibo (vitest)",
@@ -619,13 +632,6 @@
       "icon": "🐛",
       "title": "[ag-flow-boost] add segmento and observacoes columns to DB",
       "xp": 30
-    },
-    {
-      "date": "2026-06-01",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[meet-hub] initial commit — monorepo (api + web + bot)",
-      "xp": 20
     }
   ]
 }
