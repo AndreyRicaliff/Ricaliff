@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-05T10:31:23",
+    "lastSync": "2026-06-05T11:26:15",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 2410,
+    "xp": 2460,
     "xpToNext": 3501,
     "streak": 5,
     "longestStreak": 5,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-05",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[ag-flow-boost] show company-clients in board, decouple from opportunities"
+    },
     {
       "date": "2026-06-05",
       "xp": 50,
@@ -579,6 +585,13 @@
       "date": "2026-06-05",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[ag-flow-boost] show company-clients in board, decouple from opportunities",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-05",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "Painel AG: rebuild do zero (sem login) — painel do plano de contas Omie com 151 categorias reais da Autag, motor de sync server-side",
       "xp": 50
     },
@@ -637,13 +650,6 @@
       "icon": "⚙️",
       "title": "AG Financeiro Fase 5: ingestao de titulos a pagar/receber (core money+lancamento, adapter Omie, migration 0002, ingest idempotente, 44 testes)",
       "xp": 50
-    },
-    {
-      "date": "2026-06-03",
-      "type": "test",
-      "icon": "🧪",
-      "title": "ag-financeiro: 21 testes da logica pura (mapper, raizes, analyze)",
-      "xp": 80
     }
   ]
 }
