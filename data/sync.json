@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-04T23:39:57",
+    "lastSync": "2026-06-04T23:39:58",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 4,
     "title": "Desenvolvedor",
-    "xp": 1900,
+    "xp": 1980,
     "xpToNext": 2201,
     "streak": 4,
     "longestStreak": 4,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-04",
+      "xp": 80,
+      "type": "test",
+      "desc": "11 testes de somatoria/coerencia financeira (agregacao)"
+    },
     {
       "date": "2026-06-04",
       "xp": 50,
@@ -535,6 +541,13 @@
   "recentActivity": [
     {
       "date": "2026-06-04",
+      "type": "test",
+      "icon": "🧪",
+      "title": "11 testes de somatoria/coerencia financeira (agregacao)",
+      "xp": 80
+    },
+    {
+      "date": "2026-06-04",
       "type": "feat",
       "icon": "⚙️",
       "title": "AG Financeiro: prototipo web (Vite+React+Tailwind dark AG), agregacao no core (resumo+DRE) testada, telas Dashboard e Contas",
@@ -595,13 +608,6 @@
       "icon": "👁️",
       "title": "[ifpb] initial scaffold",
       "xp": 20
-    },
-    {
-      "date": "2026-06-01",
-      "type": "deploy",
-      "icon": "🚀",
-      "title": "RPG completo no AG Hub: 6 atributos + 4 builds + skill tree + quest board cruzado (122 side quests) + daily standup + pomodoro + hora sagrada + 4 streaks",
-      "xp": 100
     }
   ]
 }
