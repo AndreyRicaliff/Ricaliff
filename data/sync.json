@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 2750,
+    "xp": 2790,
     "xpToNext": 3501,
     "streak": 5,
     "longestStreak": 5,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-05",
+      "xp": 40,
+      "type": "migration",
+      "desc": "client_views table"
+    },
     {
       "date": "2026-06-05",
       "xp": 50,
@@ -619,6 +625,13 @@
   "recentActivity": [
     {
       "date": "2026-06-05",
+      "type": "migration",
+      "icon": "🗄️",
+      "title": "client_views table",
+      "xp": 40
+    },
+    {
+      "date": "2026-06-05",
       "type": "feat",
       "icon": "⚙️",
       "title": "CRM: drag empresa->cliente + filtros arrastaveis com views salvas",
@@ -678,13 +691,6 @@
       "type": "deploy",
       "icon": "🚀",
       "title": "Painel AG no ar e abrindo: painel-ag.vercel.app (projeto novo destravou o BLOCKED; fix das aspas do .env aplicado)",
-      "xp": 100
-    },
-    {
-      "date": "2026-06-05",
-      "type": "deploy",
-      "icon": "🚀",
-      "title": "Painel AG v0.1.0 no ar: repo privado GitHub + deploy Vercel (ag-painel.vercel.app), fundacao canonica mergeada via PR",
       "xp": 100
     }
   ]
