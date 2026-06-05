@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-04T23:53:47",
+    "lastSync": "2026-06-05T01:29:50",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricalfiff",
     "level": 4,
     "title": "Desenvolvedor",
-    "xp": 2030,
+    "xp": 2080,
     "xpToNext": 2201,
-    "streak": 4,
-    "longestStreak": 4,
-    "lastActiveDate": "2026-06-04",
+    "streak": 5,
+    "longestStreak": 5,
+    "lastActiveDate": "2026-06-05",
     "attributes": {
       "int": {
         "value": 0,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-05",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Painel AG Fase 0: fundacao canonica (nucleo + adapters Omie/Nibo + seam classificador), import do app Lovable, schema ag_*, 10 testes"
+    },
     {
       "date": "2026-06-04",
       "xp": 50,
@@ -546,6 +552,13 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-06-05",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "Painel AG Fase 0: fundacao canonica (nucleo + adapters Omie/Nibo + seam classificador), import do app Lovable, schema ag_*, 10 testes",
+      "xp": 50
+    },
+    {
       "date": "2026-06-04",
       "type": "feat",
       "icon": "⚙️",
@@ -607,13 +620,6 @@
       "icon": "⚙️",
       "title": "Automacao cross-project ativada: post-commit global + Stop hook diario",
       "xp": 50
-    },
-    {
-      "date": "2026-06-01",
-      "type": "test",
-      "icon": "🧪",
-      "title": "[ifpb] smoke test post-commit ag-hub auto sync",
-      "xp": 80
     }
   ]
 }
