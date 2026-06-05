@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-05T01:29:50",
+    "lastSync": "2026-06-05T01:29:52",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 4,
     "title": "Desenvolvedor",
-    "xp": 2080,
+    "xp": 2160,
     "xpToNext": 2201,
     "streak": 5,
     "longestStreak": 5,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-05",
+      "xp": 80,
+      "type": "test",
+      "desc": "10 testes dos adapters canonicos Omie/Nibo (vitest)"
+    },
     {
       "date": "2026-06-05",
       "xp": 50,
@@ -553,6 +559,13 @@
   "recentActivity": [
     {
       "date": "2026-06-05",
+      "type": "test",
+      "icon": "🧪",
+      "title": "10 testes dos adapters canonicos Omie/Nibo (vitest)",
+      "xp": 80
+    },
+    {
+      "date": "2026-06-05",
       "type": "feat",
       "icon": "⚙️",
       "title": "Painel AG Fase 0: fundacao canonica (nucleo + adapters Omie/Nibo + seam classificador), import do app Lovable, schema ag_*, 10 testes",
@@ -613,13 +626,6 @@
       "icon": "👁️",
       "title": "[meet-hub] initial commit — monorepo (api + web + bot)",
       "xp": 20
-    },
-    {
-      "date": "2026-06-01",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "Automacao cross-project ativada: post-commit global + Stop hook diario",
-      "xp": 50
     }
   ]
 }
