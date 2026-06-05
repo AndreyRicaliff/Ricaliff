@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-04T23:16:55",
+    "lastSync": "2026-06-04T23:39:57",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 4,
     "title": "Desenvolvedor",
-    "xp": 1850,
+    "xp": 1900,
     "xpToNext": 2201,
     "streak": 4,
     "longestStreak": 4,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-04",
+      "xp": 50,
+      "type": "feat",
+      "desc": "AG Financeiro: prototipo web (Vite+React+Tailwind dark AG), agregacao no core (resumo+DRE) testada, telas Dashboard e Contas"
+    },
     {
       "date": "2026-06-04",
       "xp": 50,
@@ -531,6 +537,13 @@
       "date": "2026-06-04",
       "type": "feat",
       "icon": "⚙️",
+      "title": "AG Financeiro: prototipo web (Vite+React+Tailwind dark AG), agregacao no core (resumo+DRE) testada, telas Dashboard e Contas",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-04",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "AG Financeiro Fase 5: ingestao de titulos a pagar/receber (core money+lancamento, adapter Omie, migration 0002, ingest idempotente, 44 testes)",
       "xp": 50
     },
@@ -589,13 +602,6 @@
       "icon": "🚀",
       "title": "RPG completo no AG Hub: 6 atributos + 4 builds + skill tree + quest board cruzado (122 side quests) + daily standup + pomodoro + hora sagrada + 4 streaks",
       "xp": 100
-    },
-    {
-      "date": "2026-06-01",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "Daily Ritual: Standup modal, Pomodoro FAB, Hora Sagrada e Streaks multiplos",
-      "xp": 50
     }
   ]
 }
