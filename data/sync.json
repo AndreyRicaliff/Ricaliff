@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-05T11:48:17",
+    "lastSync": "2026-06-05T11:48:24",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 2560,
+    "xp": 2610,
     "xpToNext": 3501,
     "streak": 5,
     "longestStreak": 5,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-05",
+      "xp": 50,
+      "type": "feat",
+      "desc": "CRM: etapas de cliente configuráveis (drag reorder/rename/cor)"
+    },
     {
       "date": "2026-06-05",
       "xp": 50,
@@ -597,6 +603,13 @@
       "date": "2026-06-05",
       "type": "feat",
       "icon": "⚙️",
+      "title": "CRM: etapas de cliente configuráveis (drag reorder/rename/cor)",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-05",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[ag-flow-boost] configurable funnel stages (rename/reorder/add/remove)",
       "xp": 50
     },
@@ -655,13 +668,6 @@
       "icon": "⚙️",
       "title": "AG Financeiro: front plugado no Supabase real (anon+RLS, auth Google OAuth, repo row->core, tenant demo populado, pipeline verificado)",
       "xp": 50
-    },
-    {
-      "date": "2026-06-04",
-      "type": "test",
-      "icon": "🧪",
-      "title": "11 testes de somatoria/coerencia financeira (agregacao)",
-      "xp": 80
     }
   ]
 }
