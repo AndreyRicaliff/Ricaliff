@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-05T09:58:36",
+    "lastSync": "2026-06-05T10:31:23",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 2360,
+    "xp": 2410,
     "xpToNext": 3501,
     "streak": 5,
     "longestStreak": 5,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-05",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Painel AG: rebuild do zero (sem login) — painel do plano de contas Omie com 151 categorias reais da Autag, motor de sync server-side"
+    },
     {
       "date": "2026-06-05",
       "xp": 100,
@@ -571,6 +577,13 @@
   "recentActivity": [
     {
       "date": "2026-06-05",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "Painel AG: rebuild do zero (sem login) — painel do plano de contas Omie com 151 categorias reais da Autag, motor de sync server-side",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-05",
       "type": "deploy",
       "icon": "🚀",
       "title": "Painel AG no ar e abrindo: painel-ag.vercel.app (projeto novo destravou o BLOCKED; fix das aspas do .env aplicado)",
@@ -631,13 +644,6 @@
       "icon": "🧪",
       "title": "ag-financeiro: 21 testes da logica pura (mapper, raizes, analyze)",
       "xp": 80
-    },
-    {
-      "date": "2026-06-03",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "AG Financeiro: scaffold modular 3 camadas + adapter Omie discovery",
-      "xp": 50
     }
   ]
 }
