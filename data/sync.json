@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-03T16:50:23",
+    "lastSync": "2026-06-04T23:16:55",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricalfiff",
     "level": 4,
     "title": "Desenvolvedor",
-    "xp": 1800,
+    "xp": 1850,
     "xpToNext": 2201,
-    "streak": 3,
-    "longestStreak": 3,
-    "lastActiveDate": "2026-06-03",
+    "streak": 4,
+    "longestStreak": 4,
+    "lastActiveDate": "2026-06-04",
     "attributes": {
       "int": {
         "value": 0,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-04",
+      "xp": 50,
+      "type": "feat",
+      "desc": "AG Financeiro Fase 5: ingestao de titulos a pagar/receber (core money+lancamento, adapter Omie, migration 0002, ingest idempotente, 44 testes)"
+    },
     {
       "date": "2026-06-03",
       "xp": 80,
@@ -522,6 +528,13 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-06-04",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "AG Financeiro Fase 5: ingestao de titulos a pagar/receber (core money+lancamento, adapter Omie, migration 0002, ingest idempotente, 44 testes)",
+      "xp": 50
+    },
+    {
       "date": "2026-06-03",
       "type": "test",
       "icon": "🧪",
@@ -583,13 +596,6 @@
       "icon": "⚙️",
       "title": "Daily Ritual: Standup modal, Pomodoro FAB, Hora Sagrada e Streaks multiplos",
       "xp": 50
-    },
-    {
-      "date": "2026-06-01",
-      "type": "deploy",
-      "icon": "🚀",
-      "title": "Trilha integrada ao AG Hub: view Estudos gamificada com 70 modulos",
-      "xp": 100
     }
   ]
 }
