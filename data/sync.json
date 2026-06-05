@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-05T11:48:26",
+    "lastSync": "2026-06-05T11:59:27",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 2650,
+    "xp": 2700,
     "xpToNext": 3501,
     "streak": 5,
     "longestStreak": 5,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-05",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[ag-flow-boost] drag companies into board + draggable filter views"
+    },
     {
       "date": "2026-06-05",
       "xp": 40,
@@ -607,6 +613,13 @@
   "recentActivity": [
     {
       "date": "2026-06-05",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[ag-flow-boost] drag companies into board + draggable filter views",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-05",
       "type": "migration",
       "icon": "🗄️",
       "title": "client_stages + decouple clients",
@@ -667,13 +680,6 @@
       "icon": "🧪",
       "title": "10 testes dos adapters canonicos Omie/Nibo (vitest)",
       "xp": 80
-    },
-    {
-      "date": "2026-06-05",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "Painel AG Fase 0: fundacao canonica (nucleo + adapters Omie/Nibo + seam classificador), import do app Lovable, schema ag_*, 10 testes",
-      "xp": 50
     }
   ]
 }
