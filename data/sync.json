@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-05T11:48:24",
+    "lastSync": "2026-06-05T11:48:26",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 2610,
+    "xp": 2650,
     "xpToNext": 3501,
     "streak": 5,
     "longestStreak": 5,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-05",
+      "xp": 40,
+      "type": "migration",
+      "desc": "client_stages + decouple clients"
+    },
     {
       "date": "2026-06-05",
       "xp": 50,
@@ -601,6 +607,13 @@
   "recentActivity": [
     {
       "date": "2026-06-05",
+      "type": "migration",
+      "icon": "🗄️",
+      "title": "client_stages + decouple clients",
+      "xp": 40
+    },
+    {
+      "date": "2026-06-05",
       "type": "feat",
       "icon": "⚙️",
       "title": "CRM: etapas de cliente configuráveis (drag reorder/rename/cor)",
@@ -660,13 +673,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "Painel AG Fase 0: fundacao canonica (nucleo + adapters Omie/Nibo + seam classificador), import do app Lovable, schema ag_*, 10 testes",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-04",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "AG Financeiro: front plugado no Supabase real (anon+RLS, auth Google OAuth, repo row->core, tenant demo populado, pipeline verificado)",
       "xp": 50
     }
   ]
