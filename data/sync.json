@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-05T23:02:09",
+    "lastSync": "2026-06-06T16:38:27",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 2840,
+    "xp": 2890,
     "xpToNext": 3501,
-    "streak": 5,
-    "longestStreak": 5,
-    "lastActiveDate": "2026-06-05",
+    "streak": 6,
+    "longestStreak": 6,
+    "lastActiveDate": "2026-06-06",
     "attributes": {
       "int": {
         "value": 0,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-06",
+      "xp": 50,
+      "type": "feat",
+      "desc": "scaffold projeto pessoal enem-estudos (Vite+React+TS, SQLite WASM, flashcards SM-2)"
+    },
     {
       "date": "2026-06-05",
       "xp": 50,
@@ -630,6 +636,13 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-06-06",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "scaffold projeto pessoal enem-estudos (Vite+React+TS, SQLite WASM, flashcards SM-2)",
+      "xp": 50
+    },
+    {
       "date": "2026-06-05",
       "type": "feat",
       "icon": "⚙️",
@@ -690,13 +703,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[ag-flow-boost] show company-clients in board, decouple from opportunities",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-05",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "Painel AG: rebuild do zero (sem login) — painel do plano de contas Omie com 151 categorias reais da Autag, motor de sync server-side",
       "xp": 50
     }
   ]
