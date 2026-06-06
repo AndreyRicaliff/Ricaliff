@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-06T16:38:27",
+    "lastSync": "2026-06-06T16:59:31",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 2890,
+    "xp": 2990,
     "xpToNext": 3501,
     "streak": 6,
     "longestStreak": 6,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-06",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "enem-estudos no ar na Vercel: Biologia (histologia, contraceptivos, respiratorio) com mapa mental, resumos, flashcards e questoes"
+    },
     {
       "date": "2026-06-06",
       "xp": 50,
@@ -637,6 +643,13 @@
   "recentActivity": [
     {
       "date": "2026-06-06",
+      "type": "deploy",
+      "icon": "🚀",
+      "title": "enem-estudos no ar na Vercel: Biologia (histologia, contraceptivos, respiratorio) com mapa mental, resumos, flashcards e questoes",
+      "xp": 100
+    },
+    {
+      "date": "2026-06-06",
       "type": "feat",
       "icon": "⚙️",
       "title": "scaffold projeto pessoal enem-estudos (Vite+React+TS, SQLite WASM, flashcards SM-2)",
@@ -696,13 +709,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "CRM: empresas-cliente aparecem no board + drag-reorder",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-05",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[ag-flow-boost] show company-clients in board, decouple from opportunities",
       "xp": 50
     }
   ]
