@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 6,
     "title": "Sênior",
-    "xp": 4000,
+    "xp": 4030,
     "xpToNext": 5501,
     "streak": 8,
     "longestStreak": 8,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-08",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[ag-flow-boost] preserve 0% commission rate"
+    },
     {
       "date": "2026-06-08",
       "xp": 30,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "Sistema de aprendizado 100%: 79 arquivos, 11 trilhas, 51 DECISIONS, 3 skills"
-    },
-    {
-      "date": "2026-06-01",
-      "xp": 20,
-      "type": "review",
-      "desc": "Sessao 6: 5 lacunas DECISIONS.md fechadas com motivacao em 1a pessoa confirmada"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-06-08",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[ag-flow-boost] preserve 0% commission rate",
+      "xp": 30
+    },
+    {
+      "date": "2026-06-08",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[ag-flow-boost] count clients from clients table and harden initials",
       "xp": 30
     },
@@ -745,13 +752,6 @@
       "icon": "⚙️",
       "title": "Lumen: multi-tenant Clientes+Cadastro CRUD, logo, toggle visivel",
       "xp": 50
-    },
-    {
-      "date": "2026-06-08",
-      "type": "deploy",
-      "icon": "🚀",
-      "title": "Lumen Finance no ar (rebrand+tema+secoes, login off)",
-      "xp": 100
     }
   ]
 }
