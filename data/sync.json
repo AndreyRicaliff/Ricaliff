@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 6,
     "title": "Sênior",
-    "xp": 3970,
+    "xp": 4000,
     "xpToNext": 5501,
     "streak": 8,
     "longestStreak": 8,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-08",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[ag-flow-boost] count clients from clients table and harden initials"
+    },
     {
       "date": "2026-06-08",
       "xp": 30,
@@ -522,12 +528,6 @@
       "xp": 20,
       "type": "review",
       "desc": "Sessao 6: 5 lacunas DECISIONS.md fechadas com motivacao em 1a pessoa confirmada"
-    },
-    {
-      "date": "2026-06-01",
-      "xp": 50,
-      "type": "feat",
-      "desc": "DECISIONS.md retroativo em 8 projetos AG: 50 entradas reconstruidas com fonte"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-06-08",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[ag-flow-boost] count clients from clients table and harden initials",
+      "xp": 30
+    },
+    {
+      "date": "2026-06-08",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[ag-flow-boost] decouple client logic from hardcoded stage keys",
       "xp": 30
     },
@@ -745,13 +752,6 @@
       "icon": "🚀",
       "title": "Lumen Finance no ar (rebrand+tema+secoes, login off)",
       "xp": 100
-    },
-    {
-      "date": "2026-06-08",
-      "type": "security",
-      "icon": "🛡️",
-      "title": "Lumen Finance: gate Google OAuth (dominio AG) atras de flag",
-      "xp": 50
     }
   ]
 }
