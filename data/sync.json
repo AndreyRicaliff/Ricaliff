@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-07T16:25:19",
+    "lastSync": "2026-06-08T10:57:34",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 3150,
+    "xp": 3200,
     "xpToNext": 3501,
-    "streak": 7,
-    "longestStreak": 7,
-    "lastActiveDate": "2026-06-07",
+    "streak": 8,
+    "longestStreak": 8,
+    "lastActiveDate": "2026-06-08",
     "attributes": {
       "int": {
         "value": 0,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-08",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Painel AG: camada editada persistida no Supabase + deploy Vercel"
+    },
     {
       "date": "2026-06-07",
       "xp": 50,
@@ -660,6 +666,13 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-06-08",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "Painel AG: camada editada persistida no Supabase + deploy Vercel",
+      "xp": 50
+    },
+    {
       "date": "2026-06-07",
       "type": "feat",
       "icon": "⚙️",
@@ -721,13 +734,6 @@
       "icon": "⚙️",
       "title": "[ag-flow-boost] drag companies into board + draggable filter views",
       "xp": 50
-    },
-    {
-      "date": "2026-06-05",
-      "type": "migration",
-      "icon": "🗄️",
-      "title": "client_stages + decouple clients",
-      "xp": 40
     }
   ]
 }
