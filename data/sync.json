@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-08T10:57:34",
+    "lastSync": "2026-06-08T10:57:36",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 3200,
+    "xp": 3300,
     "xpToNext": 3501,
     "streak": 8,
     "longestStreak": 8,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-08",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "ag-painel.vercel.app com Supabase"
+    },
     {
       "date": "2026-06-08",
       "xp": 50,
@@ -667,6 +673,13 @@
   "recentActivity": [
     {
       "date": "2026-06-08",
+      "type": "deploy",
+      "icon": "🚀",
+      "title": "ag-painel.vercel.app com Supabase",
+      "xp": 100
+    },
+    {
+      "date": "2026-06-08",
       "type": "feat",
       "icon": "⚙️",
       "title": "Painel AG: camada editada persistida no Supabase + deploy Vercel",
@@ -726,13 +739,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "CRM: drag empresa->cliente + filtros arrastaveis com views salvas",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-05",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[ag-flow-boost] drag companies into board + draggable filter views",
       "xp": 50
     }
   ]
