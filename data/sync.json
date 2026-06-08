@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-08T10:57:36",
+    "lastSync": "2026-06-08T11:35:25",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 5,
     "title": "Desenvolvedor Pleno",
-    "xp": 3300,
+    "xp": 3330,
     "xpToNext": 3501,
     "streak": 8,
     "longestStreak": 8,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-08",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "Painel AG: app publicado abria sem conciliacao — seed da simulacao no Supabase"
+    },
     {
       "date": "2026-06-08",
       "xp": 100,
@@ -673,6 +679,13 @@
   "recentActivity": [
     {
       "date": "2026-06-08",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "Painel AG: app publicado abria sem conciliacao — seed da simulacao no Supabase",
+      "xp": 30
+    },
+    {
+      "date": "2026-06-08",
       "type": "deploy",
       "icon": "🚀",
       "title": "ag-painel.vercel.app com Supabase",
@@ -733,13 +746,6 @@
       "icon": "🗄️",
       "title": "client_views table",
       "xp": 40
-    },
-    {
-      "date": "2026-06-05",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "CRM: drag empresa->cliente + filtros arrastaveis com views salvas",
-      "xp": 50
     }
   ]
 }
