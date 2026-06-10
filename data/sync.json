@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-10T11:09:56",
+    "lastSync": "2026-06-10T14:56:10",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 6,
     "title": "Sênior",
-    "xp": 4850,
+    "xp": 4900,
     "xpToNext": 5501,
     "streak": 10,
     "longestStreak": 10,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-10",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Lúmen: módulo Contas a Pagar/Receber (agenda de vencimentos, status oficial Omie)"
+    },
     {
       "date": "2026-06-10",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 80,
       "type": "test",
       "desc": "10 testes dos adapters canonicos Omie/Nibo (vitest)"
-    },
-    {
-      "date": "2026-06-05",
-      "xp": 50,
-      "type": "feat",
-      "desc": "Painel AG Fase 0: fundacao canonica (nucleo + adapters Omie/Nibo + seam classificador), import do app Lovable, schema ag_*, 10 testes"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-06-10",
       "type": "feat",
       "icon": "⚙️",
+      "title": "Lúmen: módulo Contas a Pagar/Receber (agenda de vencimentos, status oficial Omie)",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-10",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "Lúmen: PMR/PMP/ciclo + MoM/YoY + linhas de média nos gráficos",
       "xp": 50
     },
@@ -744,13 +751,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "Lúmen: menu de contexto na Matriz de Classificações (sugestões em massa, collapse, mini-dashboard)",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-10",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "Lúmen: matriz de classificação AG + periodização/projeções + visual pass (3 commits, rebuild/base)",
       "xp": 50
     }
   ]
