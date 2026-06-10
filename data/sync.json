@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-10T16:12:24",
+    "lastSync": "2026-06-10T17:05:29",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 6,
     "title": "Sênior",
-    "xp": 5180,
+    "xp": 5230,
     "xpToNext": 5501,
     "streak": 10,
     "longestStreak": 10,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-10",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Lúmen: análise horizontal (Δ vs período anterior) + escada da DRE"
+    },
     {
       "date": "2026-06-10",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "CRM: etapas de cliente configuráveis (drag reorder/rename/cor)"
-    },
-    {
-      "date": "2026-06-05",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[ag-flow-boost] configurable funnel stages (rename/reorder/add/remove)"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-06-10",
       "type": "feat",
       "icon": "⚙️",
+      "title": "Lúmen: análise horizontal (Δ vs período anterior) + escada da DRE",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-10",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "Lúmen: mini-gráfico com eixo de meses nos cards de indicador",
       "xp": 50
     },
@@ -745,13 +752,6 @@
       "icon": "🔍",
       "title": "Lúmen: revisão completa CLAUDE.md — headers de contexto + dedup de helpers",
       "xp": 60
-    },
-    {
-      "date": "2026-06-10",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "Lúmen: realinhamento automático do modelo à Matriz AG (28 correções aplicadas)",
-      "xp": 50
     }
   ]
 }
