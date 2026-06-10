@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-10T15:09:20",
+    "lastSync": "2026-06-10T15:37:13",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 6,
     "title": "Sênior",
-    "xp": 4980,
+    "xp": 5030,
     "xpToNext": 5501,
     "streak": 10,
     "longestStreak": 10,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-10",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Lúmen: dashboard de fontes por linha da DRE/DFC (fornecedores + transações)"
+    },
     {
       "date": "2026-06-10",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "Painel AG: rebuild do zero (sem login) — painel do plano de contas Omie com 151 categorias reais da Autag, motor de sync server-side"
-    },
-    {
-      "date": "2026-06-05",
-      "xp": 100,
-      "type": "deploy",
-      "desc": "Painel AG no ar e abrindo: painel-ag.vercel.app (projeto novo destravou o BLOCKED; fix das aspas do .env aplicado)"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-06-10",
       "type": "feat",
       "icon": "⚙️",
+      "title": "Lúmen: dashboard de fontes por linha da DRE/DFC (fornecedores + transações)",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-10",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "Lúmen: filial como filtro global de todos os relatórios",
       "xp": 50
     },
@@ -744,13 +751,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "Lúmen: join LancCC→mf descoberto; rateios reais de centro de custo fluem no sync (edge v4)",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-10",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "Lúmen: centros de custo/filiais — 3ª dimensão + relatório por filial + edge v3",
       "xp": 50
     }
   ]
