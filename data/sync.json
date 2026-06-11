@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-11T10:37:11",
+    "lastSync": "2026-06-11T10:37:12",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 7,
     "title": "Tech Lead",
-    "xp": 7350,
+    "xp": 7450,
     "xpToNext": 8501,
     "streak": 11,
     "longestStreak": 11,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "deploy family fonts + ambient music"
+    },
     {
       "date": "2026-06-11",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "Lúmen: histórico de sincronizações com diff server-side + edge function v2 (full-replace + datas) deployada"
-    },
-    {
-      "date": "2026-06-10",
-      "xp": 50,
-      "type": "feat",
-      "desc": "Lúmen: menu de contexto na Matriz de Classificações (sugestões em massa, collapse, mini-dashboard)"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-11",
+      "type": "deploy",
+      "icon": "🚀",
+      "title": "deploy family fonts + ambient music",
+      "xp": 100
+    },
+    {
+      "date": "2026-06-11",
       "type": "feat",
       "icon": "⚙️",
       "title": "pulsar family standard: type system + ambient music + gen-2 parity",
@@ -745,13 +752,6 @@
       "icon": "⚙️",
       "title": "login-only scene, single ripple, tickers moved",
       "xp": 50
-    },
-    {
-      "date": "2026-06-11",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "login pulse scene visibility",
-      "xp": 30
     }
   ]
 }
