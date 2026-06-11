@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-11T02:33:41",
+    "lastSync": "2026-06-11T02:48:47",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 7,
     "title": "Tech Lead",
-    "xp": 5790,
+    "xp": 5850,
     "xpToNext": 8501,
     "streak": 11,
     "longestStreak": 11,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-11",
+      "xp": 60,
+      "type": "revisao",
+      "desc": "general review: modularization, DRY, timezone fix"
+    },
     {
       "date": "2026-06-11",
       "xp": 100,
@@ -522,12 +528,6 @@
       "xp": 60,
       "type": "revisao",
       "desc": "Revisao Painel AG: DRY (Segmento, BadgeEditado), split modelo.ts, auditoria seguranca"
-    },
-    {
-      "date": "2026-06-06",
-      "xp": 50,
-      "type": "feat",
-      "desc": "enem-estudos redesign UI: tema vibrante, flashcards 3D, mapa mental colorido, questoes com placar"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-11",
+      "type": "revisao",
+      "icon": "🔍",
+      "title": "general review: modularization, DRY, timezone fix",
+      "xp": 60
+    },
+    {
+      "date": "2026-06-11",
       "type": "deploy",
       "icon": "🚀",
       "title": "deploy expandable charts",
@@ -744,13 +751,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "Lúmen: análise horizontal (Δ vs período anterior) + escada da DRE",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-10",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "Lúmen: mini-gráfico com eixo de meses nos cards de indicador",
       "xp": 50
     }
   ]
