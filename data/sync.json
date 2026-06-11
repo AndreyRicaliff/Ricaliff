@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-11T08:32:31",
+    "lastSync": "2026-06-11T08:37:13",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 7,
     "title": "Tech Lead",
-    "xp": 6640,
+    "xp": 6690,
     "xpToNext": 8501,
     "streak": 11,
     "longestStreak": 11,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "feat",
+      "desc": "fullscreen comparativo + market tickers"
+    },
     {
       "date": "2026-06-11",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[cliente-varejo] ID-anchored pagination stop + reclassify high-value GERAL as smartphone"
-    },
-    {
-      "date": "2026-06-08",
-      "xp": 100,
-      "type": "deploy",
-      "desc": "Lumen login+autoscroll no ar"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-11",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "fullscreen comparativo + market tickers",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-11",
       "type": "security",
       "icon": "🛡️",
       "title": "portal deletes moved to security-definer RPCs",
@@ -745,13 +752,6 @@
       "icon": "⚙️",
       "title": "gamer hex logo + visual evolution guide",
       "xp": 50
-    },
-    {
-      "date": "2026-06-11",
-      "type": "deploy",
-      "icon": "🚀",
-      "title": "deploy Pulsar Finance rebrand",
-      "xp": 100
     }
   ]
 }
