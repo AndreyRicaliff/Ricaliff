@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-11T08:30:18",
+    "lastSync": "2026-06-11T08:30:19",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 7,
     "title": "Tech Lead",
-    "xp": 6490,
+    "xp": 6590,
     "xpToNext": 8501,
     "streak": 11,
     "longestStreak": 11,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "deploy login 3d pulse"
+    },
     {
       "date": "2026-06-11",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "Lumen: login email/senha + auto-scroll no drag"
-    },
-    {
-      "date": "2026-06-08",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "Modelo AG: drop em subgrupo nao fixava (stopPropagation em DropZone aninhado)"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-11",
+      "type": "deploy",
+      "icon": "🚀",
+      "title": "deploy login 3d pulse",
+      "xp": 100
+    },
+    {
+      "date": "2026-06-11",
       "type": "feat",
       "icon": "⚙️",
       "title": "login caps/eye/3d pulse effects",
@@ -745,13 +752,6 @@
       "icon": "⚙️",
       "title": "rebrand Pulsar Finance + pulse identity (rings, sounds, welcome)",
       "xp": 50
-    },
-    {
-      "date": "2026-06-11",
-      "type": "deploy",
-      "icon": "🚀",
-      "title": "deploy kpi deep-dive + cleanup batch",
-      "xp": 100
     }
   ]
 }
