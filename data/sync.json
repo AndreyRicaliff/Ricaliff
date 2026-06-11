@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-11T10:37:12",
+    "lastSync": "2026-06-11T10:52:41",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 7,
     "title": "Tech Lead",
-    "xp": 7450,
+    "xp": 7550,
     "xpToNext": 8501,
     "streak": 11,
     "longestStreak": 11,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "PULSAR-RH: family standard live (fonts, gen-2, menu)"
+    },
     {
       "date": "2026-06-11",
       "xp": 100,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "Lúmen: centros de custo/filiais — 3ª dimensão + relatório por filial + edge v3"
-    },
-    {
-      "date": "2026-06-10",
-      "xp": 50,
-      "type": "feat",
-      "desc": "Lúmen: histórico de sincronizações com diff server-side + edge function v2 (full-replace + datas) deployada"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-06-11",
       "type": "deploy",
       "icon": "🚀",
+      "title": "PULSAR-RH: family standard live (fonts, gen-2, menu)",
+      "xp": 100
+    },
+    {
+      "date": "2026-06-11",
+      "type": "deploy",
+      "icon": "🚀",
       "title": "deploy family fonts + ambient music",
       "xp": 100
     },
@@ -744,13 +751,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "candlestick background on login",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-11",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "login-only scene, single ripple, tickers moved",
       "xp": 50
     }
   ]
