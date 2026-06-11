@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-11T08:30:19",
+    "lastSync": "2026-06-11T08:32:31",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 7,
     "title": "Tech Lead",
-    "xp": 6590,
+    "xp": 6640,
     "xpToNext": 8501,
     "streak": 11,
     "longestStreak": 11,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "security",
+      "desc": "portal deletes moved to security-definer RPCs"
+    },
     {
       "date": "2026-06-11",
       "xp": 100,
@@ -522,12 +528,6 @@
       "xp": 100,
       "type": "deploy",
       "desc": "Lumen login+autoscroll no ar"
-    },
-    {
-      "date": "2026-06-08",
-      "xp": 50,
-      "type": "feat",
-      "desc": "Lumen: login email/senha + auto-scroll no drag"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-11",
+      "type": "security",
+      "icon": "🛡️",
+      "title": "portal deletes moved to security-definer RPCs",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-11",
       "type": "deploy",
       "icon": "🚀",
       "title": "deploy login 3d pulse",
@@ -745,13 +752,6 @@
       "icon": "🚀",
       "title": "deploy Pulsar Finance rebrand",
       "xp": 100
-    },
-    {
-      "date": "2026-06-11",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "rebrand Pulsar Finance + pulse identity (rings, sounds, welcome)",
-      "xp": 50
     }
   ]
 }
