@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-11T08:37:13",
+    "lastSync": "2026-06-11T08:37:15",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 7,
     "title": "Tech Lead",
-    "xp": 6690,
+    "xp": 6790,
     "xpToNext": 8501,
     "streak": 11,
     "longestStreak": 11,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "deploy comparativo + tickers"
+    },
     {
       "date": "2026-06-11",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "security",
       "desc": "Lumen: login email/senha ativo e verificado (suporte@)"
-    },
-    {
-      "date": "2026-06-08",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[cliente-varejo] ID-anchored pagination stop + reclassify high-value GERAL as smartphone"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-11",
+      "type": "deploy",
+      "icon": "🚀",
+      "title": "deploy comparativo + tickers",
+      "xp": 100
+    },
+    {
+      "date": "2026-06-11",
       "type": "feat",
       "icon": "⚙️",
       "title": "fullscreen comparativo + market tickers",
@@ -744,13 +751,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "context strip + PulsaRH-family wordmark",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-11",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "gamer hex logo + visual evolution guide",
       "xp": 50
     }
   ]
