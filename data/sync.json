@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-11T08:28:57",
+    "lastSync": "2026-06-11T08:28:59",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 7,
     "title": "Tech Lead",
-    "xp": 6360,
+    "xp": 6390,
     "xpToNext": 8501,
     "streak": 11,
     "longestStreak": 11,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-11",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "survey scale/types, process flow, headcount sources"
+    },
     {
       "date": "2026-06-11",
       "xp": 60,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "Lumen: multi-tenant Clientes+Cadastro CRUD, logo, toggle visivel"
-    },
-    {
-      "date": "2026-06-08",
-      "xp": 100,
-      "type": "deploy",
-      "desc": "Lumen Finance no ar (rebrand+tema+secoes, login off)"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-11",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "survey scale/types, process flow, headcount sources",
+      "xp": 30
+    },
+    {
+      "date": "2026-06-11",
       "type": "revisao",
       "icon": "🔍",
       "title": "PULSAR-RH broken flows review (PR #16)",
@@ -745,13 +752,6 @@
       "icon": "🚀",
       "title": "deploy expandable charts",
       "xp": 100
-    },
-    {
-      "date": "2026-06-11",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "expandable charts modal across 8 chart cards",
-      "xp": 50
     }
   ]
 }
