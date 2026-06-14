@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-14T02:00:12",
+    "lastSync": "2026-06-14T02:09:14",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricalfiff",
     "level": 7,
     "title": "Tech Lead",
-    "xp": 8400,
+    "xp": 8450,
     "xpToNext": 8501,
     "streak": 14,
     "longestStreak": 14,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-14",
+      "xp": 50,
+      "type": "feat",
+      "desc": "AUTAG 36 configurada com credencial propria (CNPJ 36.715.328) + sync de maio; 27 e 36 agora distintas"
+    },
     {
       "date": "2026-06-14",
       "xp": 30,
@@ -522,12 +528,6 @@
       "xp": 100,
       "type": "deploy",
       "desc": "deploy ag-painel Lumen DS v2 fx layer to prod"
-    },
-    {
-      "date": "2026-06-11",
-      "xp": 50,
-      "type": "feat",
-      "desc": "apply Lumen DS v2 motion + gamer fx layer to ag-painel"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-14",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "AUTAG 36 configurada com credencial propria (CNPJ 36.715.328) + sync de maio; 27 e 36 agora distintas",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-14",
       "type": "bugfix",
       "icon": "🐛",
       "title": "AUTAG 36 nao puxa mais a conta da 27 (remove env-fallback + seed + limpa docs)",
@@ -744,13 +751,6 @@
       "type": "deploy",
       "icon": "🚀",
       "title": "RH: kanban DnD + chart formation + polarity backfill live",
-      "xp": 100
-    },
-    {
-      "date": "2026-06-11",
-      "type": "deploy",
-      "icon": "🚀",
-      "title": "chart draw-in formation live on finance",
       "xp": 100
     }
   ]
