@@ -1,0 +1,757 @@
+{
+  "meta": {
+    "lastSync": "2026-06-15T11:30:56",
+    "syncedBy": "claude",
+    "version": 1
+  },
+  "player": {
+    "name": "Ricalfiff",
+    "level": 8,
+    "title": "Arquiteto",
+    "xp": 8860,
+    "xpToNext": 9860,
+    "streak": 15,
+    "longestStreak": 15,
+    "lastActiveDate": "2026-06-15",
+    "attributes": {
+      "int": {
+        "value": 0,
+        "label": "Inteligência",
+        "icon": "🧠",
+        "rule": "+2 por módulo lido, +5 por checkpoint"
+      },
+      "str": {
+        "value": 0,
+        "label": "Throughput",
+        "icon": "💪",
+        "rule": "+3 por feat, +5 por deploy"
+      },
+      "dex": {
+        "value": 0,
+        "label": "Velocidade",
+        "icon": "⚡",
+        "rule": "+4 por bugfix, +2 por refactor"
+      },
+      "wis": {
+        "value": 0,
+        "label": "Sabedoria",
+        "icon": "🦉",
+        "rule": "+5 por entrada DECISIONS.md, +3 por revisao"
+      },
+      "cha": {
+        "value": 0,
+        "label": "Carisma",
+        "icon": "🗣",
+        "rule": "+10 por post LinkedIn, +20 por talk, +30 por PR OSS"
+      },
+      "con": {
+        "value": 0,
+        "label": "Constituição",
+        "icon": "🛡",
+        "rule": "+1 por dia de streak ativo"
+      }
+    },
+    "build": {
+      "id": "backend-mage",
+      "label": "Backend Mage",
+      "bonus": {
+        "str": 1.1,
+        "wis": 1.05
+      }
+    },
+    "availableBuilds": [
+      {
+        "id": "backend-mage",
+        "label": "Backend Mage",
+        "icon": "🧙",
+        "desc": "Bônus STR e WIS — para quem foca em entregar e decidir",
+        "bonus": {
+          "str": 1.1,
+          "wis": 1.05
+        }
+      },
+      {
+        "id": "frontend-rogue",
+        "label": "Frontend Rogue",
+        "icon": "🗡",
+        "desc": "Bônus DEX e INT — agilidade e conhecimento",
+        "bonus": {
+          "dex": 1.1,
+          "int": 1.05
+        }
+      },
+      {
+        "id": "fullstack-paladin",
+        "label": "Full-stack Paladin",
+        "icon": "🛡",
+        "desc": "Bônus equilibrado em todos",
+        "bonus": {
+          "str": 1.03,
+          "dex": 1.03,
+          "int": 1.03,
+          "wis": 1.03,
+          "cha": 1.03,
+          "con": 1.03
+        }
+      },
+      {
+        "id": "secops-warlock",
+        "label": "SecOps Warlock",
+        "icon": "🔮",
+        "desc": "Bônus WIS e CHA — sabedoria que se comunica",
+        "bonus": {
+          "wis": 1.1,
+          "cha": 1.1
+        }
+      }
+    ],
+    "streaks": {
+      "geral": {
+        "atual": 4,
+        "recorde": 7,
+        "ultimoDia": "2026-06-01"
+      },
+      "estudo": {
+        "atual": 3,
+        "recorde": 5,
+        "ultimoDia": "2026-05-31"
+      },
+      "semIa": {
+        "atual": 1,
+        "recorde": 1,
+        "ultimoDia": "2026-05-30"
+      },
+      "decisoes": {
+        "atual": 2,
+        "recorde": 3,
+        "ultimoDia": "2026-05-31"
+      }
+    }
+  },
+  "attributeRules": {
+    "feat": {
+      "str": 3
+    },
+    "bugfix": {
+      "dex": 4
+    },
+    "deploy": {
+      "str": 5,
+      "con": 1
+    },
+    "test": {
+      "wis": 3
+    },
+    "learning": {
+      "int": 3
+    },
+    "review": {
+      "wis": 3
+    },
+    "security": {
+      "wis": 3,
+      "con": 1
+    },
+    "migration": {
+      "str": 2,
+      "wis": 2
+    },
+    "refactor": {
+      "dex": 2
+    },
+    "revisao": {
+      "wis": 5
+    },
+    "lido": {
+      "int": 2
+    },
+    "checkpoint": {
+      "int": 5
+    },
+    "decision": {
+      "wis": 5
+    }
+  },
+  "levels": [
+    {
+      "level": 1,
+      "title": "Iniciante",
+      "xpMin": 0
+    },
+    {
+      "level": 2,
+      "title": "Aprendiz",
+      "xpMin": 301
+    },
+    {
+      "level": 3,
+      "title": "Desenvolvedor Jr",
+      "xpMin": 701
+    },
+    {
+      "level": 4,
+      "title": "Desenvolvedor",
+      "xpMin": 1301
+    },
+    {
+      "level": 5,
+      "title": "Desenvolvedor Pleno",
+      "xpMin": 2201
+    },
+    {
+      "level": 6,
+      "title": "Sênior",
+      "xpMin": 3501
+    },
+    {
+      "level": 7,
+      "title": "Tech Lead",
+      "xpMin": 5501
+    },
+    {
+      "level": 8,
+      "title": "Arquiteto",
+      "xpMin": 8501
+    }
+  ],
+  "xpRules": {
+    "feat": 50,
+    "bugfix": 30,
+    "deploy": 100,
+    "test": 80,
+    "learning": 40,
+    "review": 20,
+    "security": 50,
+    "migration": 40,
+    "refactor": 25,
+    "revisao": 60,
+    "checkpoint": 40,
+    "lido": 20
+  },
+  "xpLog": [
+    {
+      "date": "2026-06-15",
+      "xp": 20,
+      "type": "review",
+      "desc": "[cliente-varejo] remove one-off investigation scripts, move sync-now to scripts/"
+    },
+    {
+      "date": "2026-06-15",
+      "xp": 20,
+      "type": "review",
+      "desc": "[cliente-varejo] remove dead code from frontend"
+    },
+    {
+      "date": "2026-06-15",
+      "xp": 20,
+      "type": "review",
+      "desc": "Revisão de consistência de dados Cliente Varejo — banco íntegro, 5/5 lojas batem, anomalia loja-X/produto-proteção sinalizada como fato de negócio"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 50,
+      "type": "feat",
+      "desc": "ag-painel: apresentacao HTML offline = app real embutido via snapshot"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 50,
+      "type": "feat",
+      "desc": "ag-painel: gráfico eixo-zero (DRE/DFC) + recolher semana no fluxo"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "ag-painel: ordem do drill por numero do grupo nos relatorios DRE/DFC"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "ag-painel: drill da apresentação resolve overrides (Receita no topo)"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "ag-painel: ordem dos subgrupos na apresentação da DFC"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 50,
+      "type": "feat",
+      "desc": "ag-painel: regime DRE/DFC/ambos por subgrupo"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 60,
+      "type": "revisao",
+      "desc": "ag-painel: modularização do editor DRE/DFC + auditoria boas práticas"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Classificacao da matriz aplicada em AUTAG 27 e 36 (script multi-tenant)"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 50,
+      "type": "feat",
+      "desc": "AUTAG 36 configurada com credencial propria (CNPJ 36.715.328) + sync de maio; 27 e 36 agora distintas"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "AUTAG 36 nao puxa mais a conta da 27 (remove env-fallback + seed + limpa docs)"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 50,
+      "type": "feat",
+      "desc": "AUTAG 27: cred verificada + dados limpos + sync a partir de maio (piso ingestao)"
+    },
+    {
+      "date": "2026-06-14",
+      "xp": 50,
+      "type": "feat",
+      "desc": "ag-painel: apresentacao completa (4 slides) + piso de maio AUTAG 27/36"
+    },
+    {
+      "date": "2026-06-13",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "Design v3 Sobrio publicado em producao: PULSAR-RH + ag-painel (Vercel)"
+    },
+    {
+      "date": "2026-06-13",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Design System v3 Sobrio aplicado no ag-painel (cristalizado na origem, build validado)"
+    },
+    {
+      "date": "2026-06-13",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Design System v3 Sobrio: rebrand corporativo PULSAR-RH (camada override)"
+    },
+    {
+      "date": "2026-06-12",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Pulsar Finance: relatorio Previsto x Realizado (orcamento Omie + realizavel + baixas)"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "linear chart reveal + headcount audit"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "RH: kanban DnD + chart formation + polarity backfill live"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "chart draw-in formation live on finance"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "feat",
+      "desc": "FASE 1 COPSOQ polaridade implemented (PR 21)"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 40,
+      "type": "migration",
+      "desc": "polaridade columns live in prod (COPSOQ fase 1)"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 40,
+      "type": "learning",
+      "desc": "COPSOQ II favorability math + Tendencia indicator design"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "feat",
+      "desc": "RH motion standard + framing overhaul live"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "dashboard bounce animations standardized"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "RH chevron + subtle glow calibration live"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "PULSAR-RH: family standard live (fonts, gen-2, menu)"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "deploy family fonts + ambient music"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "feat",
+      "desc": "pulsar family standard: type system + ambient music + gen-2 parity"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "security",
+      "desc": "revoke audit_log_purge from API surface; rpc audit"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "security",
+      "desc": "bcrypt client passwords live in prod"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "PULSAR-RH PRs 13/14/15 merged + password hash migration + check-alerts edge fn"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "PULSAR-RH PR #16 merged to production (vercel)"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "feat",
+      "desc": "2nd-gen visual standard on client portal"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "dead handlers, mutilated report, Infinity%, silent drag"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "feat",
+      "desc": "candlestick background on login"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "feat",
+      "desc": "login-only scene, single ripple, tickers moved"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "login pulse scene visibility"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "deploy comparativo + tickers"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "feat",
+      "desc": "fullscreen comparativo + market tickers"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "security",
+      "desc": "portal deletes moved to security-definer RPCs"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "deploy login 3d pulse"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "feat",
+      "desc": "login caps/eye/3d pulse effects"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "feat",
+      "desc": "client portal action plans board"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "survey scale/types, process flow, headcount sources"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 60,
+      "type": "revisao",
+      "desc": "PULSAR-RH broken flows review (PR #16)"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "deploy context strip + brand wordmark"
+    },
+    {
+      "date": "2026-06-11",
+      "xp": 50,
+      "type": "feat",
+      "desc": "context strip + PulsaRH-family wordmark"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "auto-sync",
+      "name": "Cross-Project Sync",
+      "icon": "🔄",
+      "desc": "XP automatico em todos os projetos AG via git hook + Claude Code Stop hook",
+      "unlockedAt": "2026-06-01",
+      "xp": 0
+    },
+    {
+      "id": "rpg-completo",
+      "name": "RPG Completo",
+      "icon": "🎲",
+      "desc": "3 niveis de gamificacao em paralelo via Opus + worktrees",
+      "unlockedAt": "2026-06-01",
+      "xp": 0
+    },
+    {
+      "id": "trilha-completa",
+      "name": "Trilha Pronta",
+      "icon": "🎓",
+      "desc": "Sistema de estudo + portfolio defensavel construido em 1 sessao",
+      "unlockedAt": "2026-06-01",
+      "xp": 0
+    },
+    {
+      "id": "first-deploy",
+      "name": "Ao Vivo",
+      "icon": "🚀",
+      "desc": "Primeiro deploy em produção",
+      "unlockedAt": "2026-05-08",
+      "xp": 100
+    },
+    {
+      "id": "multi-project",
+      "name": "Multi-Project",
+      "icon": "⚡",
+      "desc": "5+ projetos em produção simultâneos",
+      "unlockedAt": "2026-05-15",
+      "xp": 150
+    },
+    {
+      "id": "guardian",
+      "name": "Guardião",
+      "icon": "🛡️",
+      "desc": "Configurou pre-commit hook de segurança global",
+      "unlockedAt": "2026-05-25",
+      "xp": 80
+    },
+    {
+      "id": "clean-coder",
+      "name": "Clean Coder",
+      "icon": "✨",
+      "desc": "Estudou e aplicou 15 princípios de clean code",
+      "unlockedAt": "2026-05-25",
+      "xp": 100
+    },
+    {
+      "id": "system-builder",
+      "name": "Arquiteto do Sistema",
+      "icon": "🧠",
+      "desc": "Criou CLAUDE.md completo com regras de comportamento automático",
+      "unlockedAt": "2026-05-25",
+      "xp": 120
+    },
+    {
+      "id": "trilha-primeira",
+      "name": "Primeira Trilha",
+      "icon": "🎓",
+      "desc": "Concluiu 1 trilha completa (todos os módulos com checkpoint)",
+      "unlockedAt": null,
+      "xp": 0
+    },
+    {
+      "id": "trilha-diferencial",
+      "name": "Diferencial Dominado",
+      "icon": "⚡",
+      "desc": "Concluiu a trilha 95-diferencial inteira — o que sobrevive ao Claude",
+      "unlockedAt": null,
+      "xp": 0
+    },
+    {
+      "id": "trilha-maratonista",
+      "name": "Maratonista",
+      "icon": "🏃",
+      "desc": "10 módulos com checkpoint numa mesma sessão",
+      "unlockedAt": null,
+      "xp": 0
+    },
+    {
+      "id": "trilha-portfolio",
+      "name": "Portfólio Defensável",
+      "icon": "💼",
+      "desc": "Todas as trilhas de prioridade alta (00, 10, 30, 60, 90) com checkpoint completo",
+      "unlockedAt": null,
+      "xp": 0
+    },
+    {
+      "id": "primeira-side-quest",
+      "name": "Aplicação Real",
+      "icon": "🎯",
+      "desc": "Cumpriu sua primeira side quest cruzada (módulo aplicado em projeto AG)",
+      "unlockedAt": null,
+      "xp": 50
+    },
+    {
+      "id": "quest-board-pulsar",
+      "name": "PULSAR Dominado",
+      "icon": "📊",
+      "desc": "Completou todas as side quests do PULSAR-RH",
+      "unlockedAt": null,
+      "xp": 100
+    }
+  ],
+  "quests": [
+    {
+      "id": "first-test",
+      "title": "Primeiro Teste Real",
+      "desc": "Escreva um teste unitário num projeto AG",
+      "icon": "🧪",
+      "xp": 200,
+      "status": "active",
+      "hint": "Comece pelo PULSAR-RH — escolha uma função de validação"
+    },
+    {
+      "id": "zero-any",
+      "title": "Zero any",
+      "desc": "Elimine todos os `any` explícitos do PULSAR-RH",
+      "icon": "🎯",
+      "xp": 150,
+      "status": "active",
+      "hint": "Rode /revisao no PULSAR-RH e corrija os achados de tipagem"
+    },
+    {
+      "id": "deploy-with-skill",
+      "title": "Deploy Consciente",
+      "desc": "Use /pre-deploy antes do próximo deploy em produção",
+      "icon": "🔒",
+      "xp": 80,
+      "status": "active",
+      "hint": "Na próxima vez que for subir código, rode /pre-deploy primeiro"
+    },
+    {
+      "id": "debug-skill",
+      "title": "Debugger Metódico",
+      "desc": "Use /debug num bug real seguindo as 6 etapas",
+      "icon": "🔍",
+      "xp": 100,
+      "status": "active",
+      "hint": "Próximo bug que aparecer — não pule para o fix direto"
+    }
+  ],
+  "recentActivity": [
+    {
+      "date": "2026-06-15",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[cliente-varejo] remove one-off investigation scripts, move sync-now to scripts/",
+      "xp": 20
+    },
+    {
+      "date": "2026-06-15",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[cliente-varejo] remove dead code from frontend",
+      "xp": 20
+    },
+    {
+      "date": "2026-06-15",
+      "type": "review",
+      "icon": "👁️",
+      "title": "Revisão de consistência de dados Cliente Varejo — banco íntegro, 5/5 lojas batem, anomalia loja-X/produto-proteção sinalizada como fato de negócio",
+      "xp": 20
+    },
+    {
+      "date": "2026-06-14",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "ag-painel: apresentacao HTML offline = app real embutido via snapshot",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-14",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "ag-painel: gráfico eixo-zero (DRE/DFC) + recolher semana no fluxo",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-14",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "ag-painel: ordem do drill por numero do grupo nos relatorios DRE/DFC",
+      "xp": 30
+    },
+    {
+      "date": "2026-06-14",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "ag-painel: drill da apresentação resolve overrides (Receita no topo)",
+      "xp": 30
+    },
+    {
+      "date": "2026-06-14",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "ag-painel: ordem dos subgrupos na apresentação da DFC",
+      "xp": 30
+    },
+    {
+      "date": "2026-06-14",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "ag-painel: regime DRE/DFC/ambos por subgrupo",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-14",
+      "type": "revisao",
+      "icon": "🔍",
+      "title": "ag-painel: modularização do editor DRE/DFC + auditoria boas práticas",
+      "xp": 60
+    }
+  ]
+}
