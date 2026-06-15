@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-14T21:37:57",
+    "lastSync": "2026-06-14T21:42:58",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 8700,
-    "xpToNext": 9700,
+    "xp": 8750,
+    "xpToNext": 9750,
     "streak": 14,
     "longestStreak": 14,
     "lastActiveDate": "2026-06-14",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-14",
+      "xp": 50,
+      "type": "feat",
+      "desc": "ag-painel: gráfico eixo-zero (DRE/DFC) + recolher semana no fluxo"
+    },
     {
       "date": "2026-06-14",
       "xp": 30,
@@ -522,12 +528,6 @@
       "xp": 100,
       "type": "deploy",
       "desc": "deploy kpi deep-dive + cleanup batch"
-    },
-    {
-      "date": "2026-06-11",
-      "xp": 60,
-      "type": "revisao",
-      "desc": "general review: modularization, DRY, timezone fix"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-14",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "ag-painel: gráfico eixo-zero (DRE/DFC) + recolher semana no fluxo",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-14",
       "type": "bugfix",
       "icon": "🐛",
       "title": "ag-painel: ordem do drill por numero do grupo nos relatorios DRE/DFC",
@@ -744,13 +751,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "AUTAG 27: cred verificada + dados limpos + sync a partir de maio (piso ingestao)",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-14",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "ag-painel: apresentacao completa (4 slides) + piso de maio AUTAG 27/36",
       "xp": 50
     }
   ]
