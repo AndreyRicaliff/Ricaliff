@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-14T22:06:59",
+    "lastSync": "2026-06-15T10:25:34",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 8800,
-    "xpToNext": 9800,
-    "streak": 14,
-    "longestStreak": 14,
-    "lastActiveDate": "2026-06-14",
+    "xp": 8820,
+    "xpToNext": 9820,
+    "streak": 15,
+    "longestStreak": 15,
+    "lastActiveDate": "2026-06-15",
     "attributes": {
       "int": {
         "value": 0,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-15",
+      "xp": 20,
+      "type": "review",
+      "desc": "Revisão de consistência de dados Cliente Varejo — banco íntegro, 5/5 lojas batem, anomalia loja-X/produto-proteção sinalizada como fato de negócio"
+    },
     {
       "date": "2026-06-14",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 100,
       "type": "deploy",
       "desc": "deploy Pulsar Finance rebrand"
-    },
-    {
-      "date": "2026-06-11",
-      "xp": 50,
-      "type": "feat",
-      "desc": "rebrand Pulsar Finance + pulse identity (rings, sounds, welcome)"
     }
   ],
   "achievements": [
@@ -684,6 +684,13 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-06-15",
+      "type": "review",
+      "icon": "👁️",
+      "title": "Revisão de consistência de dados Cliente Varejo — banco íntegro, 5/5 lojas batem, anomalia loja-X/produto-proteção sinalizada como fato de negócio",
+      "xp": 20
+    },
+    {
       "date": "2026-06-14",
       "type": "feat",
       "icon": "⚙️",
@@ -745,13 +752,6 @@
       "icon": "⚙️",
       "title": "AUTAG 36 configurada com credencial propria (CNPJ 36.715.328) + sync de maio; 27 e 36 agora distintas",
       "xp": 50
-    },
-    {
-      "date": "2026-06-14",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "AUTAG 36 nao puxa mais a conta da 27 (remove env-fallback + seed + limpa docs)",
-      "xp": 30
     }
   ]
 }
