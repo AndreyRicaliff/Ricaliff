@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 9480,
-    "xpToNext": 10480,
+    "xp": 9500,
+    "xpToNext": 10500,
     "streak": 3,
     "longestStreak": 16,
     "lastActiveDate": "2026-06-25",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-25",
+      "xp": 20,
+      "type": "review",
+      "desc": "[ag-flow-boost] eliminate all eslint errors"
+    },
     {
       "date": "2026-06-25",
       "xp": 30,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "2nd-gen visual standard on client portal"
-    },
-    {
-      "date": "2026-06-11",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "dead handlers, mutilated report, Infinity%, silent drag"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-25",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[ag-flow-boost] eliminate all eslint errors",
+      "xp": 20
+    },
+    {
+      "date": "2026-06-25",
       "type": "bugfix",
       "icon": "🐛",
       "title": "[ag-flow-boost] strip CLI output garbage from generated types.ts",
@@ -744,13 +751,6 @@
       "type": "review",
       "icon": "👁️",
       "title": "[cliente-oficina-backend] snapshot 2026-06-16",
-      "xp": 20
-    },
-    {
-      "date": "2026-06-16",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[ag-evento] snapshot 2026-06-16",
       "xp": 20
     }
   ]
