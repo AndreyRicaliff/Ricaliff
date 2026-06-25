@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-25T17:41:37",
+    "lastSync": "2026-06-25T17:41:42",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 9450,
-    "xpToNext": 10450,
+    "xp": 9480,
+    "xpToNext": 10480,
     "streak": 3,
     "longestStreak": 16,
     "lastActiveDate": "2026-06-25",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-25",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[ag-flow-boost] strip CLI output garbage from generated types.ts"
+    },
     {
       "date": "2026-06-25",
       "xp": 30,
@@ -522,12 +528,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "dead handlers, mutilated report, Infinity%, silent drag"
-    },
-    {
-      "date": "2026-06-11",
-      "xp": 50,
-      "type": "feat",
-      "desc": "candlestick background on login"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-06-25",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[ag-flow-boost] strip CLI output garbage from generated types.ts",
+      "xp": 30
+    },
+    {
+      "date": "2026-06-25",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[ag-flow-boost] load Supabase credentials from env in admin scripts",
       "xp": 30
     },
@@ -745,13 +752,6 @@
       "icon": "👁️",
       "title": "[ag-evento] snapshot 2026-06-16",
       "xp": 20
-    },
-    {
-      "date": "2026-06-15",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "Reprocessamento junho Varejo: valores de serviço corrigidos (subcontagem por ID-stop não recalcular); 5 lojas batem com ERP-externo",
-      "xp": 30
     }
   ]
 }
