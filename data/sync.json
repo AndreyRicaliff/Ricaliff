@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-29T01:45:45",
+    "lastSync": "2026-06-29T07:22:23",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 9710,
-    "xpToNext": 10710,
+    "xp": 9730,
+    "xpToNext": 10730,
     "streak": 1,
     "longestStreak": 16,
     "lastActiveDate": "2026-06-29",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-29",
+      "xp": 20,
+      "type": "review",
+      "desc": "[cliente-varejo] trigger deploy (DRE + resultado operacional)"
+    },
     {
       "date": "2026-06-29",
       "xp": 30,
@@ -522,12 +528,6 @@
       "xp": 100,
       "type": "deploy",
       "desc": "deploy family fonts + ambient music"
-    },
-    {
-      "date": "2026-06-11",
-      "xp": 50,
-      "type": "feat",
-      "desc": "pulsar family standard: type system + ambient music + gen-2 parity"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-29",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[cliente-varejo] trigger deploy (DRE + resultado operacional)",
+      "xp": 20
+    },
+    {
+      "date": "2026-06-29",
       "type": "bugfix",
       "icon": "🐛",
       "title": "[cliente-varejo] MESES vazio (workflow_dispatch) cai no default corrente+anterior",
@@ -744,13 +751,6 @@
       "type": "deploy",
       "icon": "🚀",
       "title": "AG Educacao: campanha Algoritmo da Lideranca NO AR (FB+IG, texto com nome do curso, feed 4:5)",
-      "xp": 100
-    },
-    {
-      "date": "2026-06-24",
-      "type": "deploy",
-      "icon": "🚀",
-      "title": "AG Educacao: campanha Algoritmo da Lideranca criada via Marketing API (3 anuncios FB+IG, PAUSED)",
       "xp": 100
     }
   ]
