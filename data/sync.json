@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-29T01:19:54",
+    "lastSync": "2026-06-29T01:43:14",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 9600,
-    "xpToNext": 10600,
+    "xp": 9650,
+    "xpToNext": 10650,
     "streak": 1,
     "longestStreak": 16,
     "lastActiveDate": "2026-06-29",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-29",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] recalculo automatico via GitHub Action (cron, service_role, reusa logica do app)"
+    },
     {
       "date": "2026-06-29",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "security",
       "desc": "bcrypt client passwords live in prod"
-    },
-    {
-      "date": "2026-06-11",
-      "xp": 100,
-      "type": "deploy",
-      "desc": "PULSAR-RH PRs 13/14/15 merged + password hash migration + check-alerts edge fn"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-06-29",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[cliente-varejo] recalculo automatico via GitHub Action (cron, service_role, reusa logica do app)",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-29",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[cliente-varejo] Resultado Operacional no DRE (Lucro Bruto + juros - folha por loja)",
       "xp": 50
     },
@@ -745,13 +752,6 @@
       "icon": "⚙️",
       "title": "AG Educacao: campanha de leads Meta Ads (form->WhatsApp) Algoritmo da Lideranca",
       "xp": 50
-    },
-    {
-      "date": "2026-06-16",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[fathom-drive-sync] initial backup snapshot",
-      "xp": 20
     }
   ]
 }
