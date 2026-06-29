@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-29T08:28:58",
+    "lastSync": "2026-06-29T08:32:09",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 9800,
-    "xpToNext": 10800,
+    "xp": 9850,
+    "xpToNext": 10850,
     "streak": 1,
     "longestStreak": 16,
     "lastActiveDate": "2026-06-29",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-29",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] exclusoes gerenciaveis pelo gestor (tabela + CRUD, uniao com legado)"
+    },
     {
       "date": "2026-06-29",
       "xp": 20,
@@ -522,12 +528,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "dashboard bounce animations standardized"
-    },
-    {
-      "date": "2026-06-11",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "RH chevron + subtle glow calibration live"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-29",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-varejo] exclusoes gerenciaveis pelo gestor (tabela + CRUD, uniao com legado)",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-29",
       "type": "review",
       "icon": "👁️",
       "title": "[cliente-varejo] remove flag morto penalidadeAcessorios",
@@ -745,13 +752,6 @@
       "icon": "👁️",
       "title": "[ag-flow-boost] eliminate all eslint errors",
       "xp": 20
-    },
-    {
-      "date": "2026-06-25",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[ag-flow-boost] strip CLI output garbage from generated types.ts",
-      "xp": 30
     }
   ]
 }
