@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-29T08:40:29",
+    "lastSync": "2026-06-29T08:43:50",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 9900,
-    "xpToNext": 10900,
+    "xp": 9950,
+    "xpToNext": 10950,
     "streak": 1,
     "longestStreak": 16,
     "lastActiveDate": "2026-06-29",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-29",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] gerenciamento de senhas por vendedor na config admin (por loja, reset/criar via manage-user)"
+    },
     {
       "date": "2026-06-29",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 40,
       "type": "learning",
       "desc": "COPSOQ II favorability math + Tendencia indicator design"
-    },
-    {
-      "date": "2026-06-11",
-      "xp": 50,
-      "type": "feat",
-      "desc": "RH motion standard + framing overhaul live"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-06-29",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[cliente-varejo] gerenciamento de senhas por vendedor na config admin (por loja, reset/criar via manage-user)",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-29",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[cliente-varejo] aba DRE (consolidado + por loja) no menu Financeiro",
       "xp": 50
     },
@@ -744,13 +751,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[cliente-varejo] Resultado Operacional no DRE (Lucro Bruto + juros - folha por loja)",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-29",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] DRE por loja sobre dados confiáveis da API (Receita-CMV=Lucro, +juros, Resultado)",
       "xp": 50
     }
   ]
