@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-29T07:22:23",
+    "lastSync": "2026-06-29T08:18:41",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 9730,
-    "xpToNext": 10730,
+    "xp": 9780,
+    "xpToNext": 10780,
     "streak": 1,
     "longestStreak": 16,
     "lastActiveDate": "2026-06-29",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-29",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] parametriza regras hardcoded (assist tecnica, penalidade pelicula, VR, bonus prata) editaveis na config"
+    },
     {
       "date": "2026-06-29",
       "xp": 20,
@@ -522,12 +528,6 @@
       "xp": 100,
       "type": "deploy",
       "desc": "PULSAR-RH: family standard live (fonts, gen-2, menu)"
-    },
-    {
-      "date": "2026-06-11",
-      "xp": 100,
-      "type": "deploy",
-      "desc": "deploy family fonts + ambient music"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-06-29",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-varejo] parametriza regras hardcoded (assist tecnica, penalidade pelicula, VR, bonus prata) editaveis na config",
+      "xp": 50
+    },
+    {
+      "date": "2026-06-29",
       "type": "review",
       "icon": "👁️",
       "title": "[cliente-varejo] trigger deploy (DRE + resultado operacional)",
@@ -745,13 +752,6 @@
       "icon": "🐛",
       "title": "[ag-flow-boost] load Supabase credentials from env in admin scripts",
       "xp": 30
-    },
-    {
-      "date": "2026-06-24",
-      "type": "deploy",
-      "icon": "🚀",
-      "title": "AG Educacao: campanha Algoritmo da Lideranca NO AR (FB+IG, texto com nome do curso, feed 4:5)",
-      "xp": 100
     }
   ]
 }
