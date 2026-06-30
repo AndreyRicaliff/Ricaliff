@@ -139,3 +139,23 @@ Registro de decisões técnicas datadas, em primeira pessoa. Material de defesa 
 > "Para integrar o Claude Code com o AG Hub usei shell script em vez de Node porque a operação é trivial — ler JSON, incrementar campo, escrever. Shell é a ferramenta certa para isso: zero dependência, roda em qualquer ambiente Unix, sem runtime. Se a operação fosse mais complexa — parsing, validação de schema, múltiplas requisições — aí Node faria sentido."
 
 **Fonte da reconstrução:** CLAUDE.md §AG-HUB SYNC.
+
+---
+
+## 2026-06-30 — [estrutura] Consolidar projetos de estudo em monorepo "Ricaliff"
+
+**Problema:** Estudo espalhado em 3 repos (`estudos` trilha, `enem-estudos` app React, `ifpb` app TS) + o hub `ag-hub`. Sem lugar único; faltava conteúdo de IA/ML, git, APIs e escala.
+
+**Opções consideradas:**
+- A — Linkar repos no PROJECTS.md (referência): mais limpo, mas mantém N repos e não cumpre "um projeto só".
+- B — Monorepo absorvendo tudo + rename do hub para Ricaliff: fonte única, à custa de misturar stacks (vanilla SPA + React).
+- C — Descartar os apps e guardar só material textual: perde aplicações reais.
+
+**Decisão:** B. `ag-hub` → `Ricaliff` (pasta + repo GitHub + infra de paths). `enem-estudos` e `ifpb` viram `apps/`. Trilha vira fonte canônica in-repo (matei a cópia cross-repo do `build-trilha.sh`). 4 trilhas novas (git, IA/ML, APIs, escala = 29 módulos). Repos antigos só removidos localmente (backup permanece no GitHub).
+
+**Por quê:** Ricaliff quer UM lugar para evoluir. Monorepo dá fonte única; manter os repos originais no GitHub é backup grátis e reversível. Desacoplar a trilha do repo `estudos` removeu uma dependência cross-repo (shotgun surgery) e permitiu apagar o `estudos` sem quebrar o build.
+
+**Consequências:** Hub agora é o currículo pessoal. `build-trilha.sh` com paths auto-derivados (imune a rename futuro). Dívida: apps React/TS convivem com SPA vanilla no mesmo repo — sem build unificado (cada app mantém o seu). Vercel segue por `projectId`; renomear o projeto no painel é cosmético e ficou pendente.
+
+**Como explicar em entrevista (30s):**
+> "Consolidei meus estudos espalhados num monorepo com fonte única. Removi uma dependência cross-repo que acoplava o build do hub a outro repositório, o que me deixou apagar o repo legado sem quebrar nada. Mantive os repositórios originais como backup imutável e só removi as cópias locais — reversível por design."
