@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reflexão e Espelhos Planos</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --surface: #1e293b;
+    --ink: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-2: #f472b6;
+    --good: #34d399;
+    --warn: #fbbf24;
+    --line: #475569;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; height: 100%;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--ink);
+    overflow: hidden;
+  }
+  .stage {
+    height: 100vh; width: 100vw;
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .slide {
+    width: min(1200px, 95vw);
+    height: min(720px, 90vh);
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 48px 64px;
+    box-shadow: 0 30px 80px rgba(0,0,0,.45);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+  }
+  .slide.active { display: flex; animation: fade .25s ease-out; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  h1 { font-size: 2.6rem; margin: 0 0 .2em; line-height: 1.1; }
+  h2 { font-size: 1.9rem; margin: 0 0 .6em; color: var(--accent); }
+  h3 { font-size: 1.2rem; margin: 1em 0 .4em; color: var(--accent-2); }
+  p, li { font-size: 1.15rem; line-height: 1.55; }
+  ul { padding-left: 1.2em; }
+  li { margin: .3em 0; }
+  code, .formula { font-family: ui-monospace, "JetBrains Mono", Consolas, monospace; }
+  .formula {
+    display: inline-block;
+    background: rgba(56,189,248,.10);
+    border: 1px solid rgba(56,189,248,.30);
+    color: var(--accent);
+    padding: .15em .55em;
+    border-radius: 6px;
+    font-size: 1.05em;
+  }
+  .key { color: var(--accent-2); font-weight: 600; }
+  .muted { color: var(--muted); }
+
+  .row { display: flex; gap: 32px; flex: 1; min-height: 0; }
+  .col { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; }
+  .col svg { width: 100%; height: auto; max-height: 420px; }
+
+  .footer {
+    position: absolute;
+    bottom: 14px; left: 64px; right: 64px;
+    display: flex; justify-content: space-between;
+    color: var(--muted); font-size: .85rem;
+  }
+  .dot {
+    display: inline-block; width: 8px; height: 8px;
+    background: var(--line); border-radius: 50%; margin: 0 3px;
+  }
+  .dot.on { background: var(--accent); }
+
+  .nav {
+    position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 8px; z-index: 10;
+  }
+  .nav button {
+    background: rgba(255,255,255,.08); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 8px;
+    padding: 6px 12px; cursor: pointer; font-size: .9rem;
+  }
+  .nav button:hover { background: rgba(255,255,255,.15); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .card {
+    background: rgba(255,255,255,.04);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px 20px;
+  }
+  .card h4 { margin: 0 0 .3em; color: var(--accent); font-size: 1.05rem; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--line); }
+  th { color: var(--accent); font-weight: 600; }
+
+  .cover {
+    align-items: center; justify-content: center; text-align: center;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  }
+  .cover h1 {
+    font-size: 3.6rem;
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .cover .sub { font-size: 1.3rem; color: var(--muted); margin-top: 1em; }
+
+  /* SVG common */
+  .lbl { font: 600 16px ui-sans-serif, system-ui; fill: var(--ink); }
+  .lbl-muted { font: 500 13px ui-sans-serif, system-ui; fill: var(--muted); }
+  .ray { stroke: var(--accent); stroke-width: 2.5; fill: none; }
+  .ray-r { stroke: var(--accent-2); stroke-width: 2.5; fill: none; }
+  .normal { stroke: var(--warn); stroke-width: 2; stroke-dasharray: 6 5; fill: none; }
+  .mirror { stroke: var(--ink); stroke-width: 4; }
+  .hatch { stroke: var(--muted); stroke-width: 1; }
+  .arrow { fill: var(--accent); }
+  .arrow-r { fill: var(--accent-2); }
+  .obj { fill: var(--good); stroke: var(--good); stroke-width: 2; }
+  .img { fill: none; stroke: var(--good); stroke-width: 2; stroke-dasharray: 5 4; }
+  .angle { fill: rgba(251,191,36,.18); stroke: var(--warn); stroke-width: 1; }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+
+<!-- 1. Capa -->
+<section class="slide cover active">
+  <h1>Reflexão e Espelhos Planos</h1>
+  <p class="sub">Óptica geométrica · resumo visual de estudo</p>
+  <p class="muted" style="margin-top:3em;">Use ← → ou espaço para navegar</p>
+</section>
+
+<!-- 2. O que é reflexão -->
+<section class="slide">
+  <h2>O que é reflexão?</h2>
+  <div class="row">
+    <div class="col">
+      <p>Quando a luz atinge uma superfície e <span class="key">retorna</span> ao mesmo meio, dizemos que houve <span class="key">reflexão</span>.</p>
+      <h3>Dois tipos:</h3>
+      <ul>
+        <li><span class="key">Regular (especular)</span> — superfície polida; raios paralelos continuam paralelos. Forma <em>imagem nítida</em>.</li>
+        <li><span class="key">Difusa</span> — superfície rugosa; raios espalham em várias direções. Não forma imagem.</li>
+      </ul>
+      <p class="muted">Espelhos planos = reflexão regular sobre superfície plana e polida.</p>
+    </div>
+    <div class="col">
+      <svg viewBox="0 0 400 300">
+        <!-- Regular -->
+        <line x1="20" y1="200" x2="180" y2="200" class="mirror"/>
+        <g>
+          <line x1="40" y1="40" x2="80" y2="200" class="ray"/>
+          <line x1="80" y1="200" x2="120" y2="40" class="ray-r"/>
+          <line x1="80" y1="40" x2="120" y2="200" class="ray"/>
+          <line x1="120" y1="200" x2="160" y2="40" class="ray-r"/>
+        </g>
+        <text x="100" y="230" class="lbl-muted" text-anchor="middle">regular</text>
+        <!-- Difusa -->
+        <path d="M 220 200 q 8 -8 16 0 q 8 8 16 0 q 8 -8 16 0 q 8 8 16 0 q 8 -8 16 0 q 8 8 16 0 q 8 -8 16 0 q 8 8 16 0" class="mirror" fill="none"/>
+        <line x1="240" y1="40" x2="245" y2="200" class="ray"/>
+        <line x1="245" y1="200" x2="260" y2="60" class="ray-r"/>
+        <line x1="245" y1="200" x2="220" y2="80" class="ray-r"/>
+        <line x1="245" y1="200" x2="290" y2="50" class="ray-r"/>
+        <line x1="270" y1="40" x2="280" y2="200" class="ray"/>
+        <line x1="280" y1="200" x2="310" y2="70" class="ray-r"/>
+        <line x1="280" y1="200" x2="260" y2="90" class="ray-r"/>
+        <line x1="280" y1="200" x2="340" y2="50" class="ray-r"/>
+        <text x="280" y="230" class="lbl-muted" text-anchor="middle">difusa</text>
+      </svg>
+    </div>
+  </div>
+  <div class="footer"><span>2 / 11</span><span>Reflexão</span></div>
+</section>
+
+<!-- 3. Leis da Reflexão -->
+<section class="slide">
+  <h2>Leis da Reflexão</h2>
+  <div class="row">
+    <div class="col">
+      <h3>1ª Lei</h3>
+      <p>O raio incidente, a normal e o raio refletido estão no <span class="key">mesmo plano</span>.</p>
+      <h3>2ª Lei</h3>
+      <p>O ângulo de incidência é <span class="key">igual</span> ao ângulo de reflexão:</p>
+      <p style="text-align:center; margin: .8em 0;"><span class="formula">θᵢ = θᵣ</span></p>
+      <p class="muted">Ângulos sempre medidos a partir da <span style="color:var(--warn)">normal</span> (perpendicular à superfície), não da superfície.</p>
+    </div>
+    <div class="col">
+      <svg viewBox="0 0 400 300">
+        <!-- mirror -->
+        <line x1="40" y1="240" x2="360" y2="240" class="mirror"/>
+        <!-- hatching -->
+        <g class="hatch">
+          <line x1="50" y1="240" x2="40" y2="255"/>
+          <line x1="80" y1="240" x2="70" y2="255"/>
+          <line x1="110" y1="240" x2="100" y2="255"/>
+          <line x1="140" y1="240" x2="130" y2="255"/>
+          <line x1="170" y1="240" x2="160" y2="255"/>
+          <line x1="200" y1="240" x2="190" y2="255"/>
+          <line x1="230" y1="240" x2="220" y2="255"/>
+          <line x1="260" y1="240" x2="250" y2="255"/>
+          <line x1="290" y1="240" x2="280" y2="255"/>
+          <line x1="320" y1="240" x2="310" y2="255"/>
+          <line x1="350" y1="240" x2="340" y2="255"/>
+        </g>
+        <!-- normal -->
+        <line x1="200" y1="240" x2="200" y2="60" class="normal"/>
+        <text x="208" y="70" class="lbl-muted">normal</text>
+        <!-- incident -->
+        <line x1="80" y1="80" x2="200" y2="240" class="ray"/>
+        <polygon points="146,196 156,200 152,210" class="arrow"/>
+        <text x="100" y="120" class="lbl">raio incidente</text>
+        <!-- reflected -->
+        <line x1="200" y1="240" x2="320" y2="80" class="ray-r"/>
+        <polygon points="252,168 248,178 258,182" class="arrow-r"/>
+        <text x="260" y="120" class="lbl">raio refletido</text>
+        <!-- angles -->
+        <path d="M 200 180 A 60 60 0 0 0 156 208" class="angle"/>
+        <text x="170" y="200" class="lbl">θᵢ</text>
+        <path d="M 200 180 A 60 60 0 0 1 244 208" class="angle"/>
+        <text x="222" y="200" class="lbl">θᵣ</text>
+      </svg>
+    </div>
+  </div>
+  <div class="footer"><span>3 / 11</span><span>Leis da Reflexão</span></div>
+</section>
+
+<!-- 4. Espelho Plano: características da imagem -->
+<section class="slide">
+  <h2>Espelho Plano — imagem</h2>
+  <div class="row">
+    <div class="col">
+      <h3>Características</h3>
+      <ul>
+        <li><span class="key">Virtual</span> — formada pelo prolongamento dos raios refletidos (atrás do espelho).</li>
+        <li><span class="key">Direita</span> — não invertida verticalmente.</li>
+        <li><span class="key">Mesmo tamanho</span> do objeto.</li>
+        <li><span class="key">Simétrica</span> — distância da imagem ao espelho = distância do objeto.</li>
+        <li><span class="key">Enantiomorfa</span> — invertida lateralmente (esquerda ↔ direita).</li>
+      </ul>
+      <p class="muted" style="margin-top:1em;">Regra geral: <span class="formula">d_objeto = d_imagem</span> (em relação ao plano do espelho).</p>
+    </div>
+    <div class="col">
+      <svg viewBox="0 0 400 300">
+        <!-- mirror (vertical) -->
+        <line x1="200" y1="30" x2="200" y2="270" class="mirror"/>
+        <g class="hatch">
+          <line x1="200" y1="40" x2="215" y2="50"/>
+          <line x1="200" y1="70" x2="215" y2="80"/>
+          <line x1="200" y1="100" x2="215" y2="110"/>
+          <line x1="200" y1="130" x2="215" y2="140"/>
+          <line x1="200" y1="160" x2="215" y2="170"/>
+          <line x1="200" y1="190" x2="215" y2="200"/>
+          <line x1="200" y1="220" x2="215" y2="230"/>
+          <line x1="200" y1="250" x2="215" y2="260"/>
+        </g>
+        <!-- object: arrow up -->
+        <line x1="100" y1="200" x2="100" y2="120" class="obj" stroke-width="3"/>
+        <polygon points="92,128 108,128 100,110" class="obj"/>
+        <text x="80" y="220" class="lbl">objeto</text>
+        <!-- image: dashed arrow -->
+        <line x1="300" y1="200" x2="300" y2="120" class="img"/>
+        <polygon points="292,128 308,128 300,110" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray="4 3"/>
+        <text x="280" y="220" class="lbl">imagem</text>
+        <!-- distance markers -->
+        <line x1="100" y1="270" x2="200" y2="270" stroke="var(--muted)" stroke-dasharray="3 3"/>
+        <line x1="200" y1="270" x2="300" y2="270" stroke="var(--muted)" stroke-dasharray="3 3"/>
+        <text x="150" y="290" class="lbl-muted" text-anchor="middle">d</text>
+        <text x="250" y="290" class="lbl-muted" text-anchor="middle">d</text>
+      </svg>
+    </div>
+  </div>
+  <div class="footer"><span>4 / 11</span><span>Espelho plano</span></div>
+</section>
+
+<!-- 5. Construção da imagem -->
+<section class="slide">
+  <h2>Como a imagem se forma</h2>
+  <div class="row">
+    <div class="col">
+      <p>Os raios refletidos <span class="key">divergem</span> — eles não se cruzam de fato.</p>
+      <p>A imagem aparece no ponto onde os <span class="key">prolongamentos</span> (linhas tracejadas) se encontram, atrás do espelho.</p>
+      <h3>Por isso a imagem é virtual:</h3>
+      <p>Não pode ser projetada em uma tela. Existe apenas para o olho, que percebe os raios como se viessem do ponto P'.</p>
+    </div>
+    <div class="col">
+      <svg viewBox="0 0 400 300">
+        <line x1="220" y1="20" x2="220" y2="280" class="mirror"/>
+        <g class="hatch">
+          <line x1="220" y1="40" x2="235" y2="50"/>
+          <line x1="220" y1="80" x2="235" y2="90"/>
+          <line x1="220" y1="120" x2="235" y2="130"/>
+          <line x1="220" y1="160" x2="235" y2="170"/>
+          <line x1="220" y1="200" x2="235" y2="210"/>
+          <line x1="220" y1="240" x2="235" y2="250"/>
+        </g>
+        <!-- object point P -->
+        <circle cx="100" cy="150" r="6" class="obj"/>
+        <text x="80" y="170" class="lbl">P</text>
+        <!-- image point P' -->
+        <circle cx="340" cy="150" r="6" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray="3 2"/>
+        <text x="350" y="155" class="lbl">P'</text>
+        <!-- two incident rays -->
+        <line x1="100" y1="150" x2="220" y2="80" class="ray"/>
+        <line x1="100" y1="150" x2="220" y2="220" class="ray"/>
+        <!-- reflected -->
+        <line x1="220" y1="80" x2="60" y2="-13" class="ray-r" stroke-dasharray="0"/>
+        <line x1="220" y1="220" x2="60" y2="313" class="ray-r" stroke-dasharray="0"/>
+        <!-- prolongations -->
+        <line x1="220" y1="80" x2="340" y2="150" stroke="var(--accent-2)" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <line x1="220" y1="220" x2="340" y2="150" stroke="var(--accent-2)" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <!-- eye hint -->
+        <text x="40" y="40" class="lbl-muted">olho ←</text>
+      </svg>
+    </div>
+  </div>
+  <div class="footer"><span>5 / 11</span><span>Formação da imagem</span></div>
+</section>
+
+<!-- 6. Inversão lateral -->
+<section class="slide">
+  <h2>Inversão lateral (enantiomorfismo)</h2>
+  <div class="row">
+    <div class="col">
+      <p>A imagem no espelho plano <span class="key">não é igual ao objeto</span> — ela é uma "cópia espelhada".</p>
+      <ul>
+        <li>Mão direita do objeto → aparece como "esquerda" na imagem.</li>
+        <li>Texto fica invertido da esquerda para a direita.</li>
+        <li>O alto e o baixo <em>não</em> se invertem.</li>
+      </ul>
+      <h3>Por que parece "esquerda ↔ direita"?</h3>
+      <p class="muted">A inversão é, na verdade, no <span class="key">eixo perpendicular ao espelho</span>. Nosso cérebro interpreta como troca lateral porque a simetria humana é de cima para baixo.</p>
+    </div>
+    <div class="col">
+      <svg viewBox="0 0 400 300">
+        <line x1="200" y1="30" x2="200" y2="270" class="mirror"/>
+        <text x="120" y="160" class="lbl" font-size="60" font-weight="700" fill="var(--good)">R</text>
+        <text x="280" y="160" class="lbl" font-size="60" font-weight="700" fill="var(--good)" transform="scale(-1,1) translate(-560,0)">R</text>
+        <text x="140" y="220" class="lbl-muted">objeto</text>
+        <text x="260" y="220" class="lbl-muted">imagem</text>
+      </svg>
+    </div>
+  </div>
+  <div class="footer"><span>6 / 11</span><span>Inversão lateral</span></div>
+</section>
+
+<!-- 7. Associação de Espelhos -->
+<section class="slide">
+  <h2>Associação de Espelhos</h2>
+  <div class="row">
+    <div class="col">
+      <p>Dois espelhos planos formando um ângulo <span class="key">α</span> entre si geram <span class="key">múltiplas imagens</span> por reflexões sucessivas.</p>
+      <h3>Fórmula geral</h3>
+      <p style="text-align:center; margin: .6em 0;"><span class="formula" style="font-size:1.25em;">N = (360° / α) − 1</span></p>
+      <p>Válida quando 360°/α resulta em <span class="key">número par</span>, ou quando o objeto está sobre a bissetriz do ângulo.</p>
+      <p class="muted">Se 360°/α for ímpar e o objeto não estiver na bissetriz, há uma imagem extra (uma das imagens não coincide).</p>
+    </div>
+    <div class="col">
+      <svg viewBox="0 0 400 300">
+        <!-- two mirrors at 90° -->
+        <line x1="200" y1="40" x2="200" y2="240" class="mirror"/>
+        <line x1="80" y1="240" x2="320" y2="240" class="mirror"/>
+        <!-- object -->
+        <circle cx="260" cy="180" r="7" class="obj"/>
+        <text x="270" y="178" class="lbl">O</text>
+        <!-- 3 images at α=90° -->
+        <circle cx="140" cy="180" r="7" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray="3 2"/>
+        <text x="120" y="178" class="lbl">I₁</text>
+        <circle cx="260" cy="300" r="7" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray="3 2" transform="translate(0,-30)"/>
+        <text x="270" y="278" class="lbl">I₂</text>
+        <circle cx="140" cy="270" r="7" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray="3 2"/>
+        <text x="120" y="278" class="lbl">I₃</text>
+        <text x="200" y="30" class="lbl-muted" text-anchor="middle">α = 90° → N = 3</text>
+      </svg>
+    </div>
+  </div>
+  <div class="footer"><span>7 / 11</span><span>Associação</span></div>
+</section>
+
+<!-- 8. Tabela de casos -->
+<section class="slide">
+  <h2>Casos clássicos</h2>
+  <table>
+    <thead><tr>
+      <th>Ângulo α</th>
+      <th>360° / α</th>
+      <th>Nº de imagens (N)</th>
+      <th>Observação</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>180°</td><td>2</td><td>1</td><td>Espelhos paralelos invertidos — só um espelho efetivo</td></tr>
+      <tr><td>120°</td><td>3</td><td>2</td><td>360/α ímpar — válido se objeto na bissetriz</td></tr>
+      <tr><td>90°</td><td>4</td><td>3</td><td>Caso clássico do canto reto</td></tr>
+      <tr><td>72°</td><td>5</td><td>4</td><td>Pentágono — ímpar, depende da bissetriz</td></tr>
+      <tr><td>60°</td><td>6</td><td>5</td><td>Caleidoscópio simples</td></tr>
+      <tr><td>45°</td><td>8</td><td>7</td><td>Octógono</td></tr>
+      <tr><td>30°</td><td>12</td><td>11</td><td>Caleidoscópio rico</td></tr>
+      <tr><td>0° (paralelos)</td><td>∞</td><td>∞</td><td>Reflexões infinitas</td></tr>
+    </tbody>
+  </table>
+  <p class="muted" style="margin-top:1em;">Regra prática: quanto menor o ângulo, mais imagens.</p>
+  <div class="footer"><span>8 / 11</span><span>Casos</span></div>
+</section>
+
+<!-- 9. Translação do espelho — objeto fixo -->
+<section class="slide">
+  <h2>Translação do Espelho</h2>
+  <div class="row">
+    <div class="col">
+      <h3>Objeto fixo, espelho desloca <span class="formula">d</span></h3>
+      <p>A imagem se desloca <span class="key">2d</span> no <em>mesmo sentido</em> do espelho.</p>
+      <p style="text-align:center; margin: .6em 0;"><span class="formula" style="font-size:1.2em;">Δx_imagem = 2 · Δx_espelho</span></p>
+      <h3>Em velocidade</h3>
+      <p>Se o espelho tem velocidade <span class="formula">v_e</span> (perpendicular ao seu plano):</p>
+      <p style="text-align:center; margin: .6em 0;"><span class="formula" style="font-size:1.2em;">v_imagem = 2 · v_espelho</span></p>
+      <p class="muted">A imagem é "puxada" duas vezes mais rápido que o espelho.</p>
+    </div>
+    <div class="col">
+      <svg viewBox="0 0 400 300">
+        <!-- before: mirror at x=180 -->
+        <line x1="180" y1="40" x2="180" y2="140" class="mirror" opacity=".5"/>
+        <text x="155" y="35" class="lbl-muted" text-anchor="middle">antes</text>
+        <!-- after: mirror at x=240 -->
+        <line x1="240" y1="40" x2="240" y2="140" class="mirror"/>
+        <text x="265" y="35" class="lbl-muted" text-anchor="middle">depois (+d)</text>
+        <!-- object fixed -->
+        <circle cx="80" cy="90" r="7" class="obj"/>
+        <text x="55" y="90" class="lbl">O</text>
+        <!-- image before -->
+        <circle cx="280" cy="90" r="7" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray="3 2" opacity=".5"/>
+        <text x="290" y="85" class="lbl-muted">I antes</text>
+        <!-- image after (+2d from before, since mirror went +d, image went +2d) -->
+        <circle cx="400" cy="90" r="7" fill="none" stroke="var(--good)" stroke-width="2" stroke-dasharray="3 2"/>
+        <text x="370" y="115" class="lbl">I depois</text>
+        <!-- displacement arrows -->
+        <line x1="180" y1="180" x2="240" y2="180" stroke="var(--warn)" stroke-width="2" marker-end="url(#a1)"/>
+        <text x="210" y="200" class="lbl" text-anchor="middle" fill="var(--warn)">d</text>
+        <line x1="280" y1="220" x2="400" y2="220" stroke="var(--accent-2)" stroke-width="2" marker-end="url(#a2)"/>
+        <text x="340" y="240" class="lbl" text-anchor="middle" fill="var(--accent-2)">2d</text>
+        <defs>
+          <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--warn)"/>
+          </marker>
+          <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--accent-2)"/>
+          </marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+  <div class="footer"><span>9 / 11</span><span>Translação</span></div>
+</section>
+
+<!-- 10. Velocidades relativas -->
+<section class="slide">
+  <h2>Translação — velocidades relativas</h2>
+  <div class="grid-2">
+    <div class="card">
+      <h4>Espelho parado, objeto se aproxima</h4>
+      <p>Objeto com velocidade <span class="formula">v</span> em direção ao espelho.</p>
+      <p>Imagem se aproxima do espelho com velocidade <span class="formula">v</span> (em sentido oposto, mas mesma magnitude em relação ao espelho).</p>
+      <p><span class="key">Velocidade relativa entre objeto e imagem:</span> <span class="formula">2v</span></p>
+    </div>
+    <div class="card">
+      <h4>Objeto parado, espelho se aproxima</h4>
+      <p>Espelho com velocidade <span class="formula">v_e</span>.</p>
+      <p>Imagem desloca com <span class="formula">2 · v_e</span> no mesmo sentido do espelho.</p>
+      <p><span class="key">Velocidade da imagem em relação ao objeto:</span> <span class="formula">2 v_e</span></p>
+    </div>
+    <div class="card">
+      <h4>Ambos em movimento</h4>
+      <p>Objeto: <span class="formula">v_o</span> &nbsp; Espelho: <span class="formula">v_e</span> (perpendiculares ao plano)</p>
+      <p>Velocidade da imagem em relação ao solo:</p>
+      <p style="text-align:center;"><span class="formula" style="font-size:1.1em;">v_i = 2 v_e − v_o</span></p>
+      <p class="muted">(Sinais conforme orientação adotada como positiva.)</p>
+    </div>
+    <div class="card">
+      <h4>Macete</h4>
+      <p>Em qualquer caso, vale a regra de simetria:</p>
+      <p style="text-align:center;"><span class="formula">d_obj→espelho = d_img→espelho</span></p>
+      <p>Derive as velocidades a partir dela.</p>
+    </div>
+  </div>
+  <div class="footer"><span>10 / 11</span><span>Velocidades</span></div>
+</section>
+
+<!-- 11. Síntese -->
+<section class="slide">
+  <h2>Síntese — fórmulas-chave</h2>
+  <table>
+    <thead><tr><th>Tópico</th><th>Fórmula / regra</th></tr></thead>
+    <tbody>
+      <tr><td>2ª lei da reflexão</td><td><span class="formula">θᵢ = θᵣ</span> (medidos da normal)</td></tr>
+      <tr><td>Distância imagem-espelho</td><td><span class="formula">d_img = d_obj</span></td></tr>
+      <tr><td>Características da imagem</td><td>virtual · direita · simétrica · enantiomorfa · mesmo tamanho</td></tr>
+      <tr><td>Nº de imagens em associação</td><td><span class="formula">N = 360°/α − 1</span></td></tr>
+      <tr><td>Translação do espelho</td><td><span class="formula">Δx_img = 2 · Δx_esp</span></td></tr>
+      <tr><td>Velocidade da imagem (espelho movendo)</td><td><span class="formula">v_img = 2 · v_esp</span></td></tr>
+      <tr><td>Vel. relativa objeto-imagem (espelho parado)</td><td><span class="formula">v_rel = 2 · v_obj</span></td></tr>
+    </tbody>
+  </table>
+  <p class="muted" style="margin-top:1.5em; text-align:center;">Tudo decorre de uma única ideia: <span class="key">a imagem é o reflexo simétrico do objeto em relação ao plano do espelho</span>.</p>
+  <div class="footer"><span>11 / 11</span><span>Síntese</span></div>
+</section>
+
+</div>
+
+<div class="nav">
+  <button onclick="go(-1)">← anterior</button>
+  <button onclick="go(1)">próximo →</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let i = 0;
+  function show(n) {
+    slides[i].classList.remove('active');
+    i = (n + slides.length) % slides.length;
+    slides[i].classList.add('active');
+  }
+  function go(d) { show(i + d); }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(-1); }
+    if (e.key === 'Home') { show(0); }
+    if (e.key === 'End') { show(slides.length - 1); }
+  });
+  document.getElementById('stage').addEventListener('click', e => {
+    if (e.target.closest('.nav') || e.target.closest('button')) return;
+    go(1);
+  });
+</script>
+
+</body>
+</html>
