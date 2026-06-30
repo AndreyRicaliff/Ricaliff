@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-29T21:22:34",
+    "lastSync": "2026-06-29T23:03:51",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 10100,
-    "xpToNext": 11100,
+    "xp": 10130,
+    "xpToNext": 11130,
     "streak": 1,
     "longestStreak": 16,
     "lastActiveDate": "2026-06-29",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-06-29",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[cliente-varejo] Grupo do ERP como fonte da verdade + modo remapOnly"
+    },
     {
       "date": "2026-06-29",
       "xp": 30,
@@ -522,12 +528,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "linear chart reveal + headcount audit"
-    },
-    {
-      "date": "2026-06-11",
-      "xp": 100,
-      "type": "deploy",
-      "desc": "RH: kanban DnD + chart formation + polarity backfill live"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-06-29",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[cliente-varejo] Grupo do ERP como fonte da verdade + modo remapOnly",
+      "xp": 30
+    },
+    {
+      "date": "2026-06-29",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[cliente-varejo] confia no Grupo do ERP p/ Bonificado/Super (corrige split vs ERP-externo)",
       "xp": 30
     },
@@ -745,13 +752,6 @@
       "icon": "⚙️",
       "title": "[cliente-varejo] parametriza regras hardcoded (assist tecnica, penalidade pelicula, VR, bonus prata) editaveis na config",
       "xp": 50
-    },
-    {
-      "date": "2026-06-29",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[cliente-varejo] trigger deploy (DRE + resultado operacional)",
-      "xp": 20
     }
   ]
 }
