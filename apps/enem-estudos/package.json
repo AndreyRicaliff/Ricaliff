@@ -1,0 +1,44 @@
+{
+  "name": "enem-estudos",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "App pessoal de estudos para o ENEM: banco de questões por matéria + flashcards com repetição espaçada (SM-2). SQLite no navegador via WASM.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "markmap-lib": "^0.18.11",
+    "markmap-view": "^0.18.10",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-markdown": "^9.0.1",
+    "react-router-dom": "^7.1.1",
+    "remark-gfm": "^4.0.0",
+    "sql.js": "^1.12.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@tailwindcss/vite": "^4.0.0",
+    "globals": "^15.14.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/sql.js": "^1.4.9",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "prettier": "^3.4.2",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0",
+    "vite": "^6.0.5",
+    "vitest": "^2.1.8"
+  }
+}

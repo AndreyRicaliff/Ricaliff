@@ -1,0 +1,21 @@
+{
+  "name": "ifpb",
+  "version": "1.0.0",
+  "description": "Estudos de programação — IFPB",
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "build": "tsc",
+    "lint": "eslint src --ext .ts",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.4.0"
+  }
+}

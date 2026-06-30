@@ -1920,6 +1920,10 @@ const ST_PREREQS  = [
   ['00-fundamentos', '60-seguranca'],
   ['00-fundamentos', '90-entrevista'],
   ['90-entrevista',  '95-diferencial'],
+  ['00-fundamentos', '15-git'],
+  ['50-backend',     '55-apis'],
+  ['55-apis',        '35-ia-ml'],
+  ['80-system-design','85-escala'],
 ];
 
 function stNodeColor(status) {

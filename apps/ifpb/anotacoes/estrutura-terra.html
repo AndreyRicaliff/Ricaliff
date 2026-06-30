@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estrutura da Terra & Relevo — ENEM</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #21262d;
+    --surface3: #30363d;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --geo: #2ea043;
+    --geo-light: #3fb950;
+    --geo-dim: #1a3a24;
+    --manto: #d29922;
+    --manto-dim: #3a2e0a;
+    --nucleo: #f85149;
+    --nucleo-dim: #3a1219;
+    --relevo: #388bfd;
+    --relevo-dim: #0d2a5c;
+    --enem: #bc8cff;
+    --enem-dim: #2d1f54;
+    --radius: 10px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .badge-enem {
+    background: var(--enem-dim);
+    color: var(--enem);
+    border: 1px solid var(--enem);
+    border-radius: 6px;
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  header h1 { font-size: 18px; font-weight: 700; }
+  header p { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  nav {
+    display: flex;
+    gap: 4px;
+    padding: 16px 32px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+  }
+
+  .tab-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .tab-btn:hover { color: var(--text); border-color: var(--surface3); }
+  .tab-btn.active { color: var(--text); background: var(--surface2); border-color: var(--surface3); }
+  .tab-btn.t-crosta.active { color: var(--geo-light); border-color: var(--geo); }
+  .tab-btn.t-manto.active  { color: var(--manto);     border-color: var(--manto); }
+  .tab-btn.t-nucleo.active { color: var(--nucleo);    border-color: var(--nucleo); }
+  .tab-btn.t-relevo.active { color: var(--relevo);    border-color: var(--relevo); }
+  .tab-btn.t-mapa.active   { color: var(--enem);      border-color: var(--enem); }
+
+  main { max-width: 900px; margin: 0 auto; padding: 32px 24px; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .module-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .module-sub {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } nav { padding: 12px 16px; } main { padding: 20px 12px; } header { padding: 16px; } }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+  }
+  .card-full { grid-column: 1 / -1; }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .card h3 { font-size: 15px; font-weight: 700; }
+  .card p  { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 2px 2px 2px 0;
+  }
+
+  ul.facts {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  ul.facts li {
+    font-size: 13px;
+    color: var(--text);
+    padding-left: 16px;
+    position: relative;
+  }
+  ul.facts li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--muted);
+  }
+
+  .enem-box {
+    background: var(--enem-dim);
+    border: 1px solid var(--enem);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin-top: 8px;
+  }
+  .enem-box .enem-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--enem);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .enem-box p, .enem-box li { font-size: 13px; }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 28px 0;
+  }
+
+  /* Diagrama SVG - Camadas */
+  .diagram-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 24px 0;
+  }
+
+  /* Tabela comparativa */
+  table.compare {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  table.compare th {
+    background: var(--surface2);
+    color: var(--muted);
+    font-weight: 600;
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+  table.compare td {
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+    vertical-align: top;
+  }
+  table.compare tr:hover td { background: var(--surface2); }
+
+  /* Mapa mental */
+  .mindmap-wrap {
+    overflow-x: auto;
+    padding: 8px 0;
+  }
+  svg.mindmap { display: block; margin: 0 auto; }
+
+  .legend-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  .highlight { font-weight: 600; color: var(--text); }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+      <h1>Estrutura da Terra & Formação do Relevo</h1>
+      <span class="badge-enem">ENEM</span>
+    </div>
+    <p>Geografia Física · Módulos de revisão</p>
+  </div>
+</header>
+
+<nav>
+  <button class="tab-btn t-crosta active" onclick="setTab('crosta')">🌿 Crosta</button>
+  <button class="tab-btn t-manto"  onclick="setTab('manto')">🔥 Manto</button>
+  <button class="tab-btn t-nucleo" onclick="setTab('nucleo')">⚡ Núcleo</button>
+  <button class="tab-btn t-relevo" onclick="setTab('relevo')">⛰️ Relevo</button>
+  <button class="tab-btn t-mapa"   onclick="setTab('mapa')">🧠 Mapa Mental</button>
+  <button class="tab-btn t-quiz"   onclick="setTab('quiz')">📝 Questões</button>
+</nav>
+
+<main>
+
+  <!-- ===== CROSTA ===== -->
+  <div id="tab-crosta" class="tab-panel active">
+    <div class="module-title" style="color:var(--geo-light)">🌿 Crosta Terrestre</div>
+    <div class="module-sub">Camada mais externa · Também chamada de litosfera (junto com parte do manto superior)</div>
+
+    <div class="diagram-wrap">
+      <svg width="320" height="320" viewBox="0 0 320 320">
+        <!-- núcleo interno -->
+        <circle cx="160" cy="160" r="50" fill="#f85149" opacity=".25" stroke="#f85149" stroke-width="1"/>
+        <text x="160" y="155" text-anchor="middle" fill="#f85149" font-size="11" font-family="Inter">Núcleo</text>
+        <text x="160" y="169" text-anchor="middle" fill="#f85149" font-size="11" font-family="Inter">Interno</text>
+        <!-- núcleo externo -->
+        <circle cx="160" cy="160" r="80" fill="none" stroke="#f85149" stroke-width="1" stroke-dasharray="4"/>
+        <text x="230" y="145" fill="#f85149" font-size="10" font-family="Inter">Núcleo Ext.</text>
+        <!-- manto -->
+        <circle cx="160" cy="160" r="120" fill="none" stroke="#d29922" stroke-width="1.5" stroke-dasharray="4"/>
+        <text x="270" y="100" fill="#d29922" font-size="10" font-family="Inter">Manto</text>
+        <!-- crosta -->
+        <circle cx="160" cy="160" r="148" fill="none" stroke="#3fb950" stroke-width="3"/>
+        <text x="160" y="20" text-anchor="middle" fill="#3fb950" font-size="11" font-family="Inter" font-weight="700">Crosta</text>
+        <!-- linhas de referência -->
+        <line x1="160" y1="12" x2="160" y2="38" stroke="#3fb950" stroke-width="1" opacity=".6"/>
+        <line x1="264" y1="102" x2="280" y2="90" stroke="#d29922" stroke-width="1" opacity=".6"/>
+        <line x1="230" y1="148" x2="240" y2="138" stroke="#f85149" stroke-width="1" opacity=".6"/>
+        <!-- profundidades -->
+        <text x="160" y="310" text-anchor="middle" fill="#8b949e" font-size="10" font-family="Inter">0 → 6.371 km (centro)</text>
+      </svg>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="dot" style="background:#3fb950"></div>
+          <h3>Crosta Continental</h3>
+        </div>
+        <p>Parte que forma os continentes</p>
+        <ul class="facts">
+          <li>Espessura: <span class="highlight">30 a 70 km</span></li>
+          <li>Rocha dominante: <span class="highlight">granito</span> (sial — sílica + alumínio)</li>
+          <li>Menos densa que a oceânica</li>
+          <li>Mais antiga (até 4 bilhões de anos)</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="dot" style="background:#58a6ff"></div>
+          <h3>Crosta Oceânica</h3>
+        </div>
+        <p>Parte sob os oceanos</p>
+        <ul class="facts">
+          <li>Espessura: <span class="highlight">5 a 10 km</span></li>
+          <li>Rocha dominante: <span class="highlight">basalto</span> (sima — sílica + magnésio)</li>
+          <li>Mais densa → afunda sob a continental</li>
+          <li>Mais nova (max. ~200 Ma)</li>
+        </ul>
+      </div>
+
+      <div class="card card-full">
+        <div class="card-header">
+          <div class="dot" style="background:#bc8cff"></div>
+          <h3>Litosfera e Placas Tectônicas</h3>
+        </div>
+        <p>Crosta + manto superior rígido = litosfera, dividida em placas que se movem sobre a astenosfera</p>
+        <ul class="facts">
+          <li>Movimento causado por <span class="highlight">correntes de convecção</span> no manto</li>
+          <li>Velocidade: ~2 a 15 cm/ano (taxa de crescimento das unhas)</li>
+          <li>Placas principais: Sul-Americana, Africana, Nazca, Norte-Americana, Euroasiática, Indo-Australiana, Antártica, Pacífica</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="enem-box">
+      <div class="enem-label">✦ CAI NO ENEM</div>
+      <ul class="facts">
+        <li>A crosta oceânica mergulha sob a continental no processo de <span class="highlight">subducção</span> → forma fossas oceânicas e vulcões</li>
+        <li>Quando duas placas continentais colidem → formam <span class="highlight">cadeias de montanhas dobradas</span> (ex: Himalaia, Andes)</li>
+        <li>A palavra <strong>sial</strong> (Si + Al) = crosta continental; <strong>sima</strong> (Si + Mg) = crosta oceânica</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== MANTO ===== -->
+  <div id="tab-manto" class="tab-panel">
+    <div class="module-title" style="color:var(--manto)">🔥 Manto</div>
+    <div class="module-sub">Da base da crosta até ~2.900 km de profundidade · 84% do volume da Terra</div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="dot" style="background:#d29922"></div>
+          <h3>Manto Superior</h3>
+        </div>
+        <ul class="facts">
+          <li>Profundidade: 0 a ~670 km</li>
+          <li><span class="highlight">Astenosfera</span> (100–350 km): semi-fluida, plástica</li>
+          <li>Rocha: peridotito (olivina + piroxênio)</li>
+          <li>Local das correntes de convecção</li>
+          <li>Temperatura: 1.000 – 1.600°C</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="dot" style="background:#e3b341"></div>
+          <h3>Manto Inferior (Mesosfera)</h3>
+        </div>
+        <ul class="facts">
+          <li>Profundidade: 670 a ~2.900 km</li>
+          <li>Estado: <span class="highlight">sólido</span> (apesar da alta temp.)</li>
+          <li>Alta pressão impede fusão</li>
+          <li>Temperatura: 2.000 – 3.700°C</li>
+          <li>Mais denso que o manto superior</li>
+        </ul>
+      </div>
+
+      <div class="card card-full">
+        <div class="card-header">
+          <div class="dot" style="background:#f0883e"></div>
+          <h3>Correntes de Convecção — motor do tectonismo</h3>
+        </div>
+        <p>O calor interno da Terra gera circulação no manto:</p>
+        <ul class="facts">
+          <li>Material quente sobe → empurra as placas para os lados</li>
+          <li>Material resfriado desce → arrastar as placas de volta</li>
+          <li>Esse processo move as placas tectônicas e é responsável pelo <span class="highlight">vulcanismo, terremotos e formação de montanhas</span></li>
+          <li>Fronteiras divergentes: placas se afastam → dorsais oceânicas (ex: Dorsal Meso-Atlântica)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="enem-box">
+      <div class="enem-label">✦ CAI NO ENEM</div>
+      <ul class="facts">
+        <li>A <span class="highlight">astenosfera</span> é plástica/viscosa → permite o movimento das placas sobre ela</li>
+        <li>O magma que chega à superfície vem do manto, não do núcleo</li>
+        <li>Descontinuidade de <span class="highlight">Mohorovičić (Moho)</span>: fronteira entre crosta e manto</li>
+        <li>Descontinuidade de <span class="highlight">Gutenberg</span>: fronteira entre manto e núcleo (2.900 km)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== NÚCLEO ===== -->
+  <div id="tab-nucleo" class="tab-panel">
+    <div class="module-title" style="color:var(--nucleo)">⚡ Núcleo</div>
+    <div class="module-sub">2.900 km até o centro (6.371 km) · Ferro + Níquel</div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="dot" style="background:#f85149"></div>
+          <h3>Núcleo Externo</h3>
+        </div>
+        <ul class="facts">
+          <li>Profundidade: 2.900 a ~5.100 km</li>
+          <li>Estado: <span class="highlight">líquido</span></li>
+          <li>Composição: Fe + Ni fundidos</li>
+          <li>Temperatura: ~3.700 – 4.300°C</li>
+          <li><span class="highlight">Gera o campo magnético terrestre</span> pelo efeito dínamo</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="dot" style="background:#ff7b72"></div>
+          <h3>Núcleo Interno (NIFE)</h3>
+        </div>
+        <ul class="facts">
+          <li>Profundidade: 5.100 a 6.371 km</li>
+          <li>Estado: <span class="highlight">sólido</span> (enorme pressão)</li>
+          <li>Composição: Fe + Ni (= NIFE)</li>
+          <li>Temperatura: ~5.000 – 6.000°C</li>
+          <li>Região mais densa da Terra</li>
+        </ul>
+      </div>
+
+      <div class="card card-full">
+        <div class="card-header">
+          <div class="dot" style="background:#bc8cff"></div>
+          <h3>Campo Magnético Terrestre</h3>
+        </div>
+        <p>Gerado pelo núcleo externo líquido em movimento (efeito dínamo):</p>
+        <ul class="facts">
+          <li>Protege a Terra contra o <span class="highlight">vento solar</span> (partículas carregadas)</li>
+          <li>Sem ele → atmosfera seria varrida pelo Sol (como em Marte)</li>
+          <li>Permite a bússola funcionar</li>
+          <li>Auroras boreais/australis: partículas canalizadas pelo campo magnético nas regiões polares</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3 style="margin-bottom:16px;font-size:15px;color:var(--muted)">Resumo das camadas</h3>
+    <div class="card card-full">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Camada</th>
+            <th>Prof. (km)</th>
+            <th>Estado</th>
+            <th>Composição</th>
+            <th>Temp. (°C)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span style="color:var(--geo-light)">Crosta continental</span></td>
+            <td>0 – 70</td>
+            <td>Sólido</td>
+            <td>Granito (SiAl)</td>
+            <td>0 – 900</td>
+          </tr>
+          <tr>
+            <td><span style="color:#58a6ff">Crosta oceânica</span></td>
+            <td>0 – 10</td>
+            <td>Sólido</td>
+            <td>Basalto (SiMa)</td>
+            <td>0 – 200</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--manto)">Manto superior</span></td>
+            <td>70 – 670</td>
+            <td>Plástico</td>
+            <td>Peridotito</td>
+            <td>1.000 – 1.600</td>
+          </tr>
+          <tr>
+            <td><span style="color:#e3b341">Manto inferior</span></td>
+            <td>670 – 2.900</td>
+            <td>Sólido</td>
+            <td>Peridotito denso</td>
+            <td>2.000 – 3.700</td>
+          </tr>
+          <tr>
+            <td><span style="color:var(--nucleo)">Núcleo externo</span></td>
+            <td>2.900 – 5.100</td>
+            <td>Líquido</td>
+            <td>Fe + Ni</td>
+            <td>3.700 – 4.300</td>
+          </tr>
+          <tr>
+            <td><span style="color:#ff7b72">Núcleo interno</span></td>
+            <td>5.100 – 6.371</td>
+            <td>Sólido</td>
+            <td>Fe + Ni (NIFE)</td>
+            <td>5.000 – 6.000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="enem-box" style="margin-top:20px">
+      <div class="enem-label">✦ CAI NO ENEM</div>
+      <ul class="facts">
+        <li>Núcleo interno é <span class="highlight">sólido</span> mesmo sendo o mais quente → pressão impede fusão</li>
+        <li>O campo magnético protege a vida ao desviar o vento solar</li>
+        <li>Inversão do campo magnético: já ocorreu várias vezes na história da Terra</li>
+        <li><span class="highlight">Ondas sísmicas P e S</span>: forma como sabemos o estado das camadas internas (S não atravessa líquido → detectou o núcleo externo líquido)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== RELEVO ===== -->
+  <div id="tab-relevo" class="tab-panel">
+    <div class="module-title" style="color:var(--relevo)">⛰️ Formação do Relevo</div>
+    <div class="module-sub">Agentes internos (endógenos) × Agentes externos (exógenos)</div>
+
+    <div class="cards">
+      <div class="card card-full" style="border-color:#f85149;background:linear-gradient(135deg,var(--surface) 80%,var(--nucleo-dim))">
+        <div class="card-header">
+          <div class="dot" style="background:#f85149"></div>
+          <h3>Agentes Internos (Endógenos) — CONSTROEM</h3>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+          <div>
+            <p style="color:var(--nucleo);font-weight:700;font-size:13px;margin-bottom:6px">Tectonismo</p>
+            <ul class="facts">
+              <li>Movimentação de placas</li>
+              <li>Convergente → montanhas, fossas</li>
+              <li>Divergente → dorsais, rift</li>
+              <li>Transformante → terremotos</li>
+            </ul>
+          </div>
+          <div>
+            <p style="color:var(--manto);font-weight:700;font-size:13px;margin-bottom:6px">Vulcanismo</p>
+            <ul class="facts">
+              <li>Extrusão de magma</li>
+              <li>Forma ilhas vulcânicas</li>
+              <li>Ring of Fire (Anel de Fogo)</li>
+              <li>Pontos quentes (hot spots)</li>
+            </ul>
+          </div>
+          <div>
+            <p style="color:var(--enem);font-weight:700;font-size:13px;margin-bottom:6px">Sismismo</p>
+            <ul class="facts">
+              <li>Terremotos / abalos sísmicos</li>
+              <li>Escala Richter (magnitude)</li>
+              <li>Tsunamis: sismos submarinos</li>
+              <li>Zonas de subducção: mais ativos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card card-full" style="border-color:#388bfd;background:linear-gradient(135deg,var(--surface) 80%,var(--relevo-dim))">
+        <div class="card-header">
+          <div class="dot" style="background:#388bfd"></div>
+          <h3>Agentes Externos (Exógenos) — DESTROEM / MODELAM</h3>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+          <div>
+            <p style="color:#388bfd;font-weight:700;font-size:13px;margin-bottom:6px">Intemperismo</p>
+            <ul class="facts">
+              <li><strong>Físico:</strong> variação de temp., gelo</li>
+              <li><strong>Químico:</strong> dissolução, oxidação</li>
+              <li><strong>Biológico:</strong> raízes, microrganismos</li>
+              <li>Prepara o material para erosão</li>
+            </ul>
+          </div>
+          <div>
+            <p style="color:#58a6ff;font-weight:700;font-size:13px;margin-bottom:6px">Erosão</p>
+            <ul class="facts">
+              <li><strong>Hídrica:</strong> chuva e rios (+ comum)</li>
+              <li><strong>Eólica:</strong> vento (desertos)</li>
+              <li><strong>Glacial:</strong> geleiras (fiorde)</li>
+              <li><strong>Marinha:</strong> ondas e marés</li>
+            </ul>
+          </div>
+          <div>
+            <p style="color:#79c0ff;font-weight:700;font-size:13px;margin-bottom:6px">Sedimentação</p>
+            <ul class="facts">
+              <li>Deposição do material erodido</li>
+              <li>Forma planícies, deltas, dunas</li>
+              <li>Origem de rochas sedimentares</li>
+              <li>Onde se formam fósseis</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3 style="margin-bottom:16px;font-size:15px;color:var(--muted)">Tipos de Relevo</h3>
+    <div class="cards">
+      <div class="card">
+        <div class="card-header"><div class="dot" style="background:#f85149"></div><h3>Montanhas</h3></div>
+        <ul class="facts">
+          <li>Altitude &gt; 300m (relativa)</li>
+          <li>Originadas por tectonismo</li>
+          <li>Ex: <span class="highlight">Andes</span> (colisão Nazca × Sul-Am.), <span class="highlight">Himalaia</span></li>
+          <li>Brasil: Serra da Mantiqueira, Serra do Mar</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="dot" style="background:#d29922"></div><h3>Planaltos</h3></div>
+        <ul class="facts">
+          <li>Superfície elevada e plana/ondulada</li>
+          <li>Resultado de erosão de terreno antigo</li>
+          <li>Mais comum no Brasil interior</li>
+          <li>Ex: Planalto Central, Planalto Nordestino</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="dot" style="background:#3fb950"></div><h3>Planícies</h3></div>
+        <ul class="facts">
+          <li>Superfície baixa e plana</li>
+          <li>Formadas por sedimentação</li>
+          <li>Próximas a rios e litoral</li>
+          <li>Ex: Planície Amazônica, Pantanal</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="dot" style="background:#bc8cff"></div><h3>Depressões</h3></div>
+        <ul class="facts">
+          <li>Abaixo das áreas vizinhas</li>
+          <li>Absolutas: abaixo do nível do mar (ex: Mar Morto)</li>
+          <li>Relativas: só abaixo das áreas ao redor</li>
+          <li>Ex: Depressão Sertaneja (NE do Brasil)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="enem-box" style="margin-top:8px">
+      <div class="enem-label">✦ CAI NO ENEM</div>
+      <ul class="facts">
+        <li>Agentes internos <span class="highlight">constroem</span> o relevo; agentes externos <span class="highlight">modelam</span> (desgastam e depositam)</li>
+        <li>Subducção da placa de Nazca sob a Sul-Americana → formou os <span class="highlight">Andes</span></li>
+        <li>Erosão + sedimentação na Amazônia → <span class="highlight">Planície Amazônica</span></li>
+        <li>Relevo brasileiro é majoritariamente de <span class="highlight">planaltos e depressões</span> — formado há muito tempo, bastante erodido</li>
+        <li>Intemperismo químico é mais intenso em climas <span class="highlight">quentes e úmidos</span> (ex: Amazônia)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== MAPA MENTAL ===== -->
+  <div id="tab-mapa" class="tab-panel">
+    <div class="module-title" style="color:var(--enem)">🧠 Mapa Mental</div>
+    <div class="module-sub">Visão geral das conexões entre os temas</div>
+
+    <div class="mindmap-wrap">
+      <svg class="mindmap" width="860" height="560" viewBox="0 0 860 560" style="max-width:100%">
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#30363d"/>
+          </marker>
+        </defs>
+
+        <!-- linhas centrais -->
+        <g stroke="#30363d" stroke-width="1.5" fill="none" marker-end="url(#arr)">
+          <!-- Terra → Crosta -->
+          <path d="M430,280 Q350,240 270,200"/>
+          <!-- Terra → Manto -->
+          <path d="M430,280 Q390,260 340,280"/>
+          <!-- Terra → Núcleo -->
+          <path d="M430,280 Q390,300 340,330"/>
+          <!-- Terra → Relevo -->
+          <path d="M430,280 Q510,240 580,200"/>
+          <!-- Terra → Placas -->
+          <path d="M430,280 Q480,300 540,320"/>
+
+          <!-- Crosta → sub -->
+          <path d="M240,190 Q200,160 170,140"/>
+          <path d="M240,190 Q195,200 165,215"/>
+          <!-- Relevo → sub -->
+          <path d="M605,190 Q645,155 680,135"/>
+          <path d="M605,190 Q648,200 678,215"/>
+          <!-- Placas → sub -->
+          <path d="M565,328 Q600,340 640,355"/>
+          <path d="M565,328 Q598,375 630,400"/>
+          <!-- Manto → sub -->
+          <path d="M312,278 Q265,258 225,248"/>
+          <!-- Núcleo → sub -->
+          <path d="M312,335 Q265,345 225,355"/>
+        </g>
+
+        <!-- NÓ CENTRAL -->
+        <rect x="355" y="255" width="150" height="50" rx="12" fill="#21262d" stroke="#bc8cff" stroke-width="2"/>
+        <text x="430" y="276" text-anchor="middle" fill="#bc8cff" font-size="13" font-weight="700" font-family="Inter">TERRA</text>
+        <text x="430" y="294" text-anchor="middle" fill="#8b949e" font-size="10" font-family="Inter">Estrutura &amp; Relevo</text>
+
+        <!-- CROSTA -->
+        <rect x="175" y="170" width="130" height="40" rx="8" fill="#0d2a0d" stroke="#3fb950" stroke-width="1.5"/>
+        <text x="240" y="185" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="700" font-family="Inter">CROSTA</text>
+        <text x="240" y="201" text-anchor="middle" fill="#3fb950" font-size="10" font-family="Inter">0–70 km · Sial / Sima</text>
+        <!-- crosta sub -->
+        <rect x="80" y="120" width="110" height="36" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+        <text x="135" y="135" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Continental</text>
+        <text x="135" y="149" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Granito · 30–70km</text>
+        <rect x="80" y="196" width="110" height="36" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+        <text x="135" y="211" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Oceânica</text>
+        <text x="135" y="225" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Basalto · 5–10km</text>
+
+        <!-- MANTO -->
+        <rect x="248" y="260" width="120" height="40" rx="8" fill="#3a2e0a" stroke="#d29922" stroke-width="1.5"/>
+        <text x="308" y="276" text-anchor="middle" fill="#d29922" font-size="12" font-weight="700" font-family="Inter">MANTO</text>
+        <text x="308" y="292" text-anchor="middle" fill="#d29922" font-size="10" font-family="Inter">70–2900 km</text>
+        <!-- manto sub -->
+        <rect x="110" y="232" width="140" height="36" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+        <text x="180" y="247" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Astenosfera (plástico)</text>
+        <text x="180" y="261" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Convecção → move placas</text>
+
+        <!-- NÚCLEO -->
+        <rect x="248" y="315" width="120" height="40" rx="8" fill="#3a1219" stroke="#f85149" stroke-width="1.5"/>
+        <text x="308" y="331" text-anchor="middle" fill="#f85149" font-size="12" font-weight="700" font-family="Inter">NÚCLEO</text>
+        <text x="308" y="347" text-anchor="middle" fill="#f85149" font-size="10" font-family="Inter">2900–6371 km · Fe+Ni</text>
+        <!-- nucleo sub -->
+        <rect x="110" y="338" width="140" height="36" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+        <text x="180" y="353" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Ext. líquido → campo mag.</text>
+        <text x="180" y="367" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Int. sólido → mais denso</text>
+
+        <!-- RELEVO -->
+        <rect x="500" y="170" width="140" height="40" rx="8" fill="#0d2a5c" stroke="#388bfd" stroke-width="1.5"/>
+        <text x="570" y="186" text-anchor="middle" fill="#388bfd" font-size="12" font-weight="700" font-family="Inter">RELEVO</text>
+        <text x="570" y="202" text-anchor="middle" fill="#388bfd" font-size="10" font-family="Inter">Interno × Externo</text>
+        <!-- relevo sub -->
+        <rect x="648" y="116" width="140" height="36" rx="6" fill="#161b22" stroke="#f85149" stroke-width="1"/>
+        <text x="718" y="131" text-anchor="middle" fill="#f85149" font-size="10" font-family="Inter">Endógenos</text>
+        <text x="718" y="145" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Tecton · Vulcan · Sismo</text>
+        <rect x="648" y="196" width="140" height="36" rx="6" fill="#161b22" stroke="#388bfd" stroke-width="1"/>
+        <text x="718" y="211" text-anchor="middle" fill="#388bfd" font-size="10" font-family="Inter">Exógenos</text>
+        <text x="718" y="225" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Intemp · Erosão · Sedim.</text>
+
+        <!-- PLACAS TECTÔNICAS -->
+        <rect x="460" y="308" width="145" height="40" rx="8" fill="#1a1340" stroke="#bc8cff" stroke-width="1.5"/>
+        <text x="532" y="324" text-anchor="middle" fill="#bc8cff" font-size="12" font-weight="700" font-family="Inter">PLACAS TECT.</text>
+        <text x="532" y="340" text-anchor="middle" fill="#bc8cff" font-size="10" font-family="Inter">Move pelo manto</text>
+        <!-- placas sub -->
+        <rect x="622" y="336" width="160" height="36" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+        <text x="702" y="351" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Convergente → montanhas</text>
+        <text x="702" y="365" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Subducção (Nazca → Andes)</text>
+        <rect x="622" y="380" width="160" height="36" rx="6" fill="#161b22" stroke="#30363d" stroke-width="1"/>
+        <text x="702" y="395" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Divergente → dorsais</text>
+        <text x="702" y="409" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Dorsal Meso-Atlântica</text>
+
+        <!-- setas sub relevo -->
+        <g stroke="#30363d" stroke-width="1" fill="none" marker-end="url(#arr)">
+          <path d="M640,134 L660,134"/>
+          <path d="M640,214 L660,214"/>
+          <path d="M605,356 L625,356"/>
+          <path d="M605,398 L625,398"/>
+        </g>
+
+        <!-- tipos de relevo em baixo -->
+        <rect x="150" y="440" width="130" height="34" rx="6" fill="#161b22" stroke="#f85149" stroke-width="1"/>
+        <text x="215" y="455" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Montanhas</text>
+        <text x="215" y="468" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Tectônicas, &gt;300m</text>
+
+        <rect x="300" y="440" width="130" height="34" rx="6" fill="#161b22" stroke="#d29922" stroke-width="1"/>
+        <text x="365" y="455" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Planaltos</text>
+        <text x="365" y="468" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Erosão antiga</text>
+
+        <rect x="450" y="440" width="130" height="34" rx="6" fill="#161b22" stroke="#3fb950" stroke-width="1"/>
+        <text x="515" y="455" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Planícies</text>
+        <text x="515" y="468" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Sedimentação</text>
+
+        <rect x="600" y="440" width="130" height="34" rx="6" fill="#161b22" stroke="#bc8cff" stroke-width="1"/>
+        <text x="665" y="455" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Depressões</text>
+        <text x="665" y="468" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Abaixo das vizinhas</text>
+
+        <text x="430" y="520" text-anchor="middle" fill="#30363d" font-size="11" font-family="Inter">── TIPOS DE RELEVO ──</text>
+
+        <!-- title -->
+        <text x="430" y="30" text-anchor="middle" fill="#8b949e" font-size="12" font-family="Inter" font-weight="600">ESTRUTURA DA TERRA &amp; RELEVO — Mapa Mental ENEM</text>
+      </svg>
+    </div>
+
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-dot" style="background:#3fb950"></div> Crosta</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#d29922"></div> Manto</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#f85149"></div> Núcleo / Endógeno</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#388bfd"></div> Relevo / Exógeno</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#bc8cff"></div> Placas / Conceito-chave</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="enem-box">
+      <div class="enem-label">✦ PALAVRAS-CHAVE PARA PROVA</div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+        <span class="tag" style="background:var(--geo-dim);color:var(--geo-light)">Sial / Sima</span>
+        <span class="tag" style="background:var(--manto-dim);color:var(--manto)">Astenosfera</span>
+        <span class="tag" style="background:var(--manto-dim);color:var(--manto)">Convecção</span>
+        <span class="tag" style="background:var(--nucleo-dim);color:var(--nucleo)">NIFE</span>
+        <span class="tag" style="background:var(--nucleo-dim);color:var(--nucleo)">Campo Magnético</span>
+        <span class="tag" style="background:var(--relevo-dim);color:var(--relevo)">Subducção</span>
+        <span class="tag" style="background:var(--relevo-dim);color:var(--relevo)">Intemperismo</span>
+        <span class="tag" style="background:var(--relevo-dim);color:var(--relevo)">Erosão Hídrica</span>
+        <span class="tag" style="background:var(--enem-dim);color:var(--enem)">Mohorovičić</span>
+        <span class="tag" style="background:var(--enem-dim);color:var(--enem)">Gutenberg</span>
+        <span class="tag" style="background:var(--enem-dim);color:var(--enem)">Ring of Fire</span>
+        <span class="tag" style="background:var(--enem-dim);color:var(--enem)">Dorsal Meso-Atlântica</span>
+        <span class="tag" style="background:var(--geo-dim);color:var(--geo-light)">Litosfera</span>
+        <span class="tag" style="background:var(--geo-dim);color:var(--geo-light)">Placa de Nazca</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== QUESTÕES ===== -->
+  <div id="tab-quiz" class="tab-panel">
+    <div class="module-title" style="color:#e3b341">📝 Questões por Tema</div>
+    <div class="module-sub">Clique na alternativa · Veja a explicação</div>
+    <div id="quiz-root"></div>
+  </div>
+
+</main>
+
+<style>
+.qz-theme-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.qz-tab{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:7px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s}
+.qz-tab.active{background:var(--surface2);border-color:var(--tc,#888);color:var(--tc,#888)}
+.qz-score{display:flex;align-items:center;gap:14px;margin-bottom:20px;font-size:13px;color:var(--muted)}
+.qz-score strong{color:var(--text)}
+.qz-reset{background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
+.qz-reset:hover{color:var(--text);border-color:var(--surface3)}
+.qz-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
+.qz-num{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;margin-bottom:6px}
+.qz-q{font-size:14px;font-weight:500;margin-bottom:14px;line-height:1.5}
+.qz-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:560px){.qz-opts{grid-template-columns:1fr}}
+.qz-opt{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:7px;font-size:13px;cursor:pointer;text-align:left;display:flex;align-items:flex-start;gap:10px;font-family:'Inter',sans-serif;transition:background .15s,border-color .15s;line-height:1.4}
+.qz-opt:hover:not(:disabled){background:var(--surface3);border-color:var(--surface3)}
+.qz-opt:disabled{cursor:default}
+.qz-opt.correct{background:#0d2a1a;border-color:#3fb950;color:#3fb950}
+.qz-opt.wrong{background:#3a1219;border-color:#f85149;color:#f85149}
+.qz-letter{font-weight:700;flex-shrink:0;opacity:.6}
+.qz-opt.correct .qz-letter,.qz-opt.wrong .qz-letter{opacity:1}
+.qz-exp{background:var(--enem-dim);border:1px solid var(--enem);border-radius:8px;padding:12px 16px;margin-top:12px;font-size:13px;color:var(--text);line-height:1.5}
+.qz-exp::before{content:'💡 ';font-size:14px}
+.qz-progress{height:4px;background:var(--border);border-radius:2px;margin-bottom:20px;overflow:hidden}
+.qz-progress-bar{height:100%;background:#3fb950;transition:width .3s}
+</style>
+
+<script>
+  function setTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    document.querySelector('.t-' + id).classList.add('active');
+    if (id === 'quiz') renderQuiz(currentTheme);
+  }
+
+  const QUIZ = {
+    crosta: {
+      label: '🌿 Crosta', color: '#3fb950',
+      questions: [
+        { q: 'Qual é a principal rocha da crosta continental?', opts: ['Basalto', 'Granito', 'Peridotito', 'Calcário'], ans: 1, exp: 'A crosta continental é formada principalmente por granito, rocha sialica (rica em sílica e alumínio). A crosta oceânica é basáltica (sima — sílica e magnésio).' },
+        { q: 'O que é a litosfera?', opts: ['Apenas a crosta terrestre', 'Crosta + manto superior rígido', 'Todo o manto', 'Somente a crosta oceânica'], ans: 1, exp: 'A litosfera é formada pela crosta terrestre mais a parte rígida do manto superior (até ~100 km de profundidade). Ela se divide em placas tectônicas.' },
+        { q: 'A crosta oceânica é composta principalmente por:', opts: ['Granito', 'Quartzo', 'Basalto', 'Mármore'], ans: 2, exp: 'A crosta oceânica é formada por basalto, uma rocha simatica (sílica + magnésio). É mais densa e mais fina que a continental, por isso mergulha sob ela no processo de subducção.' },
+        { q: 'O que significa a sigla "Sial"?', opts: ['Sódio + Alumínio', 'Silício + Alumínio', 'Silício + Magnésio', 'Sódio + Ferro'], ans: 1, exp: 'Sial = Silício + Alumínio, e representa a crosta continental (granito). Sima = Silício + Magnésio, e representa a crosta oceânica (basalto). Essas siglas são cobradas no ENEM.' },
+        { q: 'Qual é a espessura média da crosta oceânica?', opts: ['30 a 70 km', '5 a 10 km', '100 a 200 km', '1 a 2 km'], ans: 1, exp: 'A crosta oceânica tem 5 a 10 km de espessura — muito mais fina que a continental (30-70 km). Apesar de mais fina, é mais densa.' },
+        { q: 'O processo pelo qual a crosta oceânica mergulha sob a continental chama-se:', opts: ['Vulcanismo', 'Rifteamento', 'Subducção', 'Sedimentação'], ans: 2, exp: 'Subducção é o processo em que uma placa mais densa (geralmente oceânica) mergulha sob outra. Nas zonas de subducção se formam fossas oceânicas, vulcões e terremotos (ex: Andes).' },
+        { q: 'A descontinuidade de Mohorovičić (Moho) separa:', opts: ['Manto e núcleo', 'Crosta e manto', 'Núcleo externo e interno', 'Astenosfera e mesosfera'], ans: 1, exp: 'A descontinuidade de Moho (Mohorovičić) é a fronteira entre a crosta e o manto. Já a descontinuidade de Gutenberg separa o manto do núcleo, a ~2.900 km.' },
+        { q: 'As placas tectônicas se movem sobre a:', opts: ['Mesosfera', 'Crosta oceânica', 'Litosfera', 'Astenosfera'], ans: 3, exp: 'As placas tectônicas (litosfera rígida) deslizam sobre a astenosfera, que é plástica e viscosa (manto superior semi-fluido). As correntes de convecção nessa camada impulsionam o movimento.' },
+        { q: 'Qual é a velocidade média de movimento das placas tectônicas?', opts: ['2 a 15 mm/ano', '2 a 15 cm/ano', '2 a 15 m/ano', '2 a 15 km/ano'], ans: 1, exp: 'As placas se movem de 2 a 15 cm/ano — velocidade comparada à taxa de crescimento das unhas. Ao longo de milhões de anos, esse movimento reconfigurou completamente a face da Terra.' },
+        { q: 'O que ocorre quando duas placas continentais colidem frontalmente?', opts: ['Uma mergulha sob a outra em subducção', 'Formam-se dorsais oceânicas', 'Formam-se cadeias de montanhas dobradas', 'Ocorre apenas rifteamento'], ans: 2, exp: 'Quando duas placas continentais colidem, como nenhuma é suficientemente densa para mergulhar, o material é comprimido e erguido, formando cadeias de montanhas dobradas. Ex: Himalaia (Índia × Eurásia).' },
+      ]
+    },
+    manto: {
+      label: '🔥 Manto', color: '#d29922',
+      questions: [
+        { q: 'Qual é o estado físico da astenosfera?', opts: ['Sólido cristalino', 'Líquido', 'Gasoso', 'Plástico/viscoso'], ans: 3, exp: 'A astenosfera (manto superior, 100–350 km) é plástica e viscosa — não é propriamente líquida, mas se deforma lentamente. Esse estado permite o deslizamento das placas tectônicas sobre ela.' },
+        { q: 'A principal rocha do manto é:', opts: ['Granito', 'Basalto', 'Peridotito', 'Calcário'], ans: 2, exp: 'O peridotito (composto principalmente por olivina e piroxênio) é a rocha dominante no manto. É mais denso que as rochas da crosta e rico em ferro e magnésio.' },
+        { q: 'Qual é a profundidade aproximada da astenosfera?', opts: ['0 a 70 km', '100 a 350 km', '1.000 a 2.000 km', '2.000 a 2.900 km'], ans: 1, exp: 'A astenosfera fica entre ~100 e 350 km de profundidade, dentro do manto superior. Acima dela está a litosfera rígida; abaixo, o manto inferior (mesosfera).' },
+        { q: 'O que gera o movimento das placas tectônicas?', opts: ['Campo magnético terrestre', 'Rotação da Terra em torno do Sol', 'Correntes de convecção no manto', 'Maré gravitacional da Lua'], ans: 2, exp: 'As correntes de convecção no manto são o motor do tectonismo: material quente sobe, se resfria nas bordas e desce, arrastando as placas. É o mesmo princípio de uma panela de água fervendo.' },
+        { q: 'A descontinuidade de Gutenberg, a ~2.900 km, separa:', opts: ['Crosta e manto', 'Manto e núcleo', 'Núcleo externo e interno', 'Astenosfera e litosfera'], ans: 1, exp: 'A descontinuidade de Gutenberg (2.900 km) é a fronteira entre o manto e o núcleo. As ondas sísmicas mudam drasticamente de velocidade e direção ao cruzá-la, revelando a mudança de material.' },
+        { q: 'Qual é a temperatura aproximada do manto superior?', opts: ['100 a 500°C', '500 a 900°C', '1.000 a 1.600°C', '5.000 a 6.000°C'], ans: 2, exp: 'O manto superior tem temperaturas entre 1.000°C e 1.600°C. Apesar desse calor imenso, permanece no estado plástico — só vira líquido (magma) quando há redução de pressão ou adição de água.' },
+        { q: 'O magma que emerge nos vulcões tem origem principalmente no:', opts: ['Núcleo externo', 'Núcleo interno', 'Manto', 'Crosta oceânica'], ans: 2, exp: 'O magma vem do manto, não do núcleo. Nas zonas de subducção, água do oceano abaixa o ponto de fusão das rochas do manto, gerando magma que sobe pelos vulcões.' },
+        { q: 'O manto corresponde a aproximadamente quanto do volume total da Terra?', opts: ['40%', '60%', '84%', '95%'], ans: 2, exp: 'O manto representa cerca de 84% do volume da Terra, tornando-se a camada mais volumosa. O núcleo ocupa ~16% e a crosta menos de 1%.' },
+        { q: 'O manto inferior é chamado de:', opts: ['Astenosfera', 'Litosfera', 'Mesosfera', 'Barisfera'], ans: 2, exp: 'O manto inferior (670–2.900 km) é chamado de mesosfera. É sólido apesar das altas temperaturas (2.000–3.700°C), pois a pressão impede a fusão. A barisfera é outro nome para o núcleo.' },
+        { q: 'Por que as correntes de convecção no manto movem as placas?', opts: ['Material quente é mais denso e afunda, puxando as placas', 'Material quente é menos denso, sobe e empurra as placas para os lados', 'O campo magnético empurra o material aquecido', 'A gravidade lunar atrai o material do manto'], ans: 1, exp: 'O material quente do manto é menos denso e sobe (ascensão). Quando esfria na base da litosfera, torna-se mais denso e desce (subsidência). Esse ciclo cria uma "esteira" que move as placas horizontalmente.' },
+      ]
+    },
+    nucleo: {
+      label: '⚡ Núcleo', color: '#f85149',
+      questions: [
+        { q: 'Qual é o estado físico do núcleo externo?', opts: ['Sólido', 'Líquido', 'Gasoso', 'Plástico'], ans: 1, exp: 'O núcleo externo (~2.900–5.100 km) é líquido, composto de ferro e níquel fundidos. É esse estado líquido, combinado com a rotação da Terra, que gera o campo magnético terrestre (efeito dínamo).' },
+        { q: 'O campo magnético terrestre é gerado por:', opts: ['Núcleo interno sólido', 'Manto superior em convecção', 'Núcleo externo líquido em movimento', 'Crosta continental carregada'], ans: 2, exp: 'O movimento do ferro e níquel líquidos no núcleo externo funciona como um dínamo: gera correntes elétricas que produzem o campo magnético. Sem ele, o vento solar varreria nossa atmosfera (como aconteceu em Marte).' },
+        { q: 'A sigla NIFE (núcleo interno) se refere a:', opts: ['Nitrogênio + Ferro', 'Níquel + Ferro', 'Nióbio + Ferro', 'Néon + Flúor'], ans: 1, exp: 'NIFE = Níquel (Ni) + Ferro (Fe). O núcleo da Terra é composto quase que exclusivamente desses dois metais. Já a sigla Sial = crosta continental e Sima = crosta oceânica.' },
+        { q: 'Por que o núcleo interno é sólido, apesar de ser a região mais quente da Terra?', opts: ['Porque é mais frio que o núcleo externo', 'Devido à enormíssima pressão que impede a fusão', 'Por ser composto de rocha refratária', 'Por ter baixa condutividade térmica'], ans: 1, exp: 'A pressão no núcleo interno é tão extrema (~3,6 milhões de atm) que impede o ferro de fundir, mesmo a 5.000–6.000°C. É a pressão que determina o estado físico, não a temperatura isoladamente.' },
+        { q: 'Qual é a profundidade do centro da Terra?', opts: ['2.900 km', '5.100 km', '6.371 km', '4.000 km'], ans: 2, exp: 'O raio médio da Terra é de 6.371 km, portanto o centro fica a 6.371 km de profundidade a partir da superfície. O núcleo interno vai de 5.100 km até esse centro.' },
+        { q: 'As auroras boreais/australis estão relacionadas ao núcleo porque:', opts: ['São causadas pelo calor irradiado pelo núcleo', 'O campo magnético gerado pelo núcleo canaliza partículas do vento solar para os polos', 'São reflexos da luz nas camadas líquidas do núcleo externo', 'O núcleo interno emite radiação que atravessa todas as camadas'], ans: 1, exp: 'O campo magnético terrestre (gerado pelo núcleo externo) desvia o vento solar, mas nas regiões polares ele canaliza essas partículas carregadas para a atmosfera, onde colidem com gases e produzem luz — as auroras.' },
+        { q: 'A fronteira entre o núcleo externo e o núcleo interno fica a aproximadamente:', opts: ['2.900 km', '4.000 km', '5.100 km', '6.000 km'], ans: 2, exp: 'O núcleo externo (líquido) vai de 2.900 a 5.100 km. A partir de 5.100 km começa o núcleo interno (sólido) até o centro (6.371 km). A fronteira em 2.900 km é a descontinuidade de Gutenberg (manto/núcleo).' },
+        { q: 'Como os cientistas descobriram que o núcleo externo é líquido?', opts: ['Por sondas que perfuraram até lá', 'As ondas sísmicas tipo S não atravessam o núcleo externo', 'Por análise química de amostras diretas', 'Por experimentos de alta pressão em laboratório'], ans: 1, exp: 'Ondas sísmicas S (transversais) não se propagam em meios líquidos. Ao observar que as ondas S não atravessam o núcleo externo — criando uma "sombra" sísmica — os cientistas concluíram que ele é líquido.' },
+        { q: 'Qual é o principal papel do campo magnético terrestre para a vida?', opts: ['Produzir chuvas e ciclo hidrológico', 'Gerar as correntes de convecção do manto', 'Proteger a Terra das partículas do vento solar', 'Manter a órbita da Lua estável'], ans: 2, exp: 'O campo magnético terrestre age como um escudo contra o vento solar (fluxo de partículas carregadas emitidas pelo Sol). Sem ele, essas partículas erodiriam gradualmente nossa atmosfera, inviabilizando a vida.' },
+        { q: 'A temperatura estimada do núcleo interno é de aproximadamente:', opts: ['1.000 a 2.000°C', '3.000 a 4.000°C', '5.000 a 6.000°C', '10.000 a 12.000°C'], ans: 2, exp: 'O núcleo interno atinge ~5.000–6.000°C — temperatura comparável à superfície do Sol (~5.500°C). Apesar disso, permanece sólido por causa da pressão absurda das camadas acima.' },
+      ]
+    },
+    relevo: {
+      label: '⛰️ Relevo', color: '#388bfd',
+      questions: [
+        { q: 'Qual é a principal causa da formação da Cordilheira dos Andes?', opts: ['Vulcanismo de ponto quente', 'Subducção da placa de Nazca sob a Sul-Americana', 'Divergência entre duas placas oceânicas', 'Erosão glacial acumulada'], ans: 1, exp: 'Os Andes foram formados pela subducção da placa de Nazca (oceânica) sob a placa Sul-Americana (continental). A colisão comprime e ergue a crosta continental, formando a maior cadeia de montanhas da América.' },
+        { q: 'O intemperismo químico é mais intenso em regiões de clima:', opts: ['Frio e seco', 'Temperado e seco', 'Quente e úmido', 'Polar'], ans: 2, exp: 'O calor acelera as reações químicas e a água é o principal agente do intemperismo químico (dissolução, hidrólise, oxidação). Por isso, a Amazônia — quente e úmida — tem intemperismo químico intensíssimo.' },
+        { q: 'O que é um planalto?', opts: ['Área baixa próxima a rios, formada por sedimentação', 'Superfície elevada e plana ou ondulada, resultado de erosão intensa', 'Cadeia de montanhas de origem vulcânica', 'Depressão abaixo do nível do mar'], ans: 1, exp: 'Planalto é uma forma de relevo elevada cuja superfície é aplainada pela erosão ao longo do tempo. No Brasil, planaltos são a forma de relevo dominante no interior (ex: Planalto Central, Planalto Nordestino).' },
+        { q: 'A formação de planícies está associada principalmente a:', opts: ['Tectonismo de placas convergentes', 'Vulcanismo em pontos quentes', 'Sedimentação por rios e outros agentes', 'Intemperismo físico intenso'], ans: 2, exp: 'Planícies formam-se onde agentes externos (rios, vento, geleiras) depositam material erodido. A Planície Amazônica, por exemplo, acumulou sedimentos trazidos pelos rios ao longo de milhões de anos.' },
+        { q: 'Qual dos seguintes é um agente exógeno (externo) do relevo?', opts: ['Tectonismo de placas', 'Vulcanismo', 'Sismismo', 'Erosão fluvial'], ans: 3, exp: 'Agentes exógenos atuam na superfície e desgastam/modelam o relevo: erosão (fluvial, eólica, glacial, marinha), intemperismo e sedimentação. Tectonismo, vulcanismo e sismismo são endógenos (internos).' },
+        { q: 'O Pantanal é um exemplo de qual forma de relevo?', opts: ['Planalto', 'Montanha', 'Planície', 'Depressão relativa'], ans: 2, exp: 'O Pantanal é a maior planície alagável do mundo, formada por sedimentos depositados pelos rios da bacia do Paraguai. É um dos maiores biomas continentais do planeta.' },
+        { q: 'O Anel de Fogo do Pacífico concentra principalmente:', opts: ['Planícies de sedimentação oceânica', 'Vulcões e zonas de terremotos', 'Depressões absolutas', 'Dorsais meso-oceânicas'], ans: 1, exp: 'O Ring of Fire é uma cintura de atividade vulcânica e sísmica que contorna o Oceano Pacífico. Resulta das zonas de subducção ao redor da placa Pacífica e concentra ~90% dos terremotos do planeta.' },
+        { q: 'A erosão eólica é o principal agente modelador em:', opts: ['Florestas tropicais úmidas', 'Regiões polares cobertas de gelo', 'Regiões desérticas e semiáridas', 'Fundos oceânicos profundos'], ans: 2, exp: 'Em desertos, a escassez de vegetação e de água deixa o terreno exposto ao vento, que transporta grãos de areia e esculpe as rochas (erosão eólica). Esse processo forma dunas, yardangs e outras feições.' },
+        { q: 'Qual das opções NÃO é um processo de intemperismo físico?', opts: ['Variação de temperatura (dilatação e contração)', 'Expansão da água ao congelar nas fissuras', 'Dissolução química de minerais pela água', 'Crescimento de raízes que fratura rochas'], ans: 2, exp: 'A dissolução química é intemperismo químico, não físico. O intemperismo físico fragmenta a rocha sem alterar sua composição química: variação térmica, gelo, pressão de raízes, alívio de pressão.' },
+        { q: 'A Dorsal Meso-Atlântica é resultado de qual tipo de movimento de placas?', opts: ['Convergência — placas se aproximam', 'Subducção — uma placa mergulha sob outra', 'Divergência — placas se afastam', 'Transformante — placas deslizam lateralmente'], ans: 2, exp: 'Nas dorsais oceânicas, duas placas se afastam (divergência) e magma do manto preenche o espaço, criando nova crosta oceânica. A Dorsal Meso-Atlântica afasta a América da Europa/África ~2,5 cm/ano.' },
+      ]
+    }
+  };
+
+  let currentTheme = 'crosta';
+  const quizState = {};
+
+  function renderQuiz(themeKey) {
+    currentTheme = themeKey;
+    const root = document.getElementById('quiz-root');
+    if (!quizState[themeKey]) quizState[themeKey] = { score: 0, answered: 0 };
+    const st = quizState[themeKey];
+    const total = QUIZ[themeKey].questions.length;
+
+    root.innerHTML = `
+      <div class="qz-theme-tabs">
+        ${Object.keys(QUIZ).map(k => `
+          <button class="qz-tab ${k === themeKey ? 'active' : ''}"
+            style="--tc:${QUIZ[k].color}"
+            onclick="renderQuiz('${k}')">${QUIZ[k].label}</button>
+        `).join('')}
+      </div>
+      <div class="qz-progress"><div class="qz-progress-bar" id="qz-bar" style="width:${st.answered/total*100}%"></div></div>
+      <div class="qz-score">
+        Respondidas: <strong id="qz-sc">${st.answered}/${total}</strong>
+        &nbsp;·&nbsp; Acertos: <strong id="qz-hit">${st.score}</strong>
+        <button class="qz-reset" onclick="resetTheme('${themeKey}')">↺ Reiniciar</button>
+      </div>
+      ${QUIZ[themeKey].questions.map((q, i) => `
+        <div class="qz-card" id="qc-${themeKey}-${i}">
+          <div class="qz-num">QUESTÃO ${String(i+1).padStart(2,'0')}</div>
+          <div class="qz-q">${q.q}</div>
+          <div class="qz-opts">
+            ${q.opts.map((opt, j) => `
+              <button class="qz-opt" id="qo-${themeKey}-${i}-${j}" onclick="answer('${themeKey}',${i},${j})">
+                <span class="qz-letter">${['A','B','C','D'][j]}</span>${opt}
+              </button>
+            `).join('')}
+          </div>
+          <div class="qz-exp" id="qe-${themeKey}-${i}" style="display:none">${q.exp}</div>
+        </div>
+      `).join('')}
+    `;
+
+    // restore answered state
+    QUIZ[themeKey].questions.forEach((q, i) => {
+      const card = document.getElementById(`qc-${themeKey}-${i}`);
+      if (card.dataset.done) {
+        const chosen = parseInt(card.dataset.chosen);
+        document.querySelectorAll(`#qc-${themeKey}-${i} .qz-opt`).forEach(b => b.disabled = true);
+        document.getElementById(`qo-${themeKey}-${i}-${q.ans}`).classList.add('correct');
+        if (chosen !== q.ans) document.getElementById(`qo-${themeKey}-${i}-${chosen}`).classList.add('wrong');
+        document.getElementById(`qe-${themeKey}-${i}`).style.display = 'block';
+      }
+    });
+  }
+
+  function answer(themeKey, qIdx, optIdx) {
+    const card = document.getElementById(`qc-${themeKey}-${qIdx}`);
+    if (card.dataset.done) return;
+    card.dataset.done = '1';
+    card.dataset.chosen = optIdx;
+
+    const q = QUIZ[themeKey].questions[qIdx];
+    card.querySelectorAll('.qz-opt').forEach(b => b.disabled = true);
+    document.getElementById(`qo-${themeKey}-${qIdx}-${q.ans}`).classList.add('correct');
+    if (optIdx !== q.ans) document.getElementById(`qo-${themeKey}-${qIdx}-${optIdx}`).classList.add('wrong');
+    document.getElementById(`qe-${themeKey}-${qIdx}`).style.display = 'block';
+
+    const st = quizState[themeKey];
+    st.answered++;
+    if (optIdx === q.ans) st.score++;
+
+    const total = QUIZ[themeKey].questions.length;
+    document.getElementById('qz-sc').textContent = `${st.answered}/${total}`;
+    document.getElementById('qz-hit').textContent = st.score;
+    document.getElementById('qz-bar').style.width = `${st.answered/total*100}%`;
+  }
+
+  function resetTheme(themeKey) {
+    quizState[themeKey] = { score: 0, answered: 0 };
+    QUIZ[themeKey].questions.forEach((_, i) => {
+      const card = document.getElementById(`qc-${themeKey}-${i}`);
+      if (card) { delete card.dataset.done; delete card.dataset.chosen; }
+    });
+    renderQuiz(themeKey);
+  }
+</script>
+
+</body>
+</html>

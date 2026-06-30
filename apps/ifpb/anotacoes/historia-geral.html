@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>História — Brasil Império · Roma Antiga · Idade Média</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d1117;--surface:#161b22;--surface2:#21262d;--surface3:#30363d;
+  --border:#30363d;--text:#e6edf3;--muted:#8b949e;
+  --brasil:#2ea043;--brasil-light:#3fb950;--brasil-dim:#0d2a0d;--brasil-gold:#d29922;
+  --roma:#f85149;--roma-light:#ff7b72;--roma-dim:#3a1219;--roma-gold:#e3b341;
+  --media:#bc8cff;--media-light:#d2a8ff;--media-dim:#2d1f54;--media-dark:#8b949e;
+  --enem:#58a6ff;--enem-dim:#0d2a5c;
+  --radius:10px;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:18px 32px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:14px}
+.badge{background:var(--enem-dim);color:var(--enem);border:1px solid var(--enem);border-radius:6px;padding:2px 10px;font-size:11px;font-weight:700;letter-spacing:1px}
+header h1{font-size:17px;font-weight:700}
+header p{font-size:12px;color:var(--muted);margin-top:2px}
+nav{display:flex;gap:4px;padding:14px 32px;background:var(--surface);border-bottom:1px solid var(--border);overflow-x:auto}
+.tab-btn{background:none;border:1px solid var(--border);color:var(--muted);padding:7px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .18s;font-family:'Inter',sans-serif}
+.tab-btn:hover{color:var(--text)}
+.tab-btn.t-brasil.active{color:var(--brasil-light);border-color:var(--brasil);background:var(--brasil-dim)}
+.tab-btn.t-roma.active{color:var(--roma-light);border-color:var(--roma);background:var(--roma-dim)}
+.tab-btn.t-media.active{color:var(--media-light);border-color:var(--media);background:var(--media-dim)}
+.tab-btn.t-linha.active{color:var(--enem);border-color:var(--enem);background:var(--enem-dim)}
+.tab-btn.t-mapa.active{color:#d2a8ff;border-color:#bc8cff;background:#2d1f54}
+main{max-width:920px;margin:0 auto;padding:30px 24px}
+.tab-panel{display:none}.tab-panel.active{display:block}
+.module-title{font-size:22px;font-weight:800;margin-bottom:4px}
+.module-sub{color:var(--muted);font-size:13px;margin-bottom:26px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.card-full{grid-column:1/-1}
+.card h3{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.card p{font-size:13px;color:var(--muted);margin-bottom:8px}
+ul.facts{list-style:none;display:flex;flex-direction:column;gap:5px}
+ul.facts li{font-size:13px;padding-left:14px;position:relative}
+ul.facts li::before{content:'›';position:absolute;left:0;color:var(--muted)}
+.hl{font-weight:600;color:var(--text)}
+.divider{height:1px;background:var(--border);margin:24px 0}
+.enem-box{background:var(--enem-dim);border:1px solid var(--enem);border-radius:var(--radius);padding:14px 18px;margin-top:10px}
+.enem-label{font-size:11px;font-weight:700;color:var(--enem);letter-spacing:1px;margin-bottom:8px}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;margin:2px 2px 2px 0}
+
+/* Timeline */
+.tl{position:relative;padding-left:28px}
+.tl::before{content:'';position:absolute;left:10px;top:0;bottom:0;width:2px;background:var(--border)}
+.tl-item{position:relative;margin-bottom:18px}
+.tl-item::before{content:'';position:absolute;left:-22px;top:6px;width:10px;height:10px;border-radius:50%;border:2px solid}
+.tl-item.brasil::before{border-color:var(--brasil-light);background:var(--brasil-dim)}
+.tl-item.roma::before{border-color:var(--roma-light);background:var(--roma-dim)}
+.tl-item.media::before{border-color:var(--media-light);background:var(--media-dim)}
+.tl-date{font-size:11px;font-weight:700;color:var(--muted);margin-bottom:2px}
+.tl-title{font-size:13px;font-weight:600;margin-bottom:3px}
+.tl-desc{font-size:12px;color:var(--muted)}
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin:20px 0 10px;padding-left:4px}
+
+/* fases */
+.fase-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:640px){.cards{grid-template-columns:1fr}.fase-grid{grid-template-columns:1fr}nav{padding:10px 14px}main{padding:20px 12px}header{padding:14px}}
+.fase{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px}
+.fase h4{font-size:13px;font-weight:700;margin-bottom:6px}
+.fase p{font-size:12px;color:var(--muted)}
+.fase ul{margin-top:6px}
+.fase ul li{font-size:12px}
+
+/* mapa mental svg */
+.mm-wrap{overflow-x:auto;padding:8px 0}
+svg.mm{display:block;margin:0 auto}
+.legend-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:16px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+table.cmp{width:100%;border-collapse:collapse;font-size:13px}
+table.cmp th{background:var(--surface2);color:var(--muted);font-weight:600;text-align:left;padding:9px 13px;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+table.cmp td{padding:9px 13px;border-top:1px solid var(--border);vertical-align:top}
+table.cmp tr:hover td{background:var(--surface2)}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:3px">
+      <h1>Brasil Império · Roma Antiga · Idade Média</h1>
+      <span class="badge">ENEM</span>
+    </div>
+    <p>História Geral & do Brasil · Módulos de revisão</p>
+  </div>
+</header>
+
+<nav>
+  <button class="tab-btn t-brasil active" onclick="setTab('brasil')">🇧🇷 Brasil Império</button>
+  <button class="tab-btn t-roma"   onclick="setTab('roma')">🏛️ Roma Antiga</button>
+  <button class="tab-btn t-media"  onclick="setTab('media')">⚔️ Idade Média</button>
+  <button class="tab-btn t-linha"  onclick="setTab('linha')">📅 Linha do Tempo</button>
+  <button class="tab-btn t-mapa"   onclick="setTab('mapa')">🧠 Mapa Mental</button>
+  <button class="tab-btn t-quiz"   onclick="setTab('quiz')">📝 Questões</button>
+</nav>
+
+<main>
+
+<!-- ===== BRASIL IMPÉRIO ===== -->
+<div id="tab-brasil" class="tab-panel active">
+  <div class="module-title" style="color:var(--brasil-light)">🇧🇷 Brasil Império</div>
+  <div class="module-sub">1808 – 1889 · Da chegada da Família Real à Proclamação da República</div>
+
+  <div class="fase-grid">
+    <div class="fase" style="border-color:var(--brasil)">
+      <h4 style="color:var(--brasil-light)">Período Joanino</h4>
+      <p>1808 – 1821</p>
+      <ul class="facts">
+        <li>Fuga da corte de Lisboa (invasão napoleônica)</li>
+        <li>Abertura dos portos (1808)</li>
+        <li>Rio de Janeiro → capital do Império português</li>
+        <li>Criação do Banco do Brasil, UFRJ, Jardim Botânico</li>
+      </ul>
+    </div>
+    <div class="fase" style="border-color:var(--brasil-gold)">
+      <h4 style="color:var(--brasil-gold)">Primeiro Reinado</h4>
+      <p>1822 – 1831 · D. Pedro I</p>
+      <ul class="facts">
+        <li>Independência: 7/set/1822 — Grito do Ipiranga</li>
+        <li>Constituição outorgada de 1824 (Poder Moderador)</li>
+        <li>Guerra Cisplatina → perda do Uruguai (1828)</li>
+        <li>Abdicação em favor de D. Pedro II (1831)</li>
+      </ul>
+    </div>
+    <div class="fase" style="border-color:var(--media)">
+      <h4 style="color:var(--media-light)">Período Regencial</h4>
+      <p>1831 – 1840</p>
+      <ul class="facts">
+        <li>Governado por regentes enquanto Pedro II era menor</li>
+        <li>Maior instabilidade política do Brasil</li>
+        <li>Revoltas: Cabanagem, Balaiada, Sabinada, Farroupilha</li>
+        <li>Golpe da Maioridade (1840) — Pedro II assume aos 14 anos</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card card-full" style="border-color:var(--brasil)">
+      <h3 style="color:var(--brasil-light)">👑 Segundo Reinado — 1840 a 1889</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <p style="font-weight:600;color:var(--text);margin-bottom:6px">Política</p>
+          <ul class="facts">
+            <li>Parlamentarismo às avessas: imperador nomeia presidentes de ministério</li>
+            <li>Bipartidarismo: Partido Liberal × Conservador</li>
+            <li><span class="hl">Questão religiosa</span>: conflito com bispos x maçonaria (1872)</li>
+            <li><span class="hl">Questão militar</span>: insatisfação do Exército pós-guerra</li>
+          </ul>
+        </div>
+        <div>
+          <p style="font-weight:600;color:var(--text);margin-bottom:6px">Economia & Sociedade</p>
+          <ul class="facts">
+            <li>Ciclo do café (eixo Rio–SP–MG)</li>
+            <li>Imigração europeia para substituir mão de obra escrava</li>
+            <li>Lei Eusébio de Queirós (1850): fim do tráfico negreiro</li>
+            <li>Lei do Ventre Livre (1871) · Lei dos Sexagenários (1885)</li>
+            <li><span class="hl">Lei Áurea (1888)</span>: abolição da escravidão — Princesa Isabel</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⚔️ Guerra do Paraguai (1864–1870)</h3>
+      <ul class="facts">
+        <li>Tríplice Aliança: Brasil + Argentina + Uruguai × Paraguai</li>
+        <li>Maior conflito armado da América do Sul</li>
+        <li>Paraguai perde ~60–70% da população masculina</li>
+        <li>Brasil sai endividado e com Exército fortalecido politicamente</li>
+        <li>Solano López: ditador paraguaio que iniciou o conflito</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🔻 Fim do Império</h3>
+      <ul class="facts">
+        <li>Crise pós-abolição: fazendeiros abandonam o Império</li>
+        <li>Positivismo influencia militares</li>
+        <li>15/nov/1889: Proclamação da República — Marechal Deodoro</li>
+        <li>D. Pedro II exilado em Portugal</li>
+        <li><span class="hl">República Velha</span> começa (1889–1930)</li>
+      </ul>
+    </div>
+
+    <div class="card card-full">
+      <h3>📋 Revoltas do Período Regencial</h3>
+      <table class="cmp">
+        <thead><tr><th>Revolta</th><th>Local</th><th>Período</th><th>Características</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--brasil-light)">Cabanagem</td><td>Pará / AM</td><td>1835–1840</td><td>Pobres, índios, mestiços; tomaram Belém</td></tr>
+          <tr><td style="color:var(--brasil-light)">Balaiada</td><td>Maranhão</td><td>1838–1841</td><td>Negros, índios, pobres; Balaio e Negro Cosme</td></tr>
+          <tr><td style="color:var(--brasil-light)">Sabinada</td><td>Bahia</td><td>1837–1838</td><td>Elites; república baiana temporária</td></tr>
+          <tr><td style="color:var(--brasil-light)">Farroupilha</td><td>Rio Grande do Sul</td><td>1835–1845</td><td>Elites gaúchas; República Riograndense</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="enem-box">
+    <div class="enem-label">✦ CAI NO ENEM</div>
+    <ul class="facts">
+      <li><span class="hl">Abertura dos portos (1808)</span>: beneficiou Inglaterra e rompeu o pacto colonial</li>
+      <li><span class="hl">Poder Moderador</span>: 4º poder da Constituição de 1824, exclusivo do imperador — centralização</li>
+      <li>Lei Áurea não indenizou fazendeiros → eles migraram para o movimento republicano</li>
+      <li>Guerra do Paraguai fortaleceu o Exército → base para derrubar o Império em 1889</li>
+      <li>Revoltas regenciais = causas sociais + econômicas + regionais (não apenas políticas)</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== ROMA ANTIGA ===== -->
+<div id="tab-roma" class="tab-panel">
+  <div class="module-title" style="color:var(--roma-light)">🏛️ Roma Antiga</div>
+  <div class="module-sub">753 a.C. – 476 d.C. · Monarquia → República → Império</div>
+
+  <div class="fase-grid">
+    <div class="fase" style="border-color:var(--roma)">
+      <h4 style="color:var(--roma-light)">Monarquia</h4>
+      <p>753 – 509 a.C.</p>
+      <ul class="facts">
+        <li>Fundação lendária: Rômulo e Remo</li>
+        <li>7 reis (ex: Rômulo, Numa Pompílio)</li>
+        <li>Sociedade: patrícios × plebeus</li>
+        <li>Expulsão dos Tarquínios → inicia República</li>
+      </ul>
+    </div>
+    <div class="fase" style="border-color:var(--roma-gold)">
+      <h4 style="color:var(--roma-gold)">República</h4>
+      <p>509 – 27 a.C.</p>
+      <ul class="facts">
+        <li>Cônsules (2) no topo + Senado</li>
+        <li>Luta dos plebeus: Tribunato da Plebe</li>
+        <li>Guerras Púnicas (264–146 a.C.)</li>
+        <li>Crise e guerras civis → fim da República</li>
+      </ul>
+    </div>
+    <div class="fase" style="border-color:var(--media)">
+      <h4 style="color:var(--media-light)">Império</h4>
+      <p>27 a.C. – 476 d.C.</p>
+      <ul class="facts">
+        <li>Augusto: primeiro imperador</li>
+        <li>Pax Romana (27 a.C.–180 d.C.)</li>
+        <li>Crise do séc. III → Anarquia Militar</li>
+        <li>Divisão (395) → Queda Ocidente (476)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="cards">
+    <div class="card">
+      <h3 style="color:var(--roma-gold)">⚔️ Guerras Púnicas</h3>
+      <ul class="facts">
+        <li><span class="hl">1ª Púnica (264–241 a.C.)</span>: Roma conquista Sicília vs Cartago</li>
+        <li><span class="hl">2ª Púnica (218–201 a.C.)</span>: Aníbal cruza os Alpes; Roma resiste</li>
+        <li><span class="hl">3ª Púnica (149–146 a.C.)</span>: destruição de Cartago</li>
+        <li>Roma domina o Mediterrâneo → <em>Mare Nostrum</em></li>
+        <li>Crise social interna cresce com a expansão</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3 style="color:var(--roma-light)">🗡️ Crise da República</h3>
+      <ul class="facts">
+        <li><span class="hl">Irmãos Graco</span>: reforma agrária frustrada, assassinados</li>
+        <li><span class="hl">Mário e Sila</span>: guerras civis, dita de Sila (82 a.C.)</li>
+        <li><span class="hl">1º Triunvirato</span>: César + Pompeu + Crasso (60 a.C.)</li>
+        <li>César cruza o Rubicão (49 a.C.) → ditador perpétuo</li>
+        <li>Assassinato de César (Ides de março, 44 a.C.)</li>
+        <li><span class="hl">2º Triunvirato</span>: Otávio + Marco Antônio + Lépido</li>
+        <li>Otávio vence → recebe título <em>Augustus</em> (27 a.C.)</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🏟️ Sociedade Romana</h3>
+      <ul class="facts">
+        <li><span class="hl">Patrícios</span>: aristocracia, donos da terra</li>
+        <li><span class="hl">Plebeus</span>: homens livres, sem direitos iniciais</li>
+        <li><span class="hl">Escravos</span>: base da economia (guerra → escravos)</li>
+        <li><span class="hl">Clientes</span>: dependentes dos patrícios</li>
+        <li>Espartaco (73–71 a.C.): maior revolta escrava</li>
+        <li>Pater familias: autoridade absoluta do chefe de família</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🕊️ Cristianismo e Queda</h3>
+      <ul class="facts">
+        <li>Jesus: séc. I d.C.; perseguições aos cristãos</li>
+        <li>Édito de Milão (313): liberdade religiosa — Constantino</li>
+        <li>Teodósio (380): Cristianismo religião oficial</li>
+        <li>Divisão do Império (395): Ocidental × Oriental</li>
+        <li><span class="hl">476 d.C.</span>: Odoacro depõe Rômulo Augústulo → fim do Ocidente</li>
+        <li>Império Romano do Oriente (Bizâncio) dura até 1453</li>
+      </ul>
+    </div>
+
+    <div class="card card-full">
+      <h3>🏛️ Legado de Roma</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px">
+        <div>
+          <p style="color:var(--roma-light);font-weight:600;margin-bottom:6px">Direito</p>
+          <ul class="facts">
+            <li>Direito Romano: base dos sistemas jurídicos ocidentais</li>
+            <li>Lei das XII Tábuas (450 a.C.)</li>
+            <li>Código Justiniano (séc. VI)</li>
+          </ul>
+        </div>
+        <div>
+          <p style="color:var(--roma-gold);font-weight:600;margin-bottom:6px">Língua & Cultura</p>
+          <ul class="facts">
+            <li>Latim → línguas românicas (port., esp., fr., it.)</li>
+            <li>Calendário Juliano → Gregoriano</li>
+            <li>Arquitetura: arco, abóbada, coliseu</li>
+          </ul>
+        </div>
+        <div>
+          <p style="color:var(--media-light);font-weight:600;margin-bottom:6px">Política</p>
+          <ul class="facts">
+            <li>Conceito de República, Senado, veto</li>
+            <li>Influência no constitucionalismo moderno</li>
+            <li>Res publica = coisa pública</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="enem-box">
+    <div class="enem-label">✦ CAI NO ENEM</div>
+    <ul class="facts">
+      <li><span class="hl">Pax Romana</span>: 200 anos de paz relativa sob o Império → expansão cultural e econômica</li>
+      <li>Escravidão romana era resultado das conquistas militares (não racial)</li>
+      <li>A <span class="hl">crise do séc. III</span> = inflação + invasões bárbaras + anarquia militar → enfraqueceu o Império</li>
+      <li>Queda de Roma (476) é convencionalmente o <span class="hl">início da Idade Média</span></li>
+      <li>Direito Romano influencia o Código Civil Brasileiro até hoje</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== IDADE MÉDIA ===== -->
+<div id="tab-media" class="tab-panel">
+  <div class="module-title" style="color:var(--media-light)">⚔️ Idade Média</div>
+  <div class="module-sub">476 – 1453 d.C. · Feudalismo · Igreja · Cruzadas · Peste Negra</div>
+
+  <div class="cards">
+    <div class="card card-full" style="border-color:var(--media)">
+      <h3 style="color:var(--media-light)">🏰 Feudalismo — estrutura da sociedade medieval</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div>
+          <p style="color:var(--text);font-weight:600;margin-bottom:6px">Hierarquia</p>
+          <ul class="facts">
+            <li><span class="hl">Rei</span> → Suseranos (grandes senhores)</li>
+            <li><span class="hl">Suseranos</span> → Vassalos (cavaleiros/nobres menores)</li>
+            <li><span class="hl">Servos</span>: presos à terra, não eram escravos</li>
+            <li><span class="hl">Clero</span>: fora da hierarquia feudal formal, imenso poder</li>
+          </ul>
+        </div>
+        <div>
+          <p style="color:var(--text);font-weight:600;margin-bottom:6px">Relação de suserania-vassalagem</p>
+          <ul class="facts">
+            <li>Senhor concede feudo (terra) ao vassalo</li>
+            <li>Vassalo presta serviço militar e lealdade</li>
+            <li>Economia fechada, de subsistência</li>
+            <li>Descentralização política (sem Estado central)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⛪ Igreja Católica</h3>
+      <ul class="facts">
+        <li>Maior poder institucional da Idade Média</li>
+        <li><span class="hl">Dízimo</span>: 10% da produção pago à Igreja</li>
+        <li>Controla educação, calendário, moral</li>
+        <li><span class="hl">Inquisição</span>: tribunal eclesiástico contra heresias</li>
+        <li>Simonia: venda de cargos religiosos</li>
+        <li>Investidura: conflito rei × papa por nomear bispos</li>
+        <li>Papa pode excomungar e interditar reinos</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>✝️ Cruzadas (1096–1291)</h3>
+      <ul class="facts">
+        <li>8 expedições para reconquistar Jerusalém dos muçulmanos</li>
+        <li>Convocadas pelo Papa Urbano II (1095)</li>
+        <li><span class="hl">1ª Cruzada</span>: único sucesso militar real (tomada de Jerusalém)</li>
+        <li>Consequências: abertura do comércio, contato com o Oriente</li>
+        <li>Enfraqueceu a nobreza feudal (gastos com guerra)</li>
+        <li>Fortaleceu as cidades e a burguesia mercantil</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🦠 Peste Negra (1347–1351)</h3>
+      <ul class="facts">
+        <li>Matou 1/3 da população europeia (~25 milhões)</li>
+        <li>Transmitida por pulgas de ratos (bubônica)</li>
+        <li>Veio da Ásia pelas rotas comerciais</li>
+        <li>Consequências: <span class="hl">crise do feudalismo</span>, falta de servos</li>
+        <li>Servos exigem melhores condições → mobilidade social</li>
+        <li>Questionamento da Igreja por não conter a doença</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>⚔️ Guerra dos Cem Anos (1337–1453)</h3>
+      <ul class="facts">
+        <li>França × Inglaterra pela coroa francesa</li>
+        <li><span class="hl">Joana d'Arc</span>: heroína que revigorou a França (queimada em 1431)</li>
+        <li>Resultado: vitória francesa, consolidação do Estado nacional</li>
+        <li>Surgimento do sentimento de <span class="hl">identidade nacional</span></li>
+        <li>Enfraquecimento da nobreza feudal</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>🔄 Crise do Feudalismo e Transição</h3>
+      <ul class="facts">
+        <li>Reativação do comércio com o Oriente (Cruzadas)</li>
+        <li>Crescimento das cidades (burgos) → <span class="hl">burguesia</span></li>
+        <li>Escassez de servos pós-Peste → salários sobem</li>
+        <li>Centralização política → monarquias nacionais</li>
+        <li>Renascimento e Humanismo: foco no homem</li>
+        <li><span class="hl">1453</span>: queda de Constantinopla → fim oficial da Idade Média</li>
+      </ul>
+    </div>
+
+    <div class="card card-full">
+      <h3>📅 Alta × Baixa Idade Média</h3>
+      <table class="cmp">
+        <thead><tr><th>Aspecto</th><th>Alta Idade Média (476–1000)</th><th>Baixa Idade Média (1000–1453)</th></tr></thead>
+        <tbody>
+          <tr><td>Economia</td><td>Subsistência, sem moeda</td><td>Comércio retoma, moeda volta</td></tr>
+          <tr><td>Política</td><td>Descentralização total</td><td>Monarquias nacionais se formam</td></tr>
+          <tr><td>Cultura</td><td>Domínio absoluto da Igreja</td><td>Renascimento começa a surgir</td></tr>
+          <tr><td>Cidades</td><td>Esvaziadas</td><td>Crescimento dos burgos</td></tr>
+          <tr><td>Marco</td><td>Carlos Magno (800 d.C.)</td><td>Cruzadas, Peste, Guerra 100 Anos</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="enem-box">
+    <div class="enem-label">✦ CAI NO ENEM</div>
+    <ul class="facts">
+      <li>Servo ≠ Escravo: servo era preso à terra mas tinha família e parcela para si</li>
+      <li><span class="hl">Cruzadas</span> → reabertura das rotas comerciais → crise do feudalismo → Renascimento</li>
+      <li>Peste Negra é <span class="hl">causa indireta</span> do fim do feudalismo (não direta)</li>
+      <li>A burguesia nasce do comércio nos burgos — classe nova sem espaço no feudalismo</li>
+      <li>Queda de Constantinopla (1453) fecha rotas terrestres para o Oriente → motiva as <span class="hl">Grandes Navegações</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- ===== LINHA DO TEMPO ===== -->
+<div id="tab-linha" class="tab-panel">
+  <div class="module-title" style="color:var(--enem)">📅 Linha do Tempo Integrada</div>
+  <div class="module-sub">Roma Antiga · Idade Média · Brasil Império — em perspectiva</div>
+
+  <div class="section-label" style="color:var(--roma-light)">Roma Antiga</div>
+  <div class="tl">
+    <div class="tl-item roma"><div class="tl-date">753 a.C.</div><div class="tl-title">Fundação de Roma</div><div class="tl-desc">Início da Monarquia — Rômulo e Remo (lenda)</div></div>
+    <div class="tl-item roma"><div class="tl-date">509 a.C.</div><div class="tl-title">Início da República</div><div class="tl-desc">Expulsão dos Tarquínios — cônsules substituem o rei</div></div>
+    <div class="tl-item roma"><div class="tl-date">264–146 a.C.</div><div class="tl-title">Guerras Púnicas</div><div class="tl-desc">Roma destrói Cartago e domina o Mediterrâneo</div></div>
+    <div class="tl-item roma"><div class="tl-date">44 a.C.</div><div class="tl-title">Assassinato de Júlio César</div><div class="tl-desc">Ides de março — crise final da República</div></div>
+    <div class="tl-item roma"><div class="tl-date">27 a.C.</div><div class="tl-title">Início do Império — Augusto</div><div class="tl-desc">Início da Pax Romana (27 a.C.–180 d.C.)</div></div>
+    <div class="tl-item roma"><div class="tl-date">313 d.C.</div><div class="tl-title">Édito de Milão</div><div class="tl-desc">Liberdade religiosa — fim das perseguições cristãs</div></div>
+    <div class="tl-item roma"><div class="tl-date">395 d.C.</div><div class="tl-title">Divisão do Império</div><div class="tl-desc">Ocidental (Roma) × Oriental (Constantinopla)</div></div>
+    <div class="tl-item roma"><div class="tl-date">476 d.C.</div><div class="tl-title">Queda do Império Romano Ocidental</div><div class="tl-desc">Odoacro depõe Rômulo Augústulo — início da Idade Média</div></div>
+  </div>
+
+  <div class="section-label" style="color:var(--media-light)">Idade Média</div>
+  <div class="tl">
+    <div class="tl-item media"><div class="tl-date">476 d.C.</div><div class="tl-title">Início da Idade Média</div><div class="tl-desc">Reinos bárbaros dividem o antigo Império Romano</div></div>
+    <div class="tl-item media"><div class="tl-date">800 d.C.</div><div class="tl-title">Carlos Magno coroado</div><div class="tl-desc">Império Carolíngio — tentativa de reunificação europeia</div></div>
+    <div class="tl-item media"><div class="tl-date">1095</div><div class="tl-title">Convocação das Cruzadas</div><div class="tl-desc">Papa Urbano II — 1ª Cruzada parte em 1096</div></div>
+    <div class="tl-item media"><div class="tl-date">1215</div><div class="tl-title">Magna Carta</div><div class="tl-desc">Inglaterra — limita poder do rei; base do constitucionalismo</div></div>
+    <div class="tl-item media"><div class="tl-date">1347–1351</div><div class="tl-title">Peste Negra</div><div class="tl-desc">Mata ~1/3 da Europa — crise do feudalismo</div></div>
+    <div class="tl-item media"><div class="tl-date">1337–1453</div><div class="tl-title">Guerra dos Cem Anos</div><div class="tl-desc">França × Inglaterra — Joana d'Arc (1412–1431)</div></div>
+    <div class="tl-item media"><div class="tl-date">1453</div><div class="tl-title">Queda de Constantinopla</div><div class="tl-desc">Turcos otomanos — fim da Idade Média / início da Moderna</div></div>
+  </div>
+
+  <div class="section-label" style="color:var(--brasil-light)">Brasil Império</div>
+  <div class="tl">
+    <div class="tl-item brasil"><div class="tl-date">1808</div><div class="tl-title">Chegada da Família Real</div><div class="tl-desc">Abertura dos portos — fim do pacto colonial</div></div>
+    <div class="tl-item brasil"><div class="tl-date">1821</div><div class="tl-title">D. João VI retorna a Portugal</div><div class="tl-desc">D. Pedro I fica como príncipe regente</div></div>
+    <div class="tl-item brasil"><div class="tl-date">7/set/1822</div><div class="tl-title">Independência do Brasil</div><div class="tl-desc">Grito do Ipiranga — D. Pedro I</div></div>
+    <div class="tl-item brasil"><div class="tl-date">1824</div><div class="tl-title">Constituição Outorgada</div><div class="tl-desc">Poder Moderador — centralização no imperador</div></div>
+    <div class="tl-item brasil"><div class="tl-date">1831–1840</div><div class="tl-title">Período Regencial</div><div class="tl-desc">Instabilidade máxima — Cabanagem, Balaiada, Farroupilha</div></div>
+    <div class="tl-item brasil"><div class="tl-date">1840</div><div class="tl-title">Golpe da Maioridade</div><div class="tl-desc">D. Pedro II assume o trono aos 14 anos</div></div>
+    <div class="tl-item brasil"><div class="tl-date">1864–1870</div><div class="tl-title">Guerra do Paraguai</div><div class="tl-desc">Tríplice Aliança vence; Brasil sai endividado</div></div>
+    <div class="tl-item brasil"><div class="tl-date">1888</div><div class="tl-title">Lei Áurea</div><div class="tl-desc">Abolição da escravidão — Princesa Isabel</div></div>
+    <div class="tl-item brasil"><div class="tl-date">15/nov/1889</div><div class="tl-title">Proclamação da República</div><div class="tl-desc">Marechal Deodoro da Fonseca — fim do Império</div></div>
+  </div>
+</div>
+
+<!-- ===== MAPA MENTAL ===== -->
+<div id="tab-mapa" class="tab-panel">
+  <div class="module-title" style="color:var(--media-light)">🧠 Mapa Mental</div>
+  <div class="module-sub">Conexões entre os três períodos históricos</div>
+
+  <div class="mm-wrap">
+    <svg class="mm" width="880" height="600" viewBox="0 0 880 600" style="max-width:100%">
+      <defs>
+        <marker id="ar" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+          <path d="M0,0 L6,3 L0,6 Z" fill="#30363d"/>
+        </marker>
+      </defs>
+
+      <!-- LINHAS CENTRAIS -->
+      <g stroke="#30363d" stroke-width="1.5" fill="none" marker-end="url(#ar)">
+        <path d="M440,290 Q330,240 220,200"/>
+        <path d="M440,290 Q440,250 440,210"/>
+        <path d="M440,290 Q550,240 660,200"/>
+        <!-- sub brasil -->
+        <path d="M185,192 Q140,170 110,150"/>
+        <path d="M185,192 Q140,198 110,210"/>
+        <path d="M185,192 Q140,228 110,250"/>
+        <!-- sub roma -->
+        <path d="M405,200 Q360,170 320,150"/>
+        <path d="M405,200 Q360,198 320,210"/>
+        <path d="M405,200 Q356,230 320,250"/>
+        <!-- sub media -->
+        <path d="M695,192 Q740,165 770,148"/>
+        <path d="M695,192 Q742,196 775,210"/>
+        <path d="M695,192 Q740,226 772,250"/>
+        <!-- conexoes entre temas -->
+        <path d="M220,200 Q330,130 440,100 Q550,130 660,200" stroke="#bc8cff" stroke-width="1" stroke-dasharray="4" fill="none"/>
+      </g>
+
+      <!-- NÓ CENTRAL -->
+      <rect x="365" y="265" width="150" height="52" rx="12" fill="#21262d" stroke="#bc8cff" stroke-width="2"/>
+      <text x="440" y="286" text-anchor="middle" fill="#bc8cff" font-size="13" font-weight="700" font-family="Inter">HISTÓRIA</text>
+      <text x="440" y="305" text-anchor="middle" fill="#8b949e" font-size="10" font-family="Inter">3 períodos · ENEM</text>
+
+      <!-- BRASIL IMPÉRIO -->
+      <rect x="100" y="172" width="170" height="40" rx="8" fill="var(--brasil-dim)" stroke="var(--brasil)" stroke-width="2"/>
+      <text x="185" y="188" text-anchor="middle" fill="#3fb950" font-size="12" font-weight="700" font-family="Inter">BRASIL IMPÉRIO</text>
+      <text x="185" y="204" text-anchor="middle" fill="#3fb950" font-size="10" font-family="Inter">1808 – 1889</text>
+      <!-- brasil sub -->
+      <rect x="10" y="128" width="122" height="34" rx="6" fill="#161b22" stroke="#30363d"/>
+      <text x="71" y="143" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Família Real → 1808</text>
+      <text x="71" y="156" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Abertura dos portos</text>
+      <rect x="10" y="188" width="122" height="34" rx="6" fill="#161b22" stroke="#30363d"/>
+      <text x="71" y="203" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Independência 1822</text>
+      <text x="71" y="216" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">D. Pedro I</text>
+      <rect x="10" y="232" width="122" height="34" rx="6" fill="#161b22" stroke="#30363d"/>
+      <text x="71" y="247" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Lei Áurea 1888</text>
+      <text x="71" y="260" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Fim da escravidão</text>
+
+      <!-- ROMA ANTIGA -->
+      <rect x="355" y="178" width="170" height="40" rx="8" fill="var(--roma-dim)" stroke="var(--roma)" stroke-width="2"/>
+      <text x="440" y="194" text-anchor="middle" fill="#ff7b72" font-size="12" font-weight="700" font-family="Inter">ROMA ANTIGA</text>
+      <text x="440" y="210" text-anchor="middle" fill="#ff7b72" font-size="10" font-family="Inter">753 a.C. – 476 d.C.</text>
+      <!-- roma sub -->
+      <rect x="268" y="130" width="120" height="34" rx="6" fill="#161b22" stroke="#30363d"/>
+      <text x="328" y="145" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">República → 509 a.C.</text>
+      <text x="328" y="158" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Senado + Cônsules</text>
+      <rect x="268" y="190" width="120" height="34" rx="6" fill="#161b22" stroke="#30363d"/>
+      <text x="328" y="205" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Guerras Púnicas</text>
+      <text x="328" y="218" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Mare Nostrum</text>
+      <rect x="268" y="232" width="120" height="34" rx="6" fill="#161b22" stroke="#30363d"/>
+      <text x="328" y="247" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Império → 27 a.C.</text>
+      <text x="328" y="260" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Augusto + Pax Romana</text>
+
+      <!-- IDADE MÉDIA -->
+      <rect x="608" y="172" width="170" height="40" rx="8" fill="var(--media-dim)" stroke="var(--media)" stroke-width="2"/>
+      <text x="693" y="188" text-anchor="middle" fill="#d2a8ff" font-size="12" font-weight="700" font-family="Inter">IDADE MÉDIA</text>
+      <text x="693" y="204" text-anchor="middle" fill="#d2a8ff" font-size="10" font-family="Inter">476 – 1453 d.C.</text>
+      <!-- media sub -->
+      <rect x="750" y="128" width="122" height="34" rx="6" fill="#161b22" stroke="#30363d"/>
+      <text x="811" y="143" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Feudalismo</text>
+      <text x="811" y="156" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Suserano → Vassalo</text>
+      <rect x="750" y="188" width="122" height="34" rx="6" fill="#161b22" stroke="#30363d"/>
+      <text x="811" y="203" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Cruzadas (1096–1291)</text>
+      <text x="811" y="216" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">8 expedições</text>
+      <rect x="750" y="232" width="122" height="34" rx="6" fill="#161b22" stroke="#30363d"/>
+      <text x="811" y="247" text-anchor="middle" fill="#e6edf3" font-size="10" font-family="Inter">Peste Negra 1347</text>
+      <text x="811" y="260" text-anchor="middle" fill="#8b949e" font-size="9" font-family="Inter">Crise do feudalismo</text>
+
+      <!-- CONEXÕES TEMÁTICAS (segundo nível) -->
+      <!-- Queda de Roma → Idade Média -->
+      <rect x="340" y="360" width="200" height="36" rx="8" fill="#161b22" stroke="#bc8cff" stroke-width="1.5"/>
+      <text x="440" y="375" text-anchor="middle" fill="#bc8cff" font-size="11" font-weight="600" font-family="Inter">476 d.C. — ponto de inflexão</text>
+      <text x="440" y="389" text-anchor="middle" fill="#8b949e" font-size="10" font-family="Inter">Queda de Roma → início da Idade Média</text>
+      <line x1="440" y1="317" x2="440" y2="358" stroke="#bc8cff" stroke-width="1" stroke-dasharray="3" marker-end="url(#ar)"/>
+
+      <!-- Cruzadas → Grandes Navegações → Brasil -->
+      <rect x="280" y="440" width="280" height="36" rx="8" fill="#161b22" stroke="#d29922" stroke-width="1.5"/>
+      <text x="420" y="455" text-anchor="middle" fill="#d29922" font-size="11" font-weight="600" font-family="Inter">Cadeia causal ENEM</text>
+      <text x="420" y="469" text-anchor="middle" fill="#8b949e" font-size="10" font-family="Inter">Cruzadas → Comércio → Naveg. → Brasil 1500</text>
+      <line x1="440" y1="396" x2="440" y2="438" stroke="#d29922" stroke-width="1" stroke-dasharray="3" marker-end="url(#ar)"/>
+
+      <!-- Igreja -->
+      <rect x="100" y="360" width="160" height="36" rx="8" fill="#161b22" stroke="#e3b341" stroke-width="1.5"/>
+      <text x="180" y="375" text-anchor="middle" fill="#e3b341" font-size="11" font-weight="600" font-family="Inter">Igreja Católica</text>
+      <text x="180" y="389" text-anchor="middle" fill="#8b949e" font-size="10" font-family="Inter">Poder central na Idade Média</text>
+      <path d="M280,192 Q230,280 180,358" stroke="#e3b341" stroke-width="1" stroke-dasharray="3" fill="none" marker-end="url(#ar)"/>
+
+      <!-- Legado Roma → Direito Brasileiro -->
+      <rect x="610" y="360" width="180" height="36" rx="8" fill="#161b22" stroke="#ff7b72" stroke-width="1.5"/>
+      <text x="700" y="375" text-anchor="middle" fill="#ff7b72" font-size="11" font-weight="600" font-family="Inter">Legado do Direito Romano</text>
+      <text x="700" y="389" text-anchor="middle" fill="#8b949e" font-size="10" font-family="Inter">Base do Código Civil Brasileiro</text>
+      <path d="M610,196 Q660,280 700,358" stroke="#ff7b72" stroke-width="1" stroke-dasharray="3" fill="none" marker-end="url(#ar)"/>
+
+      <!-- título -->
+      <text x="440" y="30" text-anchor="middle" fill="#30363d" font-size="12" font-family="Inter" font-weight="600">BRASIL IMPÉRIO · ROMA ANTIGA · IDADE MÉDIA — Conexões ENEM</text>
+
+      <!-- legenda conexão -->
+      <line x1="340" y1="555" x2="370" y2="555" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="4"/>
+      <text x="378" y="559" fill="#8b949e" font-size="10" font-family="Inter">conexão entre temas</text>
+      <line x1="490" y1="555" x2="520" y2="555" stroke="#30363d" stroke-width="1.5"/>
+      <text x="528" y="559" fill="#8b949e" font-size="10" font-family="Inter">relação direta</text>
+    </svg>
+  </div>
+
+  <div class="legend-row">
+    <div class="legend-item"><div class="legend-dot" style="background:#3fb950"></div> Brasil Império</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#f85149"></div> Roma Antiga</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#bc8cff"></div> Idade Média</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#d29922"></div> Cadeia causal</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#e3b341"></div> Igreja / legado</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="enem-box">
+    <div class="enem-label">✦ PALAVRAS-CHAVE PARA PROVA</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:6px">
+      <span class="tag" style="background:var(--brasil-dim);color:var(--brasil-light)">Abertura dos portos</span>
+      <span class="tag" style="background:var(--brasil-dim);color:var(--brasil-light)">Poder Moderador</span>
+      <span class="tag" style="background:var(--brasil-dim);color:var(--brasil-light)">Lei Áurea</span>
+      <span class="tag" style="background:var(--brasil-dim);color:var(--brasil-light)">Período Regencial</span>
+      <span class="tag" style="background:var(--brasil-dim);color:var(--brasil-gold)">Proclamação da República</span>
+      <span class="tag" style="background:var(--roma-dim);color:var(--roma-light)">Pax Romana</span>
+      <span class="tag" style="background:var(--roma-dim);color:var(--roma-light)">Guerras Púnicas</span>
+      <span class="tag" style="background:var(--roma-dim);color:var(--roma-light)">Res publica</span>
+      <span class="tag" style="background:var(--roma-dim);color:var(--roma-gold)">476 d.C.</span>
+      <span class="tag" style="background:var(--roma-dim);color:var(--roma-gold)">Direito Romano</span>
+      <span class="tag" style="background:var(--media-dim);color:var(--media-light)">Feudalismo</span>
+      <span class="tag" style="background:var(--media-dim);color:var(--media-light)">Vassalagem</span>
+      <span class="tag" style="background:var(--media-dim);color:var(--media-light)">Cruzadas</span>
+      <span class="tag" style="background:var(--media-dim);color:var(--media-light)">Peste Negra</span>
+      <span class="tag" style="background:var(--media-dim);color:var(--media-light)">Joana d'Arc</span>
+      <span class="tag" style="background:var(--media-dim);color:var(--media-dark)">1453 — fim Idade Média</span>
+    </div>
+  </div>
+</div>
+
+  <!-- ===== QUESTÕES ===== -->
+  <div id="tab-quiz" class="tab-panel">
+    <div class="module-title" style="color:#e3b341">📝 Questões por Tema</div>
+    <div class="module-sub">Clique na alternativa · Veja a explicação</div>
+    <div id="quiz-root"></div>
+  </div>
+
+</main>
+
+<style>
+.qz-theme-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.qz-tab{background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:7px 16px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all .18s}
+.qz-tab.active{background:var(--surface2);border-color:var(--tc,#888);color:var(--tc,#888)}
+.qz-score{display:flex;align-items:center;gap:14px;margin-bottom:20px;font-size:13px;color:var(--muted)}
+.qz-score strong{color:var(--text)}
+.qz-reset{background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:'Inter',sans-serif}
+.qz-reset:hover{color:var(--text);border-color:var(--surface3)}
+.qz-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:14px}
+.qz-num{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.5px;margin-bottom:6px}
+.qz-q{font-size:14px;font-weight:500;margin-bottom:14px;line-height:1.5}
+.qz-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:560px){.qz-opts{grid-template-columns:1fr}}
+.qz-opt{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:9px 14px;border-radius:7px;font-size:13px;cursor:pointer;text-align:left;display:flex;align-items:flex-start;gap:10px;font-family:'Inter',sans-serif;transition:background .15s,border-color .15s;line-height:1.4}
+.qz-opt:hover:not(:disabled){background:var(--surface3);border-color:var(--surface3)}
+.qz-opt:disabled{cursor:default}
+.qz-opt.correct{background:#0d2a1a;border-color:#3fb950;color:#3fb950}
+.qz-opt.wrong{background:#3a1219;border-color:#f85149;color:#f85149}
+.qz-letter{font-weight:700;flex-shrink:0;opacity:.6}
+.qz-opt.correct .qz-letter,.qz-opt.wrong .qz-letter{opacity:1}
+.qz-exp{background:#0d2a5c;border:1px solid #388bfd;border-radius:8px;padding:12px 16px;margin-top:12px;font-size:13px;color:var(--text);line-height:1.5}
+.qz-exp::before{content:'💡 ';font-size:14px}
+.qz-progress{height:4px;background:var(--border);border-radius:2px;margin-bottom:20px;overflow:hidden}
+.qz-progress-bar{height:100%;background:#388bfd;transition:width .3s}
+</style>
+
+<script>
+function setTab(id){
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelector('.t-'+id).classList.add('active');
+  if(id==='quiz') renderQuiz(currentTheme);
+}
+
+const QUIZ = {
+  brasil:{
+    label:'🇧🇷 Brasil Império', color:'#3fb950',
+    questions:[
+      {q:'A abertura dos portos em 1808 beneficiou principalmente qual nação estrangeira?',opts:['Portugal','França','Inglaterra','Holanda'],ans:2,exp:'A abertura dos portos foi imposta pela Inglaterra como condição para sua ajuda na fuga da família real de Lisboa. Na prática, encerrou o pacto colonial e abriu o Brasil ao comércio britânico, que dominou as importações por décadas.'},
+      {q:'O Poder Moderador, criado pela Constituição de 1824, era exercido exclusivamente por:',opts:['O Senado vitalício','O imperador','A Câmara dos Deputados','O Conselho de Estado'],ans:1,exp:'O Poder Moderador era o 4º poder constitucional, exclusivo do imperador. Com ele, D. Pedro I (e depois D. Pedro II) podia dissolver a Câmara, nomear e demitir ministros e suspender decisões — garantindo a centralização do poder.'},
+      {q:'Qual das revoltas do Período Regencial ocorreu no Rio Grande do Sul?',opts:['Cabanagem','Balaiada','Sabinada','Farroupilha'],ans:3,exp:'A Farroupilha (1835–1845) foi a mais longa revolta do período, liderada pela elite gaúcha que proclamou a República Riograndense. Terminou com acordo (Paz de Poncho Verde), não com derrota militar.'},
+      {q:'A Lei Áurea, que aboliu a escravidão no Brasil, foi assinada em:',opts:['1850','1871','1885','1888'],ans:3,exp:'A Lei Áurea foi assinada em 13 de maio de 1888 pela Princesa Isabel, enquanto D. Pedro II estava na Europa. Foi a lei mais curta e importante do Império — apenas dois artigos.'},
+      {q:'A Guerra do Paraguai (1864–1870) foi travada entre:',opts:['Brasil e Argentina apenas','A Tríplice Aliança e o Paraguai','Brasil e Uruguai','Argentina e Paraguai'],ans:1,exp:'A Tríplice Aliança (Brasil + Argentina + Uruguai) combateu o Paraguai de Solano López. Foi o maior conflito armado da América do Sul: o Paraguai perdeu 60–70% da população masculina e teve seu território reduzido.'},
+      {q:'O Golpe da Maioridade, que colocou D. Pedro II no trono, ocorreu em:',opts:['1831','1835','1840','1845'],ans:2,exp:'Em 1840, o Parlamento votou pela antecipação da maioridade de D. Pedro II, que tinha apenas 14 anos. O golpe encerrou o conturbado Período Regencial e iniciou o Segundo Reinado.'},
+      {q:'Em qual região do Brasil ocorreu a Cabanagem (1835–1840)?',opts:['Rio Grande do Sul','Bahia','Maranhão','Pará e Amazonas'],ans:3,exp:'A Cabanagem foi uma das revoltas mais sangrentas do Brasil, liderada por pobres, índios e mestiços que viviam em cabanas às margens dos rios na Amazônia. Os revoltosos chegaram a tomar a cidade de Belém.'},
+      {q:'Quem proclamou a República do Brasil em 15 de novembro de 1889?',opts:['D. Pedro II','Duque de Caxias','Marechal Deodoro da Fonseca','Benjamim Constant'],ans:2,exp:'Marechal Deodoro da Fonseca liderou o golpe militar que depôs D. Pedro II. A proclamação foi influenciada pelo positivismo (Benjamim Constant) e pelo descontentamento dos fazendeiros com a abolição da escravidão.'},
+      {q:'A Lei do Ventre Livre (1871) declarava que:',opts:['Todo escravo maior de 60 anos seria livre','Os filhos de escravas nascidos a partir daquela data seriam livres','O tráfico negreiro seria imediatamente extinto','A escravidão terminaria em 1880'],ans:1,exp:'A Lei do Ventre Livre estabeleceu que os filhos de mulheres escravizadas nascidos após 28 de setembro de 1871 seriam juridicamente livres. Na prática, porém, esses filhos ficavam sob tutela dos senhores até os 21 anos.'},
+      {q:'Qual foi a principal consequência política imediata da Lei Áurea para o Império?',opts:['Fortalecimento do apoio da Igreja ao trono','Aliança entre militares e a Coroa','Perda do apoio dos grandes fazendeiros escravocratas','Crescimento do partido monarquista'],ans:2,exp:'A abolição sem indenização fez os grandes fazendeiros — base de sustentação do regime — migrarem para o campo republicano. Sem esse apoio fundamental, o Império ficou politicamente isolado e caiu 18 meses depois.'},
+    ]
+  },
+  roma:{
+    label:'🏛️ Roma Antiga', color:'#f85149',
+    questions:[
+      {q:'Quem foi o primeiro imperador romano, que iniciou a Pax Romana?',opts:['Júlio César','Marco Antônio','Augusto (Otávio)','Nero'],ans:2,exp:'Otávio Augusto foi o primeiro imperador (27 a.C.), após vencer Marco Antônio na batalha de Áccio. O título "Augusto" foi concedido pelo Senado. Júlio César foi ditador perpétuo, mas nunca assumiu formalmente o título de imperador.'},
+      {q:'As Guerras Púnicas foram travadas entre Roma e:',opts:['Grécia','Cartago','Macedônia','Pérsia'],ans:1,exp:'As três Guerras Púnicas (264–146 a.C.) foram contra Cartago (atual Tunísia). O nome "Púnica" vem de "Poenus" (fenícios). Ao destruir Cartago na 3ª guerra, Roma tornou-se senhora absoluta do Mediterrâneo.'},
+      {q:'O Primeiro Triunvirato era formado por:',opts:['Augusto, Marco Antônio e Lépido','César, Pompeu e Crasso','Mário, Sila e César','Bruto, Cássio e Pompeu'],ans:1,exp:'O 1º Triunvirato (60 a.C.) foi um acordo político informal entre César, Pompeu e Crasso, os três homens mais poderosos de Roma. Após a morte de Crasso e a guerra civil, César venceu Pompeu e tornou-se ditador.'},
+      {q:'O assassinato de Júlio César ocorreu em:',opts:['60 a.C.','49 a.C.','44 a.C.','27 a.C.'],ans:2,exp:'César foi assassinado nos "Idos de Março" (15 de março de 44 a.C.) por senadores liderados por Bruto e Cássio, que temiam o fim da República. O assassinato acelerou exatamente o que queriam evitar: o Império.'},
+      {q:'A Pax Romana durou aproximadamente quanto tempo?',opts:['50 anos','100 anos','150 anos','200 anos'],ans:3,exp:'A Pax Romana (27 a.C.–180 d.C.) foi um período de ~200 anos de paz relativa e prosperidade sob o Império. Terminou com a morte de Marco Aurélio, início da chamada crise do século III.'},
+      {q:'Em que ano ocorreu a divisão definitiva do Império Romano?',opts:['313 d.C.','380 d.C.','395 d.C.','476 d.C.'],ans:2,exp:'Em 395 d.C., com a morte do imperador Teodósio I, o Império foi definitivamente dividido entre seus filhos: Arcádio (Oriente, Constantinopla) e Honório (Ocidente, Roma). Nunca mais voltou a ser reunificado.'},
+      {q:'O Édito de Milão (313 d.C.), promulgado por Constantino, estabelecia:',opts:['A divisão do Império Romano','O Cristianismo como religião oficial','A liberdade religiosa para todos, inclusive cristãos','A expulsão dos bárbaros das fronteiras'],ans:2,exp:'O Édito de Milão garantiu liberdade religiosa a todos os habitantes do Império, encerrando as perseguições aos cristãos. O Cristianismo só se tornou religião oficial em 380 d.C., com o Édito de Tessalônica de Teodósio.'},
+      {q:'Quem liderou a maior e mais famosa revolta escrava de Roma (73–71 a.C.)?',opts:['Aníbal','Espartaco','Vercingetórix','Arminius'],ans:1,exp:'Espartaco, um gladiador trácio, liderou cerca de 120.000 escravos revoltosos por dois anos. A revolta foi suprimida por Crasso e Pompeu; Espartaco morreu em batalha e 6.000 sobreviventes foram crucificados ao longo da Via Ápia.'},
+      {q:'A Lei das XII Tábuas (450 a.C.) representa:',opts:['O início do Período Imperial','A primeira codificação escrita do direito romano','O fim da República','O tratado de paz com Cartago'],ans:1,exp:'As XII Tábuas foram a primeira compilação escrita das leis romanas, expostas publicamente no Fórum. Eram um avanço político: antes delas, os patrícios podiam interpretar as leis orais conforme seus interesses, prejudicando os plebeus.'},
+      {q:'A queda do Império Romano Ocidental (476 d.C.) é convencional­mente considerada:',opts:['O fim da Antiguidade e início da Idade Média','O fim da Idade Média e início da Idade Moderna','O início da Pré-história','O início do período helenístico'],ans:0,exp:'A data 476 d.C. (deposição de Rômulo Augústulo pelo bárbaro Odoacro) é o marco convencional do fim da Antiguidade e início da Idade Média. É uma convenção historiográfica — a transição foi gradual, não repentina.'},
+    ]
+  },
+  media:{
+    label:'⚔️ Idade Média', color:'#bc8cff',
+    questions:[
+      {q:'O servo medieval se diferencia do escravo antigo porque:',opts:['Não era obrigado a trabalhar para o senhor','Era preso à terra mas não era propriedade do senhor e tinha vida familiar','Tinha plenos direitos civis e políticos','Podia comprar sua liberdade facilmente com dinheiro'],ans:1,exp:'O servo estava vinculado à terra (gleba) e não podia abandoná-la, mas não era propriedade pessoal do senhor — diferentemente do escravo romano. O servo tinha família, parcela de terra para sustento e certos costumes reconhecidos.'},
+      {q:'As Cruzadas foram convocadas inicialmente pelo Papa:',opts:['Inocêncio III','Gregório VII','Urbano II','Leão X'],ans:2,exp:'Em 1095, no Concílio de Clermont, o Papa Urbano II convocou a 1ª Cruzada para reconquistar Jerusalém e a Terra Santa dos muçulmanos. Ofereceu indulgência plenária (perdão dos pecados) aos participantes.'},
+      {q:'A Magna Carta (1215) limitou o poder de:',opts:['O Papa em Roma','Os nobres franceses','O rei inglês João Sem Terra','O Sacro Imperador Romano'],ans:2,exp:'A Magna Carta foi arrancada pelos barões ingleses do rei João Sem Terra, limitando a autoridade real e estabelecendo que o rei não podia cobrar impostos arbitrários nem prender nobres sem julgamento. É base do constitucionalismo ocidental.'},
+      {q:'A Peste Negra (1347–1351) eliminou aproximadamente qual fração da população europeia?',opts:['1 décimo (10%)','1 quinto (20%)','1 terço (33%)','Metade (50%)'],ans:2,exp:'Estima-se que a Peste Negra matou entre 25 e 50 milhões de pessoas na Europa — cerca de 1/3 da população. Chegou pela Ásia através das rotas comerciais e se espalhou principalmente por pulgas infectadas em ratos.'},
+      {q:'A Guerra dos Cem Anos (1337–1453) terminou com vitória:',opts:['Inglesa','Francesa','Empate formalizado em tratado','Da Igreja que mediou a paz'],ans:1,exp:'A França venceu a Guerra dos Cem Anos, expulsando os ingleses de seu território (exceto Calais). Joana d\'Arc foi crucial na virada da guerra, revitalizando o exército francês antes de ser capturada e queimada pelos ingleses em 1431.'},
+      {q:'O feudalismo é caracterizado principalmente por:',opts:['Forte centralização política no rei','Economia monetária e mercado desenvolvido','Descentralização política e economia de subsistência','Democracia representativa com participação popular'],ans:2,exp:'O feudalismo combina descentralização política (o poder está fragmentado entre senhores feudais, não no rei) com uma economia fechada e de subsistência. A terra é a riqueza fundamental; o comércio e a moeda são marginais.'},
+      {q:'Em que ano Joana d\'Arc foi queimada na fogueira pelos ingleses?',opts:['1415','1420','1431','1453'],ans:2,exp:'Joana d\'Arc foi capturada pelos borgonheses (aliados dos ingleses), julgada por heresia e queimada em Rouen em 30 de maio de 1431, com 19 anos. Em 1456 foi absolvida postumamente; em 1920, canonizada pela Igreja Católica.'},
+      {q:'Qual foi a principal consequência das Cruzadas para a Europa Ocidental?',opts:['Reconquista definitiva e permanente de Jerusalém','Enriquecimento da nobreza feudal','Reabertura das rotas comerciais com o Oriente','Enfraquecimento definitivo da Igreja Católica'],ans:2,exp:'Apesar do fracasso militar (Jerusalém foi perdida novamente), as Cruzadas reativaram o comércio entre Europa e Oriente. Isso estimulou o crescimento das cidades, o surgimento da burguesia e a crise do feudalismo — mudanças decisivas para a Modernidade.'},
+      {q:'A queda de Constantinopla em 1453 é apontada como causa direta do(a):',opts:['Reforma Protestante','Grandes Navegações europeias','Inquisição espanhola','Guerra dos Cem Anos'],ans:1,exp:'A queda de Constantinopla para os turcos otomanos fechou as rotas terrestres para as especiarias do Oriente. Para contornar o bloqueio, Portugal e Espanha financiaram rotas marítimas alternativas — o que levou ao "descobrimento" da América (1492) e ao Brasil (1500).'},
+      {q:'Qual era o papel central da Igreja Católica na sociedade medieval?',opts:['Apenas espiritual — limitado às questões de fé','Apenas econômico — cobrança do dízimo','Controlava educação, moral, política e aspectos econômicos','Apenas militar — organizava as Cruzadas'],ans:2,exp:'Na Idade Média a Igreja era a instituição mais poderosa da Europa: controlava a educação (únicas escolas eram monastérios), cobrava o dízimo (10% da produção), definia o calendário, podia excomungar reis e interditar reinos inteiros.'},
+    ]
+  }
+};
+
+let currentTheme = 'brasil';
+const quizState = {};
+
+function renderQuiz(themeKey){
+  currentTheme = themeKey;
+  const root = document.getElementById('quiz-root');
+  if(!quizState[themeKey]) quizState[themeKey]={score:0,answered:0};
+  const st = quizState[themeKey];
+  const total = QUIZ[themeKey].questions.length;
+
+  root.innerHTML=`
+    <div class="qz-theme-tabs">
+      ${Object.keys(QUIZ).map(k=>`
+        <button class="qz-tab ${k===themeKey?'active':''}"
+          style="--tc:${QUIZ[k].color}"
+          onclick="renderQuiz('${k}')">${QUIZ[k].label}</button>
+      `).join('')}
+    </div>
+    <div class="qz-progress"><div class="qz-progress-bar" id="qz-bar" style="width:${st.answered/total*100}%"></div></div>
+    <div class="qz-score">
+      Respondidas: <strong id="qz-sc">${st.answered}/${total}</strong>
+      &nbsp;·&nbsp; Acertos: <strong id="qz-hit">${st.score}</strong>
+      <button class="qz-reset" onclick="resetTheme('${themeKey}')">↺ Reiniciar</button>
+    </div>
+    ${QUIZ[themeKey].questions.map((q,i)=>`
+      <div class="qz-card" id="qc-${themeKey}-${i}">
+        <div class="qz-num">QUESTÃO ${String(i+1).padStart(2,'0')}</div>
+        <div class="qz-q">${q.q}</div>
+        <div class="qz-opts">
+          ${q.opts.map((opt,j)=>`
+            <button class="qz-opt" id="qo-${themeKey}-${i}-${j}" onclick="answer('${themeKey}',${i},${j})">
+              <span class="qz-letter">${['A','B','C','D'][j]}</span>${opt}
+            </button>
+          `).join('')}
+        </div>
+        <div class="qz-exp" id="qe-${themeKey}-${i}" style="display:none">${q.exp}</div>
+      </div>
+    `).join('')}
+  `;
+
+  QUIZ[themeKey].questions.forEach((_,i)=>{
+    const card=document.getElementById(`qc-${themeKey}-${i}`);
+    if(card.dataset.done){
+      const chosen=parseInt(card.dataset.chosen);
+      const q=QUIZ[themeKey].questions[i];
+      card.querySelectorAll('.qz-opt').forEach(b=>b.disabled=true);
+      document.getElementById(`qo-${themeKey}-${i}-${q.ans}`).classList.add('correct');
+      if(chosen!==q.ans) document.getElementById(`qo-${themeKey}-${i}-${chosen}`).classList.add('wrong');
+      document.getElementById(`qe-${themeKey}-${i}`).style.display='block';
+    }
+  });
+}
+
+function answer(themeKey,qIdx,optIdx){
+  const card=document.getElementById(`qc-${themeKey}-${qIdx}`);
+  if(card.dataset.done) return;
+  card.dataset.done='1';
+  card.dataset.chosen=optIdx;
+  const q=QUIZ[themeKey].questions[qIdx];
+  card.querySelectorAll('.qz-opt').forEach(b=>b.disabled=true);
+  document.getElementById(`qo-${themeKey}-${qIdx}-${q.ans}`).classList.add('correct');
+  if(optIdx!==q.ans) document.getElementById(`qo-${themeKey}-${qIdx}-${optIdx}`).classList.add('wrong');
+  document.getElementById(`qe-${themeKey}-${qIdx}`).style.display='block';
+  const st=quizState[themeKey];
+  st.answered++;
+  if(optIdx===q.ans) st.score++;
+  const total=QUIZ[themeKey].questions.length;
+  document.getElementById('qz-sc').textContent=`${st.answered}/${total}`;
+  document.getElementById('qz-hit').textContent=st.score;
+  document.getElementById('qz-bar').style.width=`${st.answered/total*100}%`;
+}
+
+function resetTheme(themeKey){
+  quizState[themeKey]={score:0,answered:0};
+  QUIZ[themeKey].questions.forEach((_,i)=>{
+    const card=document.getElementById(`qc-${themeKey}-${i}`);
+    if(card){delete card.dataset.done;delete card.dataset.chosen;}
+  });
+  renderQuiz(themeKey);
+}
+</script>
+</body>
+</html>

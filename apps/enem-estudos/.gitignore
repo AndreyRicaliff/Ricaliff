@@ -1,0 +1,22 @@
+node_modules
+dist
+dist-ssr
+*.local
+*.tsbuildinfo
+
+# env
+.env
+.env.*
+!.env.example
+
+# segredos / chaves
+*.pem
+*.key
+chrome-profile-*
+
+# editor / OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+*.log
+.vercel
