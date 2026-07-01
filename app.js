@@ -286,10 +286,48 @@ const esc  = s  => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(
 const fmtD = d  => { if(!d) return ''; const [y,m,day]=d.split('-'); return `${day}/${m}/${y}`; };
 const today= ()  => new Date().toISOString().slice(0,10);
 
+// ── P3 SFX (opt-in, WebAudio sintetizado) ─────────────────────────
+const P3_SFX_KEY = 'p3_sfx';
+let p3AudioCtx = null;
+function p3SfxEnabled() { return localStorage.getItem(P3_SFX_KEY) === '1'; }
+function p3SfxToggle(on) {
+  const val = on === undefined ? !p3SfxEnabled() : !!on;
+  localStorage.setItem(P3_SFX_KEY, val ? '1' : '0');
+  if (val) p3Sfx();
+  return val;
+}
+function p3Sfx() {
+  if (!p3SfxEnabled()) return;
+  try {
+    p3AudioCtx = p3AudioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = p3AudioCtx;
+    if (ctx.state === 'suspended') ctx.resume();
+    const t = ctx.currentTime, osc = ctx.createOscillator(), gain = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(880, t);
+    osc.frequency.exponentialRampToValueAtTime(1720, t + 0.05);
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.05, t + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.11);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(t); osc.stop(t + 0.12);
+  } catch (e) { /* áudio indisponível — silêncio */ }
+}
+function p3SfxUiToggle() {
+  const on = p3SfxToggle();
+  const el = document.getElementById('p3-sfx-state');
+  if (el) el.textContent = on ? 'on' : 'off';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const el = document.getElementById('p3-sfx-state');
+  if (el) el.textContent = p3SfxEnabled() ? 'on' : 'off';
+});
+
 // ── NAV ───────────────────────────────────────────────────────────
 let curView = 'dash';
 
 function go(view) {
+  p3Sfx();
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('view-'+view).classList.add('active');
