@@ -284,7 +284,9 @@ const DB = {
 const uid  = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
 const esc  = s  => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtD = d  => { if(!d) return ''; const [y,m,day]=d.split('-'); return `${day}/${m}/${y}`; };
-const today= ()  => new Date().toISOString().slice(0,10);
+// Data LOCAL (não UTC): toISOString virava "amanhã" depois das 21h em UTC-3 e corrompia streak/standup
+const localISO = d => { const x = d ?? new Date(); return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`; };
+const today= ()  => localISO();
 // Boundary: cor vinda de dado persistido/importado só entra em style se for hex válido
 const safeColor = c => /^#[0-9A-Fa-f]{3,8}$/.test(String(c ?? '')) ? c : '#1A7FFF';
 // Boundary: URL externa só entra em href se for https
@@ -1251,7 +1253,7 @@ function renderGrowthBody() {
   const sessions = safeParse('agh_sessions', []);
   const totalSess = sessions.length;
   const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
-  const waStr = weekAgo.toISOString().slice(0,10);
+  const waStr = localISO(weekAgo);
   const thisWeek = sessions.filter(s=>s.date>=waStr).length;
   const byType = {};
   sessions.forEach(s => { byType[s.type] = (byType[s.type]||0)+1; });
@@ -1398,7 +1400,7 @@ function exportData() {
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `ag-hub-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.download = `ricaliff-backup-${today()}.json`;
   a.click();
   toast('Backup exportado');
 }
@@ -1436,7 +1438,7 @@ function renderWeeklyDigest() {
   const el=document.getElementById('weekly-digest');
   if(!el) return;
   const weekAgo=new Date();weekAgo.setDate(weekAgo.getDate()-7);
-  const waStr=weekAgo.toISOString().slice(0,10);
+  const waStr=localISO(weekAgo);
   const t=today();
   const doneThisWeek=DB.tasks.filter(k=>k.status==='done'&&(k.updatedAt||'').slice(0,10)>=waStr).length;
   const sessThisWeek=safeParse('agh_sessions', []).filter(s=>s.date>=waStr).length;
@@ -1470,7 +1472,7 @@ function projStaleDays(projId) {
 function renderStudies() {
   const studies=DB.studies.slice().sort((a,b)=>b.date.localeCompare(a.date));
   const weekAgo=new Date();weekAgo.setDate(weekAgo.getDate()-7);
-  const waStr=weekAgo.toISOString().slice(0,10);
+  const waStr=localISO(weekAgo);
   const totalH=studies.reduce((acc,s)=>acc+(parseFloat(s.hours)||0),0);
   const weekH=studies.filter(s=>s.date>=waStr).reduce((acc,s)=>acc+(parseFloat(s.hours)||0),0);
   const bySubject={};
@@ -2342,7 +2344,7 @@ function updateStreak(tipo) {
   if (!s) return;
   const t = today();
   const ontem = new Date(); ontem.setDate(ontem.getDate() - 1);
-  const ontemStr = ontem.toISOString().slice(0, 10);
+  const ontemStr = localISO(ontem);
 
   if (s.ultimoDia === t) return; // já foi registrado hoje
 
@@ -2393,7 +2395,7 @@ function getPomoStreakDays() {
   for (let i = 0; i < dias.length; i++) {
     const expected = new Date(now);
     expected.setDate(expected.getDate() - i);
-    if (dias[i] === expected.toISOString().slice(0, 10)) {
+    if (dias[i] === localISO(expected)) {
       streak++;
     } else {
       break;
@@ -2703,7 +2705,7 @@ function buildSugestoes(t) {
 function buildStandupBody() {
   const t = today();
   const ontem = new Date(); ontem.setDate(ontem.getDate() - 1);
-  const ontemStr = ontem.toISOString().slice(0, 10);
+  const ontemStr = localISO(ontem);
 
   const ontemItems = buildOntemItems(ontemStr);
   const sugestoes = buildSugestoes(t);
