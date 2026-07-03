@@ -285,6 +285,10 @@ const uid  = () => Date.now().toString(36) + Math.random().toString(36).slice(2,
 const esc  = s  => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 const fmtD = d  => { if(!d) return ''; const [y,m,day]=d.split('-'); return `${day}/${m}/${y}`; };
 const today= ()  => new Date().toISOString().slice(0,10);
+// Boundary: cor vinda de dado persistido/importado só entra em style se for hex válido
+const safeColor = c => /^#[0-9A-Fa-f]{3,8}$/.test(String(c ?? '')) ? c : '#1A7FFF';
+// Boundary: URL externa só entra em href se for https
+const safeHttpUrl = u => { try { return new URL(u).protocol === 'https:' ? u : null; } catch { return null; } };
 
 // ── P3 SFX (opt-in, WebAudio sintetizado) ─────────────────────────
 const P3_SFX_KEY = 'p3_sfx';
@@ -535,26 +539,28 @@ function renderProjects() {
     const pct  = pt.length ? Math.round(done/pt.length*100) : 0;
     const sl   = {ativo:'psb-ativo',pausado:'psb-pausado',concluido:'psb-concluido'};
     const sl2  = {ativo:'Ativo',pausado:'Pausado',concluido:'Concluído'};
+    const pc   = safeColor(p.color);
+    const gh   = safeHttpUrl(p.githubUrl);
     return `
     <div class="proj-card" onclick="openProjModal('${p.id}')">
-      <div class="proj-cover" style="background:linear-gradient(135deg,${p.color}55 0%,${p.color}15 100%)">
-        <div class="proj-cover-blur" style="background:${p.color}"></div>
+      <div class="proj-cover" style="background:linear-gradient(135deg,${pc}55 0%,${pc}15 100%)">
+        <div class="proj-cover-blur" style="background:${pc}"></div>
         <div class="proj-status-badge ${sl[p.status]}">${sl2[p.status]}</div>
       </div>
       <div class="proj-body">
         <div class="proj-name">${esc(p.name)}</div>
         ${p.description?`<div class="proj-desc">${esc(p.description)}</div>`:''}
-        ${p.githubUrl ? `<a class="proj-github" href="${p.githubUrl}" target="_blank" onclick="event.stopPropagation()"><svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>${p.isPrivate ? '🔒 ' : ''}GitHub</a>` : ''}
+        ${gh ? `<a class="proj-github" href="${esc(gh)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>${p.isPrivate ? '🔒 ' : ''}GitHub</a>` : ''}
         ${(()=>{const imp=p.improvements?.filter(Boolean)||[];return imp.length?`<div class="proj-improvements"><span>⚡ ${imp.length} melhoria${imp.length!==1?'s':''} identificada${imp.length!==1?'s':''}</span></div>`:''})()}
         <div class="proj-footer">
           <div>
             <div class="proj-prog-text">${pt.length} tarefa${pt.length!==1?'s':''} · ${(()=>{const d=projStaleDays(p.id);return d===null?'':d>14?`<span style="color:var(--warn)">sem atividade há ${d}d</span>`:d>7?`<span style="color:var(--muted)">${d}d atrás</span>`:''})()}</div>
-            <div class="proj-prog-val" style="color:${p.color}">${pct}%</div>
+            <div class="proj-prog-val" style="color:${pc}">${pct}%</div>
           </div>
-          ${ring(pct,p.color,48)}
+          ${ring(pct,pc,48)}
         </div>
         <div class="prog-bar-thin" style="margin-top:10px">
-          <div class="prog-fill-thin" style="width:${pct}%;background:${p.color}"></div>
+          <div class="prog-fill-thin" style="width:${pct}%;background:${pc}"></div>
         </div>
       </div>
     </div>`;
@@ -601,7 +607,7 @@ function saveProj() {
   const data={
     id:id||uid(), name,
     description:document.getElementById('fp-desc').value.trim(),
-    status:document.getElementById('fp-status').value, color:c,
+    status:document.getElementById('fp-status').value, color:safeColor(c),
     githubUrl: existing?.githubUrl||null,
     isPrivate: existing?.isPrivate||false,
     improvements: document.getElementById('fp-improvements').value.trim()
@@ -682,6 +688,7 @@ function renderTasks() {
 
   el.innerHTML=list.map(tk=>{
     const proj=projs.find(p=>p.id===tk.projectId);
+    const projColor=proj?safeColor(proj.color):'';
     const isOver=tk.status!=='done'&&tk.due&&tk.due<t;
     return `
     <div class="task-row ${tk.status==='done'?'done-row':''}" onclick="openTaskModal('${tk.id}')">
@@ -692,7 +699,7 @@ function renderTasks() {
         <div class="ttitle">${esc(tk.title)}</div>
         <div class="tmeta">
           <span class="tag tg-${tk.priority}">${tk.priority==='high'?'↑ Alta':tk.priority==='low'?'↓ Baixa':'– Média'}</span>
-          ${proj?`<span class="tag tg-proj" style="background:${proj.color}22;color:${proj.color}">${esc(proj.name)}</span>`:''}
+          ${proj?`<span class="tag tg-proj" style="background:${projColor}22;color:${projColor}">${esc(proj.name)}</span>`:''}
           ${tk.due?`<span class="tdue ${isOver?'over':''}">${isOver?'⚠ ':''}${fmtD(tk.due)}</span>`:''}
         </div>
       </div>
@@ -1669,7 +1676,8 @@ function importData() {
         const data = JSON.parse(ev.target.result);
         if (!data.projects || !data.tasks) { toast('Arquivo inválido', 'err'); return; }
         if (!confirm(`Importar backup de ${data.exportedAt?.slice(0,10) || '?'}?\nIsso substituirá todos os dados atuais.`)) return;
-        DB.projects = data.projects;
+        // Boundary: backup é input externo — sanitizar campos que entram em style/href
+        DB.projects = data.projects.map(p => ({ ...p, color: safeColor(p.color), githubUrl: safeHttpUrl(p.githubUrl) }));
         DB.tasks    = data.tasks;
         DB.events   = data.events || [];
         if (data.sessions) localStorage.setItem('agh_sessions', JSON.stringify(data.sessions));
@@ -2203,7 +2211,10 @@ async function renderTrilhaModulo(moduloId, trilhaId) {
     const r = await fetch(modulo.caminho + '?v=' + Date.now());
     if (!r.ok) throw new Error(`${r.status}`);
     const md = await r.text();
-    const html = marked.parse(md);
+    // marked@9 não sanitiza HTML cru — DOMPurify no sink; sem a lib, degrada pra texto escapado (fail-closed)
+    const html = window.DOMPurify
+      ? DOMPurify.sanitize(marked.parse(md))
+      : `<pre style="white-space:pre-wrap">${esc(md)}</pre>`;
     document.getElementById('trilha-md-content').innerHTML = html;
   } catch(e) {
     document.getElementById('trilha-md-content').innerHTML =
