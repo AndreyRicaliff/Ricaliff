@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-30T16:24:35",
+    "lastSync": "2026-07-03T12:11:53",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 10180,
-    "xpToNext": 11180,
-    "streak": 2,
+    "xp": 10610,
+    "xpToNext": 11610,
+    "streak": 1,
     "longestStreak": 16,
-    "lastActiveDate": "2026-06-30",
+    "lastActiveDate": "2026-07-03",
     "attributes": {
       "int": {
         "value": 0,
@@ -229,6 +229,60 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-07-03",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Repo hypr-dotfiles criado (config Hyprland+ambiente dev versionados) + revisao aplicada: flock, snapshot unico, validacao de dir no dev-env.sh; claude.fish legado deletado"
+    },
+    {
+      "date": "2026-07-03",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[cliente-oficina-backend] remove hardcoded secrets from setup-env.bat"
+    },
+    {
+      "date": "2026-07-03",
+      "xp": 20,
+      "type": "decision",
+      "desc": "Fable 5 cristalizado como motor inegociavel; fast mode documentado como opcao manual (Opus+usage credits); CLAUDE.md otimizado -48% tokens/turno"
+    },
+    {
+      "date": "2026-07-03",
+      "xp": 40,
+      "type": "learning",
+      "desc": "Consolidacao de memoria pre-limpeza: 5 agentes leram 12 sessoes antigas; 7 memorias novas/atualizadas + NKB; historico purgado p/ 8 chats padronizados"
+    },
+    {
+      "date": "2026-07-03",
+      "xp": 40,
+      "type": "learning",
+      "desc": "Consolidacao de memoria: 4 agentes extrairam 5 memorias de 97 sessoes antigas antes da limpeza do historico (backup 128MB)"
+    },
+    {
+      "date": "2026-07-03",
+      "xp": 100,
+      "type": "deploy",
+      "desc": "ag-flow-boost CRM: deploy prod via vercel CLI (board clientes + remocao IA Cid), Supabase restaurado de pausa"
+    },
+    {
+      "date": "2026-07-03",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Ambiente dev padrao Hyprland: Win+Shift+D/devenv abre 8 chats claude em 2 workspaces (rules Lua + spawn idempotente)"
+    },
+    {
+      "date": "2026-07-03",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Rice P3: quick settings funcional (som/wifi/bt), calendario navegavel, Win+S cicla layouts"
+    },
+    {
+      "date": "2026-07-03",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Taskbar P3: agrupamento por app com sanfona inline estilo Windows (badge de contagem, pilulas por janela, middle-click fecha)"
+    },
     {
       "date": "2026-06-30",
       "xp": 50,
@@ -474,60 +528,6 @@
       "xp": 60,
       "type": "revisao",
       "desc": "ag-painel: modularização do editor DRE/DFC + auditoria boas práticas"
-    },
-    {
-      "date": "2026-06-14",
-      "xp": 50,
-      "type": "feat",
-      "desc": "Classificacao da matriz aplicada em AUTAG 27 e 36 (script multi-tenant)"
-    },
-    {
-      "date": "2026-06-14",
-      "xp": 50,
-      "type": "feat",
-      "desc": "AUTAG 36 configurada com credencial propria (CNPJ 36.715.328) + sync de maio; 27 e 36 agora distintas"
-    },
-    {
-      "date": "2026-06-14",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "AUTAG 36 nao puxa mais a conta da 27 (remove env-fallback + seed + limpa docs)"
-    },
-    {
-      "date": "2026-06-14",
-      "xp": 50,
-      "type": "feat",
-      "desc": "AUTAG 27: cred verificada + dados limpos + sync a partir de maio (piso ingestao)"
-    },
-    {
-      "date": "2026-06-14",
-      "xp": 50,
-      "type": "feat",
-      "desc": "ag-painel: apresentacao completa (4 slides) + piso de maio AUTAG 27/36"
-    },
-    {
-      "date": "2026-06-13",
-      "xp": 100,
-      "type": "deploy",
-      "desc": "Design v3 Sobrio publicado em producao: PULSAR-RH + ag-painel (Vercel)"
-    },
-    {
-      "date": "2026-06-13",
-      "xp": 50,
-      "type": "feat",
-      "desc": "Design System v3 Sobrio aplicado no ag-painel (cristalizado na origem, build validado)"
-    },
-    {
-      "date": "2026-06-13",
-      "xp": 50,
-      "type": "feat",
-      "desc": "Design System v3 Sobrio: rebrand corporativo PULSAR-RH (camada override)"
-    },
-    {
-      "date": "2026-06-12",
-      "xp": 50,
-      "type": "feat",
-      "desc": "Pulsar Finance: relatorio Previsto x Realizado (orcamento Omie + realizavel + baixas)"
     }
   ],
   "achievements": [
@@ -684,74 +684,74 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-07-03",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "Repo hypr-dotfiles criado (config Hyprland+ambiente dev versionados) + revisao aplicada: flock, snapshot unico, validacao de dir no dev-env.sh; claude.fish legado deletado",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-03",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "[cliente-oficina-backend] remove hardcoded secrets from setup-env.bat",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-03",
+      "type": "decision",
+      "icon": "✅",
+      "title": "Fable 5 cristalizado como motor inegociavel; fast mode documentado como opcao manual (Opus+usage credits); CLAUDE.md otimizado -48% tokens/turno",
+      "xp": 20
+    },
+    {
+      "date": "2026-07-03",
+      "type": "learning",
+      "icon": "📚",
+      "title": "Consolidacao de memoria pre-limpeza: 5 agentes leram 12 sessoes antigas; 7 memorias novas/atualizadas + NKB; historico purgado p/ 8 chats padronizados",
+      "xp": 40
+    },
+    {
+      "date": "2026-07-03",
+      "type": "learning",
+      "icon": "📚",
+      "title": "Consolidacao de memoria: 4 agentes extrairam 5 memorias de 97 sessoes antigas antes da limpeza do historico (backup 128MB)",
+      "xp": 40
+    },
+    {
+      "date": "2026-07-03",
+      "type": "deploy",
+      "icon": "🚀",
+      "title": "ag-flow-boost CRM: deploy prod via vercel CLI (board clientes + remocao IA Cid), Supabase restaurado de pausa",
+      "xp": 100
+    },
+    {
+      "date": "2026-07-03",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "Ambiente dev padrao Hyprland: Win+Shift+D/devenv abre 8 chats claude em 2 workspaces (rules Lua + spawn idempotente)",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-03",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "Rice P3: quick settings funcional (som/wifi/bt), calendario navegavel, Win+S cicla layouts",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-03",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "Taskbar P3: agrupamento por app com sanfona inline estilo Windows (badge de contagem, pilulas por janela, middle-click fecha)",
+      "xp": 50
+    },
+    {
       "date": "2026-06-30",
       "type": "feat",
       "icon": "⚙️",
       "title": "[Ricaliff] consolidação monorepo + 4 trilhas novas (git/IA-ML/APIs/escala) + rename ag-hub→Ricaliff",
       "xp": 50
-    },
-    {
-      "date": "2026-06-29",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[cliente-varejo] Grupo do ERP como fonte da verdade + modo remapOnly",
-      "xp": 30
-    },
-    {
-      "date": "2026-06-29",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[cliente-varejo] confia no Grupo do ERP p/ Bonificado/Super (corrige split vs ERP-externo)",
-      "xp": 30
-    },
-    {
-      "date": "2026-06-29",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] config editavel (salario/comissoes/bonus) via tabela supervisor_config + card admin",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-29",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] formula propria (liquido+juros+GAR/troca), remove espelho/ajuste do ERP",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-29",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[cliente-varejo] trigger deploy (repo publico)",
-      "xp": 20
-    },
-    {
-      "date": "2026-06-29",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] gerenciamento de senhas por vendedor na config admin (por loja, reset/criar via manage-user)",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-29",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] aba DRE (consolidado + por loja) no menu Financeiro",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-29",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] exclusoes gerenciaveis pelo gestor (tabela + CRUD, uniao com legado)",
-      "xp": 50
-    },
-    {
-      "date": "2026-06-29",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[cliente-varejo] remove flag morto penalidadeAcessorios",
-      "xp": 20
     }
   ]
 }
