@@ -1,5 +1,5 @@
 // seed.js v7 — projetos com melhorias + studies IFPB + updatedAt nas tarefas
-// Forçado toda vez que a versão muda
+// Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário
 
 (function () {
   if (localStorage.getItem('agh_seed_v') === '7') return;
@@ -195,12 +195,23 @@
     { id:'st-06', topic:'Docker compose — multi-container (Meet Hub)', subject:'DevOps', hours:1, date:'2026-05-07', notes:'Serviços: api, web, bot, db, redis. Health checks, volumes, network interno.', createdAt: now },
   ];
 
-  localStorage.setItem('agh_projects', JSON.stringify(projects));
-  localStorage.setItem('agh_tasks',    JSON.stringify(tasks));
-  localStorage.setItem('agh_events',   JSON.stringify(events));
-  localStorage.setItem('agh_sessions', JSON.stringify(sessions));
-  localStorage.setItem('agh_studies',  JSON.stringify(studies));
+  // Merge por id: dado do usuário sempre vence; seed só acrescenta itens novos
+  const mergeById = (key, items) => {
+    let existing = [];
+    try { existing = JSON.parse(localStorage.getItem(key) || '[]'); } catch { existing = []; }
+    if (!Array.isArray(existing)) existing = [];
+    const have = new Set(existing.map(x => x && x.id));
+    const merged = existing.concat(items.filter(x => !have.has(x.id)));
+    localStorage.setItem(key, JSON.stringify(merged));
+    return merged.length;
+  };
+
+  const nP = mergeById('agh_projects', projects);
+  const nT = mergeById('agh_tasks',    tasks);
+  const nE = mergeById('agh_events',   events);
+  const nS = mergeById('agh_sessions', sessions);
+  const nSt= mergeById('agh_studies',  studies);
   localStorage.setItem('agh_seed_v',   '7');
 
-  console.log('[AG Hub seed v7]', projects.length, 'projetos ·', tasks.length, 'tarefas ·', events.length, 'eventos ·', sessions.length, 'sessões ·', studies.length, 'estudos');
+  console.log('[Ricaliff seed v7 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();

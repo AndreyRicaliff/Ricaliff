@@ -1,60 +1,412 @@
 {
-  "geradoEm": "2026-06-01T00:00:00-03:00",
+  "geradoEm": "2026-07-03T12:14:20-03:00",
   "projetos": [
     {
       "id": "PULSAR-RH",
       "nome": "PULSAR-RH",
       "icone": "📊",
       "prioridade": "alta",
-      "hp": { "atual": 12, "max": 20, "label": "12/20 DECISIONS" },
-      "stack": ["Supabase", "HTML+JS", "Vercel"],
+      "hp": {
+        "atual": 12,
+        "max": 20,
+        "label": "12/20 DECISIONS"
+      },
+      "stack": [
+        "Supabase",
+        "HTML+JS",
+        "Vercel"
+      ],
       "ultimaAtividade": "2026-05-28",
       "sideQuests": [
-        { "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md", "titulo": "Tipos & Memória — valor vs referência no PULSAR", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/01-tipos-memoria-valor-referencia.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "00-fundamentos/02-async-event-loop-promises.md", "titulo": "Async — refatorar forEach+await no PULSAR", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/02-async-event-loop-promises.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "00-fundamentos/03-http-rest-status-codes.md", "titulo": "HTTP & REST — revisar endpoints PULSAR", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/03-http-rest-status-codes.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "00-fundamentos/04-sql-vs-nosql-quando-cada.md", "titulo": "SQL vs NoSQL — justificar Supabase no PULSAR", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/04-sql-vs-nosql-quando-cada.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "00-fundamentos/05-auth-oauth-jwt-session.md", "titulo": "Auth OAuth — entender o fluxo do PULSAR", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/05-auth-oauth-jwt-session.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "00-fundamentos/06-git-fluxo-rebase-merge.md", "titulo": "Git Flow — branch feat/sprint1 do PULSAR", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/06-git-fluxo-rebase-merge.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "10-codigo-limpo/01-srp-funcoes-curtas.md", "titulo": "SRP — funções curtas nos handlers PULSAR", "trilha": "10-codigo-limpo", "moduloPath": "/trilha/10-codigo-limpo/01-srp-funcoes-curtas.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "10-codigo-limpo/02-early-return-guard-clauses.md", "titulo": "Early Return — limpar condicionais do PULSAR", "trilha": "10-codigo-limpo", "moduloPath": "/trilha/10-codigo-limpo/02-early-return-guard-clauses.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "10-codigo-limpo/03-nomes-vs-comentarios.md", "titulo": "Nomes — comentários O QUÊ no PULSAR", "trilha": "10-codigo-limpo", "moduloPath": "/trilha/10-codigo-limpo/03-nomes-vs-comentarios.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md", "titulo": "Abstração — duplicações no PULSAR", "trilha": "10-codigo-limpo", "moduloPath": "/trilha/10-codigo-limpo/04-abstracao-regra-dos-3.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/01-solid-na-pratica.md", "titulo": "SOLID — avaliar módulos do PULSAR", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/01-solid-na-pratica.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/05-adrs-architecture-decision-records.md", "titulo": "ADRs — fechar lacunas DECISIONS.md PULSAR", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/05-adrs-architecture-decision-records.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "30-banco/01-indices-quando-e-quais.md", "titulo": "Índices — checar tabelas Supabase do PULSAR", "trilha": "30-banco", "moduloPath": "/trilha/30-banco/01-indices-quando-e-quais.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "30-banco/03-n-plus-1-e-como-evitar.md", "titulo": "N+1 — queries problema no PULSAR", "trilha": "30-banco", "moduloPath": "/trilha/30-banco/03-n-plus-1-e-como-evitar.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "30-banco/04-transactions-isolation-levels.md", "titulo": "Transactions — operações críticas PULSAR", "trilha": "30-banco", "moduloPath": "/trilha/30-banco/04-transactions-isolation-levels.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "30-banco/05-rls-row-level-security.md", "titulo": "RLS — ler policies do PULSAR e explicar", "trilha": "30-banco", "moduloPath": "/trilha/30-banco/05-rls-row-level-security.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "30-banco/07-migrations-versionadas.md", "titulo": "Migrations — rodar 6 migrations do PULSAR", "trilha": "30-banco", "moduloPath": "/trilha/30-banco/07-migrations-versionadas.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "40-frontend/05-acessibilidade-aria.md", "titulo": "ARIA — acessibilidade ao PULSAR", "trilha": "40-frontend", "moduloPath": "/trilha/40-frontend/05-acessibilidade-aria.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "40-frontend/06-performance-web.md", "titulo": "Performance Web — carregamento do PULSAR", "trilha": "40-frontend", "moduloPath": "/trilha/40-frontend/06-performance-web.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/01-owasp-top-10-resumo.md", "titulo": "OWASP — auditar PULSAR contra Top 10", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/01-owasp-top-10-resumo.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/02-xss-stored-reflected-dom.md", "titulo": "XSS — explicar fix URL params do PULSAR", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/02-xss-stored-reflected-dom.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/03-sql-injection-prepared-statements.md", "titulo": "SQLi — queries dinâmicas no PULSAR", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/03-sql-injection-prepared-statements.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/06-lgpd-na-pratica.md", "titulo": "LGPD — mapear PII do PULSAR-RH", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/06-lgpd-na-pratica.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/07-auditoria-logs-imutavel.md", "titulo": "Auditoria — log imutável no PULSAR", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/07-auditoria-logs-imutavel.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/08-dependency-vulnerabilities.md", "titulo": "Dependências — auditar packages do PULSAR", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/08-dependency-vulnerabilities.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "70-devops/03-ci-cd-github-actions.md", "titulo": "CI/CD — configurar Actions para o PULSAR", "trilha": "70-devops", "moduloPath": "/trilha/70-devops/03-ci-cd-github-actions.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "70-devops/04-deploy-vercel-edge.md", "titulo": "Vercel Edge — deploy do PULSAR", "trilha": "70-devops", "moduloPath": "/trilha/70-devops/04-deploy-vercel-edge.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "70-devops/05-observabilidade-logs-e-metricas.md", "titulo": "Observabilidade — métricas do PULSAR", "trilha": "70-devops", "moduloPath": "/trilha/70-devops/05-observabilidade-logs-e-metricas.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "70-devops/06-iac-introducao-terraform.md", "titulo": "IaC — modelar infra Vercel+Supabase PULSAR", "trilha": "70-devops", "moduloPath": "/trilha/70-devops/06-iac-introducao-terraform.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/01-cache-estrategias.md", "titulo": "Cache — estratégia para dashboard PULSAR", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/01-cache-estrategias.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/03-replicacao-leader-follower.md", "titulo": "Replicação — explicar Supabase replica PULSAR", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/03-replicacao-leader-follower.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/04-cap-theorem-na-pratica.md", "titulo": "CAP Theorem — trade-offs Supabase PULSAR", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/04-cap-theorem-na-pratica.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/06-escalabilidade-horizontal-vs-vertical.md", "titulo": "Escala — planejar crescimento do PULSAR", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/06-escalabilidade-horizontal-vs-vertical.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/08-design-de-sistema-exemplo.md", "titulo": "System Design — desenhar arquitetura PULSAR", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/08-design-de-sistema-exemplo.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "90-entrevista/simulacao.md", "titulo": "Simulação — defender PULSAR em mock entrevista", "trilha": "90-entrevista", "moduloPath": "/trilha/90-entrevista/simulacao.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "90-entrevista/walkthrough-projetos.md", "titulo": "Walkthrough — pitch do PULSAR em 2 min", "trilha": "90-entrevista", "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "90-entrevista/perguntas-junior.md", "titulo": "Perguntas Júnior — praticar com contexto PULSAR", "trilha": "90-entrevista", "moduloPath": "/trilha/90-entrevista/perguntas-junior.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md", "titulo": "Decisões — articular escolhas do PULSAR", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/04-comunicacao-publica.md", "titulo": "Comunicação — explicar PULSAR em texto público", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/04-comunicacao-publica.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/05-raciocinio-em-problema-novo.md", "titulo": "Raciocínio — resolver novo problema no PULSAR", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/05-raciocinio-em-problema-novo.md", "xpBase": 40, "xpBonus": 40, "concluida": false }
+        {
+          "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
+          "titulo": "01 — Tipos, Memória, Valor vs Referência",
+          "trilha": "00-fundamentos",
+          "moduloPath": "/trilha/00-fundamentos/01-tipos-memoria-valor-referencia.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "00-fundamentos/02-async-event-loop-promises.md",
+          "titulo": "02 — Async, Event Loop e Promises",
+          "trilha": "00-fundamentos",
+          "moduloPath": "/trilha/00-fundamentos/02-async-event-loop-promises.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "00-fundamentos/03-http-rest-status-codes.md",
+          "titulo": "03 — HTTP, REST e Status Codes",
+          "trilha": "00-fundamentos",
+          "moduloPath": "/trilha/00-fundamentos/03-http-rest-status-codes.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "00-fundamentos/04-sql-vs-nosql-quando-cada.md",
+          "titulo": "04 — SQL vs NoSQL: Quando Usar Cada",
+          "trilha": "00-fundamentos",
+          "moduloPath": "/trilha/00-fundamentos/04-sql-vs-nosql-quando-cada.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "00-fundamentos/05-auth-oauth-jwt-session.md",
+          "titulo": "05 — Auth: OAuth, JWT e Session",
+          "trilha": "00-fundamentos",
+          "moduloPath": "/trilha/00-fundamentos/05-auth-oauth-jwt-session.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "00-fundamentos/06-git-fluxo-rebase-merge.md",
+          "titulo": "06 — Git: Fluxo, Rebase, Merge e Ferramentas",
+          "trilha": "00-fundamentos",
+          "moduloPath": "/trilha/00-fundamentos/06-git-fluxo-rebase-merge.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "10-codigo-limpo/01-srp-funcoes-curtas.md",
+          "titulo": "01 — SRP e Funções Curtas",
+          "trilha": "10-codigo-limpo",
+          "moduloPath": "/trilha/10-codigo-limpo/01-srp-funcoes-curtas.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "10-codigo-limpo/02-early-return-guard-clauses.md",
+          "titulo": "02 — Early Return e Guard Clauses",
+          "trilha": "10-codigo-limpo",
+          "moduloPath": "/trilha/10-codigo-limpo/02-early-return-guard-clauses.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "10-codigo-limpo/03-nomes-vs-comentarios.md",
+          "titulo": "03 — Nomes vs Comentários",
+          "trilha": "10-codigo-limpo",
+          "moduloPath": "/trilha/10-codigo-limpo/03-nomes-vs-comentarios.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
+          "titulo": "04 — Abstração e a Regra dos 3",
+          "trilha": "10-codigo-limpo",
+          "moduloPath": "/trilha/10-codigo-limpo/04-abstracao-regra-dos-3.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/01-solid-na-pratica.md",
+          "titulo": "01 — SOLID na Prática",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/01-solid-na-pratica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/05-adrs-architecture-decision-records.md",
+          "titulo": "05 — ADRs: Architecture Decision Records",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/05-adrs-architecture-decision-records.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "30-banco/01-indices-quando-e-quais.md",
+          "titulo": "01 — Índices: quando e quais",
+          "trilha": "30-banco",
+          "moduloPath": "/trilha/30-banco/01-indices-quando-e-quais.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "30-banco/03-n-plus-1-e-como-evitar.md",
+          "titulo": "03 — N+1 e como evitar",
+          "trilha": "30-banco",
+          "moduloPath": "/trilha/30-banco/03-n-plus-1-e-como-evitar.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "30-banco/04-transactions-isolation-levels.md",
+          "titulo": "04 — Transactions e isolation levels",
+          "trilha": "30-banco",
+          "moduloPath": "/trilha/30-banco/04-transactions-isolation-levels.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "30-banco/05-rls-row-level-security.md",
+          "titulo": "05 — RLS: Row Level Security",
+          "trilha": "30-banco",
+          "moduloPath": "/trilha/30-banco/05-rls-row-level-security.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "30-banco/07-migrations-versionadas.md",
+          "titulo": "07 — Migrations versionadas",
+          "trilha": "30-banco",
+          "moduloPath": "/trilha/30-banco/07-migrations-versionadas.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "40-frontend/01-render-cycle-e-reconciliation.md",
+          "titulo": "01 — Render Cycle e Reconciliation",
+          "trilha": "40-frontend",
+          "moduloPath": "/trilha/40-frontend/01-render-cycle-e-reconciliation.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "40-frontend/05-acessibilidade-aria.md",
+          "titulo": "05 — Acessibilidade e ARIA",
+          "trilha": "40-frontend",
+          "moduloPath": "/trilha/40-frontend/05-acessibilidade-aria.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "40-frontend/06-performance-web.md",
+          "titulo": "06 — Performance Web",
+          "trilha": "40-frontend",
+          "moduloPath": "/trilha/40-frontend/06-performance-web.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/01-owasp-top-10-resumo.md",
+          "titulo": "01 — OWASP Top 10: Mapa do Território",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/01-owasp-top-10-resumo.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/02-xss-stored-reflected-dom.md",
+          "titulo": "02 — XSS: Stored, Reflected e DOM-Based",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/02-xss-stored-reflected-dom.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/03-sql-injection-prepared-statements.md",
+          "titulo": "03 — SQL Injection e Prepared Statements",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/03-sql-injection-prepared-statements.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/06-lgpd-na-pratica.md",
+          "titulo": "06 — LGPD na Prática",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/06-lgpd-na-pratica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/07-auditoria-logs-imutavel.md",
+          "titulo": "07 — Auditoria e Logs Imutáveis",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/07-auditoria-logs-imutavel.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/08-dependency-vulnerabilities.md",
+          "titulo": "08 — Vulnerabilidades em Dependências",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/08-dependency-vulnerabilities.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "70-devops/03-ci-cd-github-actions.md",
+          "titulo": "03 — CI/CD com GitHub Actions",
+          "trilha": "70-devops",
+          "moduloPath": "/trilha/70-devops/03-ci-cd-github-actions.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "70-devops/04-deploy-vercel-edge.md",
+          "titulo": "04 — Deploy no Vercel e Edge Runtime",
+          "trilha": "70-devops",
+          "moduloPath": "/trilha/70-devops/04-deploy-vercel-edge.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "70-devops/05-observabilidade-logs-e-metricas.md",
+          "titulo": "05 — Observabilidade: Logs e Métricas",
+          "trilha": "70-devops",
+          "moduloPath": "/trilha/70-devops/05-observabilidade-logs-e-metricas.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "70-devops/06-iac-introducao-terraform.md",
+          "titulo": "06 — IaC: Introdução ao Terraform",
+          "trilha": "70-devops",
+          "moduloPath": "/trilha/70-devops/06-iac-introducao-terraform.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/01-cache-estrategias.md",
+          "titulo": "01 — Cache: Estratégias e Trade-offs",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/01-cache-estrategias.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/03-replicacao-leader-follower.md",
+          "titulo": "03 — Replicação Leader-Follower",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/03-replicacao-leader-follower.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/04-cap-theorem-na-pratica.md",
+          "titulo": "04 — CAP Theorem na Prática",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/04-cap-theorem-na-pratica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/06-escalabilidade-horizontal-vs-vertical.md",
+          "titulo": "06 — Escalabilidade: Horizontal vs Vertical",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/06-escalabilidade-horizontal-vs-vertical.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/08-design-de-sistema-exemplo.md",
+          "titulo": "08 — Design de Sistema: Meet Hub do Zero",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/08-design-de-sistema-exemplo.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/perguntas-junior.md",
+          "titulo": "Banco de Perguntas — Dev Júnior",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/perguntas-junior.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/simulacao.md",
+          "titulo": "Mock Interview — Roteiro de Simulação",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/simulacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/walkthrough-projetos.md",
+          "titulo": "Walkthrough de Projetos AG — Como Apresentar em Entrevista",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "titulo": "02 — Decisões em primeira pessoa",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/04-comunicacao-publica.md",
+          "titulo": "04 — Comunicação pública",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/04-comunicacao-publica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/05-raciocinio-em-problema-novo.md",
+          "titulo": "05 — Raciocínio em problema novo",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/05-raciocinio-em-problema-novo.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        }
       ],
       "bounties": [
-        { "id": "pulsar-migrations", "titulo": "Rodar 6 migrations no Supabase de prod", "xp": 40, "concluida": false },
-        { "id": "pulsar-sprint1-merge", "titulo": "Merge feat/sprint1-security → main", "xp": 100, "concluida": false },
-        { "id": "pulsar-decisions", "titulo": "Fechar lacunas DECISIONS.md", "xp": 60, "concluida": false }
+        {
+          "id": "pulsar-migrations",
+          "titulo": "Rodar 6 migrations no Supabase de prod",
+          "xp": 40,
+          "concluida": false
+        },
+        {
+          "id": "pulsar-sprint1-merge",
+          "titulo": "Merge feat/sprint1-security → main",
+          "xp": 100,
+          "concluida": false
+        },
+        {
+          "id": "pulsar-decisions",
+          "titulo": "Fechar lacunas DECISIONS.md",
+          "xp": 60,
+          "concluida": false
+        }
       ]
     },
     {
@@ -62,17 +414,56 @@
       "nome": "Cliente Varejo",
       "icone": "📱",
       "prioridade": "alta",
-      "hp": { "atual": 3, "max": 10, "label": "3/10 DECISIONS" },
-      "stack": ["Node.js", "Supabase", "Lovable"],
+      "hp": {
+        "atual": 3,
+        "max": 10,
+        "label": "3/10 DECISIONS"
+      },
+      "stack": [
+        "Node.js",
+        "Supabase",
+        "Lovable"
+      ],
       "ultimaAtividade": "2026-05-15",
       "sideQuests": [
-        { "id": "20-arquitetura/04-padroes-comunicacao.md", "titulo": "Padrões de Comunicação — sync API ERP-externo", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/04-padroes-comunicacao.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "50-backend/05-rate-limit-e-throttle.md", "titulo": "Rate Limit — resolver quota diária ERP-externo", "trilha": "50-backend", "moduloPath": "/trilha/50-backend/05-rate-limit-e-throttle.md", "xpBase": 40, "xpBonus": 40, "concluida": false }
+        {
+          "id": "20-arquitetura/04-padroes-comunicacao.md",
+          "titulo": "04 — Padrões de Comunicação",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/04-padroes-comunicacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "50-backend/05-rate-limit-e-throttle.md",
+          "titulo": "05 — Rate Limit e Throttle",
+          "trilha": "50-backend",
+          "moduloPath": "/trilha/50-backend/05-rate-limit-e-throttle.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        }
       ],
       "bounties": [
-        { "id": "varejo-diagnostico", "titulo": "Diagnóstico formal entregue ao cliente", "xp": 60, "concluida": false },
-        { "id": "varejo-sync-incremental", "titulo": "Novo sync incremental 10min (300 req/dia budget)", "xp": 100, "concluida": false },
-        { "id": "varejo-deploy-windows", "titulo": "Deploy no servidor Windows do cliente", "xp": 100, "concluida": false }
+        {
+          "id": "varejo-diagnostico",
+          "titulo": "Diagnóstico formal entregue ao cliente",
+          "xp": 60,
+          "concluida": false
+        },
+        {
+          "id": "varejo-sync-incremental",
+          "titulo": "Novo sync incremental 10min (300 req/dia budget)",
+          "xp": 100,
+          "concluida": false
+        },
+        {
+          "id": "varejo-deploy-windows",
+          "titulo": "Deploy no servidor Windows do cliente",
+          "xp": 100,
+          "concluida": false
+        }
       ]
     },
     {
@@ -80,35 +471,272 @@
       "nome": "CLIENTE OFICINA",
       "icone": "🏍️",
       "prioridade": "media",
-      "hp": { "atual": 5, "max": 10, "label": "5/10 DECISIONS" },
-      "stack": ["Node.js", "Firebird", "Supabase"],
+      "hp": {
+        "atual": 5,
+        "max": 10,
+        "label": "5/10 DECISIONS"
+      },
+      "stack": [
+        "Node.js",
+        "Firebird",
+        "Supabase"
+      ],
       "ultimaAtividade": "2026-05-25",
       "sideQuests": [
-        { "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md", "titulo": "Tipos & Memória — buffer Firebird no OFICINA", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/01-tipos-memoria-valor-referencia.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "00-fundamentos/04-sql-vs-nosql-quando-cada.md", "titulo": "SQL vs NoSQL — Firebird→Supabase no OFICINA", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/04-sql-vs-nosql-quando-cada.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "00-fundamentos/06-git-fluxo-rebase-merge.md", "titulo": "Git Flow — versionar OFICINA sem servidor git", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/06-git-fluxo-rebase-merge.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/03-monolito-vs-microsservico.md", "titulo": "Monolito — arquitetura single-script OFICINA", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/03-monolito-vs-microsservico.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/04-padroes-comunicacao.md", "titulo": "Padrões — Firebird polling no OFICINA", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/04-padroes-comunicacao.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/06-design-patterns-uteis.md", "titulo": "Design Patterns — retry+backoff do OFICINA", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/06-design-patterns-uteis.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/07-modularidade-pacotes.md", "titulo": "Modularidade — refatorar script OFICINA", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/07-modularidade-pacotes.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "30-banco/02-explain-analyze-query-plan.md", "titulo": "EXPLAIN — queries Supabase do OFICINA", "trilha": "30-banco", "moduloPath": "/trilha/30-banco/02-explain-analyze-query-plan.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "30-banco/06-particionamento-e-retencao.md", "titulo": "Retenção — definir política 180d sale_items OFICINA", "trilha": "30-banco", "moduloPath": "/trilha/30-banco/06-particionamento-e-retencao.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "30-banco/08-backup-e-recovery.md", "titulo": "Backup — estratégia para dados OFICINA", "trilha": "30-banco", "moduloPath": "/trilha/30-banco/08-backup-e-recovery.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "50-backend/04-idempotencia-em-apis.md", "titulo": "Idempotência — upsert por ID no OFICINA", "trilha": "50-backend", "moduloPath": "/trilha/50-backend/04-idempotencia-em-apis.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/03-sql-injection-prepared-statements.md", "titulo": "Prepared Statements — queries Firebird OFICINA", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/03-sql-injection-prepared-statements.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/05-secrets-management-env-rotacao.md", "titulo": "Secrets — rotacionar SUPABASE_KEY do OFICINA", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/05-secrets-management-env-rotacao.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/07-auditoria-logs-imutavel.md", "titulo": "Logs — rastrear falhas de sync OFICINA", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/07-auditoria-logs-imutavel.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/08-dependency-vulnerabilities.md", "titulo": "Vulnerabilidades — auditar node-firebird OFICINA", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/08-dependency-vulnerabilities.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/04-cap-theorem-na-pratica.md", "titulo": "CAP Theorem — disponibilidade sync OFICINA", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/04-cap-theorem-na-pratica.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/07-idempotencia-e-deduplicacao.md", "titulo": "Deduplicação — lockfile full-year OFICINA", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/07-idempotencia-e-deduplicacao.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "90-entrevista/walkthrough-projetos.md", "titulo": "Walkthrough — pitch do OFICINA em 2 min", "trilha": "90-entrevista", "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/04-comunicacao-publica.md", "titulo": "Comunicação — caso de uso OFICINA em texto público", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/04-comunicacao-publica.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/05-raciocinio-em-problema-novo.md", "titulo": "Raciocínio — novo problema de sync OFICINA", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/05-raciocinio-em-problema-novo.md", "xpBase": 40, "xpBonus": 40, "concluida": false }
+        {
+          "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
+          "titulo": "01 — Tipos, Memória, Valor vs Referência",
+          "trilha": "00-fundamentos",
+          "moduloPath": "/trilha/00-fundamentos/01-tipos-memoria-valor-referencia.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "00-fundamentos/04-sql-vs-nosql-quando-cada.md",
+          "titulo": "04 — SQL vs NoSQL: Quando Usar Cada",
+          "trilha": "00-fundamentos",
+          "moduloPath": "/trilha/00-fundamentos/04-sql-vs-nosql-quando-cada.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "00-fundamentos/06-git-fluxo-rebase-merge.md",
+          "titulo": "06 — Git: Fluxo, Rebase, Merge e Ferramentas",
+          "trilha": "00-fundamentos",
+          "moduloPath": "/trilha/00-fundamentos/06-git-fluxo-rebase-merge.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/03-monolito-vs-microsservico.md",
+          "titulo": "03 — Monolito vs Microsserviço",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/03-monolito-vs-microsservico.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/04-padroes-comunicacao.md",
+          "titulo": "04 — Padrões de Comunicação",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/04-padroes-comunicacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/06-design-patterns-uteis.md",
+          "titulo": "06 — Design Patterns Úteis",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/06-design-patterns-uteis.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/07-modularidade-pacotes.md",
+          "titulo": "07 — Modularidade e Pacotes",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/07-modularidade-pacotes.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "30-banco/02-explain-analyze-query-plan.md",
+          "titulo": "02 — EXPLAIN ANALYZE e query plan",
+          "trilha": "30-banco",
+          "moduloPath": "/trilha/30-banco/02-explain-analyze-query-plan.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "30-banco/06-particionamento-e-retencao.md",
+          "titulo": "06 — Particionamento e retenção",
+          "trilha": "30-banco",
+          "moduloPath": "/trilha/30-banco/06-particionamento-e-retencao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "30-banco/07-migrations-versionadas.md",
+          "titulo": "07 — Migrations versionadas",
+          "trilha": "30-banco",
+          "moduloPath": "/trilha/30-banco/07-migrations-versionadas.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "30-banco/08-backup-e-recovery.md",
+          "titulo": "08 — Backup e recovery",
+          "trilha": "30-banco",
+          "moduloPath": "/trilha/30-banco/08-backup-e-recovery.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "50-backend/02-prisma-typesafe-orm.md",
+          "titulo": "02 — Prisma: ORM Type-Safe",
+          "trilha": "50-backend",
+          "moduloPath": "/trilha/50-backend/02-prisma-typesafe-orm.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "50-backend/04-idempotencia-em-apis.md",
+          "titulo": "04 — Idempotência em APIs",
+          "trilha": "50-backend",
+          "moduloPath": "/trilha/50-backend/04-idempotencia-em-apis.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/01-owasp-top-10-resumo.md",
+          "titulo": "01 — OWASP Top 10: Mapa do Território",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/01-owasp-top-10-resumo.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/03-sql-injection-prepared-statements.md",
+          "titulo": "03 — SQL Injection e Prepared Statements",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/03-sql-injection-prepared-statements.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/05-secrets-management-env-rotacao.md",
+          "titulo": "05 — Secrets Management e Rotação",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/05-secrets-management-env-rotacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/07-auditoria-logs-imutavel.md",
+          "titulo": "07 — Auditoria e Logs Imutáveis",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/07-auditoria-logs-imutavel.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/08-dependency-vulnerabilities.md",
+          "titulo": "08 — Vulnerabilidades em Dependências",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/08-dependency-vulnerabilities.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/04-cap-theorem-na-pratica.md",
+          "titulo": "04 — CAP Theorem na Prática",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/04-cap-theorem-na-pratica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/07-idempotencia-e-deduplicacao.md",
+          "titulo": "07 — Idempotência e Deduplicação",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/07-idempotencia-e-deduplicacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "85-escala/05-async-e-filas.md",
+          "titulo": "05 — Assíncrono e filas",
+          "trilha": "85-escala",
+          "moduloPath": "/trilha/85-escala/05-async-e-filas.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/perguntas-junior.md",
+          "titulo": "Banco de Perguntas — Dev Júnior",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/perguntas-junior.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/walkthrough-projetos.md",
+          "titulo": "Walkthrough de Projetos AG — Como Apresentar em Entrevista",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "titulo": "02 — Decisões em primeira pessoa",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/04-comunicacao-publica.md",
+          "titulo": "04 — Comunicação pública",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/04-comunicacao-publica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/05-raciocinio-em-problema-novo.md",
+          "titulo": "05 — Raciocínio em problema novo",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/05-raciocinio-em-problema-novo.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        }
       ],
       "bounties": [
-        { "id": "oficina-store-locations", "titulo": "Preencher store_locations das 6 lojas", "xp": 30, "concluida": false },
-        { "id": "oficina-rotate-key", "titulo": "Rotacionar SUPABASE_SERVICE_ROLE_KEY", "xp": 50, "concluida": false },
-        { "id": "oficina-retencao", "titulo": "Definir retenção 180d para sale_items (LGPD)", "xp": 40, "concluida": false }
+        {
+          "id": "oficina-store-locations",
+          "titulo": "Preencher store_locations das 6 lojas",
+          "xp": 30,
+          "concluida": false
+        },
+        {
+          "id": "oficina-rotate-key",
+          "titulo": "Rotacionar SUPABASE_SERVICE_ROLE_KEY",
+          "xp": 50,
+          "concluida": false
+        },
+        {
+          "id": "oficina-retencao",
+          "titulo": "Definir retenção 180d para sale_items (LGPD)",
+          "xp": 40,
+          "concluida": false
+        }
       ]
     },
     {
@@ -116,57 +744,464 @@
       "nome": "Meet Hub",
       "icone": "🎥",
       "prioridade": "media",
-      "hp": { "atual": 4, "max": 10, "label": "4/10 DECISIONS" },
-      "stack": ["Node.js", "Express", "Prisma", "React", "Docker", "Redis"],
+      "hp": {
+        "atual": 4,
+        "max": 10,
+        "label": "4/10 DECISIONS"
+      },
+      "stack": [
+        "Node.js",
+        "Express",
+        "Prisma",
+        "React",
+        "Docker",
+        "Redis"
+      ],
       "ultimaAtividade": "2026-05-25",
       "sideQuests": [
-        { "id": "00-fundamentos/03-http-rest-status-codes.md", "titulo": "HTTP & REST — endpoints do Meet Hub", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/03-http-rest-status-codes.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "10-codigo-limpo/02-early-return-guard-clauses.md", "titulo": "Early Return — handlers Meet Hub", "trilha": "10-codigo-limpo", "moduloPath": "/trilha/10-codigo-limpo/02-early-return-guard-clauses.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/01-solid-na-pratica.md", "titulo": "SOLID — serviços do Meet Hub", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/01-solid-na-pratica.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/02-camadas-controller-service-repository.md", "titulo": "Camadas — controller/service/repo Meet Hub", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/02-camadas-controller-service-repository.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/03-monolito-vs-microsservico.md", "titulo": "Monolito — justificar stack Meet Hub", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/03-monolito-vs-microsservico.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/04-padroes-comunicacao.md", "titulo": "Padrões — fila de transcrição Meet Hub", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/04-padroes-comunicacao.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/05-adrs-architecture-decision-records.md", "titulo": "ADRs — decisões de stack Meet Hub", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/05-adrs-architecture-decision-records.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/06-design-patterns-uteis.md", "titulo": "Design Patterns — Worker Meet Hub", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/06-design-patterns-uteis.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "20-arquitetura/07-modularidade-pacotes.md", "titulo": "Modularidade — monorepo apps/ Meet Hub", "trilha": "20-arquitetura", "moduloPath": "/trilha/20-arquitetura/07-modularidade-pacotes.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "40-frontend/01-render-cycle-e-reconciliation.md", "titulo": "Render Cycle — React do Meet Hub", "trilha": "40-frontend", "moduloPath": "/trilha/40-frontend/01-render-cycle-e-reconciliation.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "40-frontend/02-hooks-essenciais.md", "titulo": "Hooks — dashboard Meet Hub", "trilha": "40-frontend", "moduloPath": "/trilha/40-frontend/02-hooks-essenciais.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "40-frontend/03-quando-memoizar-e-quando-nao.md", "titulo": "Memoização — lista de gravações Meet Hub", "trilha": "40-frontend", "moduloPath": "/trilha/40-frontend/03-quando-memoizar-e-quando-nao.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "40-frontend/04-state-management.md", "titulo": "State — estado do bot Meet Hub", "trilha": "40-frontend", "moduloPath": "/trilha/40-frontend/04-state-management.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "40-frontend/06-performance-web.md", "titulo": "Performance — lista de transcrições Meet Hub", "trilha": "40-frontend", "moduloPath": "/trilha/40-frontend/06-performance-web.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "40-frontend/07-testes-ui.md", "titulo": "Testes UI — player de gravações Meet Hub", "trilha": "40-frontend", "moduloPath": "/trilha/40-frontend/07-testes-ui.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "50-backend/01-express-estrutura-middlewares.md", "titulo": "Express Middlewares — Meet Hub API", "trilha": "50-backend", "moduloPath": "/trilha/50-backend/01-express-estrutura-middlewares.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "50-backend/02-prisma-typesafe-orm.md", "titulo": "Prisma — schema do Meet Hub", "trilha": "50-backend", "moduloPath": "/trilha/50-backend/02-prisma-typesafe-orm.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "50-backend/03-queues-bull-redis.md", "titulo": "Bull/Redis — fila de transcrição Meet Hub", "trilha": "50-backend", "moduloPath": "/trilha/50-backend/03-queues-bull-redis.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "50-backend/04-idempotencia-em-apis.md", "titulo": "Idempotência — job de transcrição Meet Hub", "trilha": "50-backend", "moduloPath": "/trilha/50-backend/04-idempotencia-em-apis.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "50-backend/05-rate-limit-e-throttle.md", "titulo": "Rate Limit — API Meet Hub", "trilha": "50-backend", "moduloPath": "/trilha/50-backend/05-rate-limit-e-throttle.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "50-backend/06-graceful-shutdown-sigterm.md", "titulo": "Graceful Shutdown — SIGTERM Meet Hub Docker", "trilha": "50-backend", "moduloPath": "/trilha/50-backend/06-graceful-shutdown-sigterm.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "50-backend/07-logging-estruturado-pino.md", "titulo": "Pino Logging — Meet Hub logs estruturados", "trilha": "50-backend", "moduloPath": "/trilha/50-backend/07-logging-estruturado-pino.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "50-backend/08-validation-zod-em-boundary.md", "titulo": "Zod — validar request Meet Hub API", "trilha": "50-backend", "moduloPath": "/trilha/50-backend/08-validation-zod-em-boundary.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/01-owasp-top-10-resumo.md", "titulo": "OWASP — auditar Meet Hub", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/01-owasp-top-10-resumo.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/03-sql-injection-prepared-statements.md", "titulo": "SQLi — Prisma protege Meet Hub?", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/03-sql-injection-prepared-statements.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/04-csrf-e-samesite-cookies.md", "titulo": "CSRF — cookies Meet Hub", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/04-csrf-e-samesite-cookies.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/05-secrets-management-env-rotacao.md", "titulo": "Secrets — .env Meet Hub no DO", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/05-secrets-management-env-rotacao.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/07-auditoria-logs-imutavel.md", "titulo": "Auditoria — acesso a gravações Meet Hub", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/07-auditoria-logs-imutavel.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/08-dependency-vulnerabilities.md", "titulo": "Deps — Puppeteer + FFmpeg Meet Hub", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/08-dependency-vulnerabilities.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "70-devops/01-docker-imagem-camadas-cache.md", "titulo": "Docker Camadas — otimizar imagem Meet Hub", "trilha": "70-devops", "moduloPath": "/trilha/70-devops/01-docker-imagem-camadas-cache.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "70-devops/02-docker-compose-dev-vs-prod.md", "titulo": "Docker Compose — dev/prod Meet Hub", "trilha": "70-devops", "moduloPath": "/trilha/70-devops/02-docker-compose-dev-vs-prod.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "70-devops/05-observabilidade-logs-e-metricas.md", "titulo": "Observabilidade — métricas bot Meet Hub", "trilha": "70-devops", "moduloPath": "/trilha/70-devops/05-observabilidade-logs-e-metricas.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "70-devops/06-iac-introducao-terraform.md", "titulo": "IaC — infra DO do Meet Hub", "trilha": "70-devops", "moduloPath": "/trilha/70-devops/06-iac-introducao-terraform.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/02-filas-quando-e-como.md", "titulo": "Filas — Bull queue Meet Hub", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/02-filas-quando-e-como.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/04-cap-theorem-na-pratica.md", "titulo": "CAP — consistência Meet Hub", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/04-cap-theorem-na-pratica.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/05-load-balancing.md", "titulo": "Load Balancing — escalar bots Meet Hub", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/05-load-balancing.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/06-escalabilidade-horizontal-vs-vertical.md", "titulo": "Escalabilidade — plano 6 bots Meet Hub", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/06-escalabilidade-horizontal-vs-vertical.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/07-idempotencia-e-deduplicacao.md", "titulo": "Idempotência — deduplicar jobs Meet Hub", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/07-idempotencia-e-deduplicacao.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/08-design-de-sistema-exemplo.md", "titulo": "System Design — arquitetura Meet Hub completa", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/08-design-de-sistema-exemplo.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "90-entrevista/walkthrough-projetos.md", "titulo": "Walkthrough — pitch do Meet Hub em 2 min", "trilha": "90-entrevista", "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "90-entrevista/perguntas-junior.md", "titulo": "Perguntas Júnior — contexto Meet Hub", "trilha": "90-entrevista", "moduloPath": "/trilha/90-entrevista/perguntas-junior.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/04-comunicacao-publica.md", "titulo": "Comunicação — post sobre Meet Hub", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/04-comunicacao-publica.md", "xpBase": 40, "xpBonus": 40, "concluida": false }
+        {
+          "id": "00-fundamentos/03-http-rest-status-codes.md",
+          "titulo": "03 — HTTP, REST e Status Codes",
+          "trilha": "00-fundamentos",
+          "moduloPath": "/trilha/00-fundamentos/03-http-rest-status-codes.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "10-codigo-limpo/02-early-return-guard-clauses.md",
+          "titulo": "02 — Early Return e Guard Clauses",
+          "trilha": "10-codigo-limpo",
+          "moduloPath": "/trilha/10-codigo-limpo/02-early-return-guard-clauses.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/01-solid-na-pratica.md",
+          "titulo": "01 — SOLID na Prática",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/01-solid-na-pratica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/02-camadas-controller-service-repository.md",
+          "titulo": "02 — Camadas: Controller / Service / Repository",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/02-camadas-controller-service-repository.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/03-monolito-vs-microsservico.md",
+          "titulo": "03 — Monolito vs Microsserviço",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/03-monolito-vs-microsservico.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/04-padroes-comunicacao.md",
+          "titulo": "04 — Padrões de Comunicação",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/04-padroes-comunicacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/05-adrs-architecture-decision-records.md",
+          "titulo": "05 — ADRs: Architecture Decision Records",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/05-adrs-architecture-decision-records.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/06-design-patterns-uteis.md",
+          "titulo": "06 — Design Patterns Úteis",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/06-design-patterns-uteis.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "20-arquitetura/07-modularidade-pacotes.md",
+          "titulo": "07 — Modularidade e Pacotes",
+          "trilha": "20-arquitetura",
+          "moduloPath": "/trilha/20-arquitetura/07-modularidade-pacotes.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "40-frontend/01-render-cycle-e-reconciliation.md",
+          "titulo": "01 — Render Cycle e Reconciliation",
+          "trilha": "40-frontend",
+          "moduloPath": "/trilha/40-frontend/01-render-cycle-e-reconciliation.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "40-frontend/02-hooks-essenciais.md",
+          "titulo": "02 — Hooks Essenciais",
+          "trilha": "40-frontend",
+          "moduloPath": "/trilha/40-frontend/02-hooks-essenciais.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "40-frontend/03-quando-memoizar-e-quando-nao.md",
+          "titulo": "03 — Quando Memoizar e Quando Não",
+          "trilha": "40-frontend",
+          "moduloPath": "/trilha/40-frontend/03-quando-memoizar-e-quando-nao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "40-frontend/04-state-management.md",
+          "titulo": "04 — State Management",
+          "trilha": "40-frontend",
+          "moduloPath": "/trilha/40-frontend/04-state-management.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "40-frontend/06-performance-web.md",
+          "titulo": "06 — Performance Web",
+          "trilha": "40-frontend",
+          "moduloPath": "/trilha/40-frontend/06-performance-web.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "40-frontend/07-testes-ui.md",
+          "titulo": "07 — Testes de UI",
+          "trilha": "40-frontend",
+          "moduloPath": "/trilha/40-frontend/07-testes-ui.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "50-backend/01-express-estrutura-middlewares.md",
+          "titulo": "01 — Express: Estrutura e Middlewares",
+          "trilha": "50-backend",
+          "moduloPath": "/trilha/50-backend/01-express-estrutura-middlewares.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "50-backend/02-prisma-typesafe-orm.md",
+          "titulo": "02 — Prisma: ORM Type-Safe",
+          "trilha": "50-backend",
+          "moduloPath": "/trilha/50-backend/02-prisma-typesafe-orm.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "50-backend/03-queues-bull-redis.md",
+          "titulo": "03 — Filas com Bull e Redis",
+          "trilha": "50-backend",
+          "moduloPath": "/trilha/50-backend/03-queues-bull-redis.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "50-backend/04-idempotencia-em-apis.md",
+          "titulo": "04 — Idempotência em APIs",
+          "trilha": "50-backend",
+          "moduloPath": "/trilha/50-backend/04-idempotencia-em-apis.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "50-backend/05-rate-limit-e-throttle.md",
+          "titulo": "05 — Rate Limit e Throttle",
+          "trilha": "50-backend",
+          "moduloPath": "/trilha/50-backend/05-rate-limit-e-throttle.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "50-backend/06-graceful-shutdown-sigterm.md",
+          "titulo": "06 — Graceful Shutdown e SIGTERM",
+          "trilha": "50-backend",
+          "moduloPath": "/trilha/50-backend/06-graceful-shutdown-sigterm.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "50-backend/07-logging-estruturado-pino.md",
+          "titulo": "07 — Logging Estruturado com Pino",
+          "trilha": "50-backend",
+          "moduloPath": "/trilha/50-backend/07-logging-estruturado-pino.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "50-backend/08-validation-zod-em-boundary.md",
+          "titulo": "08 — Validação com Zod em Boundary",
+          "trilha": "50-backend",
+          "moduloPath": "/trilha/50-backend/08-validation-zod-em-boundary.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/01-owasp-top-10-resumo.md",
+          "titulo": "01 — OWASP Top 10: Mapa do Território",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/01-owasp-top-10-resumo.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/03-sql-injection-prepared-statements.md",
+          "titulo": "03 — SQL Injection e Prepared Statements",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/03-sql-injection-prepared-statements.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/04-csrf-e-samesite-cookies.md",
+          "titulo": "04 — CSRF e SameSite Cookies",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/04-csrf-e-samesite-cookies.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/05-secrets-management-env-rotacao.md",
+          "titulo": "05 — Secrets Management e Rotação",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/05-secrets-management-env-rotacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/06-lgpd-na-pratica.md",
+          "titulo": "06 — LGPD na Prática",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/06-lgpd-na-pratica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/07-auditoria-logs-imutavel.md",
+          "titulo": "07 — Auditoria e Logs Imutáveis",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/07-auditoria-logs-imutavel.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/08-dependency-vulnerabilities.md",
+          "titulo": "08 — Vulnerabilidades em Dependências",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/08-dependency-vulnerabilities.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "70-devops/01-docker-imagem-camadas-cache.md",
+          "titulo": "01 — Docker: Imagem, Camadas e Cache",
+          "trilha": "70-devops",
+          "moduloPath": "/trilha/70-devops/01-docker-imagem-camadas-cache.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "70-devops/02-docker-compose-dev-vs-prod.md",
+          "titulo": "02 — Docker Compose: Dev vs. Prod",
+          "trilha": "70-devops",
+          "moduloPath": "/trilha/70-devops/02-docker-compose-dev-vs-prod.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "70-devops/04-deploy-vercel-edge.md",
+          "titulo": "04 — Deploy no Vercel e Edge Runtime",
+          "trilha": "70-devops",
+          "moduloPath": "/trilha/70-devops/04-deploy-vercel-edge.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "70-devops/05-observabilidade-logs-e-metricas.md",
+          "titulo": "05 — Observabilidade: Logs e Métricas",
+          "trilha": "70-devops",
+          "moduloPath": "/trilha/70-devops/05-observabilidade-logs-e-metricas.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "70-devops/06-iac-introducao-terraform.md",
+          "titulo": "06 — IaC: Introdução ao Terraform",
+          "trilha": "70-devops",
+          "moduloPath": "/trilha/70-devops/06-iac-introducao-terraform.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/01-cache-estrategias.md",
+          "titulo": "01 — Cache: Estratégias e Trade-offs",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/01-cache-estrategias.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/02-filas-quando-e-como.md",
+          "titulo": "02 — Filas: Quando e Como Usar",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/02-filas-quando-e-como.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/04-cap-theorem-na-pratica.md",
+          "titulo": "04 — CAP Theorem na Prática",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/04-cap-theorem-na-pratica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/05-load-balancing.md",
+          "titulo": "05 — Load Balancing",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/05-load-balancing.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/06-escalabilidade-horizontal-vs-vertical.md",
+          "titulo": "06 — Escalabilidade: Horizontal vs Vertical",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/06-escalabilidade-horizontal-vs-vertical.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/07-idempotencia-e-deduplicacao.md",
+          "titulo": "07 — Idempotência e Deduplicação",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/07-idempotencia-e-deduplicacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/08-design-de-sistema-exemplo.md",
+          "titulo": "08 — Design de Sistema: Meet Hub do Zero",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/08-design-de-sistema-exemplo.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "85-escala/05-async-e-filas.md",
+          "titulo": "05 — Assíncrono e filas",
+          "trilha": "85-escala",
+          "moduloPath": "/trilha/85-escala/05-async-e-filas.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/perguntas-junior.md",
+          "titulo": "Banco de Perguntas — Dev Júnior",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/perguntas-junior.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/walkthrough-projetos.md",
+          "titulo": "Walkthrough de Projetos AG — Como Apresentar em Entrevista",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "titulo": "02 — Decisões em primeira pessoa",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/04-comunicacao-publica.md",
+          "titulo": "04 — Comunicação pública",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/04-comunicacao-publica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        }
       ],
       "bounties": [
-        { "id": "meet-gemini", "titulo": "Integrar Gemini 1.5 Flash real (remover mock)", "xp": 100, "concluida": false },
-        { "id": "meet-search", "titulo": "Feature: busca em transcrições", "xp": 80, "concluida": false },
-        { "id": "meet-hetzner", "titulo": "Migrar DO → Hetzner CX31", "xp": 60, "concluida": false }
+        {
+          "id": "meet-gemini",
+          "titulo": "Integrar Gemini 1.5 Flash real (remover mock)",
+          "xp": 100,
+          "concluida": false
+        },
+        {
+          "id": "meet-search",
+          "titulo": "Feature: busca em transcrições",
+          "xp": 80,
+          "concluida": false
+        },
+        {
+          "id": "meet-hetzner",
+          "titulo": "Migrar DO → Hetzner CX31",
+          "xp": 60,
+          "concluida": false
+        }
       ]
     },
     {
@@ -174,22 +1209,65 @@
       "nome": "AG Converge",
       "icone": "🎪",
       "prioridade": "media",
-      "hp": { "atual": 3, "max": 10, "label": "3/10 DECISIONS" },
-      "stack": ["HTML+JS", "Supabase", "localStorage"],
+      "hp": {
+        "atual": 3,
+        "max": 10,
+        "label": "3/10 DECISIONS"
+      },
+      "stack": [
+        "HTML+JS",
+        "Supabase",
+        "localStorage"
+      ],
       "ultimaAtividade": "2026-05-14",
       "sideQuests": [
-        { "id": "00-fundamentos/05-auth-oauth-jwt-session.md", "titulo": "Auth OAuth — login Google do AG Converge", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/05-auth-oauth-jwt-session.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/07-auditoria-logs-imutavel.md", "titulo": "Auditoria — log imutável leads AG Converge", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/07-auditoria-logs-imutavel.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/02-filas-quando-e-como.md", "titulo": "Filas — e-mails para eventos AG Converge", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/02-filas-quando-e-como.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "80-system-design/04-cap-theorem-na-pratica.md", "titulo": "CAP — consistência de leads AG Converge", "trilha": "80-system-design", "moduloPath": "/trilha/80-system-design/04-cap-theorem-na-pratica.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md", "titulo": "Decisões — justificar stack HTML-only AG Converge", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/04-comunicacao-publica.md", "titulo": "Comunicação — post sobre AG Converge", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/04-comunicacao-publica.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/05-raciocinio-em-problema-novo.md", "titulo": "Raciocínio — novo evento AG Converge", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/05-raciocinio-em-problema-novo.md", "xpBase": 40, "xpBonus": 40, "concluida": false }
+        {
+          "id": "90-entrevista/walkthrough-projetos.md",
+          "titulo": "Walkthrough de Projetos AG — Como Apresentar em Entrevista",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "titulo": "02 — Decisões em primeira pessoa",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/04-comunicacao-publica.md",
+          "titulo": "04 — Comunicação pública",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/04-comunicacao-publica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        }
       ],
       "bounties": [
-        { "id": "converge-leads-export", "titulo": "Exportar leads RH em Xeque", "xp": 30, "concluida": false },
-        { "id": "converge-supabase", "titulo": "Migrar localStorage → Supabase", "xp": 80, "concluida": false },
-        { "id": "converge-proximo-evento", "titulo": "Planejar próximo evento AG Converge", "xp": 60, "concluida": false }
+        {
+          "id": "converge-leads-export",
+          "titulo": "Exportar leads RH em Xeque",
+          "xp": 30,
+          "concluida": false
+        },
+        {
+          "id": "converge-supabase",
+          "titulo": "Migrar localStorage → Supabase",
+          "xp": 80,
+          "concluida": false
+        },
+        {
+          "id": "converge-proximo-evento",
+          "titulo": "Planejar próximo evento AG Converge",
+          "xp": 60,
+          "concluida": false
+        }
       ]
     },
     {
@@ -197,37 +1275,184 @@
       "nome": "Café com AG",
       "icone": "☕",
       "prioridade": "media",
-      "hp": { "atual": 2, "max": 10, "label": "2/10 DECISIONS" },
-      "stack": ["HTML+JS", "Google OAuth"],
+      "hp": {
+        "atual": 2,
+        "max": 10,
+        "label": "2/10 DECISIONS"
+      },
+      "stack": [
+        "HTML+JS",
+        "Google OAuth"
+      ],
       "ultimaAtividade": "2026-05-01",
       "sideQuests": [
-        { "id": "00-fundamentos/05-auth-oauth-jwt-session.md", "titulo": "Auth OAuth — configurar Client ID Café com AG", "trilha": "00-fundamentos", "moduloPath": "/trilha/00-fundamentos/05-auth-oauth-jwt-session.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "60-seguranca/07-auditoria-logs-imutavel.md", "titulo": "Auditoria — histórico imutável Café com AG", "trilha": "60-seguranca", "moduloPath": "/trilha/60-seguranca/07-auditoria-logs-imutavel.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md", "titulo": "Abstração — refatorar single-file Café com AG", "trilha": "10-codigo-limpo", "moduloPath": "/trilha/10-codigo-limpo/04-abstracao-regra-dos-3.md", "xpBase": 40, "xpBonus": 40, "concluida": false }
+        {
+          "id": "00-fundamentos/05-auth-oauth-jwt-session.md",
+          "titulo": "05 — Auth: OAuth, JWT e Session",
+          "trilha": "00-fundamentos",
+          "moduloPath": "/trilha/00-fundamentos/05-auth-oauth-jwt-session.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/01-owasp-top-10-resumo.md",
+          "titulo": "01 — OWASP Top 10: Mapa do Território",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/01-owasp-top-10-resumo.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/06-lgpd-na-pratica.md",
+          "titulo": "06 — LGPD na Prática",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/06-lgpd-na-pratica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/07-auditoria-logs-imutavel.md",
+          "titulo": "07 — Auditoria e Logs Imutáveis",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/07-auditoria-logs-imutavel.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/walkthrough-projetos.md",
+          "titulo": "Walkthrough de Projetos AG — Como Apresentar em Entrevista",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "titulo": "02 — Decisões em primeira pessoa",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        }
       ],
       "bounties": [
-        { "id": "cafe-oauth-client-id", "titulo": "Configurar Google OAuth Client ID real", "xp": 30, "concluida": false },
-        { "id": "cafe-hospedagem", "titulo": "Definir e publicar hospedagem (Pages ou Vercel)", "xp": 40, "concluida": false },
-        { "id": "cafe-primeiro-episodio", "titulo": "Registrar calendário do primeiro episódio", "xp": 30, "concluida": false }
+        {
+          "id": "cafe-oauth-client-id",
+          "titulo": "Configurar Google OAuth Client ID real",
+          "xp": 30,
+          "concluida": false
+        },
+        {
+          "id": "cafe-hospedagem",
+          "titulo": "Definir e publicar hospedagem (Pages ou Vercel)",
+          "xp": 40,
+          "concluida": false
+        },
+        {
+          "id": "cafe-primeiro-episodio",
+          "titulo": "Registrar calendário do primeiro episódio",
+          "xp": 30,
+          "concluida": false
+        }
       ]
     },
     {
       "id": "ag-hub",
-      "nome": "AG Hub",
+      "nome": "Ricaliff",
       "icone": "⚡",
       "prioridade": "media",
-      "hp": { "atual": 6, "max": 10, "label": "6/10 DECISIONS" },
-      "stack": ["HTML+JS", "localStorage", "Vercel"],
+      "hp": {
+        "atual": 6,
+        "max": 10,
+        "label": "6/10 DECISIONS"
+      },
+      "stack": [
+        "HTML+JS",
+        "localStorage",
+        "Vercel"
+      ],
       "ultimaAtividade": "2026-06-01",
       "sideQuests": [
-        { "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md", "titulo": "Abstração — funções repetidas no AG Hub", "trilha": "10-codigo-limpo", "moduloPath": "/trilha/10-codigo-limpo/04-abstracao-regra-dos-3.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "70-devops/04-deploy-vercel-edge.md", "titulo": "Vercel Edge — deploy do AG Hub", "trilha": "70-devops", "moduloPath": "/trilha/70-devops/04-deploy-vercel-edge.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "90-entrevista/walkthrough-projetos.md", "titulo": "Walkthrough — AG Hub como projeto pessoal", "trilha": "90-entrevista", "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md", "xpBase": 40, "xpBonus": 40, "concluida": false }
+        {
+          "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
+          "titulo": "04 — Abstração e a Regra dos 3",
+          "trilha": "10-codigo-limpo",
+          "moduloPath": "/trilha/10-codigo-limpo/04-abstracao-regra-dos-3.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "70-devops/04-deploy-vercel-edge.md",
+          "titulo": "04 — Deploy no Vercel e Edge Runtime",
+          "trilha": "70-devops",
+          "moduloPath": "/trilha/70-devops/04-deploy-vercel-edge.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "70-devops/06-iac-introducao-terraform.md",
+          "titulo": "06 — IaC: Introdução ao Terraform",
+          "trilha": "70-devops",
+          "moduloPath": "/trilha/70-devops/06-iac-introducao-terraform.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/perguntas-junior.md",
+          "titulo": "Banco de Perguntas — Dev Júnior",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/perguntas-junior.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/walkthrough-projetos.md",
+          "titulo": "Walkthrough de Projetos AG — Como Apresentar em Entrevista",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "titulo": "02 — Decisões em primeira pessoa",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        }
       ],
       "bounties": [
-        { "id": "hub-supabase", "titulo": "Migrar localStorage → Supabase multi-dispositivo", "xp": 100, "concluida": false },
-        { "id": "hub-notificacoes", "titulo": "Notificações de prazo (push/email)", "xp": 80, "concluida": false },
-        { "id": "hub-quest-board", "titulo": "Quest Board cruzado implementado", "xp": 60, "concluida": true }
+        {
+          "id": "hub-supabase",
+          "titulo": "Migrar localStorage → Supabase multi-dispositivo",
+          "xp": 100,
+          "concluida": false
+        },
+        {
+          "id": "hub-notificacoes",
+          "titulo": "Notificações de prazo (push/email)",
+          "xp": 80,
+          "concluida": false
+        },
+        {
+          "id": "hub-quest-board",
+          "titulo": "Quest Board cruzado implementado",
+          "xp": 60,
+          "concluida": true
+        }
       ]
     },
     {
@@ -235,20 +1460,73 @@
       "nome": "IFPB",
       "icone": "🎓",
       "prioridade": "baixa",
-      "hp": { "atual": 2, "max": 10, "label": "2/10 DECISIONS" },
-      "stack": ["TypeScript", "Node.js"],
+      "hp": {
+        "atual": 2,
+        "max": 10,
+        "label": "2/10 DECISIONS"
+      },
+      "stack": [
+        "TypeScript",
+        "Node.js"
+      ],
       "ultimaAtividade": "2026-05-12",
       "sideQuests": [
-        { "id": "90-entrevista/perguntas-junior.md", "titulo": "Perguntas Júnior — praticar tópicos do IFPB", "trilha": "90-entrevista", "moduloPath": "/trilha/90-entrevista/perguntas-junior.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "90-entrevista/walkthrough-projetos.md", "titulo": "Walkthrough — conectar IFPB aos projetos AG", "trilha": "90-entrevista", "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md", "titulo": "Decisões — articular aprendizados IFPB", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/04-comunicacao-publica.md", "titulo": "Comunicação — escrever sobre IFPB + AG", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/04-comunicacao-publica.md", "xpBase": 40, "xpBonus": 40, "concluida": false },
-        { "id": "95-diferencial/README.md", "titulo": "Diferencial — ler roadmap completo da trilha", "trilha": "95-diferencial", "moduloPath": "/trilha/95-diferencial/README.md", "xpBase": 40, "xpBonus": 40, "concluida": false }
+        {
+          "id": "90-entrevista/perguntas-junior.md",
+          "titulo": "Banco de Perguntas — Dev Júnior",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/perguntas-junior.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/walkthrough-projetos.md",
+          "titulo": "Walkthrough de Projetos AG — Como Apresentar em Entrevista",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "titulo": "02 — Decisões em primeira pessoa",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/04-comunicacao-publica.md",
+          "titulo": "04 — Comunicação pública",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/04-comunicacao-publica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        }
       ],
       "bounties": [
-        { "id": "ifpb-pnpm-install", "titulo": "Rodar pnpm install e primeiro exercício", "xp": 30, "concluida": false },
-        { "id": "ifpb-ts-strict", "titulo": "Configurar tsconfig strict e primeiro módulo", "xp": 40, "concluida": false },
-        { "id": "ifpb-integrar-trilha", "titulo": "Usar exercícios IFPB como prática da Trilha", "xp": 60, "concluida": false }
+        {
+          "id": "ifpb-pnpm-install",
+          "titulo": "Rodar pnpm install e primeiro exercício",
+          "xp": 30,
+          "concluida": false
+        },
+        {
+          "id": "ifpb-ts-strict",
+          "titulo": "Configurar tsconfig strict e primeiro módulo",
+          "xp": 40,
+          "concluida": false
+        },
+        {
+          "id": "ifpb-integrar-trilha",
+          "titulo": "Usar exercícios IFPB como prática da Trilha",
+          "xp": 60,
+          "concluida": false
+        }
       ]
     }
   ]
