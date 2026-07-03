@@ -465,7 +465,6 @@ function renderDash() {
       </div>`).join('');
   }
 
-  renderFocusSection();
   renderWeeklyDigest();
 }
 
@@ -1637,57 +1636,6 @@ function importData() {
     reader.readAsText(file);
   };
   input.click();
-}
-
-// ── FOCUS PROJECT ─────────────────────────────────────────────────
-function getFocusProj() { return localStorage.getItem('agh_focus_proj')||null; }
-function setFocusProj(id) {
-  if(localStorage.getItem('agh_focus_proj')===id) localStorage.removeItem('agh_focus_proj');
-  else localStorage.setItem('agh_focus_proj', id);
-  renderDash();
-}
-
-function renderFocusSection() {
-  const section=document.getElementById('focus-proj-section');
-  if(!section) return;
-  const projs=DB.projects.filter(p=>p.status==='ativo');
-  const focusId=getFocusProj();
-  const tasks=DB.tasks, t=today();
-  const focusTasks=focusId
-    ? tasks.filter(k=>k.projectId===focusId&&k.status!=='done')
-           .sort((a,b)=>{const p={high:0,medium:1,low:2};return (p[a.priority]||1)-(p[b.priority]||1);})
-    : tasks.filter(k=>k.status!=='done'&&(k.priority==='high'||(k.due&&k.due<=t)))
-           .sort((a,b)=>a.due&&b.due?a.due.localeCompare(b.due):a.due?-1:1).slice(0,5);
-  const focusProj=focusId?DB.projects.find(p=>p.id===focusId):null;
-
-  section.innerHTML=`
-    <div class="focus-proj-bar">
-      <span class="focus-label">Foco</span>
-      <div class="focus-btns">
-        ${projs.map(p=>`
-          <button class="fpb-btn${p.id===focusId?' fpb-active':''}"
-            style="${p.id===focusId?`background:${p.color}22;border-color:${p.color};color:${p.color}`:''}"
-            onclick="setFocusProj('${p.id}')">
-            <span class="fpb-dot" style="background:${p.color}"></span>
-            ${esc(p.name.length>16?p.name.slice(0,16)+'…':p.name)}
-          </button>`).join('')}
-      </div>
-    </div>
-    ${focusTasks.length?`<div class="focus-task-list">
-      ${focusTasks.slice(0,6).map(tk=>`
-        <div class="focus-item" onclick="openTaskModal('${tk.id}')">
-          <div class="fcheck" onclick="toggleT(event,'${tk.id}')"></div>
-          <div style="flex:1;min-width:0">
-            <div class="focus-text">${esc(tk.title)}</div>
-            <div class="focus-meta">
-              ${tk.due&&tk.due<t?`<span style="color:var(--danger)">⚠ ${fmtD(tk.due)}</span>`:tk.due?fmtD(tk.due):''}
-              ${tk.priority==='high'?' · <span style="color:var(--danger)">Alta</span>':''}
-              ${!focusId&&tk.projectId?` · <span style="color:var(--muted)">${esc(DB.projects.find(p=>p.id===tk.projectId)?.name||'')}</span>`:''}
-            </div>
-          </div>
-        </div>`).join('')}
-    </div>`:`<div style="font-size:.78rem;color:var(--muted);padding:6px 0">${focusId?'Nenhuma tarefa pendente neste projeto 🎉':'Sem tarefas urgentes ou com prazo hoje'}</div>`}
-  `;
 }
 
 function renderWeeklyDigest() {

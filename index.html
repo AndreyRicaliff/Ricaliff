@@ -369,22 +369,13 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--w
 .dl-iniciando{background:rgba(107,114,128,.15);color:var(--muted2)}
 .dl-desenvolvendo{background:rgba(245,158,11,.15);color:var(--yellow)}
 .dl-avancado{background:rgba(16,185,129,.15);color:var(--green)}
-.dl-dominando{background:rgba(26,127,255,.2);color:var(--phi)}
+.dl-dominando{background:color-mix(in srgb,var(--primary) 20%,transparent);color:var(--phi)}
 .domain-bar{height:4px;background:var(--raise);border-radius:2px;overflow:hidden}
 .domain-fill{height:100%;border-radius:2px;transition:width .5s}
 .domain-sub{font-size:.67rem;color:var(--muted);margin-top:5px}
 .suggestion-card{background:var(--raise);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:8px}
 .suggestion-title{font-size:.8rem;font-weight:600;margin-bottom:3px}
 .suggestion-sub{font-size:.68rem;color:var(--muted);line-height:1.5}
-/* ── FOCUS PROJECT ──────────────────────────── */
-.focus-proj-bar{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:10px;flex-wrap:wrap}
-.focus-label{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;flex-shrink:0}
-.focus-btns{display:flex;gap:6px;flex-wrap:wrap}
-.fpb-btn{padding:4px 10px;border-radius:20px;font-size:.72rem;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:transparent;color:var(--muted2);font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:5px}
-.fpb-btn:hover{color:var(--text);border-color:var(--primary)}
-.fpb-active{font-weight:700}
-.fpb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.focus-task-list{padding:4px 0}
 /* ── WEEKLY DIGEST ──────────────────────────── */
 .weekly-digest-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px}
 .weekly-row{display:flex;gap:28px;margin-top:10px;flex-wrap:wrap}
@@ -1067,7 +1058,6 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
       <div class="dash-sub" id="greet-sub">Carregando...</div>
       <div class="dash-quick-stats" id="dash-qs"></div>
     </div>
-    <div id="focus-proj-section" style="margin-bottom:16px"></div>
     <div class="dash-grid">
       <div class="focus-card">
         <div class="card-title">
