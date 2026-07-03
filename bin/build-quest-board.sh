@@ -5,8 +5,9 @@
 
 set -euo pipefail
 
-TRILHA="${HOME}/projetos/ag-hub/trilha"
-OUT="${HOME}/projetos/ag-hub/data/quest-board.json"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TRILHA="$ROOT/trilha"
+OUT="$ROOT/data/quest-board.json"
 
 [ -d "$TRILHA" ] || { echo "ERRO: $TRILHA não existe. Rode bin/build-trilha.sh primeiro."; exit 1; }
 
