@@ -2414,7 +2414,7 @@ function requestNotificationPermission(cb) {
   if (!('Notification' in window)) return cb && cb();
   if (Notification.permission === 'granted') return cb && cb();
   if (Notification.permission === 'denied') return cb && cb();
-  Notification.requestPermission().then(() => cb && cb());
+  Notification.requestPermission().then(() => cb && cb()).catch(e => console.warn('notificações indisponíveis:', e.message));
 }
 
 function sendNotification(title, body) {
