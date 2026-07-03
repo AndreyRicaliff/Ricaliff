@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-06-30T16:24:35",
+    "lastSync": "2026-07-03T09:56:12",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 10180,
-    "xpToNext": 11180,
-    "streak": 2,
+    "xp": 10230,
+    "xpToNext": 11230,
+    "streak": 1,
     "longestStreak": 16,
-    "lastActiveDate": "2026-06-30",
+    "lastActiveDate": "2026-07-03",
     "attributes": {
       "int": {
         "value": 0,
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-07-03",
+      "xp": 50,
+      "type": "feat",
+      "desc": "Taskbar P3: agrupamento por app com sanfona inline estilo Windows (badge de contagem, pilulas por janela, middle-click fecha)"
+    },
     {
       "date": "2026-06-30",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "Design System v3 Sobrio: rebrand corporativo PULSAR-RH (camada override)"
-    },
-    {
-      "date": "2026-06-12",
-      "xp": 50,
-      "type": "feat",
-      "desc": "Pulsar Finance: relatorio Previsto x Realizado (orcamento Omie + realizavel + baixas)"
     }
   ],
   "achievements": [
@@ -684,6 +684,13 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-07-03",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "Taskbar P3: agrupamento por app com sanfona inline estilo Windows (badge de contagem, pilulas por janela, middle-click fecha)",
+      "xp": 50
+    },
+    {
       "date": "2026-06-30",
       "type": "feat",
       "icon": "⚙️",
@@ -745,13 +752,6 @@
       "icon": "⚙️",
       "title": "[cliente-varejo] exclusoes gerenciaveis pelo gestor (tabela + CRUD, uniao com legado)",
       "xp": 50
-    },
-    {
-      "date": "2026-06-29",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[cliente-varejo] remove flag morto penalidadeAcessorios",
-      "xp": 20
     }
   ]
 }
