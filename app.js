@@ -323,11 +323,57 @@ document.addEventListener('DOMContentLoaded', () => {
   if (el) el.textContent = p3SfxEnabled() ? 'on' : 'off';
 });
 
+// ── P3 THEME (persona ↔ pro — espelho do ThemeMode.qml / Win+T do rice) ──
+const P3_THEME_KEY = 'p3_theme';
+function p3Theme() { return localStorage.getItem(P3_THEME_KEY) === 'pro' ? 'pro' : 'persona'; }
+function p3ThemeApply() {
+  const mode = p3Theme();
+  document.documentElement.dataset.theme = mode;
+  const img = document.getElementById('sb-mark-img');
+  if (img) img.src = mode === 'pro' ? 'assets/start_neutral.png' : 'assets/jackfrost.png';
+  const st = document.getElementById('p3-theme-state');
+  if (st) st.textContent = mode;
+}
+function p3ThemeUiToggle() {
+  localStorage.setItem(P3_THEME_KEY, p3Theme() === 'pro' ? 'persona' : 'pro');
+  p3ThemeApply();
+  p3Sfx();
+}
+function p3JackPoke() {
+  const el = document.querySelector('.sb-mark');
+  if (!el) return;
+  el.classList.remove('shake');
+  void el.offsetWidth;
+  el.classList.add('shake');
+  p3Sfx();
+}
+document.addEventListener('keydown', e => {
+  if (e.key !== 't' && e.key !== 'T') return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.target.closest('input,textarea,select,[contenteditable]')) return;
+  p3ThemeUiToggle();
+});
+document.addEventListener('DOMContentLoaded', p3ThemeApply);
+
 // ── NAV ───────────────────────────────────────────────────────────
 let curView = 'dash';
+let p3WipeBusy = false;
+const P3_REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 function go(view) {
   p3Sfx();
+  const wipe = document.getElementById('p3-wipe');
+  if (view === curView || P3_REDUCED.matches || p3WipeBusy || !wipe) {
+    activateView(view);
+    return;
+  }
+  p3WipeBusy = true;
+  wipe.classList.add('run');
+  setTimeout(() => activateView(view), 350); // troca no pico do wipe (48% de 720ms)
+  setTimeout(() => { wipe.classList.remove('run'); p3WipeBusy = false; }, 740);
+}
+
+function activateView(view) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('view-'+view).classList.add('active');
@@ -367,7 +413,7 @@ function ring(pct, color, size=44) {
       stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${offset.toFixed(1)}"
       stroke-linecap="round" transform="rotate(-90 ${size/2} ${size/2})"/>
     <text x="${size/2}" y="${size/2+4}" text-anchor="middle" font-size="9" font-weight="700"
-      fill="${color}" font-family="Inter,system-ui,sans-serif">${pct}%</text>
+      fill="${color}" font-family="Montserrat,system-ui,sans-serif">${pct}%</text>
   </svg>`;
 }
 
@@ -1968,7 +2014,7 @@ function buildSkillTreeSvg(progress) {
   const headers = trilhas.map((trilha, ci) => {
     const cx = ST_PAD_X + ci * ST_COL_W + ST_COL_W / 2;
     const cy = ST_PAD_Y - 24;
-    return `<text x="${cx}" y="${cy}" text-anchor="middle" font-size="14" font-family="Inter,system-ui,sans-serif">${trilha.icone}</text>`;
+    return `<text x="${cx}" y="${cy}" text-anchor="middle" font-size="14" font-family="Montserrat,system-ui,sans-serif">${trilha.icone}</text>`;
   });
 
   // Nós
@@ -1980,7 +2026,7 @@ function buildSkillTreeSvg(progress) {
       const fillOpacity = status === 'pending' ? '0.15' : '0.9';
       const stroke = status === 'pending' ? 'var(--border)' : fill;
       const checkmark = status === 'checkpoint'
-        ? `<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="9" fill="white" font-weight="700" font-family="Inter,system-ui,sans-serif">✓</text>`
+        ? `<text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="9" fill="white" font-weight="700" font-family="Montserrat,system-ui,sans-serif">✓</text>`
         : status === 'lido'
         ? `<circle cx="${cx}" cy="${cy}" r="4" fill="white" fill-opacity=".7"/>`
         : '';

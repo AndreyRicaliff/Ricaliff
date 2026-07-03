@@ -159,3 +159,23 @@ Registro de decisões técnicas datadas, em primeira pessoa. Material de defesa 
 
 **Como explicar em entrevista (30s):**
 > "Consolidei meus estudos espalhados num monorepo com fonte única. Removi uma dependência cross-repo que acoplava o build do hub a outro repositório, o que me deixou apagar o repo legado sem quebrar nada. Mantive os repositórios originais como backup imutável e só removi as cópias locais — reversível por design."
+
+---
+
+## 2026-07-03 — [ui] Paridade P3 com o rice do OS via design tokens (não porte de código)
+
+**Problema:** O hub tinha restyle P3 v1, mas o rice do desktop (Quickshell/QML) evoluiu — acento `#0099FF`, toggle persona↔pro (Win+T), wipes de 3 faixas, paralelogramos, springs com overshoot. Como levar a MESMA identidade pra web sem reescrever os componentes QML?
+
+**Opções consideradas:**
+- A — Extrair design tokens (cor/easing/duração/forma) e reimplementar em CSS/JS vanilla: fiel e leve, exige mapear valores um a um.
+- B — Portar componentes literalmente (canvas, vídeos, springs físicos): fidelidade máxima, peso e complexidade absurdos num SPA single-file.
+- C — Lib de animação (GSAP/Motion): springs reais, mas adiciona dependência num app zero-build.
+
+**Decisão:** A. Tokens exatos no `:root`, TODOS os alphas de acento via `color-mix(in srgb, var(--primary) N%, transparent)`, tema pro como `:root[data-theme="pro"]` espelhando o `ThemeMode.qml`, wipe como keyframes com easing por segmento, OutBack via `cubic-bezier(.34,1.8,.44,1)`, paralelogramos via `clip-path`.
+
+**Por quê:** o que faz "parecer P3" são os valores (cores, curvas, cortes), não a tecnologia. `color-mix` transformou o toggle de tema em 1 atributo no root — os ~20 `rgba()` hardcoded que sobraram do v1 eram o real bloqueador.
+
+**Consequências:** tema alternável por botão/tecla T persistido em localStorage; wipe bloqueia navegação por 740ms (guard `p3WipeBusy`); `color-mix` exige browser 2023+ (ok, uso pessoal). Dívida: skew do wipe é keyframe CSS, não spring físico.
+
+**Como explicar em entrevista (30s):**
+> "Eu tinha uma identidade visual no desktop em QML e quis a mesma no meu app web. Em vez de portar código, extraí design tokens — hex, curvas de easing, durações, formas — e centralizei tudo em CSS custom properties, derivando estados com color-mix. O toggle de tema virou um atributo data-theme no root. O aprendizado: identidade visual portável é uma tabela de tokens, não componentes."
