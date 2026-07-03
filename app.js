@@ -1333,7 +1333,7 @@ function renderTopicRow(modId, t, p) {
     <span class="topic-name ${s === 'mastered' ? 'topic-done' : ''}" style="flex:1;cursor:pointer" onclick="toggleTopicExpand('${modId}','${t.id}')">${esc(t.title)}</span>
     ${isOpen ? '<span style="color:var(--muted);font-size:.65rem">⬆</span>' : '<span style="color:var(--muted);font-size:.65rem">⬇</span>'}
     <div class="topic-material ${isOpen ? 'open' : ''}" id="material-${key}">
-      ${renderTopicMaterial(t)}
+      ${renderTopicMaterial(modId, t)}
     </div>
   </div>`;
 }
