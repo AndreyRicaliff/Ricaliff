@@ -27,7 +27,7 @@ function renderGamification() {
 
 // Carrega atributos do localStorage (sobrepõe values do sync.json para persistir ganhos locais)
 function loadAttrState() {
-  const saved = JSON.parse(localStorage.getItem('agh_attrs') ?? 'null');
+  const saved = safeParse('agh_attrs', null);
   if (!SYNC?.player?.attributes) return null;
   if (!saved) return JSON.parse(JSON.stringify(SYNC.player.attributes));
   // Mescla: usa structure do sync.json mas valores do localStorage quando existirem
@@ -64,7 +64,7 @@ function addAttribute(attr, rawVal, source) {
   saveAttrState(attrs);
 
   // Log dos últimos 50 eventos
-  const log = JSON.parse(localStorage.getItem('attributeLog') ?? '[]');
+  const log = safeParse('attributeLog', []);
   log.unshift({ attr, val: finalVal, source, date: today() });
   localStorage.setItem('attributeLog', JSON.stringify(log.slice(0, 50)));
 
@@ -271,13 +271,13 @@ function renderXpLog() {
 
 // ── DATA ─────────────────────────────────────────────────────────
 const DB = {
-  get tasks()    { return JSON.parse(localStorage.getItem('agh_tasks')    || '[]') },
+  get tasks()    { return safeParse('agh_tasks', []) },
   set tasks(v)   { localStorage.setItem('agh_tasks',    JSON.stringify(v)) },
-  get projects() { return JSON.parse(localStorage.getItem('agh_projects') || '[]') },
+  get projects() { return safeParse('agh_projects', []) },
   set projects(v){ localStorage.setItem('agh_projects', JSON.stringify(v)) },
-  get events()   { return JSON.parse(localStorage.getItem('agh_events')   || '[]') },
+  get events()   { return safeParse('agh_events', []) },
   set events(v)  { localStorage.setItem('agh_events',   JSON.stringify(v)) },
-  get studies()  { return JSON.parse(localStorage.getItem('agh_studies')  || '[]') },
+  get studies()  { return safeParse('agh_studies', []) },
   set studies(v) { localStorage.setItem('agh_studies',  JSON.stringify(v)) },
 };
 
@@ -289,6 +289,11 @@ const today= ()  => new Date().toISOString().slice(0,10);
 const safeColor = c => /^#[0-9A-Fa-f]{3,8}$/.test(String(c ?? '')) ? c : '#1A7FFF';
 // Boundary: URL externa só entra em href se for https
 const safeHttpUrl = u => { try { return new URL(u).protocol === 'https:' ? u : null; } catch { return null; } };
+// Storage corrompido não pode derrubar o app: parse com fallback (uma chave ruim ≠ tela morta)
+const safeParse = (key, fb) => {
+  try { const v = JSON.parse(localStorage.getItem(key) ?? 'null'); return v ?? fb; }
+  catch { console.warn('[storage] chave corrompida, usando fallback:', key); return fb; }
+};
 
 // ── P3 SFX (opt-in, WebAudio sintetizado) ─────────────────────────
 const P3_SFX_KEY = 'p3_sfx';
@@ -1051,288 +1056,23 @@ const MODULE_SVG = {
   'clean-code': '<path d="M9 7l-3 3 3 3m6-6l3 3-3 3M15 4l-6 16" stroke-linecap="round" stroke-linejoin="round"/>',
 };
 
-const STUDY_MATERIAL = {
-  'js-const-arrow': {
-    concept: 'Use const por padrão para todo valor que não será reatribuído. Arrow functions herdam o this do escopo pai — diferente de function declarations que criam seu próprio this.',
-    code: 'const users = [{ id: 1, name: "Ana" }];\nconst active = users.filter(u => u.id > 0);\n\n// Arrow herda this do escopo externo:\nconst handler = () => this.state; // this = contexto pai\nfunction Handler() { this.state = {}; } // this = instância',
-    mistake: 'Usar var em vez de const/let. var tem escopo de função e sofre hoisting — cria bugs difíceis de rastrear. let para reatribuição, const para todo o resto.',
-    exercise: 'Abra app.js do ag-hub. Localize qualquer var restante e substitua por const ou let conforme necessidade de reatribuição.',
-    tip: 'Se tentou usar const e deu erro de reatribuição, aí sim usa let. Senão, const sempre.',
-  },
-  'js-async-await': {
-    concept: 'async/await é açúcar sintático para Promises. Sempre use Promise.all() para operações independentes em paralelo — awaits sequenciais acumulam latência.',
-    code: '// Ruim: sequencial (300ms + 200ms = 500ms)\nconst users = await fetchUsers();\nconst posts = await fetchPosts();\n\n// Bom: paralelo (max 300ms)\nconst [users, posts] = await Promise.all([\n  fetchUsers(),\n  fetchPosts(),\n]);',
-    mistake: 'Usar await dentro de forEach — o callback é async mas forEach não espera. O código continua antes das Promises resolverem.',
-    exercise: 'Em ag-hub app.js, loadSync() faz fetch e depois processa. Os dois passos são dependentes? Poderiam ser paralelos?',
-    tip: 'Múltiplos awaits sequenciais independentes = latência acumulada. Promise.all paraleliza.',
-  },
-  'js-array-methods': {
-    concept: 'map, filter, reduce, find não mutam o array original — retornam novo array ou valor. Compor métodos evita loops aninhados e torna o fluxo de dados explícito.',
-    code: 'const orders = [{ value: 100, paid: true }, { value: 200, paid: false }];\n\nconst revenue = orders\n  .filter(o => o.paid)\n  .map(o => o.value)\n  .reduce((sum, v) => sum + v, 0); // 100',
-    mistake: 'Usar forEach para transformar dados — forEach só para side effects (log, render, evento). Para transformação: map. Para filtro: filter.',
-    exercise: 'Em app.js linha ~1138, a lógica de mastered usa filter+length. Tente reescrever usando reduce em vez de duas variáveis separadas.',
-    tip: 'Encadeamento de métodos = pipeline de dados legível. Evita variáveis temporárias.',
-  },
-  'js-optional-ops': {
-    concept: 'obj?.prop retorna undefined se obj é null/undefined, sem TypeError. ?? escolhe default só se o valor é null/undefined — diferente de || que também substitui 0 e false.',
-    code: 'const city = user?.address?.city; // undefined se user null\nconst age = data.age ?? 18; // 18 só se age for undefined/null\nconst score = data.score || 0; // PROBLEMA: substitui 0 também!',
-    mistake: 'Usar || para defaults quando 0 ou false são valores válidos. score || 0 retorna 0 mesmo se score já é 0 — use ?? para checar apenas null/undefined.',
-    exercise: 'Em sync.json do ag-hub, o player tem xpToNext. No código que lê esse campo, verificar se usa || ou ??. Se for ||, pode ter bug quando xpToNext = 0.',
-    tip: 'Trocar a && b && c.d por a?.b?.c?.d. && é para booleanos, ?. é para navegação segura em objetos.',
-  },
-  'js-fetch-api': {
-    concept: 'Sempre verificar response.ok antes de chamar response.json(). Status 404 e 400 não rejeitam a Promise — só erros de rede rejeitam.',
-    code: 'async function getData(url) {\n  const r = await fetch(url);\n  if (!r.ok) throw new Error(`${r.status}: ${r.statusText}`);\n  return r.json();\n}',
-    mistake: 'Chamar r.json() sem checar r.ok. Se o servidor retorna { error: "not found" } com status 404, a Promise resolve normalmente — código trata erro como dado válido.',
-    exercise: 'loadSync() em app.js faz fetch de sync.json. Adicionar verificação de r.ok e throw com status + url para facilitar debug de deploy.',
-    tip: 'fetch() rejeita Promise apenas em erro de rede. Status 4xx/5xx = response.ok é false, mas Promise resolve.',
-  },
-  'js-dom-events': {
-    concept: 'Event delegation: escuta em elemento pai, filtra por e.target. Evita reattach de listeners ao re-renderizar. innerHTML com conteúdo de usuário = XSS.',
-    code: 'document.getElementById("list").addEventListener("click", (e) => {\n  if (e.target.matches(".btn-delete")) {\n    deleteItem(e.target.dataset.id);\n  }\n});\n\n// Sempre escapar antes de innerHTML:\nel.innerHTML = `<span>${esc(userInput)}</span>`;',
-    mistake: 'Adicionar addEventListener dentro de renderX() sem remover o anterior — a cada re-render, novo listener é adicionado no mesmo elemento, causando execução múltipla.',
-    exercise: 'Em app.js, a função esc() está definida? Localizar onde está e verificar se dados externos (sync.json) passam por ela antes de ir para innerHTML.',
-    tip: 'innerHTML sem esc() = XSS. Use textContent para texto puro. esc() obrigatório ao interpolar dado externo.',
-  },
-  'ts-basic-types': {
-    concept: 'interface descreve forma fixa de objeto — ideal para modelos de dados e contratos. type é mais geral: unions, intersections, tipos derivados.',
-    code: 'interface User { id: number; name: string; email: string; }\ntype Status = "pending" | "active" | "deleted";\ntype UserWithStatus = User & { status: Status };\n\nconst user: User = { id: 1, name: "Ana", email: "a@ag.com" };',
-    mistake: 'Criar tipos duplicados em dois arquivos diferentes. Quando User muda em um, o outro fica desatualizado e TypeScript não avisa.',
-    exercise: 'No PULSAR-RH, existe um tipo User definido em mais de um arquivo? Se sim, criar types/user.ts compartilhado e importar nos dois.',
-    tip: 'Nome de interface = PascalCase. Se precisa de union (A | B), use type. Objeto com forma fixa = interface.',
-  },
-  'ts-strict-no-any': {
-    concept: 'any desativa toda verificação de tipo — é pior que JavaScript puro. unknown força narrowing explícito antes do uso. strict: true pega bugs que any silencia.',
-    code: 'let data: unknown = JSON.parse(rawStr);\n\n// Narrowing obrigatório:\nif (typeof data === "object" && data !== null && "id" in data) {\n  const id = (data as { id: number }).id;\n}',
-    mistake: 'Usar any para "resolver" erro de tipo rapidamente. O erro desaparece, mas o bug permanece — TS não vai mais avisar sobre uso incorreto desse valor.',
-    exercise: 'Abrir qualquer arquivo .ts do PULSAR-RH e rodar: grep -n ": any" src/. Cada hit = dívida técnica. Escolher um e substituir por unknown com narrowing.',
-    tip: 'any = silenciar tipo. unknown = "não sei o tipo ainda, prove antes de usar". Sempre prefira unknown em dados externos (API, localStorage).',
-  },
-  'ts-utility-types': {
-    concept: 'Partial, Pick, Omit, Readonly, Required derivam tipos sem duplicar. Quando o tipo base muda, os derivados acompanham automaticamente.',
-    code: 'interface User { id: number; name: string; email: string; }\n\ntype CreateUser = Omit<User, "id">; // sem id\ntype UserPreview = Pick<User, "name" | "email">; // só esses\ntype UpdateUser = Partial<User>; // todos opcionais',
-    mistake: 'Criar CreateUserData: { name: string; email: string } manualmente em vez de Omit<User, "id">. Quando User ganha campo obrigatório, CreateUserData não atualiza.',
-    exercise: 'No PULSAR-RH, existe algum tipo de formulário que é basicamente User sem id? Substituir por Omit<User, "id">.',
-    tip: 'Nunca duplicar tipo manualmente. Utility types extraem tipo derivado. Base muda, derivados acompanham.',
-  },
-  'ts-generics': {
-    concept: '<T> parametriza função ou classe com tipo. Reutiliza lógica sem perder type safety. <T extends Base> restringe T a tipos que têm certas propriedades.',
-    code: 'function getById<T extends { id: number }>(items: T[], id: number): T | undefined {\n  return items.find(i => i.id === id);\n}\n\nconst user = getById(users, 1); // infere T = User',
-    mistake: 'Usar any como workaround quando generics seriam corretos. getById(items: any[], ...) perde o tipo de retorno — não sabe mais que é User.',
-    exercise: 'Criar função wrap<T>(value: T): { value: T; timestamp: Date } e testar com string, number e User. Verificar que o tipo inferido está correto.',
-    tip: 'Generics evitam any quando reutiliza lógica com tipos diferentes. Constraints garantem propriedades disponíveis.',
-  },
-  'ts-discriminated': {
-    concept: 'Union com campo literal discriminante (kind/type) permite narrowing seguro no switch/if. Elimina estados impossíveis como loading=true e data=X juntos.',
-    code: 'type State =\n  | { kind: "loading" }\n  | { kind: "ok"; data: User[] }\n  | { kind: "error"; error: string };\n\nif (state.kind === "ok") {\n  console.log(state.data); // type-safe\n}',
-    mistake: 'Estado com isLoading: boolean + data: T | null + error: string | null separados. Isso permite estados impossíveis: isLoading=true e data="valor" ao mesmo tempo.',
-    exercise: 'Em ag-hub app.js, loadSync() tem estados implícitos (SYNC definido/não). Como ficaria como discriminated union em TypeScript?',
-    tip: 'default: satisfies never no switch pega caso novo não tratado em compile time — evita bugs silenciosos ao adicionar novo estado.',
-  },
-  'supabase-crud': {
-    concept: 'Fluent API: .from().select().eq().order() encadeia o query builder. .data retorna array ou null. Sempre tratar error antes de usar data.',
-    code: 'const { data, error } = await supabase\n  .from("employees")\n  .select("id, name, department_id")\n  .eq("active", true)\n  .order("name");\n\nif (error) throw error;\nreturn data ?? [];',
-    mistake: 'Usar select("*") em tabela com muitas colunas. Retorna dados desnecessários, aumenta payload e pode expor campos sensíveis.',
-    exercise: 'No PULSAR-RH, localizar a query de lista de colaboradores. Está usando select("*")? Substituir por seleção explícita das colunas usadas na UI.',
-    tip: 'select("*") = todos os campos. Especifique colunas — menor payload, melhor cache, sem vazamento acidental de dados.',
-  },
-  'supabase-auth': {
-    concept: 'onAuthStateChange é o único source of truth de sessão — dispara em login, logout, refresh e expiração. Session pode ser null mesmo após login em tab nova.',
-    code: 'supabase.auth.onAuthStateChange((event, session) => {\n  if (session) {\n    setUser(session.user);\n  } else {\n    setUser(null);\n    router.push("/login");\n  }\n});',
-    mistake: 'Guardar sessão em variável local fora do listener. onAuthStateChange pode atualizar a sessão (refresh token) sem que o estado local saiba.',
-    exercise: 'No PULSAR-RH, o login multi-portal (admin/rh/gestor) — cada portal tem seu próprio onAuthStateChange? Verificar se um portal faz signOut e corrompe sessão do outro.',
-    tip: 'Não guarde sessão em estado local. onAuthStateChange é a fonte. signOut() emite evento que o listener processa.',
-  },
-  'supabase-rls': {
-    concept: 'RLS habilitado sem nenhuma policy = tudo bloqueado para authenticated e anon. Policy define quem vê o quê. auth.uid() retorna o UUID do usuário logado.',
-    code: '-- Ver só os próprios registros:\nCREATE POLICY "select_own_data"\n  ON employee_evaluations FOR SELECT\n  TO authenticated\n  USING (auth.uid() = user_id);\n\n-- Admin vê tudo:\n-- USING (auth.uid() IN (SELECT user_id FROM admins));',
-    mistake: 'Desabilitar RLS "temporariamente" para resolver bug de acesso. Isso expõe todos os dados via API pública sem autenticação.',
-    exercise: 'No PULSAR-RH, abrir Supabase Dashboard > Authentication > Policies. Quais tabelas estão sem policy mas com RLS habilitado?',
-    tip: 'RLS enabled sem policies = tudo bloqueado. Use SQL Editor do Dashboard: SELECT * FROM tabela AS authenticated_user.',
-  },
-  'supabase-realtime': {
-    concept: 'channel.subscribe() abre WebSocket. Sem cleanup (removeChannel no unmount/destroy) = memory leak acumulando conexões abertas.',
-    code: '// React:\nuseEffect(() => {\n  const channel = supabase\n    .channel("evaluations")\n    .on("postgres_changes",\n      { event: "*", schema: "public", table: "evaluations" },\n      payload => updateState(payload))\n    .subscribe();\n  return () => supabase.removeChannel(channel);\n}, []);',
-    mistake: 'Não fazer cleanup do canal. Em SPAs com muitas navegações, cada montagem cria novo WebSocket sem fechar o anterior.',
-    exercise: 'No PULSAR-RH, existe algum useEffect com .channel().subscribe()? Verificar se todos têm o return () => supabase.removeChannel(channel).',
-    tip: 'Realtime = WebSocket. Sem unsubscribe = conexão persistindo. Testar: DevTools > Network > WS — deve ter só uma conexão por canal.',
-  },
-  'supabase-migrations': {
-    concept: 'Migrations são o source of truth do schema. Nunca editar migration já aplicada em prod. Para reverter: nova migration. supabase db push aplica localmente.',
-    code: '# Criar nova migration:\nnpx supabase migration new add_risk_score\n\n# Editar o arquivo gerado em supabase/migrations/\n# Aplicar localmente:\nnpx supabase db push\n\n# Ver estado das migrations:\nnpx supabase migration list',
-    mistake: 'Fazer ALTER TABLE direto no Supabase Dashboard SQL Editor sem criar migration. O banco local e produção ficam fora de sincronia.',
-    exercise: 'No PULSAR-RH, rodar "supabase migration list" — todas as migrations locais aparecem como applied em prod? Listar diferenças se houver.',
-    tip: 'Prod diverge de local? supabase migration list mostra o estado de cada migration. Migration versionada em git = diff do schema auditável.',
-  },
-  'supabase-types-gen': {
-    concept: 'supabase gen types gera tipos TypeScript do schema atual. Roda após cada migration. Importar Database type para ter autocomplete e type safety em queries.',
-    code: '# Gerar tipos:\nnpx supabase gen types typescript \\\n  --project-id SEU_PROJECT_ID \\\n  > src/types/supabase.ts\n\n# Usar no código:\nimport type { Database } from "@/types/supabase";\ntype Employee = Database["public"]["Tables"]["employees"]["Row"];',
-    mistake: 'Usar interface Employee manual desincronizada da tabela real. Quando o schema muda, TypeScript não avisa que Employee está desatualizado.',
-    exercise: 'No PULSAR-RH, verificar se src/types/supabase.ts existe. Está desatualizado? Rodar gen types e comparar diff — especialmente após migrations recentes.',
-    tip: 'Rodou migration mas tipos antigos? Roda gen types. CI pode fazer isso automaticamente a cada migration aplicada.',
-  },
-  'html-semantics': {
-    concept: '<section>, <article>, <main>, <header>, <nav> descrevem a estrutura do documento. Leitores de tela navegam por landmarks semânticos. Divs sem semântica não ajudam.',
-    code: '<main>\n  <nav aria-label="Menu principal">...</nav>\n  <section aria-labelledby="dash-title">\n    <h1 id="dash-title">Dashboard</h1>\n    <article>...</article>\n  </section>\n</main>\n<button aria-label="Fechar modal">×</button>',
-    mistake: 'Usar <div class="button"> em vez de <button>. Buttons têm comportamento nativo (foco por teclado, Enter/Space ativam) que divs não têm.',
-    exercise: 'Em index.html do ag-hub, verificar se os botões do nav são <button> ou <a> ou <div>. Se forem divs, qual o impacto na navegação por teclado?',
-    tip: 'Nunca usar div onde existe tag semântica. Screen readers navegam por h1-h6, nav, main, section — estrutura boa = app mais acessível.',
-  },
-  'html-layout': {
-    concept: 'Grid para layout 2D (linhas e colunas). Flexbox para layout 1D (só horizontal ou só vertical). Combinados: Grid para estrutura macro, Flex para alinhamento interno.',
-    code: '/* Grid: estrutura da página */\n.page { display: grid; grid-template-columns: 240px 1fr; }\n\n/* Flex: itens dentro de um card */\n.card-header {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n}',
-    mistake: 'Usar Flexbox para grade de cards (2D) — resulta em quebra de linha imprevisível. Grid é feito para isso: grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)).',
-    exercise: 'A .modules-grid em index.html usa qual propriedade? Verificar se auto-fill/auto-fit está sendo usado. Em mobile (375px), colapsa para 1 coluna?',
-    tip: 'Sidebar + main? Grid. Card internamente? Flex. Mobile-first: começa 1 coluna, media query expande para 2 ou 3.',
-  },
-  'html-css-vars': {
-    concept: 'CSS Custom Properties em :root reutilizáveis em todo CSS. Mudar um valor no :root = muda em todos os elementos. Ideal para temas e tokens de design.',
-    code: ':root {\n  --primary: #1A7FFF;\n  --bg: #050C1A;\n  --text: #EEF5FF;\n  --radius: 8px;\n}\n\n.card {\n  background: var(--bg);\n  color: var(--text);\n  border-radius: var(--radius);\n}',
-    mistake: 'Copiar valores de cor hardcoded em vários lugares (#1A7FFF aqui, #1a7fff lá, rgba(26,127,255,.1) acolá). Quando a cor muda, precisa buscar todos os lugares.',
-    exercise: 'Em index.html, contar quantas vezes #1A7FFF aparece fora das definições de --primary. Cada ocorrência é uma dívida técnica.',
-    tip: 'Trocar de tema? Escrever novo :root[data-theme="light"] e trocar o atributo via JS. Todos os elementos pegam as novas vars automaticamente.',
-  },
-  'html-spa-vanilla': {
-    concept: 'SPA sem framework: go(view) troca display das divs, curView rastreia estado, renderX() popula innerHTML. Sem reactivity automática — re-render manual a cada mudança.',
-    code: 'let curView = "dash";\n\nfunction go(view) {\n  document.querySelectorAll(".view").forEach(v =>\n    v.classList.remove("active"));\n  document.getElementById(`view-${view}`).classList.add("active");\n  curView = view;\n  if (view === "growth") { renderGrowth(); renderModules(); }\n}',
-    mistake: 'Adicionar listeners diretamente em renderX() sem verificar se já existem — a cada navegação, os eventos se acumulam no mesmo elemento.',
-    exercise: 'Em app.js, a função go() chama renderModules() diretamente. Por que isso foi necessário além de renderGrowth()? Qual bug isso corrigiu?',
-    tip: 'Sem framework = controle total, mas re-render manual. Estado muda? Chama a função de render correspondente.',
-  },
-  'html-localstorage': {
-    concept: 'localStorage persiste entre reloads e sessões. Só armazena strings — JSON.stringify ao salvar, JSON.parse ao ler. Limite de ~5MB por origin.',
-    code: 'function saveProgress(data) {\n  localStorage.setItem("agh_modules", JSON.stringify(data));\n}\n\nfunction getProgress() {\n  return JSON.parse(localStorage.getItem("agh_modules") ?? "{}"); \n}',
-    mistake: 'localStorage.setItem("key", objeto) — salva "[object Object]" em vez do JSON. Sempre JSON.stringify ao escrever.',
-    exercise: 'No ag-hub, listar todas as chaves localStorage: DevTools > Application > Local Storage. Quantas chaves existem? Estão todas documentadas no código?',
-    tip: 'localStorage nunca guarda objetos diretamente. JSON.stringify ao salvar, JSON.parse ao ler. Erro "undefined" ao ler = parse de string null.',
-  },
-  'html-responsive': {
-    concept: 'Mobile-first: CSS base para tela pequena, @media (min-width: X) adiciona layout maior. Mobile-first força priorização do conteúdo essencial.',
-    code: '/* Base: mobile */\n.grid { grid-template-columns: 1fr; gap: 12px; }\n\n/* Tablet: 2 colunas */\n@media (min-width: 600px) {\n  .grid { grid-template-columns: 1fr 1fr; }\n}\n\n/* Desktop: 3 colunas */\n@media (min-width: 1200px) {\n  .grid { grid-template-columns: repeat(3, 1fr); }\n}',
-    mistake: 'Desktop-first com @media (max-width: X) — o CSS começa complexo e vai simplificando. Mais difícil de manter. Mobile-first é progressivo: começa simples.',
-    exercise: 'Em index.html, verificar a .modules-grid. Ela usa @media (min-width) ou (max-width)? Em tela de 375px (iPhone SE), fica usável?',
-    tip: 'Começa mobile (constraints forçam prioridade de conteúdo). Depois adiciona richeza em breakpoints maiores.',
-  },
-  'git-git-core': {
-    concept: 'git commit = snapshot do estado. git branch isola trabalho paralelo. git rebase lineariza histórico reescrevendo commits. git merge junta branches preservando histórico.',
-    code: 'git checkout -b feat/study-modules\ngit add app.js index.html\ngit commit -m "feat(modules): adiciona material de estudo expandido"\ngit rebase main\ngit push origin feat/study-modules',
-    mistake: 'Trabalhar direto na branch main. Um commit com bug em main = produção quebrada antes de qualquer review.',
-    exercise: 'No ag-hub, quantos commits foram feitos direto em main? git log --oneline origin/main | head -20. Qual seria a branch correta para cada um?',
-    tip: 'git log --oneline mostra histórico. git rebase evita merge commits. Commit atômico = uma mudança lógica, reversível individualmente.',
-  },
-  'git-conv-commits': {
-    concept: 'feat: nova funcionalidade. fix: corrige bug. chore: deps, config. docs: documentação. refactor: sem mudança de comportamento. Escopo em parênteses opcional.',
-    code: 'feat(modules): adiciona ícones SVG e material de estudo\nfix(sync): corrige cálculo de streak quando dia pula\nchore(deps): atualiza supabase-js para 2.39\ndocs(readme): adiciona instruções de setup local\nrefactor(render): extrai renderTopicMaterial para função separada',
-    mistake: 'Mensagem de commit descrevendo O QUÊ: "add button" ou "fix bug". Descreva O POR QUÊ: "fix: corrige crash ao navegar sem SYNC carregado".',
-    exercise: 'No ag-hub, git log --oneline. Identificar commits sem prefixo convencional. Qual seria o prefixo correto para cada um?',
-    tip: 'Commit message narra POR QUÊ, não O QUÊ (o que está no diff). Histórico linear = git bisect acha bugs em minutos.',
-  },
-  'git-gitignore-env': {
-    concept: '.gitignore antes do primeiro commit. .env, node_modules/, dist/ nunca entram no git. .env.example documenta variáveis sem valores reais.',
-    code: '# .gitignore\n.env\n.env.local\n.env.*.local\nnode_modules/\ndist/\nbuild/\n*.pem\n.DS_Store\n\n# .env.example (commitado, sem valores)\nSUPABASE_URL=\nSUPABASE_ANON_KEY=\nPORT=3000',
-    mistake: 'Fazer commit do .env com chaves reais. Mesmo que você delete no próximo commit, o git history preserva o arquivo — chaves comprometidas para sempre.',
-    exercise: 'Verificar o .gitignore do ag-hub: git check-ignore -v .env. Se não está ignorado, adicionar e verificar git status.',
-    tip: 'Fez commit de .env? git rm --cached .env imediatamente. Depois limpar histórico e revogar todas as chaves do arquivo.',
-  },
-  'git-vercel': {
-    concept: 'Vercel detecta push em main e faz deploy automático. PRs geram preview URLs. Env vars configuradas no dashboard, não no .env commitado.',
-    code: '# Push para main = deploy em produção:\ngit push origin main\n\n# Verificar se deploy chegou:\ncurl -s https://ag-hub-tan.vercel.app/app.js | grep "MODULE_SVG"\n\n# Variáveis de ambiente:\n# Vercel Dashboard > Settings > Environment Variables',
-    mistake: 'Colocar variáveis de ambiente diretamente no .env commitado ou hardcoded no código. Vercel Dashboard tem o campo certo para isso.',
-    exercise: 'No ag-hub, verificar se o último push chegou ao Vercel: curl -s URL | grep algum trecho único do código. Se não chegou, verificar o log de deploy no dashboard.',
-    tip: 'Preview URL por PR = testar antes de chegar em main. Variáveis de prod no dashboard = nunca no repositório.',
-  },
-  'git-ci-cd': {
-    concept: '.github/workflows/*.yml define pipeline. Roda em cada push: instala deps, testa, builda, deploya. Secrets do repositório via ${{ secrets.NOME }}.',
-    code: 'name: CI\non:\n  push:\n    branches: [main]\njobs:\n  test:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - run: npm ci\n      - run: npm test\n      - run: npm run build',
-    mistake: 'Colocar API keys diretamente no yml. GitHub Actions logs são visíveis — secrets expostos. Use ${{ secrets.NOME_DA_KEY }} sempre.',
-    exercise: 'Criar .github/workflows/check.yml no ag-hub que rode "node --check app.js" a cada push para detectar syntax errors antes do deploy.',
-    tip: 'CI roda a cada push — fail rápido bloqueia merge. GitHub Secrets para API keys, nunca hardcoded no yml.',
-  },
-  'node-express-basics': {
-    concept: 'app.get/post/put/delete(path, handler). Status codes: 200 ok, 201 criado, 400 request inválido, 401 não autenticado, 403 sem permissão, 404 não encontrado, 500 erro interno.',
-    code: 'app.get("/employees/:id", async (req, res) => {\n  const employee = await findEmployee(req.params.id);\n  if (!employee) return res.status(404).json({ error: "not found" });\n  res.json(employee);\n});\n\napp.post("/employees", async (req, res) => {\n  const employee = await createEmployee(req.body);\n  res.status(201).json(employee);\n});',
-    mistake: 'Retornar 200 para erro: res.json({ success: false, error: "..." }) com status 200. Clientes precisam do status code para saber se deu certo.',
-    exercise: 'Se o ag-hub tivesse uma API Express, qual seria a rota para buscar o perfil do player? Escrever o handler completo com status codes corretos.',
-    tip: '404 vs 400: 404 = recurso não existe. 400 = request inválido (parâmetro com tipo errado, campo obrigatório ausente).',
-  },
-  'node-env-validation': {
-    concept: 'Validar todas as env vars no startup com Zod ou joi — se uma variável obrigatória faltar, a aplicação falha imediatamente com mensagem clara.',
-    code: 'import { z } from "zod";\n\nconst env = z.object({\n  PORT: z.string().default("3000"),\n  SUPABASE_URL: z.string().url(),\n  SUPABASE_SERVICE_KEY: z.string().min(20),\n}).parse(process.env);\n\nexport default env;',
-    mistake: 'Ler process.env.SUPABASE_URL no meio de um handler de rota. Se a variável está ausente, o erro ocorre quando aquela rota é chamada — difícil de diagnosticar.',
-    exercise: 'No PULSAR-RH, onde process.env é lido pela primeira vez? Está em um arquivo de configuração centralizado ou espalhado pelo código?',
-    tip: 'Falha no startup > silenciar variável faltando e descobrir em crash aleatório em produção depois.',
-  },
-  'node-error-handling': {
-    concept: 'Error middleware Express: 4 parâmetros (err, req, res, next). Centraliza tratamento de erros. next(err) encaminha para o middleware. Sem ele, crashes não retornam JSON.',
-    code: '// No final, após todas as rotas:\napp.use((err, req, res, next) => {\n  console.error("[error]", { path: req.path, message: err.message });\n  res.status(err.status ?? 500).json({\n    error: err.message ?? "Internal server error",\n  });\n});',
-    mistake: 'catch vazio ou só console.log sem relançar. O erro some, a rota trava esperando resposta, o cliente recebe timeout.',
-    exercise: 'Escrever um wrapper asyncRoute(fn) que envolve handlers async para chamar next(error) automaticamente sem try/catch em cada rota.',
-    tip: 'throw em rota async sem try/catch = crash não capturado no Express 4. Express 5 captura automaticamente. No 4, use wrapper ou try/catch.',
-  },
-  'node-async-node': {
-    concept: 'async/await em handlers Express. forEach com async não funciona — forEach não espera. Promise.all para paralelo, for...of para sequencial com dependência.',
-    code: '// forEach com await: não funciona\nreq.body.ids.forEach(async (id) => {\n  await processItem(id); // forEach não espera\n});\n\n// Correto — paralelo:\nconst results = await Promise.all(\n  req.body.ids.map(id => processItem(id))\n);',
-    mistake: 'forEach(async ...) — o código continua antes das Promises resolverem. Parece funcionar em teste, quebra em produção com dados reais.',
-    exercise: 'No PULSAR-RH ou OFICINA, existe algum forEach(async...) no código? grep -r "forEach(async" src/. Se sim, substituir por Promise.all + map.',
-    tip: 'forEach(async): fire and forget. Para esperar: Promise.all(arr.map(async x => ...)). Para sequencial com dependência: for...of.',
-  },
-  'node-graceful-shutdown': {
-    concept: 'SIGTERM é enviado pelo container/orquestrador antes de matar o processo. Usar para fechar servidor e encerrar conexões DB — evita requests pendentes e dados corrompidos.',
-    code: 'const server = app.listen(PORT);\n\nprocess.on("SIGTERM", () => {\n  server.close(async () => {\n    await db.end();\n    process.exit(0);\n  });\n});',
-    mistake: 'Ignorar SIGTERM e deixar o container receber SIGKILL depois do timeout. Conexões abertas com DB, requests pela metade, possível corrupção de dados.',
-    exercise: 'Em qualquer API Node.js que você escrever, adicionar o handler de SIGTERM como padrão antes de subir para produção.',
-    tip: 'SIGTERM = aviso prévio de encerramento. SIGKILL = morte imediata. Containers enviam SIGTERM, esperam X segundos, então SIGKILL.',
-  },
-  'clean-srp': {
-    concept: 'Uma função, uma responsabilidade. Se precisa de "e" para descrever o que faz, está fazendo coisas demais. Extrai subfunções.',
-    code: '// Violação: valida E salva E notifica\nfunction processUser(data) {\n  if (!data.email) throw new Error();\n  db.save(data);\n  sendEmail(data.email);\n}\n\n// SRP:\nfunction validateUser(data) { ... }\nfunction saveUser(data) { ... }\nfunction notifyUser(email) { ... }',
-    mistake: 'Função renderAndFetchData() — busca dados E renderiza tela. Quando a renderização muda, a lógica de fetch é impactada desnecessariamente.',
-    exercise: 'Em app.js, a função renderGrowth() chama renderGamification() e renderGrowthBody(). Isso é SRP violado ou responsabilidades relacionadas? Argumentar a decisão.',
-    tip: 'Teste fácil = SRP ok. Descreve em 1 frase sem "e"? SRP ok. Difícil de nomear = função fazendo coisa demais.',
-  },
-  'clean-dry-kiss': {
-    concept: 'DRY: não repetir código — mas só extrai na 3ª duplicação (2× pode ser coincidência). KISS: solução mais simples que funciona. YAGNI: só implementa o necessário agora.',
-    code: '// Duplicação ×2: ok, pode ser coincidência\n// Duplicação ×3: extrai\nconst format = (date) => date.toISOString().slice(0, 10);\n\n// YAGNI: não cria plugin system para 1 caso de uso\n// KISS: função direta > classe abstrata > factory > strategy',
-    mistake: 'Criar abstração genérica antes de ver o segundo uso real. Premature abstraction = mais código para manter, não menos bug.',
-    exercise: 'Em app.js, existe alguma lógica de formatação de data repetida? Identificar e medir: vale extrair ou é só uma linha simples?',
-    tip: 'Abstrações prematuras = mais bug, não menos. Espera padrão emergir na 3ª ocorrência antes de extrair.',
-  },
-  'clean-early-return': {
-    concept: 'Guard clauses no início da função verificam condições inválidas e retornam cedo. Elimina else e reduz nesting. Caminho feliz fica no nível zero de indentação.',
-    code: 'function processOrder(order) {\n  if (!order) return null;\n  if (order.cancelled) return { status: "cancelled" };\n  if (order.items.length === 0) return { status: "empty" };\n\n  // caminho feliz sem nesting\n  return calculateTotal(order);\n}',
-    mistake: 'if (condition) { grande bloco } else { outro grande bloco } — o else pode ser evitado se o if faz return/throw. Eliminar else sempre que possível.',
-    exercise: 'Em app.js, a função renderTopicRow tem ifs aninhados? Se sim, aplicar early return para achatar o nesting.',
-    tip: 'Nesting > 2 níveis? Refatora com early return ou extrai função. Leitura de cima a baixo sem indentação profunda = claro.',
-  },
-  'clean-naming': {
-    concept: 'Nomes descrevem O QUÊ e POR QUÊ. Sem abreviações. Sem genéricos (data, temp, x). Booleanos começam com is/has/can. Funções são verbos.',
-    code: 'const isActive = user.status === "active"; // boolean\nconst hasPermission = roles.includes("admin"); // boolean\nconst formatCurrency = (n) => ...; // verbo + substantivo\nconst employees = await fetchEmployees(); // plural = coleção',
-    mistake: 'Nomear variável como "data" ou "result" — não informa o tipo de dado. employeeList, orderSummary, validationErrors são autoexplicativos.',
-    exercise: 'Em app.js, localizar todas as variáveis de 1-2 letras (exceto loops com i, j). Nomear explicitamente e verificar se o código fica mais legível.',
-    tip: 'Nome ruim = comentário explicando O QUÊ faz. Nome bom = comentário desnecessário. Nome = self-documenting.',
-  },
-  'clean-code-smells': {
-    concept: 'God object: classe que sabe de tudo. Dead code: nada chama. Shotgun surgery: 1 mudança = 5 arquivos. Feature envy: função usa mais dados de outro módulo que do próprio.',
-    code: '// God object:\nclass User {\n  getFullName() {}\n  validateEmail() {}\n  saveToDatabase() {}\n  sendNotification() {}\n  checkPermission() {}\n}\n\n// Melhor:\nclass User { getFullName() {} }\nclass UserValidator { validate() {} }\nclass UserRepository { save() {} }',
-    mistake: 'Ignorar code smell porque "funciona". Code smell = dívida técnica que cresce. Feature envy especialmente — indica abstração no lugar errado.',
-    exercise: 'Em app.js, a função renderModuleCard faz muita coisa? Contar as responsabilidades. Se passar de 3, identificar o que pode ser extraído.',
-    tip: 'Code smell = alerta, não erro obrigatório. Revisar em PR: é problema real ou design aceitável para o escopo?',
-  },
-  'clean-testing': {
-    concept: 'Arrange, Act, Assert: prepara estado, executa ação, verifica resultado. Testa COMPORTAMENTO observável, não implementação interna. Mock só em boundary (DB, API externa).',
-    code: 'test("should return mastered topics count correctly", () => {\n  // Arrange\n  const progress = { js: { "const-arrow": "mastered" } };\n  const mod = MODULES.find(m => m.id === "js");\n\n  // Act\n  const pct = modPct(mod, progress);\n\n  // Assert\n  expect(pct).toBe(Math.round(1 / 6 * 100));\n});',
-    mistake: 'Mockar funções internas do módulo. Se o teste verifica que findUser() foi chamada com certo argumento, está testando implementação — refactor quebra o teste sem mudar comportamento.',
-    exercise: 'Escrever 1 teste para modPct() do ag-hub: módulo com 6 tópicos onde 3 estão mastered. Verificar se retorna 50.',
-    tip: 'Teste frágil = testa implementação. Teste robusto = testa comportamento. Refactor não deve quebrar testes, só adição de funcionalidade.',
-  },
-};
+let STUDY_MATERIAL = {};
+async function loadStudyMaterial() {
+  try {
+    const r = await fetch('data/study-material.json');
+    STUDY_MATERIAL = await r.json();
+    if (curView === 'growth') renderModules();
+  } catch (e) {
+    console.warn('study material indisponível (render usa fallback):', e.message);
+  }
+}
 
-function getModProgress()        { return JSON.parse(localStorage.getItem('agh_modules') ?? '{}'); }
+function getModProgress()        { return safeParse('agh_modules', {}); }
 function saveModProgress(data)   { localStorage.setItem('agh_modules', JSON.stringify(data)); }
 function topicStatus(p, mid, tid){ return p[mid]?.[tid] ?? 'pending'; }
-function getTopicNote(key)       { return JSON.parse(localStorage.getItem('agh_topic_notes') ?? '{}')[key] ?? ''; }
+function getTopicNote(key)       { return safeParse('agh_topic_notes', {})[key] ?? ''; }
 function saveTopicNote(key, val) {
-  const notes = JSON.parse(localStorage.getItem('agh_topic_notes') ?? '{}');
+  const notes = safeParse('agh_topic_notes', {});
   notes[key] = val;
   localStorage.setItem('agh_topic_notes', JSON.stringify(notes));
 }
@@ -1508,7 +1248,7 @@ function renderGrowth() {
 }
 
 function renderGrowthBody() {
-  const sessions = JSON.parse(localStorage.getItem('agh_sessions') || '[]');
+  const sessions = safeParse('agh_sessions', []);
   const totalSess = sessions.length;
   const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
   const waStr = weekAgo.toISOString().slice(0,10);
@@ -1574,7 +1314,7 @@ function openSessionModal(id) {
     projs.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join('');
 
   if(id) {
-    const s = JSON.parse(localStorage.getItem('agh_sessions')||'[]').find(x=>x.id===id);
+    const s = safeParse('agh_sessions', []).find(x=>x.id===id);
     if(!s) return;
     document.getElementById('fs-id').value   = s.id;
     document.getElementById('fs-title').value= s.title;
@@ -1601,7 +1341,7 @@ function openSessionModal(id) {
 function saveSession() {
   const title = document.getElementById('fs-title').value.trim();
   if(!title){toast('Descreva o que foi feito','err');return;}
-  const sessions = JSON.parse(localStorage.getItem('agh_sessions')||'[]');
+  const sessions = safeParse('agh_sessions', []);
   const id = document.getElementById('fs-id').value;
   const data = {
     id: id||uid(), title,
@@ -1623,7 +1363,7 @@ function saveSession() {
 function delSession() {
   const id=document.getElementById('fs-id').value;
   if(!id||!confirm('Excluir esta sessão?')) return;
-  const sessions=JSON.parse(localStorage.getItem('agh_sessions')||'[]').filter(s=>s.id!==id);
+  const sessions=safeParse('agh_sessions', []).filter(s=>s.id!==id);
   localStorage.setItem('agh_sessions', JSON.stringify(sessions));
   closeM('m-session');
   renderGrowth();
@@ -1652,7 +1392,7 @@ function exportData() {
     projects: DB.projects,
     tasks:    DB.tasks,
     events:   DB.events,
-    sessions: JSON.parse(localStorage.getItem('agh_sessions') || '[]'),
+    sessions: safeParse('agh_sessions', []),
     studies:  DB.studies,
   };
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -1699,7 +1439,7 @@ function renderWeeklyDigest() {
   const waStr=weekAgo.toISOString().slice(0,10);
   const t=today();
   const doneThisWeek=DB.tasks.filter(k=>k.status==='done'&&(k.updatedAt||'').slice(0,10)>=waStr).length;
-  const sessThisWeek=JSON.parse(localStorage.getItem('agh_sessions')||'[]').filter(s=>s.date>=waStr).length;
+  const sessThisWeek=safeParse('agh_sessions', []).filter(s=>s.date>=waStr).length;
   const studyHours=DB.studies.filter(s=>s.date>=waStr).reduce((acc,s)=>acc+(parseFloat(s.hours)||0),0);
   const overdue=DB.tasks.filter(k=>k.status!=='done'&&k.due&&k.due<t).length;
   el.innerHTML=`
@@ -1845,7 +1585,7 @@ async function loadTrilhaIndex() {
 }
 
 function loadTrilhaProgress() {
-  return JSON.parse(localStorage.getItem('trilhaProgress') || '{}');
+  return safeParse('trilhaProgress', {});
 }
 
 function saveTrilhaProgress(progress) {
@@ -2291,13 +2031,13 @@ function moduloNome(moduloId) {
 function addXpTrilha(xp, desc) {
   if (xp <= 0) return;
   // Registra no localStorage para histórico local
-  const log = JSON.parse(localStorage.getItem('trilhaXpLog') || '[]');
+  const log = safeParse('trilhaXpLog', []);
   log.unshift({ date: today(), xp, desc });
   localStorage.setItem('trilhaXpLog', JSON.stringify(log.slice(0, 50)));
 }
 
 function verificarConquistasTrilha(progress) {
-  const desbloqueadas = JSON.parse(localStorage.getItem('trilhaConquistas') || '[]');
+  const desbloqueadas = safeParse('trilhaConquistas', []);
 
   const desbloquear = (id) => {
     if (desbloqueadas.includes(id)) return false;
@@ -2353,7 +2093,7 @@ function verificarConquistasTrilha(progress) {
 let QUEST_BOARD_DATA = null;
 
 function loadQuestBoardProgress() {
-  return JSON.parse(localStorage.getItem('questBoardProgress') || '{}');
+  return safeParse('questBoardProgress', {});
 }
 
 function saveQuestBoardProgress(progress) {
@@ -2525,7 +2265,7 @@ function concluirBounty(projetoId, bountyId) {
 }
 
 function verificarConquistaQuestBoard(projetoId, progress) {
-  const conquistas = JSON.parse(localStorage.getItem('trilhaConquistas') || '[]');
+  const conquistas = safeParse('trilhaConquistas', []);
 
   const desbloquear = (id) => {
     if (conquistas.includes(id)) return false;
@@ -2640,12 +2380,12 @@ function clearPomoCurrent() {
 
 function getPomoDayCount() {
   const t = today();
-  const log = JSON.parse(localStorage.getItem(POMO_LOG_KEY) || '[]');
+  const log = safeParse(POMO_LOG_KEY, []);
   return log.filter(e => e.date === t && e.type === 'foco' && e.completed).length;
 }
 
 function getPomoStreakDays() {
-  const log = JSON.parse(localStorage.getItem(POMO_LOG_KEY) || '[]');
+  const log = safeParse(POMO_LOG_KEY, []);
   const dias = [...new Set(log.filter(e => e.completed && e.type === 'foco').map(e => e.date))].sort().reverse();
   if (!dias.length) return 0;
   let streak = 0;
@@ -2663,7 +2403,7 @@ function getPomoStreakDays() {
 }
 
 function logPomoEntry(type, completed, duration) {
-  const log = JSON.parse(localStorage.getItem(POMO_LOG_KEY) || '[]');
+  const log = safeParse(POMO_LOG_KEY, []);
   log.unshift({ date: today(), type, completed, duration, completedAt: new Date().toISOString() });
   localStorage.setItem(POMO_LOG_KEY, JSON.stringify(log.slice(0, 200)));
 }
@@ -2883,7 +2623,7 @@ function interromperHoraSagrada() {
     const elapsed = Math.floor((Date.now() - session.startedAt) / 1000);
     logPomoEntry('sagrada', false, elapsed);
     // Registra como interrompida — honestidade > gamificar batota
-    const log = JSON.parse(localStorage.getItem('agh_hora_sagrada_log') || '[]');
+    const log = safeParse('agh_hora_sagrada_log', []);
     log.unshift({ date: today(), status: 'interrompida', duration: elapsed, completedAt: new Date().toISOString() });
     localStorage.setItem('agh_hora_sagrada_log', JSON.stringify(log.slice(0, 100)));
     clearPomoCurrent();
@@ -2898,7 +2638,7 @@ function interromperHoraSagrada() {
 
 function completarHoraSagrada() {
   // Registra no log de hora sagrada
-  const log = JSON.parse(localStorage.getItem('agh_hora_sagrada_log') || '[]');
+  const log = safeParse('agh_hora_sagrada_log', []);
   log.unshift({ date: today(), status: 'completa', duration: 1800, completedAt: new Date().toISOString() });
   localStorage.setItem('agh_hora_sagrada_log', JSON.stringify(log.slice(0, 100)));
 
@@ -2920,10 +2660,10 @@ function completarHoraSagrada() {
 // ── DAILY STANDUP ─────────────────────────────────────────────────
 function buildOntemItems(ontemStr) {
   const xpLog = SYNC?.xpLog || [];
-  const trilhaLog = JSON.parse(localStorage.getItem('trilhaXpLog') || '[]');
+  const trilhaLog = safeParse('trilhaXpLog', []);
   const ontemXp = xpLog.filter(e => e.date === ontemStr);
   const ontemTrilha = trilhaLog.filter(e => e.date === ontemStr);
-  const ontemPomo = JSON.parse(localStorage.getItem(POMO_LOG_KEY) || '[]')
+  const ontemPomo = safeParse(POMO_LOG_KEY, [])
     .filter(e => e.date === ontemStr && e.completed);
 
   const items = [];
@@ -2952,7 +2692,7 @@ function buildSugestoes(t) {
     const proxModulo = findProxModulo(loadTrilhaProgress());
     if (proxModulo) sugs.push(`Próximo módulo: "${proxModulo}" (trilha de estudo)`);
   }
-  const horaSagradaHoje = JSON.parse(localStorage.getItem('agh_hora_sagrada_log') || '[]')
+  const horaSagradaHoje = safeParse('agh_hora_sagrada_log', [])
     .some(e => e.date === t);
   if (!horaSagradaHoje) sugs.push('Hora Sagrada 30min (ainda não fez hoje)');
   DB.tasks.filter(k => k.status !== 'done' && k.priority === 'high').slice(0, 2)
@@ -3064,7 +2804,7 @@ function saveReflection() {
   const falhou = document.getElementById('ref-falhou').value.trim();
   if (!melhor && !falhou) { toast('Preencha ao menos um campo', 'err'); return; }
 
-  const log = JSON.parse(localStorage.getItem('agh_reflection_log') || '[]');
+  const log = safeParse('agh_reflection_log', []);
   log.unshift({ date: today(), melhor, falhou, savedAt: new Date().toISOString() });
   localStorage.setItem('agh_reflection_log', JSON.stringify(log.slice(0, 90)));
 
@@ -3089,6 +2829,7 @@ document.querySelectorAll('.reflection-overlay').forEach(o =>
     new Date().toLocaleDateString('pt-BR',{weekday:'short',day:'numeric',month:'short'});
   renderDash();
   renderModules();
+  loadStudyMaterial();
   loadSync();
 
   // Retoma pomodoro se estava ativo quando a tab foi fechada
