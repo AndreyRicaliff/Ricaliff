@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-06T16:48:05",
+    "lastSync": "2026-07-06T16:48:34",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 10630,
-    "xpToNext": 11630,
+    "xp": 10650,
+    "xpToNext": 11650,
     "streak": 1,
     "longestStreak": 16,
     "lastActiveDate": "2026-07-06",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-07-06",
+      "xp": 20,
+      "type": "review",
+      "desc": "[cliente-oficina-backend] owner management panel design + ADR"
+    },
     {
       "date": "2026-07-06",
       "xp": 20,
@@ -522,12 +528,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "ag-painel: ordem dos subgrupos na apresentação da DFC"
-    },
-    {
-      "date": "2026-06-14",
-      "xp": 50,
-      "type": "feat",
-      "desc": "ag-painel: regime DRE/DFC/ambos por subgrupo"
     }
   ],
   "achievements": [
@@ -691,6 +691,13 @@
       "xp": 20
     },
     {
+      "date": "2026-07-06",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[cliente-oficina-backend] owner management panel design + ADR",
+      "xp": 20
+    },
+    {
       "date": "2026-07-03",
       "type": "feat",
       "icon": "⚙️",
@@ -744,13 +751,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "Rice P3: quick settings funcional (som/wifi/bt), calendario navegavel, Win+S cicla layouts",
-      "xp": 50
-    },
-    {
-      "date": "2026-07-03",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "Taskbar P3: agrupamento por app com sanfona inline estilo Windows (badge de contagem, pilulas por janela, middle-click fecha)",
       "xp": 50
     }
   ]
