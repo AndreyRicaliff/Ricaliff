@@ -179,3 +179,11 @@ Registro de decisões técnicas datadas, em primeira pessoa. Material de defesa 
 
 **Como explicar em entrevista (30s):**
 > "Eu tinha uma identidade visual no desktop em QML e quis a mesma no meu app web. Em vez de portar código, extraí design tokens — hex, curvas de easing, durações, formas — e centralizei tudo em CSS custom properties, derivando estados com color-mix. O toggle de tema virou um atributo data-theme no root. O aprendizado: identidade visual portável é uma tabela de tokens, não componentes."
+
+## 2026-07-06 — [privacidade] Publicação do repo com codinomes de cliente e histórico reescrito
+**Problema:** Abrir o repo (portfólio) expunha identificadores de clientes reais e estado operacional — na árvore (registro de projetos, log de XP, módulos da trilha), no histórico (blobs + mensagens de commit) e até no site publicado, que servia o arquivo de estado dos projetos.
+**Opções:** A) publicar como estava; B) `git filter-repo` + force push no mesmo repo; C) codinomes em TUDO + filter-repo + repo novo público (o antigo renomeado para arquivo privado).
+**Decisão:** C.
+**Por quê:** B deixaria os commits pré-rewrite alcançáveis pelos SHAs expostos nas páginas dos PRs antigos — sanitização de fachada. Anonimização parcial (só no log, mantendo nomes na trilha) seria reversível por correlação, então codinomes em tudo. Falar de cliente por codinome ("cliente do varejo", "cliente de oficina") é, inclusive, a prática correta em portfólio e entrevista.
+**Consequências:** histórico público 100% reescrito (verificado por clone independente: zero ocorrências em todos os blobs e mensagens); estado operacional dos projetos vive fora do repo, em arquivo local privado; o script de sync de XP sanitiza descrições na escrita, fechando a regressão futura; repo antigo preservado privado como backup completo.
+**Em entrevista (30s):** "Antes de abrir meu hub como portfólio, auditei árvore E histórico: secrets zero, mas havia identificadores de clientes em blobs antigos e mensagens de commit. Force push não bastava — os SHAs antigos continuam alcançáveis pelas páginas de PR — então reescrevi com filter-repo num repo novo e arquivei o original privado. E fechei a torneira: o pipeline que grava atividade no repo público sanitiza identificadores na escrita."
