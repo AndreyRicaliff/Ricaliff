@@ -87,7 +87,7 @@ A trilha `95-diferencial` tem 5 dimensões, cada uma uma rotina **diária ou sem
 | `~/.claude/neural/learning/` | Histórico do que já foi aprendido em contexto real |
 | `~/.claude/neural/patterns/` | Erros recorrentes e como evitar |
 | `<projeto>/DECISIONS.md` | Decisões registradas em cada projeto AG — material concreto de entrevista |
-| `~/projetos/ag-hub/PROJECTS.md` | Estado de cada projeto AG — escolha o projeto-alvo do exercício a partir daqui |
+| `~/projetos/PROJECTS.md` (local privado, fora deste repo) | Estado de cada projeto AG — escolha o projeto-alvo do exercício a partir daqui |
 
 ---
 

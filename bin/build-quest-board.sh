@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Gera data/quest-board.json a partir dos módulos da trilha + PROJECTS.md
+# Gera data/quest-board.json a partir dos módulos da trilha.
+# Estado detalhado dos projetos vive em ~/projetos/PROJECTS.md (privado, fora deste repo).
 # Idempotente. Rodar sempre que módulos da trilha ou bounties mudarem.
 # Padrão: espelha bin/build-trilha.sh
 
@@ -27,8 +28,8 @@ esc_json() {
 # Projetos AG com seus termos de busca (nome_id:termo_grep)
 declare -A PROJ_GREP=(
   [PULSAR-RH]="PULSAR-RH"
-  [cliente-varejo]="[Ll]ider [Cc]elulares\|cliente-varejo"
-  [cliente-oficina-backend]="[Bb]ETO\|cliente-oficina"
+  [cliente-varejo]="[Cc]liente [Vv]arejo\|CLIENTE VAREJO\|cliente-varejo"
+  [cliente-oficina-backend]="[Cc]liente [Oo]ficina\|CLIENTE OFICINA\|cliente-oficina"
   [meet-hub]="[Mm]eet [Hh]ub\|meet-hub"
   [ag-evento]="AG [Cc]onverge\|ag-evento"
   [cafe_com_ag]="[Cc]afé com AG\|cafe_com_ag"
