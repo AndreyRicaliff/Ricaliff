@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-08T01:34:45",
+    "lastSync": "2026-07-08T01:39:19",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 10970,
-    "xpToNext": 11970,
+    "xp": 11020,
+    "xpToNext": 12020,
     "streak": 3,
     "longestStreak": 16,
     "lastActiveDate": "2026-07-08",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-07-08",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-oficina-backend] official BETO Motobike logo in header, login and favicon"
+    },
     {
       "date": "2026-07-08",
       "xp": 20,
@@ -522,12 +528,6 @@
       "xp": 100,
       "type": "deploy",
       "desc": "Cliente Varejo: deploy da edge function sync-erp-externo modularizada (10 módulos) + limpeza de dead code; 5/5 lojas validadas em prod"
-    },
-    {
-      "date": "2026-06-15",
-      "xp": 20,
-      "type": "review",
-      "desc": "[cliente-varejo] remove one-off investigation scripts, move sync-now to scripts/"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-07-08",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-oficina-backend] official BETO Motobike logo in header, login and favicon",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-08",
       "type": "review",
       "icon": "👁️",
       "title": "[cliente-oficina-backend] match sales dashboard visual family (light, BETO red, dark brand bar)",
@@ -745,13 +752,6 @@
       "icon": "👁️",
       "title": "[cliente-oficina-backend] owner management panel design + ADR",
       "xp": 20
-    },
-    {
-      "date": "2026-07-03",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "Repo hypr-dotfiles criado (config Hyprland+ambiente dev versionados) + revisao aplicada: flock, snapshot unico, validacao de dir no dev-env.sh; claude.fish legado deletado",
-      "xp": 50
     }
   ]
 }
