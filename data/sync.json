@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-08T01:45:56",
+    "lastSync": "2026-07-08T01:54:45",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 11050,
-    "xpToNext": 12050,
+    "xp": 11100,
+    "xpToNext": 12100,
     "streak": 3,
     "longestStreak": 16,
     "lastActiveDate": "2026-07-08",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-07-08",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-oficina-backend] per-store product catalog + daily item snapshots"
+    },
     {
       "date": "2026-07-08",
       "xp": 30,
@@ -522,12 +528,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "Reprocessamento junho Varejo: valores de serviço corrigidos (subcontagem por ID-stop não recalcular); 5 lojas batem com ERP-externo"
-    },
-    {
-      "date": "2026-06-15",
-      "xp": 50,
-      "type": "security",
-      "desc": "Configuração de acessos Varejo do zero: 25 logins por colaborador + RLS por escopo validado"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-07-08",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-oficina-backend] per-store product catalog + daily item snapshots",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-08",
       "type": "bugfix",
       "icon": "🐛",
       "title": "[cliente-oficina-backend] operating expenses exclude merchandise purchase titles",
@@ -745,13 +752,6 @@
       "icon": "⚙️",
       "title": "[cliente-oficina-backend] add remote access setup script for ERP-externo",
       "xp": 50
-    },
-    {
-      "date": "2026-07-06",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[cliente-oficina-backend] owner management panel design + ADR",
-      "xp": 20
     }
   ]
 }
