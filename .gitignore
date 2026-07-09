@@ -6,3 +6,6 @@ build
 .env
 .env.*
 !.env.example
+
+# trilha: mapa local codinome->cliente real (repo publico)
+trilha/.mapa-local.md
