@@ -45,7 +45,7 @@ import pLimit from 'p-limit'
 const limit = pLimit(5)  // máximo 5 requests simultâneos
 
 const results = await Promise.all(
-  products.map(product => limit(() => fetchFromERP-externo(product.id)))
+  products.map(product => limit(() => fetchFromErp(product.id)))
 )
 
 // Opção 2: fila Bull com rate limiter
@@ -71,12 +71,12 @@ let failures = 0
 const THRESHOLD = 5
 const TIMEOUT = 30_000  // 30s
 
-async function callERP-externo(id: string) {
+async function callErp(id: string) {
   if (failures >= THRESHOLD) {
     throw new Error('Circuit open — ERP-externo unavailable')
   }
   try {
-    const result = await fetch(`${ERP-EXTERNO_URL}/products/${id}`)
+    const result = await fetch(`${ERP_URL}/products/${id}`)
     failures = 0  // reset em sucesso
     return result
   } catch (err) {

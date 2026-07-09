@@ -15,6 +15,11 @@ Estude em ordem numérica. Cada módulo `.md` segue o mesmo template: conceito �
 
 Marque `[x]` no checkpoint **só quando** (1) conseguir recitar a resposta e (2) o exercício estiver commitado num projeto AG real.
 
+> **Codinomes de cliente:** este repo é público, então os exercícios usam codinomes
+> (CLIENTE OFICINA, Cliente Varejo, ERP-externo). A tradução codinome → repo real fica
+> em `trilha/.mapa-local.md` (gitignorado, só na sua máquina). Se o arquivo não existir
+> nesta máquina, recrie a partir de `~/.claude/clientes/_mapa-codinomes.md`.
+
 ---
 
 ## Mapa

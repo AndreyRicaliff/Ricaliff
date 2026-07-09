@@ -186,19 +186,19 @@ O sync ERP-externo → Supabase (Cliente Varejo) tem o mesmo problema que o OFIC
 4. Lockfile para evitar execuções concorrentes
 
 -- Na tabela Supabase:
-CREATE TABLE erp-externo_products (
+CREATE TABLE erp_products (
   id              BIGINT PRIMARY KEY,  -- ID do produto no ERP-externo
   name            TEXT,
   price           DECIMAL,
   stock           INTEGER,
   synced_at       TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  erp-externo_id     BIGINT UNIQUE NOT NULL  -- chave de dedup
+  erp_id          BIGINT UNIQUE NOT NULL  -- chave de dedup
 );
 
 -- Sync:
-INSERT INTO erp-externo_products (erp-externo_id, name, price, stock)
+INSERT INTO erp_products (erp_id, name, price, stock)
 VALUES ($1, $2, $3, $4)
-ON CONFLICT (erp-externo_id) DO UPDATE SET
+ON CONFLICT (erp_id) DO UPDATE SET
   name = EXCLUDED.name,
   price = EXCLUDED.price,
   stock = EXCLUDED.stock,
