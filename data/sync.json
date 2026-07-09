@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-09T15:03:59",
+    "lastSync": "2026-07-09T15:12:53",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 11540,
-    "xpToNext": 12540,
+    "xp": 11560,
+    "xpToNext": 12560,
     "streak": 4,
     "longestStreak": 16,
     "lastActiveDate": "2026-07-09",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-07-09",
+      "xp": 20,
+      "type": "review",
+      "desc": "[cliente-oficina-backend] brand-align charts after owner visual review"
+    },
     {
       "date": "2026-07-09",
       "xp": 40,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-varejo] DRE por loja sobre dados confiáveis da API (Receita-CMV=Lucro, +juros, Resultado)"
-    },
-    {
-      "date": "2026-06-25",
-      "xp": 20,
-      "type": "review",
-      "desc": "[ag-flow-boost] eliminate all eslint errors"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-07-09",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[cliente-oficina-backend] brand-align charts after owner visual review",
+      "xp": 20
+    },
+    {
+      "date": "2026-07-09",
       "type": "learning",
       "icon": "📚",
       "title": "skills destiladas: filtros-globais + padrao-visual-comercial (lider→beto)",
@@ -745,13 +752,6 @@
       "icon": "👁️",
       "title": "[cliente-oficina-backend] rule-based executive summary + history table ADR",
       "xp": 20
-    },
-    {
-      "date": "2026-07-08",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-oficina-backend] executive layout — collapsible sidebar tabs, history, charts, rule-based summary",
-      "xp": 50
     }
   ]
 }
