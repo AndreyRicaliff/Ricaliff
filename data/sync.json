@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-12T18:23:08",
+    "lastSync": "2026-07-12T22:37:07",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 11955,
-    "xpToNext": 12955,
+    "xp": 11975,
+    "xpToNext": 12975,
     "streak": 1,
     "longestStreak": 16,
     "lastActiveDate": "2026-07-12",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-07-12",
+      "xp": 20,
+      "type": "review",
+      "desc": "[cliente-varejo] trigger deploy do período personalizado (autor autorizado no Vercel)"
+    },
     {
       "date": "2026-07-12",
       "xp": 50,
@@ -522,12 +528,6 @@
       "xp": 20,
       "type": "review",
       "desc": "[cliente-varejo] trigger deploy (repo publico)"
-    },
-    {
-      "date": "2026-06-29",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-varejo] gerenciamento de senhas por vendedor na config admin (por loja, reset/criar via manage-user)"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-07-12",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[cliente-varejo] trigger deploy do período personalizado (autor autorizado no Vercel)",
+      "xp": 20
+    },
+    {
+      "date": "2026-07-12",
       "type": "feat",
       "icon": "⚙️",
       "title": "[cliente-varejo] período personalizado consome filtro global e agrega diárias no shape mensal",
@@ -745,13 +752,6 @@
       "icon": "👁️",
       "title": "[cliente-oficina-backend] hero card matches BETO family (red-bordered light card, not dark block)",
       "xp": 20
-    },
-    {
-      "date": "2026-07-09",
-      "type": "learning",
-      "icon": "📚",
-      "title": "skills destiladas: padrao-visual-comercial, filtros-globais, padrao-atrativo + registro de padrões e revisao§11",
-      "xp": 40
     }
   ]
 }
