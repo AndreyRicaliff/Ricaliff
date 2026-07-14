@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-14T10:11:23",
+    "lastSync": "2026-07-14T10:13:11",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 12145,
-    "xpToNext": 13145,
+    "xp": 12165,
+    "xpToNext": 13165,
     "streak": 1,
     "longestStreak": 16,
     "lastActiveDate": "2026-07-14",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-07-14",
+      "xp": 20,
+      "type": "review",
+      "desc": "[cliente-varejo] register stale types.ts as root cause of dashboard anys"
+    },
     {
       "date": "2026-07-14",
       "xp": 30,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "Taskbar P3: agrupamento por app com sanfona inline estilo Windows (badge de contagem, pilulas por janela, middle-click fecha)"
-    },
-    {
-      "date": "2026-06-30",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[Ricaliff] consolidação monorepo + 4 trilhas novas (git/IA-ML/APIs/escala) + rename ag-hub→Ricaliff"
     }
   ],
   "achievements": [
@@ -685,6 +685,13 @@
   "recentActivity": [
     {
       "date": "2026-07-14",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[cliente-varejo] register stale types.ts as root cause of dashboard anys",
+      "xp": 20
+    },
+    {
+      "date": "2026-07-14",
       "type": "bugfix",
       "icon": "🐛",
       "title": "[cliente-varejo] visibility-only semantics — dash never deletes synced data",
@@ -744,13 +751,6 @@
       "type": "bugfix",
       "icon": "🐛",
       "title": "[PULSAR-RH] pesquisa não-ativa deixa de aceitar respostas; demo só com token exato",
-      "xp": 30
-    },
-    {
-      "date": "2026-07-12",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[PULSAR-RH] polaridade fim-a-fim — seed completo + RPC do portal grava o campo",
       "xp": 30
     }
   ]
