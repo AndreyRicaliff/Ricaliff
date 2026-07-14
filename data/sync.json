@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-14T10:06:31",
+    "lastSync": "2026-07-14T10:11:23",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 12115,
-    "xpToNext": 13115,
+    "xp": 12145,
+    "xpToNext": 13145,
     "streak": 1,
     "longestStreak": 16,
     "lastActiveDate": "2026-07-14",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-07-14",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[cliente-varejo] visibility-only semantics — dash never deletes synced data"
+    },
     {
       "date": "2026-07-14",
       "xp": 30,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[Ricaliff] consolidação monorepo + 4 trilhas novas (git/IA-ML/APIs/escala) + rename ag-hub→Ricaliff"
-    },
-    {
-      "date": "2026-06-29",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[cliente-varejo] Grupo do ERP como fonte da verdade + modo remapOnly"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-07-14",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[cliente-varejo] visibility-only semantics — dash never deletes synced data",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-14",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[PULSAR-FINANCE] aplica achados da revisao da traducao Nibo",
       "xp": 30
     },
@@ -745,13 +752,6 @@
       "icon": "🐛",
       "title": "[PULSAR-RH] polaridade fim-a-fim — seed completo + RPC do portal grava o campo",
       "xp": 30
-    },
-    {
-      "date": "2026-07-12",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[cliente-varejo] audit fix não-breaking, tipagem do geral, pendências",
-      "xp": 20
     }
   ]
 }
