@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-14T16:16:56",
+    "lastSync": "2026-07-14T18:00:15",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 12465,
+    "xp": 12515,
     "xpToNext": 13001,
     "streak": 1,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 60,
+        "value": 63,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-14",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[algoritmo-lideranca-checkout] pass Asaas card fee to customer by installment band + working Vercel landing"
+    },
     {
       "date": "2026-07-14",
       "xp": 20,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-oficina-backend] stock schema + owner web app deployed on Vercel"
-    },
-    {
-      "date": "2026-07-06",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-oficina-backend] add remote access setup script for ERP-externo"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-14",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[algoritmo-lideranca-checkout] pass Asaas card fee to customer by installment band + working Vercel landing",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-14",
       "type": "review",
       "icon": "👁️",
       "title": "[cliente-varejo] ADR acompanhamento de metas por vendedor",
@@ -759,13 +766,6 @@
       "icon": "♻️",
       "title": "[cliente-varejo] type juros/desconto/custo/detalhes on Venda(Diaria), drop 7 anys",
       "xp": 25
-    },
-    {
-      "date": "2026-07-14",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[cliente-varejo] RLS phase-3 applied + edges deployed to prod",
-      "xp": 20
     }
   ]
 }
