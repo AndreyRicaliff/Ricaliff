@@ -49,9 +49,9 @@ REDIS_URL=redis://localhost:6379
 
 ---
 
-### O problema do CLIENTE OFICINA — SERVICE_ROLE_KEY
+### Caso real (cliente anonimizado) — SERVICE_ROLE_KEY
 
-A memória `project_beto_motobike.md` registra: **`SERVICE_ROLE_KEY` exposto**.
+Num projeto de cliente, a retrospectiva registrou: **`SERVICE_ROLE_KEY` exposta** durante o desenvolvimento.
 
 `SERVICE_ROLE_KEY` do Supabase bypassa RLS completamente. Quem tem essa chave tem acesso de superusuário ao banco — pode ler, escrever e deletar qualquer dado de qualquer tenant sem nenhuma política de segurança.
 

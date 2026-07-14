@@ -8,10 +8,6 @@ async function loadSync() {
     SYNC = await r.json();
     renderGamification();
     if (curView === 'growth') renderGrowth();
-    // Propaga streaks de sync.json para localStorage se ainda não inicializados
-    if (!localStorage.getItem('agh_streaks') && SYNC?.player?.streaks) {
-      localStorage.setItem('agh_streaks', JSON.stringify(SYNC.player.streaks));
-    }
   } catch(e) { console.warn('[sync] falha ao carregar sync.json:', e); }
 }
 
@@ -25,23 +21,33 @@ function renderGamification() {
 
 // ── ATTRIBUTES ───────────────────────────────────────────────────
 
-// Carrega atributos do localStorage (sobrepõe values do sync.json para persistir ganhos locais)
-function loadAttrState() {
-  const saved = safeParse('agh_attrs', null);
-  if (!SYNC?.player?.attributes) return null;
-  if (!saved) return JSON.parse(JSON.stringify(SYNC.player.attributes));
-  // Mescla: usa structure do sync.json mas valores do localStorage quando existirem
-  const base = JSON.parse(JSON.stringify(SYNC.player.attributes));
+// Atributos = base do PRODUTOR (sync.json, cresce a cada commit via ag-hub-sync)
+// + delta local acumulado (ganhos de UI). O modelo antigo guardava um SNAPSHOT
+// absoluto que vencia o sync.json pra sempre, mascarando todo ganho do produtor
+// após o 1º ganho local. O delta compõe com a base e sobrevive a novos commits.
+function loadAttrDelta()      { return safeParse('agh_attr_delta', {}); }
+function saveAttrDelta(delta) { localStorage.setItem('agh_attr_delta', JSON.stringify(delta)); }
+
+// Migração 1×: converte o snapshot absoluto legado (agh_attrs) em delta relativo
+// à base atual, preservando o valor exibido na troca de modelo.
+function migrateLegacyAttrs(base) {
+  const legacy = safeParse('agh_attrs', null);
+  if (!legacy || localStorage.getItem('agh_attr_delta') !== null) return;
+  const delta = {};
   Object.keys(base).forEach(k => {
-    if (saved[k] !== undefined) base[k].value = saved[k];
+    if (legacy[k] !== undefined) delta[k] = legacy[k] - (base[k].value ?? 0);
   });
-  return base;
+  saveAttrDelta(delta);
+  localStorage.removeItem('agh_attrs');
 }
 
-function saveAttrState(attrs) {
-  const vals = {};
-  Object.keys(attrs).forEach(k => { vals[k] = attrs[k].value; });
-  localStorage.setItem('agh_attrs', JSON.stringify(vals));
+function loadAttrState() {
+  if (!SYNC?.player?.attributes) return null;
+  const base = JSON.parse(JSON.stringify(SYNC.player.attributes));
+  migrateLegacyAttrs(base);
+  const delta = loadAttrDelta();
+  Object.keys(base).forEach(k => { base[k].value = (base[k].value ?? 0) + (delta[k] ?? 0); });
+  return base;
 }
 
 // Retorna o build ativo (localStorage sobrepõe sync.json para permitir troca sem editar o arquivo)
@@ -53,15 +59,16 @@ function getActiveBuild() {
 }
 
 function addAttribute(attr, rawVal, source) {
-  if (!SYNC?.player?.attributes) return;
-  const attrs = loadAttrState();
-  if (!attrs[attr]) return;
+  if (!SYNC?.player?.attributes?.[attr]) return;
 
   const build = getActiveBuild();
   const mult = build?.bonus?.[attr] ?? 1;
   const finalVal = Math.round(rawVal * mult);
-  attrs[attr].value = (attrs[attr].value ?? 0) + finalVal;
-  saveAttrState(attrs);
+  if (!finalVal) return;
+
+  const delta = loadAttrDelta();
+  delta[attr] = (delta[attr] ?? 0) + finalVal;
+  saveAttrDelta(delta);
 
   // Log dos últimos 50 eventos
   const log = safeParse('attributeLog', []);
@@ -69,13 +76,19 @@ function addAttribute(attr, rawVal, source) {
   localStorage.setItem('attributeLog', JSON.stringify(log.slice(0, 50)));
 
   const bonusStr = mult > 1 ? ` (×${mult.toFixed(2)} build)` : '';
-  toast(`${attrs[attr].icon} +${finalVal} ${attr.toUpperCase()}${bonusStr} — ${source}`);
+  const sinal = finalVal >= 0 ? '+' : '';
+  toast(`${SYNC.player.attributes[attr].icon} ${sinal}${finalVal} ${attr.toUpperCase()}${bonusStr} — ${source}`);
+  renderPlayerCard();
 }
 
-function applyAttributeRules(type) {
+// Ganhos de UI (lido/checkpoint) vêm das attributeRules do sync.json — mesma
+// tabela que o produtor (ag-hub-sync.ps1) usa pros tipos de commit
+// sign=-1 estorna a MESMA tabela de regras que foi creditada (simétrico) —
+// o estorno antigo era 'int' hardcoded e recomputava do SYNC no momento da remoção
+function applyAttributeRules(type, source, sign = 1) {
   if (!SYNC?.attributeRules) return;
   const rules = SYNC.attributeRules[type] ?? {};
-  Object.entries(rules).forEach(([attr, val]) => addAttribute(attr, val, type));
+  Object.entries(rules).forEach(([attr, val]) => addAttribute(attr, val * sign, source ?? type));
 }
 
 // ── PLAYER CARD (RPG) ─────────────────────────────────────────────
@@ -244,16 +257,23 @@ function renderQuests() {
 function renderAchievements() {
   const achs = SYNC.achievements || [];
   if (!achs.length) return;
+  // Conquistas de trilha/quest board desbloqueiam no browser (trilhaConquistas);
+  // sem distinguir, as travadas apareciam iguais às obtidas
+  const locais = safeParse('trilhaConquistas', []);
   document.getElementById('achievements-section').style.display = '';
-  document.getElementById('achievements-grid').innerHTML = achs.map(a => `
-    <div class="achievement-card">
+  document.getElementById('achievements-grid').innerHTML = achs.map(a => {
+    const unlocked = !!a.unlockedAt || locais.includes(a.id);
+    const dateLbl = a.unlockedAt ? fmtD(a.unlockedAt) : unlocked ? 'desbloqueada' : '🔒 bloqueada';
+    return `
+    <div class="achievement-card${unlocked ? '' : ' ach-locked'}">
       <div class="ach-icon">${a.icon}</div>
       <div class="ach-info">
         <div class="ach-name">${esc(a.name)}</div>
         <div class="ach-desc">${esc(a.desc)}</div>
-        <div class="ach-date">${fmtD(a.unlockedAt)}</div>
+        <div class="ach-date">${dateLbl}</div>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function renderXpLog() {
@@ -270,6 +290,9 @@ function renderXpLog() {
 }
 
 // ── DATA ─────────────────────────────────────────────────────────
+// Leitura direta do localStorage (fonte da verdade): um cache em memória
+// deixava uma 2ª aba ler stale e regravar por cima, apagando a outra em silêncio.
+// Re-parse por acesso é irrelevante nessa escala (dezenas de itens).
 const DB = {
   get tasks()    { return safeParse('agh_tasks', []) },
   set tasks(v)   { localStorage.setItem('agh_tasks',    JSON.stringify(v)) },
@@ -287,6 +310,7 @@ const fmtD = d  => { if(!d) return ''; const [y,m,day]=d.split('-'); return `${d
 // Data LOCAL (não UTC): toISOString virava "amanhã" depois das 21h em UTC-3 e corrompia streak/standup
 const localISO = d => { const x = d ?? new Date(); return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`; };
 const today= ()  => localISO();
+const daysAgoISO = n => { const d = new Date(); d.setDate(d.getDate() - n); return localISO(d); };
 // Boundary: cor vinda de dado persistido/importado só entra em style se for hex válido
 const safeColor = c => /^#[0-9A-Fa-f]{3,8}$/.test(String(c ?? '')) ? c : '#1A7FFF';
 // Boundary: URL externa só entra em href se for https
@@ -400,11 +424,34 @@ function activateView(view) {
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────
+// Fila: chamadas em sequência (conquista + XP + atributo) sobrescreviam a anterior.
+// Cap + dedup para rajada de gamificação não represar a tela por minutos; itens
+// drenam mais rápido quando há backlog. Erro nunca é descartado pelo cap.
+const _toastQueue = [];
+let _toastShowing = false;
+const TOAST_CAP = 5;
 function toast(msg, type='ok') {
+  const last = _toastQueue[_toastQueue.length - 1];
+  if (last && last.msg === msg && last.type === type) return; // dedup consecutivo
+  if (_toastQueue.length >= TOAST_CAP) {
+    const i = _toastQueue.findIndex(t => t.type !== 'err');
+    _toastQueue.splice(i >= 0 ? i : 0, 1); // descarta o 'ok' mais antigo, preserva erros
+  }
+  _toastQueue.push({ msg, type });
+  if (!_toastShowing) _toastNext();
+}
+function _toastNext() {
+  const item = _toastQueue.shift();
   const el = document.getElementById('toast');
-  el.textContent = (type==='ok'?'✓  ':'✕  ') + msg;
-  el.className = 'toast '+type+' show';
-  setTimeout(()=>el.classList.remove('show'), 2500);
+  if (!item || !el) { _toastShowing = false; return; }
+  _toastShowing = true;
+  el.textContent = (item.type==='ok'?'✓  ':'✕  ') + item.msg;
+  el.className = 'toast '+item.type+' show';
+  const dur = _toastQueue.length ? 1100 : 2200; // com backlog, drena rápido
+  setTimeout(() => {
+    el.classList.remove('show');
+    setTimeout(_toastNext, 180);
+  }, dur);
 }
 
 // ── MODAL ─────────────────────────────────────────────────────────
@@ -432,14 +479,15 @@ function ring(pct, color, size=44) {
 function renderDash() {
   const now   = new Date();
   const hr    = now.getHours();
-  const greet = hr<12?'Bom dia, ':hr<18?'Boa tarde, ':'Boa noite, ';
+  const greet = hr<6?'Boa madrugada, ':hr<12?'Bom dia, ':hr<18?'Boa tarde, ':'Boa noite, ';
 
   document.querySelector('.dash-greeting').innerHTML =
     `${greet}<span id="greet-name">Ricaliff</span> 👋`;
   document.getElementById('greet-sub').textContent =
     now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
-  // quick stats
+  updateTasksBadge();
+
   const tasks   = DB.tasks;
   const projs   = DB.projects;
   const evs     = DB.events;
@@ -486,7 +534,6 @@ function renderDash() {
       </div>`).join('');
   }
 
-  // rings: all projects
   const ringsEl = document.getElementById('rings-list');
   if(!projs.length) {
     ringsEl.innerHTML='<div style="color:var(--muted);font-size:.78rem;padding:8px 0">Crie projetos para ver o progresso</div>';
@@ -504,7 +551,6 @@ function renderDash() {
     }).join('');
   }
 
-  // today events
   const todayEvs = DB.events.filter(e=>e.date===t)
     .sort((a,b)=>(a.time||'').localeCompare(b.time||''));
   const todayEl = document.getElementById('dash-today');
@@ -643,6 +689,13 @@ function delProj() {
 // ── TASKS ─────────────────────────────────────────────────────────
 let taskFilter='all';
 
+// Badge da sidebar era atualizado só dentro de renderTasks — no boot ficava no "0"
+// estático do HTML até a primeira navegação
+function updateTasksBadge() {
+  const el = document.getElementById('tasks-badge');
+  if (el) el.textContent = DB.tasks.filter(x => x.status !== 'done').length;
+}
+
 function setFilter(f,el) {
   taskFilter=f;
   document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
@@ -658,7 +711,7 @@ function renderTasks() {
   const over=tasks.filter(x=>x.status!=='done'&&x.due&&x.due<t).length;
   const pend=total-done;
 
-  document.getElementById('tasks-badge').textContent=pend;
+  updateTasksBadge();
   document.getElementById('tasks-sub').textContent=`${pend} pendente${pend!==1?'s':''} · ${done} concluída${done!==1?'s':''}`;
   document.getElementById('task-stats').innerHTML=`
     <div class="tstat"><div class="tstat-val" style="color:var(--phi)">${total}</div><div class="tstat-lbl">Total</div></div>
@@ -1062,6 +1115,7 @@ let STUDY_MATERIAL = {};
 async function loadStudyMaterial() {
   try {
     const r = await fetch('data/study-material.json');
+    if (!r.ok) throw new Error(`${r.status}`);
     STUDY_MATERIAL = await r.json();
     if (curView === 'growth') renderModules();
   } catch (e) {
@@ -1072,12 +1126,29 @@ async function loadStudyMaterial() {
 function getModProgress()        { return safeParse('agh_modules', {}); }
 function saveModProgress(data)   { localStorage.setItem('agh_modules', JSON.stringify(data)); }
 function topicStatus(p, mid, tid){ return p[mid]?.[tid] ?? 'pending'; }
-function getTopicNote(key)       { return safeParse('agh_topic_notes', {})[key] ?? ''; }
-function saveTopicNote(key, val) {
+// Buffer de anotações pendentes: um único timer cancelava a gravação de OUTRO
+// tópico (clearTimeout global) — o texto do tópico anterior sumia. Aqui as notas
+// pendentes acumulam num buffer e são gravadas juntas; getTopicNote lê o buffer
+// primeiro para o re-render não redesenhar valor velho por cima do em-voo.
+const _pendingNotes = {};
+let _noteTimer = null;
+function getTopicNote(key) {
+  return key in _pendingNotes ? _pendingNotes[key] : (safeParse('agh_topic_notes', {})[key] ?? '');
+}
+function flushNotes() {
+  const keys = Object.keys(_pendingNotes);
+  if (!keys.length) return;
   const notes = safeParse('agh_topic_notes', {});
-  notes[key] = val;
+  keys.forEach(k => { notes[k] = _pendingNotes[k]; delete _pendingNotes[k]; });
   localStorage.setItem('agh_topic_notes', JSON.stringify(notes));
 }
+function saveTopicNote(key, val) {
+  _pendingNotes[key] = val;
+  clearTimeout(_noteTimer);
+  _noteTimer = setTimeout(flushNotes, 400);
+}
+window.addEventListener('pagehide', flushNotes);
+document.addEventListener('visibilitychange', () => { if (document.hidden) flushNotes(); });
 
 function buildModIcon(mod) {
   const svg = MODULE_SVG[mod.id] || '';
@@ -1124,7 +1195,7 @@ function renderTopicRow(modId, t, p) {
   const isOpen = expandedTopics.has(key);
   return `<div class="topic-row">
     <span class="topic-status-icon" style="color:${STATUS_CLR[s]};cursor:pointer;margin-right:4px" onclick="toggleTopic('${modId}','${t.id}')">${STATUS_ICON[s]}</span>
-    <span class="topic-name ${s === 'mastered' ? 'topic-done' : ''}" style="flex:1;cursor:pointer" onclick="toggleTopicExpand('${modId}','${t.id}')">${esc(t.title)}</span>
+    <span class="topic-name ${s === 'mastered' ? 'topic-done' : ''}" style="flex:1;cursor:pointer" onclick="toggleTopicExpand('${modId}','${t.id}')">${esc(t.title || t.id)}</span>
     ${isOpen ? '<span style="color:var(--muted);font-size:.65rem">⬆</span>' : '<span style="color:var(--muted);font-size:.65rem">⬇</span>'}
     <div class="topic-material ${isOpen ? 'open' : ''}" id="material-${key}">
       ${renderTopicMaterial(modId, t)}
@@ -1159,75 +1230,75 @@ const MODULES = [
   {
     id: 'js', title: 'JavaScript Moderno', desc: 'Base de todos os projetos AG',
     topics: [
-      { id: 'const-arrow' },
-      { id: 'async-await' },
-      { id: 'array-methods' },
-      { id: 'optional-ops' },
-      { id: 'fetch-api' },
-      { id: 'dom-events' },
+      { id: 'const-arrow',  title: 'const & arrow functions' },
+      { id: 'async-await',  title: 'async/await e Promises' },
+      { id: 'array-methods',title: 'map, filter, reduce' },
+      { id: 'optional-ops', title: 'Optional chaining (?.) e nullish (??)' },
+      { id: 'fetch-api',    title: 'fetch API e JSON' },
+      { id: 'dom-events',   title: 'DOM e eventos' },
     ],
   },
   {
     id: 'ts', title: 'TypeScript', desc: 'Tipagem para evitar bugs em runtime',
     topics: [
-      { id: 'basic-types' },
-      { id: 'strict-no-any' },
-      { id: 'utility-types' },
-      { id: 'generics' },
-      { id: 'discriminated' },
+      { id: 'basic-types',  title: 'Tipos básicos e inferência' },
+      { id: 'strict-no-any',title: 'strict mode — proibido any' },
+      { id: 'utility-types',title: 'Utility types (Partial, Pick, Omit)' },
+      { id: 'generics',     title: 'Generics' },
+      { id: 'discriminated',title: 'Discriminated unions' },
     ],
   },
   {
     id: 'supabase', title: 'Supabase', desc: 'Backend de PULSAR-RH, OFICINA, Varejo',
     topics: [
-      { id: 'crud' },
-      { id: 'auth' },
-      { id: 'rls' },
-      { id: 'realtime' },
-      { id: 'migrations' },
-      { id: 'types-gen' },
+      { id: 'crud',      title: 'CRUD com supabase-js' },
+      { id: 'auth',      title: 'Auth — login, sessão, perfis' },
+      { id: 'rls',       title: 'Row Level Security' },
+      { id: 'realtime',  title: 'Realtime subscriptions' },
+      { id: 'migrations',title: 'Migrations' },
+      { id: 'types-gen', title: 'Geração de types do schema' },
     ],
   },
   {
     id: 'html-css', title: 'HTML + CSS + Vanilla JS', desc: 'Stack do ag-hub, Café com AG',
     topics: [
-      { id: 'semantics' },
-      { id: 'layout' },
-      { id: 'css-vars' },
-      { id: 'spa-vanilla' },
-      { id: 'localstorage' },
-      { id: 'responsive' },
+      { id: 'semantics',   title: 'HTML semântico' },
+      { id: 'layout',      title: 'Flexbox e Grid' },
+      { id: 'css-vars',    title: 'CSS custom properties' },
+      { id: 'spa-vanilla', title: 'SPA vanilla — views e estado' },
+      { id: 'localstorage',title: 'localStorage como storage' },
+      { id: 'responsive',  title: 'Design responsivo' },
     ],
   },
   {
     id: 'git-deploy', title: 'Git + Deploy', desc: 'Controle de versão e entrega',
     topics: [
-      { id: 'git-core' },
-      { id: 'conv-commits' },
-      { id: 'gitignore-env' },
-      { id: 'vercel' },
-      { id: 'ci-cd' },
+      { id: 'git-core',     title: 'Git core — commit, branch, merge' },
+      { id: 'conv-commits', title: 'Conventional commits' },
+      { id: 'gitignore-env',title: '.gitignore e .env' },
+      { id: 'vercel',       title: 'Deploy na Vercel' },
+      { id: 'ci-cd',        title: 'CI/CD básico' },
     ],
   },
   {
     id: 'node-api', title: 'Node.js + Express', desc: 'Backend das APIs AG',
     topics: [
-      { id: 'express-basics' },
-      { id: 'env-validation' },
-      { id: 'error-handling' },
-      { id: 'async-node' },
-      { id: 'graceful-shutdown' },
+      { id: 'express-basics',   title: 'Express — rotas e middleware' },
+      { id: 'env-validation',   title: 'Validação de env na boundary' },
+      { id: 'error-handling',   title: 'Tratamento de erros' },
+      { id: 'async-node',       title: 'Async em Node — event loop' },
+      { id: 'graceful-shutdown',title: 'Graceful shutdown' },
     ],
   },
   {
     id: 'clean-code', title: 'Clean Code', desc: 'Princípios aplicados em toda sessão',
     topics: [
-      { id: 'srp' },
-      { id: 'dry-kiss' },
-      { id: 'early-return' },
-      { id: 'naming' },
-      { id: 'code-smells' },
-      { id: 'testing' },
+      { id: 'srp',         title: 'Single Responsibility' },
+      { id: 'dry-kiss',    title: 'DRY, KISS, YAGNI' },
+      { id: 'early-return',title: 'Early return' },
+      { id: 'naming',      title: 'Nomes que explicam' },
+      { id: 'code-smells', title: 'Code smells' },
+      { id: 'testing',     title: 'Testes — pirâmide e unidade' },
     ],
   },
 ];
@@ -1252,8 +1323,7 @@ function renderGrowth() {
 function renderGrowthBody() {
   const sessions = safeParse('agh_sessions', []);
   const totalSess = sessions.length;
-  const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate()-7);
-  const waStr = localISO(weekAgo);
+  const waStr = daysAgoISO(7);
   const thisWeek = sessions.filter(s=>s.date>=waStr).length;
   const byType = {};
   sessions.forEach(s => { byType[s.type] = (byType[s.type]||0)+1; });
@@ -1387,22 +1457,53 @@ document.addEventListener('keydown',e=>{
 });
 
 // ── BACKUP / RESTORE ──────────────────────────────────────────────
+// v2: TODAS as chaves de dados do app — o v1 exportava 5 de ~22 e restaurar
+// perdia trilha, streaks, conquistas, anotações e atributos.
+const BACKUP_PREFIXES = ['agh_', 'trilha', 'questBoard', 'attributeLog', 'lastStandupDate', 'p3_'];
+// Estado transitório de sessão — NÃO entra no backup: um pomodoro em andamento
+// exportado vira, no reload pós-import, um pomodoro "concluído" fabricado.
+const BACKUP_EXCLUDE = new Set(['agh_pomo_session']);
+function backupKeys() {
+  return Object.keys(localStorage)
+    .filter(k => BACKUP_PREFIXES.some(p => k.startsWith(p)) && !BACKUP_EXCLUDE.has(k));
+}
+
 function exportData() {
-  const data = {
-    version: 1,
-    exportedAt: new Date().toISOString(),
-    projects: DB.projects,
-    tasks:    DB.tasks,
-    events:   DB.events,
-    sessions: safeParse('agh_sessions', []),
-    studies:  DB.studies,
-  };
+  const data = { version: 2, exportedAt: new Date().toISOString(), keys: {} };
+  backupKeys().forEach(k => { data.keys[k] = localStorage.getItem(k); });
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = `ricaliff-backup-${today()}.json`;
   a.click();
-  toast('Backup exportado');
+  toast(`Backup exportado (${Object.keys(data.keys).length} chaves)`);
+}
+
+function aplicarBackup(data) {
+  if (data.version === 2) {
+    // Valida ANTES de apagar: um arquivo v2 vazio/corrompido não pode destruir tudo
+    const entries = data.keys && typeof data.keys === 'object' ? Object.entries(data.keys) : [];
+    const valid = entries.filter(([, v]) => typeof v === 'string');
+    if (!valid.length) throw new Error('backup v2 sem chaves válidas');
+    backupKeys().forEach(k => localStorage.removeItem(k));
+    valid.forEach(([k, v]) => { if (!BACKUP_EXCLUDE.has(k)) localStorage.setItem(k, v); });
+  } else if (data.projects && data.tasks) {
+    // Formato v1 (5 chaves) — aceito para backups antigos
+    DB.projects = data.projects;
+    DB.tasks    = data.tasks;
+    DB.events   = data.events || [];
+    if (data.sessions) localStorage.setItem('agh_sessions', JSON.stringify(data.sessions));
+    if (data.studies)  DB.studies = data.studies;
+    // Marca como seed atual: restaurar um dataset completo NÃO deve re-mergear o
+    // seed e ressuscitar itens que o usuário apagou antes de exportar.
+    localStorage.setItem('agh_seed_v', '8');
+  } else {
+    throw new Error('estrutura de backup desconhecida');
+  }
+  // Boundary: backup é input externo — sanitizar campos que entram em style/href
+  const projs = safeParse('agh_projects', []);
+  projs.forEach(p => { p.color = safeColor(p.color); p.githubUrl = safeHttpUrl(p.githubUrl); });
+  localStorage.setItem('agh_projects', JSON.stringify(projs));
 }
 
 function importData() {
@@ -1416,18 +1517,14 @@ function importData() {
     reader.onload = ev => {
       try {
         const data = JSON.parse(ev.target.result);
-        if (!data.projects || !data.tasks) { toast('Arquivo inválido', 'err'); return; }
         if (!confirm(`Importar backup de ${data.exportedAt?.slice(0,10) || '?'}?\nIsso substituirá todos os dados atuais.`)) return;
-        // Boundary: backup é input externo — sanitizar campos que entram em style/href
-        DB.projects = data.projects.map(p => ({ ...p, color: safeColor(p.color), githubUrl: safeHttpUrl(p.githubUrl) }));
-        DB.tasks    = data.tasks;
-        DB.events   = data.events || [];
-        if (data.sessions) localStorage.setItem('agh_sessions', JSON.stringify(data.sessions));
-        if (data.studies)  DB.studies = data.studies;
-        localStorage.setItem('agh_seed_v', '7');
-        go(curView);
-        toast('Dados restaurados com sucesso');
-      } catch { toast('Erro ao ler o arquivo', 'err'); }
+        aplicarBackup(data);
+        toast('Dados restaurados — recarregando');
+        setTimeout(() => location.reload(), 600);
+      } catch (err) {
+        console.warn('[backup] import falhou:', err);
+        toast(`Erro ao importar: ${err.message}`, 'err');
+      }
     };
     reader.readAsText(file);
   };
@@ -1437,8 +1534,7 @@ function importData() {
 function renderWeeklyDigest() {
   const el=document.getElementById('weekly-digest');
   if(!el) return;
-  const weekAgo=new Date();weekAgo.setDate(weekAgo.getDate()-7);
-  const waStr=localISO(weekAgo);
+  const waStr=daysAgoISO(7);
   const t=today();
   const doneThisWeek=DB.tasks.filter(k=>k.status==='done'&&(k.updatedAt||'').slice(0,10)>=waStr).length;
   const sessThisWeek=safeParse('agh_sessions', []).filter(s=>s.date>=waStr).length;
@@ -1471,8 +1567,7 @@ function projStaleDays(projId) {
 // ── STUDIES ───────────────────────────────────────────────────────
 function renderStudies() {
   const studies=DB.studies.slice().sort((a,b)=>b.date.localeCompare(a.date));
-  const weekAgo=new Date();weekAgo.setDate(weekAgo.getDate()-7);
-  const waStr=localISO(weekAgo);
+  const waStr=daysAgoISO(7);
   const totalH=studies.reduce((acc,s)=>acc+(parseFloat(s.hours)||0),0);
   const weekH=studies.filter(s=>s.date>=waStr).reduce((acc,s)=>acc+(parseFloat(s.hours)||0),0);
   const bySubject={};
@@ -1714,11 +1809,6 @@ function stNodeColor(status) {
   return 'var(--border)';
 }
 
-function stTextColor(status) {
-  if (status === 'checkpoint' || status === 'lido') return 'var(--text)';
-  return 'var(--muted)';
-}
-
 function buildSkillTreeSvg(progress) {
   const trilhas = TRILHA_DATA.trilhas;
   const cols    = trilhas.length;
@@ -1789,7 +1879,7 @@ function buildSkillTreeSvg(progress) {
     })
   );
 
-  return { svg: [...prereqLines, ...seqLines, ...headers, ...nodes].join('\n'), W, H, centers };
+  return { svg: [...prereqLines, ...seqLines, ...headers, ...nodes].join('\n'), W, H };
 }
 
 // Estado de pan/zoom do skill tree
@@ -1959,9 +2049,10 @@ async function renderTrilhaModulo(moduloId, trilhaId) {
       : `<pre style="white-space:pre-wrap">${esc(md)}</pre>`;
     document.getElementById('trilha-md-content').innerHTML = html;
   } catch(e) {
+    console.warn('[trilha] falha ao carregar módulo:', modulo.caminho, e);
     document.getElementById('trilha-md-content').innerHTML =
       `<div style="color:var(--muted);text-align:center;padding:40px">
-        Arquivo não encontrado: ${esc(modulo.caminho)}
+        Falha ao carregar o módulo (${esc(e.message)}): ${esc(modulo.caminho)}
       </div>`;
   }
 }
@@ -1982,29 +2073,34 @@ function marcarLido(moduloId) {
   progress[moduloId] = 'lido';
   saveTrilhaProgress(progress);
   addXpTrilha(20, 'lido: ' + (moduloNome(moduloId) || moduloId));
-  addAttribute('int', 2, 'leitura: ' + (moduloNome(moduloId) || moduloId));
+  applyAttributeRules('lido', 'leitura: ' + (moduloNome(moduloId) || moduloId));
 }
 
 function marcarCheckpoint(moduloId) {
   const progress = loadTrilhaProgress();
   const atual = progress[moduloId];
+  const nome = moduloNome(moduloId) || moduloId;
   if (atual === 'checkpoint') {
     progress[moduloId] = 'lido';
     saveTrilhaProgress(progress);
     toast('Checkpoint removido');
-    addXpTrilha(-40, 'checkpoint removido: ' + (moduloNome(moduloId) || moduloId));
+    // Estorno simétrico (XP + toda a tabela attributeRules.checkpoint + contador) — sem ele, toggle repetido farmava
+    addXpTrilha(-40, 'checkpoint removido: ' + nome);
+    applyAttributeRules('checkpoint', 'checkpoint removido: ' + nome, -1);
+    const n = parseInt(sessionStorage.getItem('trilhaCheckpointsHoje') || '0');
+    if (n > 0) sessionStorage.setItem('trilhaCheckpointsHoje', String(n - 1));
   } else {
     const eraLido = atual === 'lido';
     progress[moduloId] = 'checkpoint';
     saveTrilhaProgress(progress);
-    addXpTrilha(40, 'checkpoint: ' + (moduloNome(moduloId) || moduloId));
-    if (!eraLido) addXpTrilha(20, 'lido: ' + (moduloNome(moduloId) || moduloId));
-    addAttribute('int', 5, 'checkpoint: ' + (moduloNome(moduloId) || moduloId));
+    addXpTrilha(40, 'checkpoint: ' + nome);
+    if (!eraLido) addXpTrilha(20, 'lido: ' + nome);
+    applyAttributeRules('checkpoint', 'checkpoint: ' + nome);
     verificarConquistasTrilha(progress);
   }
   // Atualiza UI no contexto atual sem recarregar tudo
   updateCheckpointBtn(moduloId);
-  // Atualiza botão na lista de módulos se estiver visível
+  // Atualiza botão E ícone de status na lista de módulos se estiver visível
   const ckBtns = document.querySelectorAll(`[onclick*="marcarCheckpoint('${moduloId}')"]`);
   const isNowCheck = progress[moduloId] === 'checkpoint';
   ckBtns.forEach(btn => {
@@ -2013,6 +2109,11 @@ function marcarCheckpoint(moduloId) {
       isNowCheck ? 'trilha-checkpoint-btn-on' : 'trilha-checkpoint-btn-off'
     );
     btn.textContent = isNowCheck ? '✓ Checkpoint' : '+ Checkpoint';
+    const st = btn.closest('.trilha-modulo-item')?.querySelector('.trilha-status');
+    if (st) {
+      st.className = 'trilha-status ' + (isNowCheck ? 'trilha-status-checkpoint' : 'trilha-status-lido');
+      st.textContent = isNowCheck ? '✓' : '◐';
+    }
   });
   // Cross-quest: notifica Quest Board se este módulo é side quest de algum projeto
   if (isNowCheck) queueMicrotask(() => notificarCrossQuest(moduloId));
@@ -2031,7 +2132,7 @@ function moduloNome(moduloId) {
 // Como SYNC é readonly (vem de sync.json), gravamos em localStorage separado
 // e exibimos toast. O sync.json é atualizado pelo script ag-hub-sync.sh.
 function addXpTrilha(xp, desc) {
-  if (xp <= 0) return;
+  if (!xp) return; // negativo É registrado: estorno de checkpoint precisa aparecer no log
   // Registra no localStorage para histórico local
   const log = safeParse('trilhaXpLog', []);
   log.unshift({ date: today(), xp, desc });
@@ -2066,21 +2167,16 @@ function verificarConquistasTrilha(progress) {
     }
   }
 
-  // trilha-maratonista: 10 checkpoints marcados no mesmo dia
-  const hoje = today();
-  const checkpointHoje = Object.entries(progress)
-    .filter(([, v]) => v === 'checkpoint')
-    .length;
-  // Simplificação: conta total de checkpoints acumulados (não temos timestamp por módulo)
-  // Rastreia via localStorage de sessão
+  // trilha-maratonista: 10 checkpoints na mesma sessão (não há timestamp por módulo)
   const sessaoCheckpoints = parseInt(sessionStorage.getItem('trilhaCheckpointsHoje') || '0') + 1;
   sessionStorage.setItem('trilhaCheckpointsHoje', String(sessaoCheckpoints));
   if (sessaoCheckpoints >= 10 && desbloquear('trilha-maratonista')) {
     toast('🏃 Conquista: Maratonista!', 'ok');
   }
 
-  // trilha-portfolio: trilhas de prioridade alta (00, 10, 30, 60, 90) com checkpoint completo
-  const trilhasAlta = ['00-fundamentos', '10-codigo-limpo', '30-banco', '60-seguranca', '90-entrevista'];
+  // trilha-portfolio: todas as trilhas de prioridade alta com checkpoint completo
+  // (derivado do trilha-index.json — a lista hardcoded já tinha drifted dos dados)
+  const trilhasAlta = TRILHA_DATA.trilhas.filter(t => t.prioridade === 'alta').map(t => t.id);
   const todasAlta = trilhasAlta.every(tid => {
     const t = TRILHA_DATA.trilhas.find(x => x.id === tid);
     return t && t.modulos.every(m => progress[m.id] === 'checkpoint');
@@ -2241,7 +2337,7 @@ function concluirSideQuest(projetoId, questId) {
   const projNome = proj?.nome || projetoId;
 
   addXpTrilha(xpTotal, `side quest ${projNome}: ${questId}`);
-  toast(`Side quest concluída! +${xpTotal} XP (${esc(projNome)})`, 'ok');
+  toast(`Side quest concluída! +${xpTotal} XP (${projNome})`, 'ok');
 
   verificarConquistaQuestBoard(projetoId, progress);
   renderQuestBoard();
@@ -2261,7 +2357,7 @@ function concluirBounty(projetoId, bountyId) {
   const projNome = proj?.nome || projetoId;
 
   addXpTrilha(xp, `bounty ${projNome}: ${bountyId}`);
-  toast(`Bounty coletada! +${xp} XP (${esc(projNome)})`, 'ok');
+  toast(`Bounty coletada! +${xp} XP (${projNome})`, 'ok'); // toast usa textContent — sem esc()
 
   renderQuestBoard();
 }
@@ -2314,7 +2410,7 @@ function notificarCrossQuest(moduloId) {
     const xpBonus = sq.xpBonus;
     addXpTrilha(xpBonus, `cross-quest bonus ${proj.nome}: ${moduloId}`);
     setTimeout(() => {
-      toast(`Side quest do ${esc(proj.nome)} cumprida! +${xpBonus} XP cruzado.`, 'ok');
+      toast(`Side quest do ${proj.nome} cumprida! +${xpBonus} XP cruzado.`, 'ok');
     }, 650);
   }
 }
@@ -2328,9 +2424,7 @@ const STREAK_DEFAULTS = {
 };
 
 function getStreaks() {
-  const raw = localStorage.getItem('agh_streaks');
-  if (!raw) return JSON.parse(JSON.stringify(STREAK_DEFAULTS));
-  return { ...JSON.parse(JSON.stringify(STREAK_DEFAULTS)), ...JSON.parse(raw) };
+  return { ...JSON.parse(JSON.stringify(STREAK_DEFAULTS)), ...safeParse('agh_streaks', {}) };
 }
 
 function saveStreaks(data) {
@@ -2343,8 +2437,7 @@ function updateStreak(tipo) {
   const s = streaks[tipo];
   if (!s) return;
   const t = today();
-  const ontem = new Date(); ontem.setDate(ontem.getDate() - 1);
-  const ontemStr = localISO(ontem);
+  const ontemStr = daysAgoISO(1);
 
   if (s.ultimoDia === t) return; // já foi registrado hoje
 
@@ -2365,11 +2458,34 @@ const POMO_DURATIONS = { foco: 25 * 60, break: 5 * 60, sagrada: 30 * 60 };
 const POMO_KEY = 'agh_pomo_session';
 const POMO_LOG_KEY = 'agh_pomo_log';
 
-let pomoRafId = null;
+// Timer em duas camadas: tick de display (só com aba visível) + deadline absoluto.
+// rAF morria em aba oculta e a conclusão — notificação/XP, o caso de uso central
+// de um timer de 25min — nunca disparava até o usuário voltar.
+let pomoTickId = null;
+let pomoDeadlineId = null;
+
+function pomoStopTimers() {
+  clearTimeout(pomoTickId); pomoTickId = null;
+  clearTimeout(pomoDeadlineId); pomoDeadlineId = null;
+}
+
+function pomoClearVisuals() {
+  document.body.classList.remove('pomo-running');
+  document.getElementById('pomodoro-fab')?.classList.remove('active-session');
+}
+
+function pomoArmDeadline(session) {
+  clearTimeout(pomoDeadlineId);
+  // setTimeout sofre throttle em background mas DISPARA (rAF não)
+  pomoDeadlineId = setTimeout(updatePomoDisplay, pomoSecondsRemaining(session) * 1000 + 50);
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && getPomoCurrent()) updatePomoDisplay();
+});
 
 function getPomoCurrent() {
-  const raw = localStorage.getItem(POMO_KEY);
-  return raw ? JSON.parse(raw) : null;
+  return safeParse(POMO_KEY, null);
 }
 
 function savePomoCurrent(data) {
@@ -2443,8 +2559,7 @@ function updatePomoDisplay() {
     timeEl.textContent = '25:00';
     timeEl.className = 'pomodoro-time';
     if (typeEl) typeEl.textContent = 'pronto';
-    document.getElementById('pomodoro-fab')?.classList.remove('active-session');
-    document.body.classList.remove('pomo-running');
+    pomoClearVisuals();
     updatePomoBtns(null);
     updatePomoStats();
     return;
@@ -2465,18 +2580,22 @@ function updatePomoDisplay() {
     return;
   }
 
-  pomoRafId = requestAnimationFrame(updatePomoDisplay);
+  // Tick de 500s só enquanto o contador está VISÍVEL (painel aberto). A conclusão
+  // não depende dele — pomoArmDeadline dispara no fim mesmo com painel fechado/aba oculta.
+  clearTimeout(pomoTickId);
+  const panelOpen = document.getElementById('pomodoro-panel')?.classList.contains('open');
+  pomoTickId = (!document.hidden && panelOpen) ? setTimeout(updatePomoDisplay, 500) : null;
 }
 
 function onPomoComplete(session) {
-  cancelAnimationFrame(pomoRafId);
+  pomoStopTimers();
   clearPomoCurrent();
   logPomoEntry(session.type, true, session.totalSeconds);
-  document.body.classList.remove('pomo-running');
-  document.getElementById('pomodoro-fab')?.classList.remove('active-session');
+  pomoClearVisuals();
 
   if (session.type === 'foco') {
     addXpTrilha(20, 'pomodoro foco completo');
+    addAttribute('int', 1, 'pomodoro foco');
     updateStreak('geral');
     sendNotification('Pomodoro completo!', 'Foco de 25min concluido. Tome um break.');
     toast('Pomodoro! +20 XP +1 INT', 'ok');
@@ -2532,13 +2651,15 @@ function iniciarPomodoro(type) {
       totalSeconds: POMO_DURATIONS[type],
     };
     savePomoCurrent(session);
-    cancelAnimationFrame(pomoRafId);
-    pomoRafId = requestAnimationFrame(updatePomoDisplay);
+    pomoStopTimers();
+    pomoArmDeadline(session);
+    updatePomoDisplay();
     updatePomoBtns(session);
   };
 
-  // Pede permissão só na primeira vez que o usuário inicia pomodoro
-  if (Notification.permission === 'default') {
+  // Pede permissão só na 1ª vez; guard 'Notification' in window — acessar
+  // Notification.permission direto lança ReferenceError onde a API não existe
+  if ('Notification' in window && Notification.permission === 'default') {
     requestNotificationPermission(doStart);
   } else {
     doStart();
@@ -2546,11 +2667,10 @@ function iniciarPomodoro(type) {
 }
 
 function pararPomodoro(session) {
-  cancelAnimationFrame(pomoRafId);
+  pomoStopTimers();
   logPomoEntry(session?.type || 'foco', false, 0);
   clearPomoCurrent();
-  document.body.classList.remove('pomo-running');
-  document.getElementById('pomodoro-fab')?.classList.remove('active-session');
+  pomoClearVisuals();
   updatePomoDisplay();
   toast('Pomodoro interrompido');
 }
@@ -2561,9 +2681,7 @@ function togglePomodoroPanel() {
   if (panel.classList.contains('open')) {
     // Retoma display se havia sessão ativa
     const session = getPomoCurrent();
-    if (session && !pomoRafId) {
-      pomoRafId = requestAnimationFrame(updatePomoDisplay);
-    }
+    if (session) updatePomoDisplay();
     updatePomoStats();
     updatePomoBtns(session);
   }
@@ -2580,13 +2698,6 @@ document.addEventListener('click', e => {
 });
 
 // ── HORA SAGRADA ──────────────────────────────────────────────────
-const HORA_SAGRADA_KEY = 'agh_hora_sagrada';
-
-function getHoraSagrada() {
-  const raw = localStorage.getItem(HORA_SAGRADA_KEY);
-  return raw ? JSON.parse(raw) : null;
-}
-
 function iniciarHoraSagrada() {
   // Fecha painel do pomodoro
   document.getElementById('pomodoro-panel')?.classList.remove('open');
@@ -2629,11 +2740,10 @@ function interromperHoraSagrada() {
     log.unshift({ date: today(), status: 'interrompida', duration: elapsed, completedAt: new Date().toISOString() });
     localStorage.setItem('agh_hora_sagrada_log', JSON.stringify(log.slice(0, 100)));
     clearPomoCurrent();
-    cancelAnimationFrame(pomoRafId);
-    document.body.classList.remove('pomo-running');
+    pomoStopTimers();
   }
   document.getElementById('hora-sagrada-banner')?.classList.remove('active');
-  document.getElementById('pomodoro-fab')?.classList.remove('active-session');
+  pomoClearVisuals();
   updatePomoDisplay();
   toast('Hora Sagrada interrompida — registrada sem XP');
 }
@@ -2647,12 +2757,13 @@ function completarHoraSagrada() {
   updateStreak('semIa');
   updateStreak('geral');
 
-  // +50 XP +5 INT +3 CON (registra no xp trilha local)
+  // O toast prometia +5 INT +3 CON e nada creditava — agora credita
   addXpTrilha(50, 'hora sagrada completa');
+  addAttribute('int', 5, 'hora sagrada');
+  addAttribute('con', 3, 'hora sagrada');
 
   document.getElementById('hora-sagrada-banner')?.classList.remove('active');
-  document.body.classList.remove('pomo-running');
-  document.getElementById('pomodoro-fab')?.classList.remove('active-session');
+  pomoClearVisuals();
   sendNotification('Hora Sagrada concluida!', '+50 XP +5 INT +3 CON. Voce no comando.');
   toast('Hora Sagrada completa! +50 XP +5 INT +3 CON', 'ok');
   updatePomoDisplay();
@@ -2672,10 +2783,11 @@ function buildOntemItems(ontemStr) {
   const commits = ontemXp.filter(e => ['feat','bugfix','deploy'].includes(e.type));
   if (commits.length) items.push({ icon: '⚙', text: `${commits.length} atividade(s) registrada(s)` });
 
-  const leituras = ontemTrilha.filter(e => e.desc?.startsWith('lido'));
+  // xp>0 e prefixo com ':' exclui os estornos ('checkpoint removido: X') do contador
+  const leituras = ontemTrilha.filter(e => e.xp > 0 && e.desc?.startsWith('lido:'));
   if (leituras.length) items.push({ icon: '📚', text: `${leituras.length} módulo(s) lido(s)` });
 
-  const checkpoints = ontemTrilha.filter(e => e.desc?.startsWith('checkpoint'));
+  const checkpoints = ontemTrilha.filter(e => e.xp > 0 && e.desc?.startsWith('checkpoint:'));
   if (checkpoints.length) items.push({ icon: '🎓', text: `${checkpoints.length} checkpoint(s)` });
 
   const foco = ontemPomo.filter(e => e.type === 'foco');
@@ -2704,13 +2816,16 @@ function buildSugestoes(t) {
 
 function buildStandupBody() {
   const t = today();
-  const ontem = new Date(); ontem.setDate(ontem.getDate() - 1);
-  const ontemStr = localISO(ontem);
+  const ontemStr = daysAgoISO(1);
 
   const ontemItems = buildOntemItems(ontemStr);
   const sugestoes = buildSugestoes(t);
   const streaks = getStreaks();
-  const sg = streaks.geral    || STREAK_DEFAULTS.geral;
+  // Geral = streak de commits do produtor (sync.json), a fonte que vive de verdade;
+  // estudo/sem-IA/decisões seguem locais (só existem neste browser)
+  const sg = SYNC?.player
+    ? { atual: SYNC.player.streak ?? 0, recorde: SYNC.player.longestStreak ?? 0 }
+    : (streaks.geral || STREAK_DEFAULTS.geral);
   const se = streaks.estudo   || STREAK_DEFAULTS.estudo;
   const ss = streaks.semIa    || STREAK_DEFAULTS.semIa;
   const sd = streaks.decisoes || STREAK_DEFAULTS.decisoes;
@@ -2782,11 +2897,13 @@ function closeStandup() {
   localStorage.setItem('lastStandupDate', today());
 }
 
-function checkStandupOnLoad() {
+async function checkStandupOnLoad() {
   const last = localStorage.getItem('lastStandupDate');
   if (last === today()) return; // já mostrou hoje
-  // Aguarda TRILHA_DATA carregar para ter sugestões melhores
-  setTimeout(openStandup, 600);
+  // A sugestão de próximo módulo depende do índice — o sleep fixo de 600ms
+  // esperava um load que nunca era disparado no init
+  await loadTrilhaIndex();
+  setTimeout(openStandup, 400);
 }
 
 // ── DAILY REFLECTION ─────────────────────────────────────────────
@@ -2811,6 +2928,7 @@ function saveReflection() {
   localStorage.setItem('agh_reflection_log', JSON.stringify(log.slice(0, 90)));
 
   addXpTrilha(30, 'daily reflection');
+  addAttribute('wis', 2, 'daily reflection');
   updateStreak('geral');
   closeReflection();
   toast('Reflection salvo! +30 XP +2 WIS', 'ok');
@@ -2839,17 +2957,18 @@ document.querySelectorAll('.reflection-overlay').forEach(o =>
   if (existingSession) {
     const rem = pomoSecondsRemaining(existingSession);
     if (rem > 0) {
-      pomoRafId = requestAnimationFrame(updatePomoDisplay);
+      pomoArmDeadline(existingSession);
+      updatePomoDisplay();
       if (existingSession.type === 'sagrada') showHoraSagradaBanner();
       if (existingSession.type === 'foco') document.body.classList.add('pomo-running');
       document.getElementById('pomodoro-fab')?.classList.add('active-session');
     } else {
-      // Sessão terminou enquanto tab estava fechada — registra como completa
-      logPomoEntry(existingSession.type, true, existingSession.totalSeconds);
+      // Sessão expirou com a tab FECHADA (com a tab aberta, pomoArmDeadline já teria
+      // completado): não dá pra confirmar que rodou até o fim e a notificação nunca
+      // disparou — descarta em silêncio em vez de creditar/logar um pomodoro fantasma.
       clearPomoCurrent();
     }
   }
 
-  // Standup: verifica 1s após init para dar tempo ao TRILHA_DATA carregar
   checkStandupOnLoad();
 })();

@@ -9,3 +9,10 @@ build
 
 # trilha: mapa local codinome->cliente real (repo publico)
 trilha/.mapa-local.md
+
+# quest-board: mapa local codinome->pasta (ultimaAtividade via git log)
+bin/.projmap-local
+data/*.tmp
+data/*.prev
+data/*.matches
+data/*.act

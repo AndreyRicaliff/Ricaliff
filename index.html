@@ -8,8 +8,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/marked@9.1.6/marked.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.4/dist/purify.min.js"></script>
+<!-- Vendoradas (mesmas versões do CDN): o sanitizador de XSS não pode depender
+     de terceiro em runtime — CDN comprometido = script arbitrário no hub -->
+<script src="assets/vendor/marked-9.1.6.min.js"></script>
+<script src="assets/vendor/purify-3.2.4.min.js"></script>
 <style>
 :root{
   /* ── Persona 3 — tokens do rice (ThemeMode.qml + Colors.qml) ── */
@@ -500,6 +502,7 @@ body{font-family:'Montserrat','Inter',system-ui,sans-serif;background:var(--bg);
 
 .achievements-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-bottom:24px}
 .achievement-card{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
+.achievement-card.ach-locked{opacity:.45;filter:grayscale(.8)}
 .achievement-card.locked{opacity:.35}
 .ach-icon{font-size:1.4rem;line-height:1;flex-shrink:0}
 .ach-info{min-width:0}
@@ -937,10 +940,11 @@ body{font-family:'Montserrat','Inter',system-ui,sans-serif;background:var(--bg);
   0%,100%{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--primary) 0%,transparent)}
   50%{box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--primary) 25%,transparent)}
 }
-body.pomo-running::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:350;
-  animation:borderPulse 3s ease-in-out infinite;
-}
+/* Elemento próprio: body::after pertence ao wallpaper P3 — quando o pulso
+   dividia o mesmo pseudo-elemento, herdava opacity .045 (invisível) e içava
+   as faixas do wallpaper pra z-index 350 */
+#pomo-pulse{position:fixed;inset:0;pointer-events:none;z-index:350;display:none}
+body.pomo-running #pomo-pulse{display:block;animation:borderPulse 3s ease-in-out infinite}
 
 /* ── DAILY REFLECTION ─────────────────────────────────────────── */
 .reflection-overlay{
@@ -972,11 +976,13 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 .card,.tstat,.trilha-card{backdrop-filter:blur(7px);background:color-mix(in srgb,var(--surface) 85%,transparent)}
 
 /* entrada de tela (slide+fade, OutExpo) */
-.view.active{animation:p3ViewIn .38s cubic-bezier(.16,1,.3,1) both}
+/* fill backwards, nunca both: transform retido vira containing block de fixed
+   (bug já pago em PULSAR-RH e Lúmen) */
+.view.active{animation:p3ViewIn .38s cubic-bezier(.16,1,.3,1) backwards}
 @keyframes p3ViewIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
 
 /* stagger dos blocos da tela (cascata Persona) */
-.view.active>*{animation:p3ItemIn .5s cubic-bezier(.16,1,.3,1) both}
+.view.active>*{animation:p3ItemIn .5s cubic-bezier(.16,1,.3,1) backwards}
 .view.active>*:nth-child(1){animation-delay:.03s}.view.active>*:nth-child(2){animation-delay:.08s}
 .view.active>*:nth-child(3){animation-delay:.13s}.view.active>*:nth-child(4){animation-delay:.18s}
 .view.active>*:nth-child(5){animation-delay:.23s}.view.active>*:nth-child(6){animation-delay:.28s}
@@ -1039,7 +1045,7 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 
 @media (prefers-reduced-motion:reduce){
   .view.active,.view.active>*,body::after,.nav-item.active::before,
-  #p3-wipe.run i,.sb-mark.shake{animation:none!important}
+  #p3-wipe.run i,.sb-mark.shake,#pomo-pulse{animation:none!important}
 }
 </style>
 </head>
@@ -1047,6 +1053,7 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 
 <div id="p3-accent-line" aria-hidden="true"></div>
 <div id="p3-wipe" aria-hidden="true"><i></i><i></i><i></i></div>
+<div id="pomo-pulse" aria-hidden="true"></div>
 
 <!-- SIDEBAR -->
 <nav class="sidebar" id="sidebar">
@@ -1291,7 +1298,7 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
     <div class="view-header" id="trilha-header">
       <div>
         <div class="view-title">Estudos</div>
-        <div class="view-sub">11 trilhas · 70 módulos · sistema de aprendizado defensável em entrevista</div>
+        <div class="view-sub">Trilhas de estudo · aprendizado defensável em entrevista</div>
       </div>
       <div id="trilha-tree-toggle" style="display:flex;gap:8px;align-items:center"></div>
     </div>
