@@ -6,12 +6,12 @@ A `/revisao` lê este arquivo no início e promove 🔴 direto pro relatório.
 ## 🔴 Segurança / privacidade
 
 - **2026-07-14 · Histórico público ainda contém nome real de cliente** — 4 mensagens de
-  commit alcançáveis da main (`247e846`, `c6cba12`, `0654de1`, `41241bc` com "BETO") e
-  `daf8407` ("AUTAG" + raiz de CNPJ). A árvore está limpa; limpar o histórico exige
+  commit alcançáveis da main (SHAs `247e846`, `c6cba12`, `0654de1`, `41241bc`) e um 5º
+  (`daf8407`, com raiz de CNPJ). A árvore está limpa; limpar o histórico exige
   `git filter-repo` + force push na main pública (proibido sem decisão explícita do
   Ricaliff — política DECISIONS 2026-07-06 preferiu repo novo na última vez). Decidir:
-  reescrever de novo, repo novo, ou aceitar (nomes em mensagem de commit, sem mapa
-  codinome→real na árvore atual).
+  reescrever de novo, repo novo, ou aceitar (identificadores só em mensagem de commit
+  antiga, sem mapa codinome→real na árvore atual).
 - **2026-07-14 · Rotacionar SERVICE_ROLE_KEY do cliente-oficina** — a chave marcada como
   exposta na retrospectiva segue com task `todo` desde maio (seed `b-t02`). Ação fora
   deste repo (painel Supabase do projeto do cliente + infra Windows dele). URGENTE.
