@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-14T12:35:44-03:00",
+  "geradoEm": "2026-07-14T18:00:20.966Z",
   "projetos": [
     {
       "id": "PULSAR-RH",
@@ -427,6 +427,15 @@
       "ultimaAtividade": "2026-07-14T12:17:59-03:00",
       "sideQuests": [
         {
+          "id": ".mapa-local.md",
+          "titulo": "Mapa local de codinomes (GITIGNORADO — nunca commitar)",
+          "trilha": ".mapa-local.md",
+          "moduloPath": "/trilha/.mapa-local.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
           "id": "20-arquitetura/04-padroes-comunicacao.md",
           "titulo": "04 — Padrões de Comunicação",
           "trilha": "20-arquitetura",
@@ -546,6 +555,15 @@
       ],
       "ultimaAtividade": "2026-05-08T16:49:10-03:00",
       "sideQuests": [
+        {
+          "id": ".mapa-local.md",
+          "titulo": "Mapa local de codinomes (GITIGNORADO — nunca commitar)",
+          "trilha": ".mapa-local.md",
+          "moduloPath": "/trilha/.mapa-local.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
         {
           "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
           "titulo": "01 — Tipos, Memória, Valor vs Referência",
@@ -1413,7 +1431,7 @@
         "localStorage",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-14T12:31:23-03:00",
+      "ultimaAtividade": "2026-07-14T12:49:42-03:00",
       "sideQuests": [
         {
           "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",

@@ -21,23 +21,33 @@ function renderGamification() {
 
 // ── ATTRIBUTES ───────────────────────────────────────────────────
 
-// Carrega atributos do localStorage (sobrepõe values do sync.json para persistir ganhos locais)
-function loadAttrState() {
-  const saved = safeParse('agh_attrs', null);
-  if (!SYNC?.player?.attributes) return null;
-  if (!saved) return JSON.parse(JSON.stringify(SYNC.player.attributes));
-  // Mescla: usa structure do sync.json mas valores do localStorage quando existirem
-  const base = JSON.parse(JSON.stringify(SYNC.player.attributes));
+// Atributos = base do PRODUTOR (sync.json, cresce a cada commit via ag-hub-sync)
+// + delta local acumulado (ganhos de UI). O modelo antigo guardava um SNAPSHOT
+// absoluto que vencia o sync.json pra sempre, mascarando todo ganho do produtor
+// após o 1º ganho local. O delta compõe com a base e sobrevive a novos commits.
+function loadAttrDelta()      { return safeParse('agh_attr_delta', {}); }
+function saveAttrDelta(delta) { localStorage.setItem('agh_attr_delta', JSON.stringify(delta)); }
+
+// Migração 1×: converte o snapshot absoluto legado (agh_attrs) em delta relativo
+// à base atual, preservando o valor exibido na troca de modelo.
+function migrateLegacyAttrs(base) {
+  const legacy = safeParse('agh_attrs', null);
+  if (!legacy || localStorage.getItem('agh_attr_delta') !== null) return;
+  const delta = {};
   Object.keys(base).forEach(k => {
-    if (saved[k] !== undefined) base[k].value = saved[k];
+    if (legacy[k] !== undefined) delta[k] = legacy[k] - (base[k].value ?? 0);
   });
-  return base;
+  saveAttrDelta(delta);
+  localStorage.removeItem('agh_attrs');
 }
 
-function saveAttrState(attrs) {
-  const vals = {};
-  Object.keys(attrs).forEach(k => { vals[k] = attrs[k].value; });
-  localStorage.setItem('agh_attrs', JSON.stringify(vals));
+function loadAttrState() {
+  if (!SYNC?.player?.attributes) return null;
+  const base = JSON.parse(JSON.stringify(SYNC.player.attributes));
+  migrateLegacyAttrs(base);
+  const delta = loadAttrDelta();
+  Object.keys(base).forEach(k => { base[k].value = (base[k].value ?? 0) + (delta[k] ?? 0); });
+  return base;
 }
 
 // Retorna o build ativo (localStorage sobrepõe sync.json para permitir troca sem editar o arquivo)
@@ -49,15 +59,16 @@ function getActiveBuild() {
 }
 
 function addAttribute(attr, rawVal, source) {
-  if (!SYNC?.player?.attributes) return;
-  const attrs = loadAttrState();
-  if (!attrs[attr]) return;
+  if (!SYNC?.player?.attributes?.[attr]) return;
 
   const build = getActiveBuild();
   const mult = build?.bonus?.[attr] ?? 1;
   const finalVal = Math.round(rawVal * mult);
-  attrs[attr].value = (attrs[attr].value ?? 0) + finalVal;
-  saveAttrState(attrs);
+  if (!finalVal) return;
+
+  const delta = loadAttrDelta();
+  delta[attr] = (delta[attr] ?? 0) + finalVal;
+  saveAttrDelta(delta);
 
   // Log dos últimos 50 eventos
   const log = safeParse('attributeLog', []);
@@ -66,16 +77,18 @@ function addAttribute(attr, rawVal, source) {
 
   const bonusStr = mult > 1 ? ` (×${mult.toFixed(2)} build)` : '';
   const sinal = finalVal >= 0 ? '+' : '';
-  toast(`${attrs[attr].icon} ${sinal}${finalVal} ${attr.toUpperCase()}${bonusStr} — ${source}`);
+  toast(`${SYNC.player.attributes[attr].icon} ${sinal}${finalVal} ${attr.toUpperCase()}${bonusStr} — ${source}`);
   renderPlayerCard();
 }
 
 // Ganhos de UI (lido/checkpoint) vêm das attributeRules do sync.json — mesma
 // tabela que o produtor (ag-hub-sync.ps1) usa pros tipos de commit
-function applyAttributeRules(type, source) {
+// sign=-1 estorna a MESMA tabela de regras que foi creditada (simétrico) —
+// o estorno antigo era 'int' hardcoded e recomputava do SYNC no momento da remoção
+function applyAttributeRules(type, source, sign = 1) {
   if (!SYNC?.attributeRules) return;
   const rules = SYNC.attributeRules[type] ?? {};
-  Object.entries(rules).forEach(([attr, val]) => addAttribute(attr, val, source ?? type));
+  Object.entries(rules).forEach(([attr, val]) => addAttribute(attr, val * sign, source ?? type));
 }
 
 // ── PLAYER CARD (RPG) ─────────────────────────────────────────────
@@ -277,20 +290,18 @@ function renderXpLog() {
 }
 
 // ── DATA ─────────────────────────────────────────────────────────
-// Cache nos getters: eram JSON.parse do array inteiro a cada acesso — e rodam
-// dentro de .map() por item renderizado. Setters invalidam.
-const _dbCache = {};
-const dbGet = (key, lsKey) => _dbCache[key] !== undefined ? _dbCache[key] : (_dbCache[key] = safeParse(lsKey, []));
-const dbSet = (key, lsKey, v) => { _dbCache[key] = v; localStorage.setItem(lsKey, JSON.stringify(v)); };
+// Leitura direta do localStorage (fonte da verdade): um cache em memória
+// deixava uma 2ª aba ler stale e regravar por cima, apagando a outra em silêncio.
+// Re-parse por acesso é irrelevante nessa escala (dezenas de itens).
 const DB = {
-  get tasks()    { return dbGet('tasks', 'agh_tasks') },
-  set tasks(v)   { dbSet('tasks', 'agh_tasks', v) },
-  get projects() { return dbGet('projects', 'agh_projects') },
-  set projects(v){ dbSet('projects', 'agh_projects', v) },
-  get events()   { return dbGet('events', 'agh_events') },
-  set events(v)  { dbSet('events', 'agh_events', v) },
-  get studies()  { return dbGet('studies', 'agh_studies') },
-  set studies(v) { dbSet('studies', 'agh_studies', v) },
+  get tasks()    { return safeParse('agh_tasks', []) },
+  set tasks(v)   { localStorage.setItem('agh_tasks',    JSON.stringify(v)) },
+  get projects() { return safeParse('agh_projects', []) },
+  set projects(v){ localStorage.setItem('agh_projects', JSON.stringify(v)) },
+  get events()   { return safeParse('agh_events', []) },
+  set events(v)  { localStorage.setItem('agh_events',   JSON.stringify(v)) },
+  get studies()  { return safeParse('agh_studies', []) },
+  set studies(v) { localStorage.setItem('agh_studies',  JSON.stringify(v)) },
 };
 
 const uid  = () => Date.now().toString(36) + Math.random().toString(36).slice(2,6);
@@ -413,10 +424,19 @@ function activateView(view) {
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────
-// Fila: chamadas em sequência (conquista + XP + atributo) sobrescreviam a anterior
+// Fila: chamadas em sequência (conquista + XP + atributo) sobrescreviam a anterior.
+// Cap + dedup para rajada de gamificação não represar a tela por minutos; itens
+// drenam mais rápido quando há backlog. Erro nunca é descartado pelo cap.
 const _toastQueue = [];
 let _toastShowing = false;
+const TOAST_CAP = 5;
 function toast(msg, type='ok') {
+  const last = _toastQueue[_toastQueue.length - 1];
+  if (last && last.msg === msg && last.type === type) return; // dedup consecutivo
+  if (_toastQueue.length >= TOAST_CAP) {
+    const i = _toastQueue.findIndex(t => t.type !== 'err');
+    _toastQueue.splice(i >= 0 ? i : 0, 1); // descarta o 'ok' mais antigo, preserva erros
+  }
   _toastQueue.push({ msg, type });
   if (!_toastShowing) _toastNext();
 }
@@ -427,10 +447,11 @@ function _toastNext() {
   _toastShowing = true;
   el.textContent = (item.type==='ok'?'✓  ':'✕  ') + item.msg;
   el.className = 'toast '+item.type+' show';
+  const dur = _toastQueue.length ? 1100 : 2200; // com backlog, drena rápido
   setTimeout(() => {
     el.classList.remove('show');
-    setTimeout(_toastNext, 220);
-  }, 2200);
+    setTimeout(_toastNext, 180);
+  }, dur);
 }
 
 // ── MODAL ─────────────────────────────────────────────────────────
@@ -1105,17 +1126,29 @@ async function loadStudyMaterial() {
 function getModProgress()        { return safeParse('agh_modules', {}); }
 function saveModProgress(data)   { localStorage.setItem('agh_modules', JSON.stringify(data)); }
 function topicStatus(p, mid, tid){ return p[mid]?.[tid] ?? 'pending'; }
-function getTopicNote(key)       { return safeParse('agh_topic_notes', {})[key] ?? ''; }
-// Debounce: gravar por keystroke fazia parse+stringify do objeto inteiro a cada tecla
+// Buffer de anotações pendentes: um único timer cancelava a gravação de OUTRO
+// tópico (clearTimeout global) — o texto do tópico anterior sumia. Aqui as notas
+// pendentes acumulam num buffer e são gravadas juntas; getTopicNote lê o buffer
+// primeiro para o re-render não redesenhar valor velho por cima do em-voo.
+const _pendingNotes = {};
 let _noteTimer = null;
-function saveTopicNote(key, val) {
-  clearTimeout(_noteTimer);
-  _noteTimer = setTimeout(() => {
-    const notes = safeParse('agh_topic_notes', {});
-    notes[key] = val;
-    localStorage.setItem('agh_topic_notes', JSON.stringify(notes));
-  }, 400);
+function getTopicNote(key) {
+  return key in _pendingNotes ? _pendingNotes[key] : (safeParse('agh_topic_notes', {})[key] ?? '');
 }
+function flushNotes() {
+  const keys = Object.keys(_pendingNotes);
+  if (!keys.length) return;
+  const notes = safeParse('agh_topic_notes', {});
+  keys.forEach(k => { notes[k] = _pendingNotes[k]; delete _pendingNotes[k]; });
+  localStorage.setItem('agh_topic_notes', JSON.stringify(notes));
+}
+function saveTopicNote(key, val) {
+  _pendingNotes[key] = val;
+  clearTimeout(_noteTimer);
+  _noteTimer = setTimeout(flushNotes, 400);
+}
+window.addEventListener('pagehide', flushNotes);
+document.addEventListener('visibilitychange', () => { if (document.hidden) flushNotes(); });
 
 function buildModIcon(mod) {
   const svg = MODULE_SVG[mod.id] || '';
@@ -1424,11 +1457,15 @@ document.addEventListener('keydown',e=>{
 });
 
 // ── BACKUP / RESTORE ──────────────────────────────────────────────
-// v2: TODAS as chaves do app — o v1 exportava 5 de ~22 e restaurar perdia
-// trilha, streaks, conquistas, anotações, pomodoro e atributos
+// v2: TODAS as chaves de dados do app — o v1 exportava 5 de ~22 e restaurar
+// perdia trilha, streaks, conquistas, anotações e atributos.
 const BACKUP_PREFIXES = ['agh_', 'trilha', 'questBoard', 'attributeLog', 'lastStandupDate', 'p3_'];
+// Estado transitório de sessão — NÃO entra no backup: um pomodoro em andamento
+// exportado vira, no reload pós-import, um pomodoro "concluído" fabricado.
+const BACKUP_EXCLUDE = new Set(['agh_pomo_session']);
 function backupKeys() {
-  return Object.keys(localStorage).filter(k => BACKUP_PREFIXES.some(p => k.startsWith(p)));
+  return Object.keys(localStorage)
+    .filter(k => BACKUP_PREFIXES.some(p => k.startsWith(p)) && !BACKUP_EXCLUDE.has(k));
 }
 
 function exportData() {
@@ -1443,9 +1480,13 @@ function exportData() {
 }
 
 function aplicarBackup(data) {
-  if (data.version === 2 && data.keys) {
+  if (data.version === 2) {
+    // Valida ANTES de apagar: um arquivo v2 vazio/corrompido não pode destruir tudo
+    const entries = data.keys && typeof data.keys === 'object' ? Object.entries(data.keys) : [];
+    const valid = entries.filter(([, v]) => typeof v === 'string');
+    if (!valid.length) throw new Error('backup v2 sem chaves válidas');
     backupKeys().forEach(k => localStorage.removeItem(k));
-    Object.entries(data.keys).forEach(([k, v]) => { if (typeof v === 'string') localStorage.setItem(k, v); });
+    valid.forEach(([k, v]) => { if (!BACKUP_EXCLUDE.has(k)) localStorage.setItem(k, v); });
   } else if (data.projects && data.tasks) {
     // Formato v1 (5 chaves) — aceito para backups antigos
     DB.projects = data.projects;
@@ -1453,7 +1494,9 @@ function aplicarBackup(data) {
     DB.events   = data.events || [];
     if (data.sessions) localStorage.setItem('agh_sessions', JSON.stringify(data.sessions));
     if (data.studies)  DB.studies = data.studies;
-    localStorage.setItem('agh_seed_v', '0'); // força seed re-mergear + patches v8 no reload
+    // Marca como seed atual: restaurar um dataset completo NÃO deve re-mergear o
+    // seed e ressuscitar itens que o usuário apagou antes de exportar.
+    localStorage.setItem('agh_seed_v', '8');
   } else {
     throw new Error('estrutura de backup desconhecida');
   }
@@ -2041,9 +2084,9 @@ function marcarCheckpoint(moduloId) {
     progress[moduloId] = 'lido';
     saveTrilhaProgress(progress);
     toast('Checkpoint removido');
-    // Estorno completo (XP + INT + contador da sessão) — sem ele, toggle repetido farmava
+    // Estorno simétrico (XP + toda a tabela attributeRules.checkpoint + contador) — sem ele, toggle repetido farmava
     addXpTrilha(-40, 'checkpoint removido: ' + nome);
-    addAttribute('int', -(SYNC?.attributeRules?.checkpoint?.int ?? 5), 'checkpoint removido: ' + nome);
+    applyAttributeRules('checkpoint', 'checkpoint removido: ' + nome, -1);
     const n = parseInt(sessionStorage.getItem('trilhaCheckpointsHoje') || '0');
     if (n > 0) sessionStorage.setItem('trilhaCheckpointsHoje', String(n - 1));
   } else {
@@ -2314,7 +2357,7 @@ function concluirBounty(projetoId, bountyId) {
   const projNome = proj?.nome || projetoId;
 
   addXpTrilha(xp, `bounty ${projNome}: ${bountyId}`);
-  toast(`Bounty coletada! +${xp} XP (${esc(projNome)})`, 'ok');
+  toast(`Bounty coletada! +${xp} XP (${projNome})`, 'ok'); // toast usa textContent — sem esc()
 
   renderQuestBoard();
 }
@@ -2537,8 +2580,11 @@ function updatePomoDisplay() {
     return;
   }
 
+  // Tick de 500s só enquanto o contador está VISÍVEL (painel aberto). A conclusão
+  // não depende dele — pomoArmDeadline dispara no fim mesmo com painel fechado/aba oculta.
   clearTimeout(pomoTickId);
-  pomoTickId = document.hidden ? null : setTimeout(updatePomoDisplay, 500);
+  const panelOpen = document.getElementById('pomodoro-panel')?.classList.contains('open');
+  pomoTickId = (!document.hidden && panelOpen) ? setTimeout(updatePomoDisplay, 500) : null;
 }
 
 function onPomoComplete(session) {
@@ -2611,8 +2657,9 @@ function iniciarPomodoro(type) {
     updatePomoBtns(session);
   };
 
-  // Pede permissão só na primeira vez que o usuário inicia pomodoro
-  if (Notification.permission === 'default') {
+  // Pede permissão só na 1ª vez; guard 'Notification' in window — acessar
+  // Notification.permission direto lança ReferenceError onde a API não existe
+  if ('Notification' in window && Notification.permission === 'default') {
     requestNotificationPermission(doStart);
   } else {
     doStart();
@@ -2736,10 +2783,11 @@ function buildOntemItems(ontemStr) {
   const commits = ontemXp.filter(e => ['feat','bugfix','deploy'].includes(e.type));
   if (commits.length) items.push({ icon: '⚙', text: `${commits.length} atividade(s) registrada(s)` });
 
-  const leituras = ontemTrilha.filter(e => e.desc?.startsWith('lido'));
+  // xp>0 e prefixo com ':' exclui os estornos ('checkpoint removido: X') do contador
+  const leituras = ontemTrilha.filter(e => e.xp > 0 && e.desc?.startsWith('lido:'));
   if (leituras.length) items.push({ icon: '📚', text: `${leituras.length} módulo(s) lido(s)` });
 
-  const checkpoints = ontemTrilha.filter(e => e.desc?.startsWith('checkpoint'));
+  const checkpoints = ontemTrilha.filter(e => e.xp > 0 && e.desc?.startsWith('checkpoint:'));
   if (checkpoints.length) items.push({ icon: '🎓', text: `${checkpoints.length} checkpoint(s)` });
 
   const foco = ontemPomo.filter(e => e.type === 'foco');
@@ -2915,8 +2963,9 @@ document.querySelectorAll('.reflection-overlay').forEach(o =>
       if (existingSession.type === 'foco') document.body.classList.add('pomo-running');
       document.getElementById('pomodoro-fab')?.classList.add('active-session');
     } else {
-      // Sessão terminou enquanto tab estava fechada — registra como completa
-      logPomoEntry(existingSession.type, true, existingSession.totalSeconds);
+      // Sessão expirou com a tab FECHADA (com a tab aberta, pomoArmDeadline já teria
+      // completado): não dá pra confirmar que rodou até o fim e a notificação nunca
+      // disparou — descarta em silêncio em vez de creditar/logar um pomodoro fantasma.
       clearPomoCurrent();
     }
   }
