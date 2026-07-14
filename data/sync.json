@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-14T10:13:11",
+    "lastSync": "2026-07-14T10:36:59",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,8 +8,8 @@
     "name": "Ricalfiff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 12165,
-    "xpToNext": 13165,
+    "xp": 12185,
+    "xpToNext": 13185,
     "streak": 1,
     "longestStreak": 16,
     "lastActiveDate": "2026-07-14",
@@ -229,6 +229,12 @@
     "lido": 20
   },
   "xpLog": [
+    {
+      "date": "2026-07-14",
+      "xp": 20,
+      "type": "review",
+      "desc": "[PULSAR-FINANCE] netlify.toml (build/publish/node + SPA redirect)"
+    },
     {
       "date": "2026-07-14",
       "xp": 20,
@@ -522,12 +528,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "Rice P3: quick settings funcional (som/wifi/bt), calendario navegavel, Win+S cicla layouts"
-    },
-    {
-      "date": "2026-07-03",
-      "xp": 50,
-      "type": "feat",
-      "desc": "Taskbar P3: agrupamento por app com sanfona inline estilo Windows (badge de contagem, pilulas por janela, middle-click fecha)"
     }
   ],
   "achievements": [
@@ -687,6 +687,13 @@
       "date": "2026-07-14",
       "type": "review",
       "icon": "👁️",
+      "title": "[PULSAR-FINANCE] netlify.toml (build/publish/node + SPA redirect)",
+      "xp": 20
+    },
+    {
+      "date": "2026-07-14",
+      "type": "review",
+      "icon": "👁️",
       "title": "[cliente-varejo] register stale types.ts as root cause of dashboard anys",
       "xp": 20
     },
@@ -745,13 +752,6 @@
       "icon": "🧪",
       "title": "[PULSAR-RH] import resiliente a package.json 'type:module' fora do repo",
       "xp": 80
-    },
-    {
-      "date": "2026-07-12",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[PULSAR-RH] pesquisa não-ativa deixa de aceitar respostas; demo só com token exato",
-      "xp": 30
     }
   ]
 }
