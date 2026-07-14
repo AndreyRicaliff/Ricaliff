@@ -1,26 +1,28 @@
-// seed.js v7 — projetos com melhorias + studies IFPB + updatedAt nas tarefas
-// Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário
+// seed.js v8 — v7 + patch de metadados de infra (links GitHub 404, redações de segurança)
+// Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
+// Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
+// não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '7') return;
+  if (localStorage.getItem('agh_seed_v') === '8') return;
 
   const now = new Date().toISOString();
 
   // ── PROJETOS ─────────────────────────────────────────────────
   const projects = [
-    { id: 'pulsar-rh',       name: 'PULSAR-RH',        description: 'SaaS de People Analytics — eNPS, NR-1, KPIs de RH com IA. Em produção em pulsar-rh.agconsultorialtda.com.', status: 'ativo',    color: '#1A7FFF', githubUrl: 'https://github.com/AndreyRicaliff/PULSAR-RH',            isPrivate: false, createdAt: now, updatedAt: now,
+    { id: 'pulsar-rh',       name: 'PULSAR-RH',        description: 'SaaS de People Analytics — eNPS, NR-1, KPIs de RH com IA. Em produção em pulsar-rh.agconsultorialtda.com.', status: 'ativo',    color: '#1A7FFF', githubUrl: null,                                                      isPrivate: true,  createdAt: now, updatedAt: now,
       improvements: ['Corrigir memory leak no subscription de Realtime (não faz unsubscribe)', 'Remover eval() na função de fórmulas — vulnerabilidade XSS', 'Corrigir cálculo O(n*m) de compliance — usar Map para O(n)', 'Adicionar validação de schema antes de salvar indicadores', 'Implementar ARIA labels nos gráficos Chart.js', 'Padronizar feedback de erro nos formulários', 'Extrair cálculo de compliance para worker assíncrono'] },
     { id: 'cliente-varejo', name: 'Cliente Varejo',   description: 'Integração API ERP-externo→Supabase→Lovable. Diagnóstico: quota diária (350 req) esgota em 14h. Aguarda credenciais.', status: 'ativo',    color: '#FF5C5C', githubUrl: null,                                                      isPrivate: false, createdAt: now, updatedAt: now,
       improvements: ['Implementar check de saldo antes de cada ciclo (/v1/saldo-token)', 'Trocar intervalo de 5min para 10min (280→150 req/dia)', 'Adicionar janela de overlap de 10min no sync incremental', 'Full-sync completo às 00:00 (7 dias)', 'Idempotência por ID de atendimento'] },
-    { id: 'cliente-oficina',   name: 'CLIENTE OFICINA',     description: 'BI de vendas para rede de 6 lojas. Sync Firebird→Supabase 5min + full-year 00:00. Em produção no Windows do cliente.', status: 'ativo',    color: '#FFBC7D', githubUrl: 'https://github.com/AndreyRicaliff/cliente-oficina-backend', isPrivate: true,  createdAt: now, updatedAt: now,
-      improvements: ['Preencher store_locations com cidade-base das 6 lojas', 'Rotacionar SUPABASE_SERVICE_ROLE_KEY (higiene)', 'Definir retenção de sale_items (sugestão: 180d, LGPD §8)'] },
+    { id: 'cliente-oficina',   name: 'CLIENTE OFICINA',     description: 'BI de vendas para rede de 6 lojas. Sync Firebird→Supabase 5min + full-year 00:00. Em produção no Windows do cliente.', status: 'ativo',    color: '#FFBC7D', githubUrl: null,                                                      isPrivate: true,  createdAt: now, updatedAt: now,
+      improvements: ['Preencher store_locations com cidade-base das 6 lojas', 'Rotacionar credenciais de backend (higiene)', 'Definir retenção de sale_items (sugestão: 180d, LGPD §8)'] },
     { id: 'meet-hub',        name: 'Meet Hub',           description: 'Gravação e transcrição automática de reuniões Google Meet. Deploy DigitalOcean. Teste e2e funcional.', status: 'ativo',    color: '#06B6D4', githubUrl: null,                                                      isPrivate: false, createdAt: now, updatedAt: now,
       improvements: ['Integrar Gemini 1.5 Flash real (remover mock de transcrição)', 'Implementar busca em transcrições', 'Migrar de DigitalOcean para Hetzner (redução de custo)'] },
-    { id: 'ag-converge',     name: 'AG Converge',        description: 'Plataforma própria de eventos AG. RH em Xeque concluído (14/05). Próximo: migrar leads para Supabase.', status: 'ativo',    color: '#08C16A', githubUrl: 'https://github.com/AndreyRicaliff/ag-converge',           isPrivate: false, createdAt: now, updatedAt: now,
+    { id: 'ag-converge',     name: 'AG Converge',        description: 'Plataforma própria de eventos AG. RH em Xeque concluído (14/05). Próximo: migrar leads para Supabase.', status: 'ativo',    color: '#08C16A', githubUrl: null,                                                      isPrivate: false, createdAt: now, updatedAt: now,
       improvements: ['Exportar leads RH em Xeque: node extrair-leads.js leads-rh-em-xeque.json', 'Migrar localStorage → Supabase (multi-dispositivo, sem perda)', 'Planejar próximo evento'] },
-    { id: 'cafe-com-ag',     name: 'Café com AG',        description: 'Calendário editorial do programa semanal de YouTube. Bloqueado: Client ID Google OAuth não configurado.', status: 'pausado',   color: '#EC4899', githubUrl: 'https://github.com/AndreyRicaliff/cafe-com-ag',           isPrivate: false, createdAt: now, updatedAt: now,
+    { id: 'cafe-com-ag',     name: 'Café com AG',        description: 'Calendário editorial do programa semanal de YouTube. Bloqueado: Client ID Google OAuth não configurado.', status: 'pausado',   color: '#EC4899', githubUrl: null,                                                      isPrivate: false, createdAt: now, updatedAt: now,
       improvements: ['Configurar GOOGLE_CLIENT_ID no Google Cloud Console', 'Definir URL de hospedagem (GitHub Pages ou Vercel)', 'Testar login com @agconsultorialtda.com'] },
-    { id: 'ag-hub',          name: 'AG Hub',             description: 'Este sistema de gestão pessoal. Deploy Vercel + GitHub. Evolução contínua.', status: 'ativo',    color: '#4DA8FF', githubUrl: 'https://github.com/AndreyRicaliff/ag-hub',                isPrivate: false, createdAt: now, updatedAt: now,
+    { id: 'ag-hub',          name: 'Ricaliff (hub)',     description: 'Este sistema de gestão pessoal. Deploy Vercel + GitHub. Evolução contínua.', status: 'ativo',    color: '#4DA8FF', githubUrl: 'https://github.com/AndreyRicaliff/Ricaliff',              isPrivate: false, createdAt: now, updatedAt: now,
       improvements: ['Aplicar CSS gerado pelo Claude Design (visual final)', 'Migrar localStorage → Supabase para acesso multi-dispositivo'] },
     { id: 'ifpb',            name: 'IFPB — Estudos',     description: 'Exercícios e anotações do curso de programação no IFPB. Projeto pessoal, sem pressão.', status: 'ativo',    color: '#7A9BC4', githubUrl: null,                                                      isPrivate: false, createdAt: now, updatedAt: now,
       improvements: ['Rodar pnpm install no scaffold TypeScript', 'Completar módulo de Arrays e Funções', 'Iniciar exercícios de POO'] },
@@ -87,7 +89,7 @@
 
     // 📋 PENDENTES
     { id: 'b-t01', title: 'Preencher store_locations (cidade-base das 6 lojas) no Supabase', status: 'todo', priority: 'medium', projectId: 'cliente-oficina', due: null, notes: 'Resolve alerta store_default_unset no painel. Ricaliff sabe os nomes das cidades.', createdAt: now },
-    { id: 'b-t02', title: 'Rotacionar SUPABASE_SERVICE_ROLE_KEY', status: 'todo', priority: 'medium', projectId: 'cliente-oficina', due: null, notes: 'Gerar nova em Supabase → Settings → API. Atualizar no servidor Windows + .env.', createdAt: now },
+    { id: 'b-t02', title: 'Rotacionar credenciais de backend (higiene)', status: 'todo', priority: 'medium', projectId: 'cliente-oficina', due: null, notes: 'Gerar novas credenciais no painel do provedor e atualizar na infra do cliente.', createdAt: now },
     { id: 'b-t03', title: 'Definir retenção de sale_items — 180 dias (LGPD §8)', status: 'todo', priority: 'low', projectId: 'cliente-oficina', due: null, notes: 'Criar job de limpeza no Supabase ou pg_cron.', createdAt: now },
 
     // ═══════════════════════════════════════════════
@@ -95,7 +97,7 @@
     // ═══════════════════════════════════════════════
 
     // ✅ CONCLUÍDAS
-    { id: 'm-d01', title: 'Deploy DigitalOcean funcionando (46.101.174.29)', status: 'done', priority: 'high', projectId: 'meet-hub', due: null, notes: 'Stack: Node+Express+PostgreSQL+Prisma / React+TS+Tailwind / Puppeteer+Docker / Bull Redis.', createdAt: now },
+    { id: 'm-d01', title: 'Deploy DigitalOcean funcionando', status: 'done', priority: 'high', projectId: 'meet-hub', due: null, notes: 'Stack: Node+Express+PostgreSQL+Prisma / React+TS+Tailwind / Puppeteer+Docker / Bull Redis.', createdAt: now },
     { id: 'm-d02', title: 'Teste e2e 100% funcional (POST /recordings/test/auto)', status: 'done', priority: 'high', projectId: 'meet-hub', due: null, notes: 'FFmpeg instalado na API. IDs consistentes. Mock Gemini para testes autônomos.', createdAt: now },
     { id: 'm-d03', title: 'Fix: FFmpeg instalado na API + caminhos absolutos /usr/bin/', status: 'done', priority: 'high', projectId: 'meet-hub', due: null, notes: 'Dockerfile + queue.ts atualizados. sine=f=440:d=5 para arquivo fake válido.', createdAt: now },
     { id: 'm-d04', title: 'Fix: IDs Prisma consistentes entre arquivo e DB', status: 'done', priority: 'high', projectId: 'meet-hub', due: null, notes: 'Passar id: recordingId explicitamente em prisma.recording.create(). Bug 404 resolvido.', createdAt: now },
@@ -114,11 +116,11 @@
     { id: 'a-d02', title: 'Evento RH em Xeque realizado (14/05/2026)', status: 'done', priority: 'high', projectId: 'ag-converge', due: null, notes: 'NR-1, escala 5×2, Apagão, Geração Z. Beneficente ACCP. Parceiros: Protagon + Pro Sangue.', createdAt: now },
     { id: 'a-d03', title: 'Sistema de inscrição 3-passos com QR code e ingresso digital', status: 'done', priority: 'high', projectId: 'ag-converge', due: null, notes: 'Dados → Doação voluntária → Ingresso RHX-XXXX com QR. window.print() para impressão.', createdAt: now },
     { id: 'a-d04', title: 'Admin panel de leads + extrator .xlsx (extrair-leads.js)', status: 'done', priority: 'high', projectId: 'ag-converge', due: null, notes: 'node extrair-leads.js leads-rh-em-xeque.json → AG-Leads-YYYY-MM-DD.xlsx.', createdAt: now },
-    { id: 'a-d05', title: 'Projeto Supabase AG-Converge criado (hqcbpqkohgmlultnmbyy, sa-east-1)', status: 'done', priority: 'medium', projectId: 'ag-converge', due: null, notes: 'Pronto para integração. Credenciais salvas na memória.', createdAt: now },
+    { id: 'a-d05', title: 'Projeto Supabase AG-Converge criado (sa-east-1)', status: 'done', priority: 'medium', projectId: 'ag-converge', due: null, notes: 'Pronto para integração. Credenciais salvas na memória.', createdAt: now },
 
     // 📋 PENDENTES
     { id: 'a-t01', title: 'Exportar leads RH em Xeque (urgente — pós evento)', status: 'todo', priority: 'high', projectId: 'ag-converge', due: '2026-05-16', notes: 'cd ~/projetos/ag-evento && node extrair-leads.js leads-rh-em-xeque.json', createdAt: now },
-    { id: 'a-t02', title: 'Migrar leads localStorage → Supabase (hqcbpqkohgmlultnmbyy)', status: 'todo', priority: 'medium', projectId: 'ag-converge', due: null, notes: 'localStorage não persiste entre dispositivos. Schema: tabela leads com slug do evento.', createdAt: now },
+    { id: 'a-t02', title: 'Migrar leads localStorage → Supabase (projeto AG-Converge)', status: 'todo', priority: 'medium', projectId: 'ag-converge', due: null, notes: 'localStorage não persiste entre dispositivos. Schema: tabela leads com slug do evento.', createdAt: now },
     { id: 'a-t03', title: 'Planejar próximo evento AG Converge', status: 'todo', priority: 'low', projectId: 'ag-converge', due: null, notes: 'A Cúpula Set/2025, RH em Xeque Mai/2026. Qual o próximo tema e data?', createdAt: now },
 
     // ═══════════════════════════════════════════════
@@ -211,7 +213,26 @@
   const nE = mergeById('agh_events',   events);
   const nS = mergeById('agh_sessions', sessions);
   const nSt= mergeById('agh_studies',  studies);
-  localStorage.setItem('agh_seed_v',   '7');
 
-  console.log('[Ricaliff seed v7 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  // v8: patch de campos de INFRA em itens já seedados — links GitHub fabricados
+  // davam 404 pra qualquer visitante; são fatos do seed, não edição do usuário
+  const projectPatches = {
+    'pulsar-rh':       { githubUrl: null, isPrivate: true },
+    'cliente-oficina': { githubUrl: null },
+    'ag-converge':     { githubUrl: null },
+    'cafe-com-ag':     { githubUrl: null },
+    'ag-hub':          { githubUrl: 'https://github.com/AndreyRicaliff/Ricaliff' },
+  };
+  try {
+    const existing = JSON.parse(localStorage.getItem('agh_projects') || '[]');
+    let patched = 0;
+    existing.forEach(p => {
+      if (p && projectPatches[p.id]) { Object.assign(p, projectPatches[p.id]); patched++; }
+    });
+    if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
+  } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
+
+  localStorage.setItem('agh_seed_v',   '8');
+
+  console.log('[Ricaliff seed v8 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
