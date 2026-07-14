@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-14T18:00:20.966Z",
+  "geradoEm": "2026-07-14T18:08:51.370Z",
   "projetos": [
     {
       "id": "PULSAR-RH",
@@ -1386,6 +1386,15 @@
           "concluida": false
         },
         {
+          "id": "90-entrevista/walkthrough-projetos.md",
+          "titulo": "Walkthrough de Projetos AG — Como Apresentar em Entrevista",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
           "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md",
           "titulo": "02 — Decisões em primeira pessoa",
           "trilha": "95-diferencial",
@@ -1431,7 +1440,7 @@
         "localStorage",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-14T12:49:42-03:00",
+      "ultimaAtividade": "2026-07-14T15:07:47-03:00",
       "sideQuests": [
         {
           "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",

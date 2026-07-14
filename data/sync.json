@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-14T12:26:30",
+    "lastSync": "2026-07-14T15:07:49",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 8,
     "title": "Arquiteto",
-    "xp": 12325,
+    "xp": 12355,
     "xpToNext": 13001,
     "streak": 1,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 46,
+        "value": 50,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-14",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[Ricaliff] describe leaked tokens without reproducing the real client name"
+    },
     {
       "date": "2026-07-14",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[cliente-oficina-backend] remove hardcoded secrets from setup-env.bat"
-    },
-    {
-      "date": "2026-07-03",
-      "xp": 20,
-      "type": "decision",
-      "desc": "Fable 5 cristalizado como motor inegociavel; fast mode documentado como opcao manual (Opus+usage credits); CLAUDE.md otimizado -48% tokens/turno"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-14",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "[Ricaliff] describe leaked tokens without reproducing the real client name",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-14",
       "type": "security",
       "icon": "🛡️",
       "title": "auditoria completa do hub: sanitizador full-file no pipeline, atributos religados, niveis 9-15, robustez git",
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[PULSAR-FINANCE] aplica achados da revisao da traducao Nibo",
       "xp": 30
-    },
-    {
-      "date": "2026-07-14",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[PULSAR-FINANCE] rotulos legiveis para dados Nibo (codigo opaco, stakeholder nulo, nome cru)",
-      "xp": 50
     }
   ]
 }
