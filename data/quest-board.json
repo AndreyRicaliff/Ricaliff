@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-03T12:14:20-03:00",
+  "geradoEm": "2026-07-14T12:35:44-03:00",
   "projetos": [
     {
       "id": "PULSAR-RH",
@@ -16,7 +16,7 @@
         "HTML+JS",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-05-28",
+      "ultimaAtividade": "2026-07-13T01:09:57-03:00",
       "sideQuests": [
         {
           "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
@@ -424,7 +424,7 @@
         "Supabase",
         "Lovable"
       ],
-      "ultimaAtividade": "2026-05-15",
+      "ultimaAtividade": "2026-07-14T12:17:59-03:00",
       "sideQuests": [
         {
           "id": "20-arquitetura/04-padroes-comunicacao.md",
@@ -440,6 +440,69 @@
           "titulo": "05 — Rate Limit e Throttle",
           "trilha": "50-backend",
           "moduloPath": "/trilha/50-backend/05-rate-limit-e-throttle.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/02-filas-quando-e-como.md",
+          "titulo": "02 — Filas: Quando e Como Usar",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/02-filas-quando-e-como.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/04-cap-theorem-na-pratica.md",
+          "titulo": "04 — CAP Theorem na Prática",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/04-cap-theorem-na-pratica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "80-system-design/07-idempotencia-e-deduplicacao.md",
+          "titulo": "07 — Idempotência e Deduplicação",
+          "trilha": "80-system-design",
+          "moduloPath": "/trilha/80-system-design/07-idempotencia-e-deduplicacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/perguntas-junior.md",
+          "titulo": "Banco de Perguntas — Dev Júnior",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/perguntas-junior.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "90-entrevista/walkthrough-projetos.md",
+          "titulo": "Walkthrough de Projetos AG — Como Apresentar em Entrevista",
+          "trilha": "90-entrevista",
+          "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "titulo": "02 — Decisões em primeira pessoa",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/02-decisoes-em-primeira-pessoa.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "95-diferencial/05-raciocinio-em-problema-novo.md",
+          "titulo": "05 — Raciocínio em problema novo",
+          "trilha": "95-diferencial",
+          "moduloPath": "/trilha/95-diferencial/05-raciocinio-em-problema-novo.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -481,7 +544,7 @@
         "Firebird",
         "Supabase"
       ],
-      "ultimaAtividade": "2026-05-25",
+      "ultimaAtividade": "2026-05-08T16:49:10-03:00",
       "sideQuests": [
         {
           "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
@@ -565,28 +628,10 @@
           "concluida": false
         },
         {
-          "id": "30-banco/07-migrations-versionadas.md",
-          "titulo": "07 — Migrations versionadas",
-          "trilha": "30-banco",
-          "moduloPath": "/trilha/30-banco/07-migrations-versionadas.md",
-          "xpBase": 40,
-          "xpBonus": 40,
-          "concluida": false
-        },
-        {
           "id": "30-banco/08-backup-e-recovery.md",
           "titulo": "08 — Backup e recovery",
           "trilha": "30-banco",
           "moduloPath": "/trilha/30-banco/08-backup-e-recovery.md",
-          "xpBase": 40,
-          "xpBonus": 40,
-          "concluida": false
-        },
-        {
-          "id": "50-backend/02-prisma-typesafe-orm.md",
-          "titulo": "02 — Prisma: ORM Type-Safe",
-          "trilha": "50-backend",
-          "moduloPath": "/trilha/50-backend/02-prisma-typesafe-orm.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -757,7 +802,7 @@
         "Docker",
         "Redis"
       ],
-      "ultimaAtividade": "2026-05-25",
+      "ultimaAtividade": "2026-06-01T17:16:49-03:00",
       "sideQuests": [
         {
           "id": "00-fundamentos/03-http-rest-status-codes.md",
@@ -1323,15 +1368,6 @@
           "concluida": false
         },
         {
-          "id": "90-entrevista/walkthrough-projetos.md",
-          "titulo": "Walkthrough de Projetos AG — Como Apresentar em Entrevista",
-          "trilha": "90-entrevista",
-          "moduloPath": "/trilha/90-entrevista/walkthrough-projetos.md",
-          "xpBase": 40,
-          "xpBonus": 40,
-          "concluida": false
-        },
-        {
           "id": "95-diferencial/02-decisoes-em-primeira-pessoa.md",
           "titulo": "02 — Decisões em primeira pessoa",
           "trilha": "95-diferencial",
@@ -1377,7 +1413,7 @@
         "localStorage",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-06-01",
+      "ultimaAtividade": "2026-07-14T12:31:23-03:00",
       "sideQuests": [
         {
           "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
@@ -1469,7 +1505,7 @@
         "TypeScript",
         "Node.js"
       ],
-      "ultimaAtividade": "2026-05-12",
+      "ultimaAtividade": "2026-06-28T15:19:22-03:00",
       "sideQuests": [
         {
           "id": "90-entrevista/perguntas-junior.md",

@@ -1,16 +1,20 @@
 #!/usr/bin/env bash
 # Gera data/quest-board.json a partir dos módulos da trilha.
-# Estado detalhado dos projetos vive em ~/projetos/PROJECTS.md (privado, fora deste repo).
+# Estado detalhado dos projetos vive fora deste repo (privado).
 # Idempotente. Rodar sempre que módulos da trilha ou bounties mudarem.
-# Padrão: espelha bin/build-trilha.sh
+# Padrão: espelha bin/build-trilha.sh (runtime JSON: node — ver nota lá).
+# ultimaAtividade: calculada do git log real via bin/.projmap-local (gitignorado,
+# mapeia codinome→pasta local); sem o mapa, preserva o valor anterior.
 
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TRILHA="$ROOT/trilha"
 OUT="$ROOT/data/quest-board.json"
+MAP="$ROOT/bin/.projmap-local"
 
 [ -d "$TRILHA" ] || { echo "ERRO: $TRILHA não existe. Rode bin/build-trilha.sh primeiro."; exit 1; }
+command -v node >/dev/null 2>&1 || { echo "ERRO: node não encontrado (necessário para gerar JSON)"; exit 1; }
 
 # Preserva curadoria manual (bounties, hp, concluida) do arquivo anterior
 PREV=""
@@ -22,7 +26,7 @@ fi
 echo "[quest-board] varrendo módulos da trilha..."
 
 esc_json() {
-  printf '%s' "$1" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read()))'
+  printf '%s' "$1" | node -e 'let d="";process.stdin.on("data",c=>d+=c);process.stdin.on("end",()=>process.stdout.write(JSON.stringify(d)));'
 }
 
 # Projetos AG com seus termos de busca (nome_id:termo_grep)
@@ -71,6 +75,10 @@ declare -A PROJ_PRIO=(
 )
 
 PROJETOS=(PULSAR-RH cliente-varejo cliente-oficina-backend meet-hub ag-evento cafe_com_ag ag-hub ifpb)
+
+# Gera em arquivo temporário: só substitui o board commitado se o JSON validar
+TMP="$OUT.tmp"
+trap 'rm -f "$TMP"' EXIT
 
 {
   printf '{\n'
@@ -142,48 +150,61 @@ PROJETOS=(PULSAR-RH cliente-varejo cliente-oficina-backend meet-hub ag-evento ca
 
   printf '  ]\n'
   printf '}\n'
-} > "$OUT"
+} > "$TMP"
 
-if ! python3 -m json.tool "$OUT" > /dev/null 2>&1; then
-  echo "ERRO: JSON gerado inválido em $OUT"
+if ! node -e 'JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"))' "$TMP" >/dev/null 2>&1; then
+  echo "ERRO: JSON gerado inválido em $TMP — board anterior preservado"
   exit 1
 fi
 
-# Merge: reinjeta bounties/hp/stack/ultimaAtividade e concluida do arquivo anterior
+# Merge: reinjeta bounties/hp/stack e concluida do arquivo anterior
 if [ -n "$PREV" ]; then
-  python3 - "$PREV" "$OUT" <<'PYMERGE'
-import json, sys
-prev_path, out_path = sys.argv[1], sys.argv[2]
-old = {p['id']: p for p in json.load(open(prev_path))['projetos']}
-new = json.load(open(out_path))
-kept = 0
-for proj in new['projetos']:
-    o = old.get(proj['id'])
-    if not o:
-        continue
-    if o.get('bounties'):
-        proj['bounties'] = o['bounties']
-        kept += len(o['bounties'])
-    for campo in ('hp', 'stack', 'ultimaAtividade'):
-        if o.get(campo):
-            proj[campo] = o[campo]
-    feitas = {q['id'] for q in o.get('sideQuests', []) if q.get('concluida')}
-    for q in proj['sideQuests']:
-        if q['id'] in feitas:
-            q['concluida'] = True
-json.dump(new, open(out_path, 'w'), ensure_ascii=False, indent=2)
-print(f"[quest-board] merge: {kept} bounties preservados do arquivo anterior")
-PYMERGE
+  PREV="$PREV" TMP="$TMP" node -e '
+const fs = require("fs");
+const old = Object.fromEntries(JSON.parse(fs.readFileSync(process.env.PREV, "utf8")).projetos.map(p => [p.id, p]));
+const data = JSON.parse(fs.readFileSync(process.env.TMP, "utf8"));
+let kept = 0;
+for (const proj of data.projetos) {
+  const o = old[proj.id];
+  if (!o) continue;
+  if (o.bounties && o.bounties.length) { proj.bounties = o.bounties; kept += o.bounties.length; }
+  for (const campo of ["hp", "stack", "ultimaAtividade"]) {
+    if (o[campo] && (!Array.isArray(o[campo]) || o[campo].length)) proj[campo] = o[campo];
+  }
+  const feitas = new Set((o.sideQuests || []).filter(q => q.concluida).map(q => q.id));
+  for (const q of proj.sideQuests) if (feitas.has(q.id)) q.concluida = true;
+}
+fs.writeFileSync(process.env.TMP, JSON.stringify(data, null, 2) + "\n");
+console.log(`[quest-board] merge: ${kept} bounties preservados do arquivo anterior`);
+'
   rm -f "$PREV"
 fi
 
-total_sq=$(python3 -c "
-import json
-d = json.load(open('$OUT'))
-print(sum(len(p['sideQuests']) for p in d['projetos']))
-")
+# ultimaAtividade real via git log dos repos locais (mapa codinome→pasta, privado)
+if [ -f "$MAP" ]; then
+  while IFS='=' read -r pid ppath; do
+    [ -z "$pid" ] && continue
+    case "$pid" in \#*) continue ;; esac
+    [ -d "$ppath/.git" ] || continue
+    last=$(git -C "$ppath" log -1 --format=%cI 2>/dev/null || true)
+    [ -z "$last" ] && continue
+    TMP="$TMP" PID="$pid" LAST="$last" node -e '
+const fs = require("fs");
+const data = JSON.parse(fs.readFileSync(process.env.TMP, "utf8"));
+const p = data.projetos.find(x => x.id === process.env.PID);
+if (p) { p.ultimaAtividade = process.env.LAST; fs.writeFileSync(process.env.TMP, JSON.stringify(data, null, 2) + "\n"); }
+'
+  done < "$MAP"
+  echo "[quest-board] ultimaAtividade atualizada via git log (.projmap-local)"
+fi
 
-echo "[quest-board] OK — ${#PROJETOS[@]} projetos, $total_sq side quests totais"
+mv "$TMP" "$OUT"
+trap - EXIT
+
+OUT="$OUT" node -e '
+const d = JSON.parse(require("fs").readFileSync(process.env.OUT, "utf8"));
+console.log(`[quest-board] OK — ${d.projetos.length} projetos, ${d.projetos.reduce((a,p)=>a+p.sideQuests.length,0)} side quests totais`);
+'
 echo "[quest-board] arquivo: $OUT"
 echo ""
 echo "NOTA: bounties/hp/concluida editados à mão são preservados entre regenerações (merge automático)."

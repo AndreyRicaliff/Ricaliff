@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Gera data/trilha-index.json a partir de trilha/ (fonte canônica, in-repo).
-# Idempotente. Rodar sempre que módulos da trilha mudarem.
-# Caminhos derivados da localização do script — imune a rename do diretório do projeto.
+# Idempotente. Rodar sempre que módulos da trilha mudarem (o ag-hub-sync.ps1
+# dispara automaticamente quando detecta trilha/*.md mais novo que o índice).
+# Runtime JSON: node — python3 no Windows resolve pro stub da Microsoft Store,
+# que "existe" no PATH mas não executa; node é o runtime garantido do toolchain.
 
 set -euo pipefail
 
@@ -10,6 +12,7 @@ TRILHA_DIR="$ROOT/trilha"
 INDEX="$ROOT/data/trilha-index.json"
 
 [ -d "$TRILHA_DIR" ] || { echo "ERRO: $TRILHA_DIR não existe"; exit 1; }
+command -v node >/dev/null 2>&1 || { echo "ERRO: node não encontrado (necessário para gerar JSON)"; exit 1; }
 
 echo "[trilha] gerando $INDEX a partir de $TRILHA_DIR..."
 
@@ -91,20 +94,24 @@ declare -A TRILHA_FOCO=(
 TRILHAS=(00-fundamentos 10-codigo-limpo 15-git 20-arquitetura 30-banco 35-ia-ml 40-frontend 50-backend 55-apis 60-seguranca 70-devops 80-system-design 85-escala 90-entrevista 95-diferencial)
 
 # Extrai título da 1ª linha "# X — Y" de um arquivo .md
+# `|| true`: sob set -e + pipefail, um .md sem "# " matava o script e truncava o índice
 extrair_titulo() {
   local f="$1"
   local linha
-  linha=$(grep -m1 "^# " "$f" 2>/dev/null | sed 's/^# //')
+  linha=$(grep -m1 "^# " "$f" 2>/dev/null | sed 's/^# //' || true)
   [ -z "$linha" ] && linha=$(basename "$f" .md)
   echo "$linha"
 }
 
-# Escape JSON
+# Escape JSON (stdin → string literal JSON)
 esc_json() {
-  printf '%s' "$1" | python3 -c 'import sys,json; print(json.dumps(sys.stdin.read()))'
+  printf '%s' "$1" | node -e 'let d="";process.stdin.on("data",c=>d+=c);process.stdin.on("end",()=>process.stdout.write(JSON.stringify(d)));'
 }
 
-# Começa o JSON
+# Gera em arquivo temporário: só substitui o índice commitado se o JSON validar
+TMP="$INDEX.tmp"
+trap 'rm -f "$TMP"' EXIT
+
 {
   printf '{\n'
   printf '  "geradoEm": "%s",\n' "$(date -Iseconds)"
@@ -165,17 +172,20 @@ esc_json() {
 
   printf '  ]\n'
   printf '}\n'
-} > "$INDEX"
+} > "$TMP"
 
-# Valida JSON
-if ! python3 -m json.tool "$INDEX" > /dev/null 2>&1; then
-  echo "ERRO: JSON gerado inválido em $INDEX"
+# Valida JSON antes de substituir o arquivo bom
+if ! node -e 'JSON.parse(require("fs").readFileSync(process.argv[1],"utf8"))' "$TMP" >/dev/null 2>&1; then
+  echo "ERRO: JSON gerado inválido em $TMP — índice anterior preservado"
   exit 1
 fi
+mv "$TMP" "$INDEX"
+trap - EXIT
 
-total_modulos=$(python3 -c "import json; d=json.load(open('$INDEX')); print(sum(t['totalModulos'] for t in d['trilhas']))")
-total_trilhas=$(python3 -c "import json; d=json.load(open('$INDEX')); print(len(d['trilhas']))")
-
-echo "[trilha] OK — $total_trilhas trilhas, $total_modulos módulos"
+INDEX="$INDEX" node -e '
+const d = JSON.parse(require("fs").readFileSync(process.env.INDEX, "utf8"));
+const mods = d.trilhas.reduce((a, t) => a + t.totalModulos, 0);
+console.log(`[trilha] OK — ${d.trilhas.length} trilhas, ${mods} módulos`);
+'
 echo "[trilha] arquivos .md: $(find "$TRILHA_DIR" -name "*.md" | wc -l)"
 echo "[trilha] índice: $INDEX"
