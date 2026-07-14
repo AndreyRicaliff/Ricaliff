@@ -12,6 +12,12 @@ A `/revisao` lê este arquivo no início e promove 🔴 direto pro relatório.
   Ricaliff — política DECISIONS 2026-07-06 preferiu repo novo na última vez). Decidir:
   reescrever de novo, repo novo, ou aceitar (identificadores só em mensagem de commit
   antiga, sem mapa codinome→real na árvore atual).
+- **2026-07-14 · Auto-deploy Vercel morto desde 06/07 (ação no dashboard)** — o projeto
+  Vercel `ag-hub` segue conectado por repo-ID ao repo ANTIGO, renomeado para
+  `Ricaliff-arquivo-2026` (privado) na publicação do repo novo; o `Ricaliff` público
+  nunca foi conectado, então nenhum push deploya. Fix: Vercel → projeto ag-hub →
+  Settings → Git → Disconnect → Connect `AndreyRicaliff/Ricaliff` (incluir o repo na
+  instalação do GitHub App) → Redeploy. Só o Ricaliff faz (conexão de repo/conta).
 - **2026-07-14 · Rotacionar SERVICE_ROLE_KEY do cliente-oficina** — a chave marcada como
   exposta na retrospectiva segue com task `todo` desde maio (seed `b-t02`). Ação fora
   deste repo (painel Supabase do projeto do cliente + infra Windows dele). URGENTE.
