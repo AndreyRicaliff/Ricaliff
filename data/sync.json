@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-15T17:14:26",
+    "lastSync": "2026-07-15T17:21:16",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 13055,
+    "xp": 13105,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 84,
+        "value": 87,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-15",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] supervisao com a visao do admin, menos o DRE"
+    },
     {
       "date": "2026-07-15",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-oficina-backend] product intelligence — ranks, attention points, store+period filters"
-    },
-    {
-      "date": "2026-07-08",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-oficina-backend] raw-first mirror, SQL-view formulas, per-title drill-down, period tracking tab"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-15",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-varejo] supervisao com a visao do admin, menos o DRE",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-15",
       "type": "bugfix",
       "icon": "🐛",
       "title": "[PULSAR-RH] audit_log guardava a identidade que o schema tinha deixado de guardar",
@@ -752,13 +759,6 @@
       "icon": "🐛",
       "title": "[PULSAR-RH] XSS em atributo on* + tratamento de erro da revisão",
       "xp": 30
-    },
-    {
-      "date": "2026-07-14",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] cadastros pendentes — caixa pronta pro supervisor",
-      "xp": 50
     },
     {
       "date": "2026-07-14",
