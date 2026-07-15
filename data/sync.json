@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-15T17:21:16",
+    "lastSync": "2026-07-15T17:31:46",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 13105,
+    "xp": 13155,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 87,
+        "value": 90,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-15",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] geral + contribuicao propria, sem nada do colega"
+    },
     {
       "date": "2026-07-15",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[cliente-oficina-backend] exact alert counts per type (PostgREST 1000-row cap was silently truncating; 8k stale items were invisible)"
-    },
-    {
-      "date": "2026-07-09",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-oficina-backend] product intelligence — ranks, attention points, store+period filters"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-15",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[cliente-varejo] geral + contribuicao propria, sem nada do colega",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-15",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[cliente-varejo] supervisao com a visao do admin, menos o DRE",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[PULSAR-RH] XSS em atributo on* + tratamento de erro da revisão",
       "xp": 30
-    },
-    {
-      "date": "2026-07-14",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] cadastros pendentes — caixa pronta pro supervisor",
-      "xp": 50
     }
   ]
 }
