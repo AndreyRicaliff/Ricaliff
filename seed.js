@@ -4,7 +4,7 @@
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '8') return;
+  if (localStorage.getItem('agh_seed_v') === '9') return;
 
   const now = new Date().toISOString();
 
@@ -185,6 +185,41 @@
     { id:'s-10', title:'Meet Hub — teste e2e 100% funcional', projectId:'meet-hub', type:'bugfix', date:'2026-05-07', impact:'alto', notes:'FFmpeg instalado na API. IDs Prisma consistentes. Mock Gemini para testes. Endpoint /recordings/test/auto funcionando.', createdAt: now },
     { id:'s-11', title:'AG Converge — sistema de inscrição RH em Xeque', projectId:'ag-converge', type:'feature', date:'2026-05-09', impact:'alto', notes:'3-passos (dados → doação → ingresso). QR code digital. Admin panel. Extrator .xlsx. Supabase project criado.', createdAt: now },
     { id:'s-12', title:'Cliente Varejo — diagnóstico causa-raiz (quota API esgotada)', projectId:'cliente-varejo', type:'planning', date:'2026-05-15', impact:'alto', notes:'Causa: plano Estratégia = 350 req/dia. Sync 5min consome 288→esgota em 14h. Solução: 10min, 300 req budget.', createdAt: now },
+
+    // ── mai–jul/2026: histórico minerado do git real dos projetos (codinomes obrigatórios) ──
+
+    // Ricaliff (hub)
+    { id:'s-13', title:'Auditoria completa do hub: privacidade, gamificação religada e achados do review', projectId:'ag-hub', type:'bugfix', date:'2026-07-14', impact:'alto', notes:'Sanitização em 2 camadas no pipeline de XP, atributos = base do produtor + delta local, backup v2 validado, geradores portados p/ node.', createdAt: now },
+    { id:'s-14', title:'Publicação do repo como portfólio: codinomes na árvore inteira + histórico reescrito', projectId:'ag-hub', type:'refactor', date:'2026-07-06', impact:'alto', notes:'Identificadores de cliente viram codinomes; estado operacional sai do repo público; filter-repo + repo novo em vez de force push.', createdAt: now },
+    { id:'s-15', title:'P3 v2 — paridade visual com o rice do OS via design tokens', projectId:'ag-hub', type:'design', date:'2026-07-03', impact:'alto', notes:'Tokens (cor/easing/duração/forma) extraídos do QML pra CSS custom properties; tema persona↔pro num atributo no root via color-mix.', createdAt: now },
+    { id:'s-16', title:'Hardening do hub: DOMPurify no markdown, seed com merge por id, storage resiliente', projectId:'ag-hub', type:'bugfix', date:'2026-07-03', impact:'medio', notes:'Markdown da trilha sanitizado no sink, color/githubUrl validados na boundary e parse tolerante a chave corrompida.', createdAt: now },
+    { id:'s-17', title:'Consolidação dos estudos em monorepo + 4 trilhas novas (git, IA/ML, APIs, escala)', projectId:'ag-hub', type:'feature', date:'2026-06-30', impact:'alto', notes:'Trilha vira fonte canônica in-repo (29 módulos novos); dependência cross-repo removida e repo legado aposentado.', createdAt: now },
+    { id:'s-18', title:'Camada RPG: 6 atributos, skill tree e quest board cruzando projeto com trilha', projectId:'ag-hub', type:'feature', date:'2026-06-01', impact:'alto', notes:'Sistema de build/atributos e side quests que vinculam módulo de estudo a projeto real (XP×2 quando vinculada).', createdAt: now },
+    { id:'s-19', title:'Rituais de foco: daily standup, pomodoro, hora sagrada e streaks', projectId:'ag-hub', type:'feature', date:'2026-06-01', impact:'medio', notes:'Standup com resumo de ontem e sugestões, timer de foco e streaks por tipo (geral/estudo/sem-IA/decisões).', createdAt: now },
+
+    // PULSAR-RH
+    { id:'s-20', title:'Revisão do fluxo de pesquisas: polaridade fim-a-fim e gate de pesquisa inativa', projectId:'pulsar-rh', type:'bugfix', date:'2026-07-12', impact:'alto', notes:'NPS fora do overall_score, médias coerentes entre superfícies, pesquisa não-ativa deixa de aceitar resposta; demo só com token exato.', createdAt: now },
+    { id:'s-21', title:'Fase 1 de contas: client_users como identidades reais + hardening do fluxo admin', projectId:'pulsar-rh', type:'feature', date:'2026-07-10', impact:'alto', notes:'Fundação de identidade por pessoa, rotação de senha/identidade admin, ADMIN_EMAIL nas edge functions e higiene de policies.', createdAt: now },
+    { id:'s-22', title:'Motor de favorabilidade COPSOQ + Tendência derivada (NR-1)', projectId:'pulsar-rh', type:'feature', date:'2026-07-08', impact:'alto', notes:'Fases 2-4 do COPSOQ II: favorabilidade calculada e polaridade carregada do seed até a criação da pesquisa do cliente.', createdAt: now },
+    { id:'s-23', title:'Identidade PulsaRH: marca losango+pessoa+pulso, boot, som e FX de console', projectId:'pulsar-rh', type:'design', date:'2026-06-12', impact:'alto', notes:'Marca própria em todas as superfícies, splash de boot com wordmark pulsante e toggle master que silencia todo som.', createdAt: now },
+    { id:'s-24', title:'Catálogo CID-10 nos processos + dashboard derivado do registro vivo', projectId:'pulsar-rh', type:'feature', date:'2026-06-12', impact:'alto', notes:'Campo CID-10 com busca de título ao vivo em atestados; métricas do dashboard deixam de vir de indicador manual.', createdAt: now },
+    { id:'s-25', title:'Portal do cliente gen-2: board de planos, RPCs security-definer e polaridade', projectId:'pulsar-rh', type:'feature', date:'2026-06-11', impact:'alto', notes:'Padrão visual de 2ª geração, kanban de PDI com drag-drop, deletes via RPC security-definer e superfície RPC endurecida.', createdAt: now },
+    { id:'s-26', title:'Senhas de cliente com bcrypt via trigger no banco', projectId:'pulsar-rh', type:'bugfix', date:'2026-06-09', impact:'alto', notes:'Hash no banco em vez da aplicação; alerta de comentário negativo passa a ter escopo por tenant.', createdAt: now },
+    { id:'s-27', title:'Smoke test do portal do cliente com Playwright', projectId:'pulsar-rh', type:'feature', date:'2026-06-03', impact:'medio', notes:'Primeiro harness de teste automatizado do produto, com lockfile pra instalação reprodutível.', createdAt: now },
+    { id:'s-28', title:'White-label por cliente no portal + modularização do client.html', projectId:'pulsar-rh', type:'feature', date:'2026-06-02', impact:'medio', notes:'Branding por cliente no portal; 37 símbolos perdidos na modularização restaurados e duplicatas removidas.', createdAt: now },
+    { id:'s-29', title:'Performance: O(n²) → O(1) em resultados por área e contagens de PDI', projectId:'pulsar-rh', type:'refactor', date:'2026-05-28', impact:'medio', notes:'Render de resultados e contadores do dashboard deixam de recalcular em loop aninhado.', createdAt: now },
+
+    // Cliente Varejo
+    { id:'s-30', title:'Tipos derivados do Row gerado (fonte única) + RLS de gerente versionada', projectId:'cliente-varejo', type:'refactor', date:'2026-07-14', impact:'alto', notes:'types.ts desatualizado era a causa-raiz dos any no dashboard; tipos passam a derivar do Row gerado e a cláusula de gerente vira migration.', createdAt: now },
+    { id:'s-31', title:'Caixa de cadastros pendentes pro supervisor (visibilidade não apaga dado)', projectId:'cliente-varejo', type:'feature', date:'2026-07-14', impact:'medio', notes:'Semântica de visibilidade: o painel esconde, nunca deleta registro vindo do sync.', createdAt: now },
+    { id:'s-32', title:'Drill-down de KPI por vendedor × categoria + exportação Excel do Relatório Geral', projectId:'cliente-varejo', type:'feature', date:'2026-07-12', impact:'alto', notes:'Helpers compartilhados de drill-down/exportação; filtro de período do relatório passa a seguir o filtro global.', createdAt: now },
+    { id:'s-33', title:'Congelamento de meses fechados + trade-in de seminovo como categoria de lucro', projectId:'cliente-varejo', type:'feature', date:'2026-07-08', impact:'alto', notes:'Mês fechado resiste a reescrita retroativa de regra; trade-in entra líquido em categoria dedicada e neutro no relatório geral.', createdAt: now },
+    { id:'s-34', title:'Sync robusto: corte do dia em BRT, saldo por credencial e backoff de mês vazio', projectId:'cliente-varejo', type:'bugfix', date:'2026-07-07', impact:'alto', notes:'Timestamps da API são UTC (corte à meia-noite BRT); quota é 350/dia POR loja; 429 no saldo tratado como zero.', createdAt: now },
+    { id:'s-35', title:'Relatório Geral: vendas por categoria com cross-check de comissão e drill por colaborador', projectId:'cliente-varejo', type:'feature', date:'2026-07-06', impact:'alto', notes:'Abas com drill por colaborador, coluna com juros pra reconciliar contra o ERP-externo e drill de item por categoria.', createdAt: now },
+    { id:'s-36', title:'Typecheck real (noImplicitAny + strictNullChecks) e gate público nas edge functions', projectId:'cliente-varejo', type:'refactor', date:'2026-07-03', impact:'alto', notes:'Types do banco corrompidos regenerados, colunas nuláveis tratadas e funções de sync/análise deixam de aceitar chamada pública.', createdAt: now },
+
+    // Meet Hub
+    { id:'s-37', title:'Monorepo consolidado (api + web + bot)', projectId:'meet-hub', type:'refactor', date:'2026-06-01', impact:'baixo', notes:'Estrutura unificada dos três serviços num repositório só.', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -232,7 +267,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '8');
+  localStorage.setItem('agh_seed_v',   '9');
 
-  console.log('[Ricaliff seed v8 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v9 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
