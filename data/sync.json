@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-16T17:23:35",
+    "lastSync": "2026-07-16T17:29:57",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 14015,
+    "xp": 14065,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 120,
+        "value": 123,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-16",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] split Smartphones×Serviços (R$) na aba Por Loja"
+    },
     {
       "date": "2026-07-16",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 25,
       "type": "refactor",
       "desc": "[cliente-varejo] type juros/desconto/custo/detalhes on Venda(Diaria), drop 7 anys"
-    },
-    {
-      "date": "2026-07-14",
-      "xp": 20,
-      "type": "review",
-      "desc": "[cliente-varejo] RLS phase-3 applied + edges deployed to prod"
     }
   ],
   "achievements": [
@@ -706,6 +706,13 @@
     },
     {
       "date": "2026-07-16",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-varejo] split Smartphones×Serviços (R$) na aba Por Loja",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-16",
       "type": "bugfix",
       "icon": "🐛",
       "title": "[PULSAR-RH] FASE 2 — fecha o vazamento cross-tenant (revoke das policies anon)",
@@ -758,13 +765,6 @@
       "type": "bugfix",
       "icon": "🐛",
       "title": "[cliente-varejo] badge de escopo do recorte e guard de futuro simetrico",
-      "xp": 30
-    },
-    {
-      "date": "2026-07-16",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[cliente-varejo] blinda selectedMes sujo, trava recorte num mes e fecha bordas",
       "xp": 30
     }
   ]
