@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-16T13:13:11",
+    "lastSync": "2026-07-16T13:34:13",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 13605,
+    "xp": 13635,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 102,
+        "value": 106,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-16",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[cliente-varejo] badge de escopo do recorte e guard de futuro simetrico"
+    },
     {
       "date": "2026-07-16",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 20,
       "type": "review",
       "desc": "[cliente-varejo] trigger deploy do período personalizado (autor autorizado no Vercel)"
-    },
-    {
-      "date": "2026-07-12",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-varejo] período personalizado consome filtro global e agrega diárias no shape mensal"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-16",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[cliente-varejo] badge de escopo do recorte e guard de futuro simetrico",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-16",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[cliente-varejo] blinda selectedMes sujo, trava recorte num mes e fecha bordas",
       "xp": 30
     },
@@ -759,13 +766,6 @@
       "icon": "👁️",
       "title": "[Ricaliff] descrição do PULSAR-RH dizia \"KPIs de RH com IA\" — a IA saiu do produto",
       "xp": 20
-    },
-    {
-      "date": "2026-07-16",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[PULSAR-RH] _admission_to_tenure era IMMUTABLE lendo current_date + var no kpi-info",
-      "xp": 30
     }
   ]
 }
