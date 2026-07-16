@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-16T17:29:57",
+    "lastSync": "2026-07-16T17:46:06",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 14065,
+    "xp": 14115,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 123,
+        "value": 126,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-16",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] supervisor desvincula/remove via edge desligar-colaborador"
+    },
     {
       "date": "2026-07-16",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 25,
       "type": "refactor",
       "desc": "[cliente-varejo] derive app types from generated Row (single source of truth)"
-    },
-    {
-      "date": "2026-07-14",
-      "xp": 25,
-      "type": "refactor",
-      "desc": "[cliente-varejo] type juros/desconto/custo/detalhes on Venda(Diaria), drop 7 anys"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-16",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[cliente-varejo] supervisor desvincula/remove via edge desligar-colaborador",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-16",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[cliente-varejo] split Smartphones×Serviços (R$) na aba Por Loja",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[PULSAR-RH] nível \"equipe\" abaixo do setor (portal do cliente)",
       "xp": 50
-    },
-    {
-      "date": "2026-07-16",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[cliente-varejo] badge de escopo do recorte e guard de futuro simetrico",
-      "xp": 30
     }
   ]
 }
