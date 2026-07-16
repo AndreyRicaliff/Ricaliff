@@ -1,10 +1,10 @@
-// seed.js v8 — v7 + patch de metadados de infra (links GitHub 404, redações de segurança)
+// seed.js v10 — v9 + projetos algoritmo-lideranca/pulsar-finance e histórico minerado do git deles
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '9') return;
+  if (localStorage.getItem('agh_seed_v') === '10') return;
 
   const now = new Date().toISOString();
 
@@ -26,6 +26,10 @@
       improvements: ['Aplicar CSS gerado pelo Claude Design (visual final)', 'Migrar localStorage → Supabase para acesso multi-dispositivo'] },
     { id: 'ifpb',            name: 'IFPB — Estudos',     description: 'Exercícios e anotações do curso de programação no IFPB. Projeto pessoal, sem pressão.', status: 'ativo',    color: '#7A9BC4', githubUrl: null,                                                      isPrivate: false, createdAt: now, updatedAt: now,
       improvements: ['Rodar pnpm install no scaffold TypeScript', 'Completar módulo de Arrays e Funções', 'Iniciar exercícios de POO'] },
+    { id: 'pulsar-finance',  name: 'Pulsar Finance',     description: 'Produto AG de financeiro/BPO — DRE/DFC, matriz de classificação, apresentação exportável e ingestão multi-provedor de ERP. Sucessor do painel anterior. Deploy Netlify.', status: 'ativo', color: '#8B5CF6', githubUrl: null,          isPrivate: true,  createdAt: now, updatedAt: now,
+      improvements: ['Concluir adapter do 2º provedor de ERP (hoje fail-closed na Fase 2)', 'Cobrir a camada de tradução do ERP com teste — é a fronteira que mais quebrou', 'Retenção/expurgo de dados financeiros de cliente (LGPD §8)'] },
+    { id: 'algoritmo-lideranca', name: 'O Algoritmo da Liderança', description: 'Checkout do infoproduto de liderança — landing + cobrança serverless via gateway de pagamento, com repasse de taxa de cartão por faixa de parcela.', status: 'ativo', color: '#F59E0B', githubUrl: 'https://github.com/AndreyRicaliff/algoritmo-lideranca-checkout', isPrivate: false, createdAt: now, updatedAt: now,
+      improvements: ['Webhook de confirmação de pagamento (hoje só cria a cobrança)', 'Página de sucesso própria em vez de depender do SUCCESS_URL do gateway', 'Reconciliação: o que foi pago x o que foi inscrito'] },
   ];
 
   // ── TAREFAS ───────────────────────────────────────────────────
@@ -220,6 +224,38 @@
 
     // Meet Hub
     { id:'s-37', title:'Monorepo consolidado (api + web + bot)', projectId:'meet-hub', type:'refactor', date:'2026-06-01', impact:'baixo', notes:'Estrutura unificada dos três serviços num repositório só.', createdAt: now },
+
+    // PULSAR-RH — privacidade e transparência (15/07)
+    { id:'s-38', title:'Anonimato real da pesquisa: ledger de participação separado da resposta', projectId:'pulsar-rh', type:'feature', date:'2026-07-15', impact:'alto', notes:'Quem respondeu e o que foi respondido passam a viver em tabelas distintas — dá pra cobrar quem faltou sem conseguir ligar resposta a pessoa.', createdAt: now },
+    { id:'s-39', title:'Identidade sai do respondente, do admin e do portal — e do audit_log', projectId:'pulsar-rh', type:'bugfix', date:'2026-07-15', impact:'alto', notes:'O schema parou de guardar identidade mas o log de auditoria continuava gravando: anonimato que vaza por um lado não é anonimato.', createdAt: now },
+    { id:'s-40', title:'Todo indicador expõe a fórmula, a fonte e o período que o geraram', projectId:'pulsar-rh', type:'feature', date:'2026-07-15', impact:'alto', notes:'Popup de transparência por KPI. Número de RH sem procedência não sustenta decisão — e não sobrevive a questionamento de auditoria.', createdAt: now },
+
+    // AG Converge — evento RH em Xeque (mai)
+    { id:'s-41', title:'Plataforma de eventos do zero com inscrição, consulta e admin em Supabase', projectId:'ag-converge', type:'feature', date:'2026-05-09', impact:'alto', notes:'Saiu de armazenamento local pra Supabase no mesmo ciclo: inscrição, lookup, histórico e painel. Assets e vídeos self-hosted pra não pesar o deploy.', createdAt: now },
+    { id:'s-42', title:'Fechamento das brechas: URLs administrativas não-óbvias, headers e corridas de concorrência', projectId:'ag-converge', type:'bugfix', date:'2026-05-11', impact:'alto', notes:'Middleware de Basic Auth trocado por rotas não-adivinháveis + hardening de header; limite de 120 lugares deixou de ser furável por inscrição concorrente.', createdAt: now },
+    { id:'s-43', title:'Gestão do dia do evento: portaria com check-in, QR no ingresso e painel em tempo real', projectId:'ag-converge', type:'feature', date:'2026-05-11', impact:'alto', notes:'Check-in por busca de nome, QR em PDF, contagem ao vivo via Realtime com toast de nova inscrição e wake lock na tela do ingresso.', createdAt: now },
+    { id:'s-44', title:'Acompanhante vira participante completo (até 3 por titular)', projectId:'ag-converge', type:'feature', date:'2026-05-11', impact:'alto', notes:'Antes o acompanhante sumia silenciosamente no insert e furava a contagem de vagas. Virou registro de primeira classe, com verificação de duplicidade por e-mail/telefone.', createdAt: now },
+    { id:'s-45', title:'Auditoria pré-evento: 8 bugs médios e todos os críticos fechados antes do dia', projectId:'ag-converge', type:'bugfix', date:'2026-05-11', impact:'alto', notes:'Varredura completa faltando dias pro evento — cache de leads matou chamada por tecla digitada no admin, e o resto virou correção em lote.', createdAt: now },
+    { id:'s-46', title:'Pesquisa de satisfação pós-evento com as perguntas reais aplicadas', projectId:'ag-converge', type:'feature', date:'2026-05-14', impact:'medio', notes:'Formulário próprio no lugar do Google Forms, com escala e logo do evento, fechando o ciclo do RH em Xeque.', createdAt: now },
+
+    // Pulsar Finance (inclui o painel anterior, mesmo produto)
+    { id:'s-47', title:'Matriz de classificação: regime DRE/DFC/ambos por grupo e subgrupo, com arrasto', projectId:'pulsar-finance', type:'feature', date:'2026-06-14', impact:'alto', notes:'O contador escolhe o regime na criação do grupo; classe removida cai num painel de realocação em vez de sumir. Drill até a movimentação com lupa.', createdAt: now },
+    { id:'s-48', title:'Apresentação exportável que é o app real + snapshot dos dados, offline', projectId:'pulsar-finance', type:'feature', date:'2026-06-14', impact:'alto', notes:'HTML autossuficiente com slides editáveis, gráficos de eixo-zero e CSS de impressão — o cliente abre sem servidor, sem login e sem CDN.', createdAt: now },
+    { id:'s-49', title:'Editor de demonstrações modularizado: 491 → 73 linhas com dispatch único', projectId:'pulsar-finance', type:'refactor', date:'2026-06-14', impact:'alto', notes:'O componente tinha virado o gargalo de toda mudança. Quebrado em partes com despacho DRY — a regressão do editor caiu junto.', createdAt: now },
+    { id:'s-50', title:'Ingestão multi-provedor de ERP com costura fail-closed', projectId:'pulsar-finance', type:'feature', date:'2026-06-19', impact:'alto', notes:'Segundo provedor entra por adapter isolado; sem credencial válida o pipeline recusa em vez de seguir com dado parcial e contaminar o relatório.', createdAt: now },
+    { id:'s-51', title:'Produção deixa de aceitar cadastro público e RLS fecha pra autenticado', projectId:'pulsar-finance', type:'bugfix', date:'2026-07-03', impact:'alto', notes:'Signup aberto num app de dado financeiro de cliente é porta destrancada. Login obrigatório em prod + trigger restringindo domínio no cadastro.', createdAt: now },
+    { id:'s-52', title:'Rótulos legíveis pra dado cru do ERP (código opaco, stakeholder nulo)', projectId:'pulsar-finance', type:'feature', date:'2026-07-14', impact:'medio', notes:'A tradução do provedor entregava código opaco e nome cru na tela. Achados da revisão da tradução aplicados no mesmo ciclo.', createdAt: now },
+    { id:'s-53', title:'Deploy no Netlify: build versionado, redirect de SPA e Cache-Control restaurado', projectId:'pulsar-finance', type:'deploy', date:'2026-07-14', impact:'medio', notes:'Lockfile passa a ser sempre commitado (app, não lib); index.html sem cache e assets com hash imutável.', createdAt: now },
+
+    // Cliente Oficina — pipeline de vendas
+    { id:'s-54', title:'Breakdown de receita e agregação de vendas por cidade no banco', projectId:'cliente-oficina', type:'feature', date:'2026-05-05', impact:'alto', notes:'Migrations de quebra de receita + localização de cliente; validação reescrita como UNION ALL plano pra conferir contra a origem.', createdAt: now },
+    { id:'s-55', title:'Credenciais saem do script e viram .env, com setup idempotente', projectId:'cliente-oficina', type:'refactor', date:'2026-05-06', impact:'alto', notes:'Chave versionada em script é dívida de segurança. Setup passa a só preencher o que falta — nunca sobrescreve valor existente do cliente.', createdAt: now },
+    { id:'s-56', title:'Sync serializado com lockfile, retry/backoff e janela de 30d para 2d', projectId:'cliente-oficina', type:'refactor', date:'2026-05-08', impact:'alto', notes:'Full-year e incremental colidiam na máquina do cliente; lockfile serializa. Janela curta derrubou o custo do ciclo de 5min.', createdAt: now },
+
+    // O Algoritmo da Liderança — checkout
+    { id:'s-57', title:'Spec do checkout e guia de integração do gateway para handoff', projectId:'algoritmo-lideranca', type:'planning', date:'2026-06-22', impact:'medio', notes:'Especificação escrita pra ser executada por outro dev (stack WordPress) — o guia da API é o contrato do handoff.', createdAt: now },
+    { id:'s-58', title:'Repasse da taxa de cartão ao cliente por faixa de parcela', projectId:'algoritmo-lideranca', type:'feature', date:'2026-07-14', impact:'alto', notes:'A taxa muda por faixa de parcelamento; o preço exibido passa a embutir a faixa certa em vez de comer a diferença na margem.', createdAt: now },
+    { id:'s-59', title:'Criação de cobrança via serverless e callback só quando há URL de retorno', projectId:'algoritmo-lideranca', type:'bugfix', date:'2026-07-14', impact:'medio', notes:'Endpoint serverless cria a cobrança; o callback passa a ser condicional pra não exigir domínio configurado e derrubar a inscrição.', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -267,7 +303,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '9');
+  localStorage.setItem('agh_seed_v',   '10');
 
-  console.log('[Ricaliff seed v9 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v10 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
