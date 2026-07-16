@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-16T10:09:54",
+    "lastSync": "2026-07-16T10:09:59",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 13425,
+    "xp": 13455,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 90,
+        "value": 94,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-16",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[PULSAR-FINANCE] backoff no ListarMovimentos + aviso de truncamento"
+    },
     {
       "date": "2026-07-16",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-varejo] botão Gerar Excel no Relatório Geral"
-    },
-    {
-      "date": "2026-07-12",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-varejo] drill-down dos KPIs por vendedor × categoria"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-16",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[PULSAR-FINANCE] backoff no ListarMovimentos + aviso de truncamento",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-16",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[PULSAR-FINANCE] gate de auth fail-closed (opt-out explícito, não opt-in)",
       "xp": 30
     },
@@ -758,13 +765,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[cliente-varejo] geral + contribuicao propria, sem nada do colega",
-      "xp": 50
-    },
-    {
-      "date": "2026-07-15",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] supervisao com a visao do admin, menos o DRE",
       "xp": 50
     }
   ]
