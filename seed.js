@@ -1,10 +1,10 @@
-// seed.js v10 — v9 + projetos algoritmo-lideranca/pulsar-finance e histórico minerado do git deles
+// seed.js v11 — v10 + sessão s-60 (pulsar-finance, 2026-07-16)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '10') return;
+  if (localStorage.getItem('agh_seed_v') === '11') return;
 
   const now = new Date().toISOString();
 
@@ -256,6 +256,7 @@
     { id:'s-57', title:'Spec do checkout e guia de integração do gateway para handoff', projectId:'algoritmo-lideranca', type:'planning', date:'2026-06-22', impact:'medio', notes:'Especificação escrita pra ser executada por outro dev (stack WordPress) — o guia da API é o contrato do handoff.', createdAt: now },
     { id:'s-58', title:'Repasse da taxa de cartão ao cliente por faixa de parcela', projectId:'algoritmo-lideranca', type:'feature', date:'2026-07-14', impact:'alto', notes:'A taxa muda por faixa de parcelamento; o preço exibido passa a embutir a faixa certa em vez de comer a diferença na margem.', createdAt: now },
     { id:'s-59', title:'Criação de cobrança via serverless e callback só quando há URL de retorno', projectId:'algoritmo-lideranca', type:'bugfix', date:'2026-07-14', impact:'medio', notes:'Endpoint serverless cria a cobrança; o callback passa a ser condicional pra não exigir domínio configurado e derrubar a inscrição.', createdAt: now },
+    { id:'s-60', title:'Fechou leitura anon de tabelas legado em prod e travou o login fail-closed', projectId:'pulsar-finance', type:'bugfix', date:'2026-07-16', impact:'alto', notes:'Frota multi-agente caiu na cota; revisao inline. Dropei 3 policies de SELECT anon em tabelas legado (provado */0), gate de auth invertido p/ fail-closed, backoff+aviso de truncamento no sync ERP.', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -303,7 +304,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '10');
+  localStorage.setItem('agh_seed_v',   '11');
 
-  console.log('[Ricaliff seed v10 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v11 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
