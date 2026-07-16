@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-16T16:09:00",
+    "lastSync": "2026-07-16T16:26:59",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 13835,
+    "xp": 13885,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 111,
+        "value": 114,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-16",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] Meu Painel em abas (Por Loja/Equipe/Diárias/Individual)"
+    },
     {
       "date": "2026-07-16",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[cliente-varejo] visibility-only semantics — dash never deletes synced data"
-    },
-    {
-      "date": "2026-07-14",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[PULSAR-FINANCE] aplica achados da revisao da traducao Nibo"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-16",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[cliente-varejo] Meu Painel em abas (Por Loja/Equipe/Diárias/Individual)",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-16",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[PULSAR-RH] seletor senior/pleno de volta, agora capado pelo teto da conta",
       "xp": 50
     },
@@ -758,13 +765,6 @@
       "type": "review",
       "icon": "👁️",
       "title": "[Ricaliff] registra sessao pulsar-finance (revisao + hardening 2026-07-16)",
-      "xp": 20
-    },
-    {
-      "date": "2026-07-16",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[PULSAR-FINANCE] ignora .netlify/ e tsconfig.tsbuildinfo (resíduo Vercel→Netlify)",
       "xp": 20
     }
   ]
