@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-16T10:23:33",
+    "lastSync": "2026-07-16T10:23:47",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 13495,
+    "xp": 13545,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 96,
+        "value": 99,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-16",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] periodo do header nasce no mes atual ate hoje, sempre visivel"
+    },
     {
       "date": "2026-07-16",
       "xp": 20,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[PULSAR-RH] pesquisa não-ativa deixa de aceitar respostas; demo só com token exato"
-    },
-    {
-      "date": "2026-07-12",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[PULSAR-RH] polaridade fim-a-fim — seed completo + RPC do portal grava o campo"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-16",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-varejo] periodo do header nasce no mes atual ate hoje, sempre visivel",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-16",
       "type": "review",
       "icon": "👁️",
       "title": "[Ricaliff] registra sessao pulsar-finance (revisao + hardening 2026-07-16)",
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[PULSAR-RH] todo indicador expõe a fórmula, a fonte e o período (popup glass)",
       "xp": 50
-    },
-    {
-      "date": "2026-07-15",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[cliente-varejo] supervisao ve venda, nao lucro — tira o mini-DRE do dashboard",
-      "xp": 30
     }
   ]
 }
