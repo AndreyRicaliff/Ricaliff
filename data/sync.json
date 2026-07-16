@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-16T18:12:44",
+    "lastSync": "2026-07-16T18:12:55",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 14195,
+    "xp": 14245,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 129,
+        "value": 132,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-16",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] split Smartphones×Serviços (R$) na aba Por Loja"
+    },
     {
       "date": "2026-07-16",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[Ricaliff] describe leaked tokens without reproducing the real client name"
-    },
-    {
-      "date": "2026-07-14",
-      "xp": 50,
-      "type": "security",
-      "desc": "auditoria completa do hub: sanitizador full-file no pipeline, atributos religados, niveis 9-15, robustez git"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-16",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[cliente-varejo] split Smartphones×Serviços (R$) na aba Por Loja",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-16",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[cliente-varejo] Meu Painel em abas (Por Loja/Equipe/Diárias/Individual)",
       "xp": 50
     },
@@ -758,13 +765,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[PULSAR-RH] seletor senior/pleno de volta, agora capado pelo teto da conta",
-      "xp": 50
-    },
-    {
-      "date": "2026-07-16",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[PULSAR-RH] nível senior/pleno vira propriedade da conta, lido do servidor",
       "xp": 50
     }
   ]
