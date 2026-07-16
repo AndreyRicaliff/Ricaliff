@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-16T10:09:59",
+    "lastSync": "2026-07-16T10:10:04",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 13455,
+    "xp": 13475,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -33,7 +33,7 @@
         "rule": "+4 por bugfix, +2 por refactor"
       },
       "wis": {
-        "value": 68,
+        "value": 71,
         "label": "Sabedoria",
         "icon": "🦉",
         "rule": "+5 por entrada DECISIONS.md, +3 por revisao"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-16",
+      "xp": 20,
+      "type": "review",
+      "desc": "[PULSAR-FINANCE] ignora .netlify/ e tsconfig.tsbuildinfo (resíduo Vercel→Netlify)"
+    },
     {
       "date": "2026-07-16",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 20,
       "type": "review",
       "desc": "[cliente-varejo] audit fix não-breaking, tipagem do geral, pendências"
-    },
-    {
-      "date": "2026-07-12",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-varejo] botão Gerar Excel no Relatório Geral"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-16",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[PULSAR-FINANCE] ignora .netlify/ e tsconfig.tsbuildinfo (resíduo Vercel→Netlify)",
+      "xp": 20
+    },
+    {
+      "date": "2026-07-16",
       "type": "bugfix",
       "icon": "🐛",
       "title": "[PULSAR-FINANCE] backoff no ListarMovimentos + aviso de truncamento",
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[PULSAR-RH] \"Insights IA\" -> \"Insights\" e remove resíduos da IA que sobreviveram ao PR #63",
       "xp": 30
-    },
-    {
-      "date": "2026-07-15",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] geral + contribuicao propria, sem nada do colega",
-      "xp": 50
     }
   ]
 }
