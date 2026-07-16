@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-16T12:54:51",
+    "lastSync": "2026-07-16T13:13:11",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 13575,
+    "xp": 13605,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 98,
+        "value": 102,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-16",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[cliente-varejo] blinda selectedMes sujo, trava recorte num mes e fecha bordas"
+    },
     {
       "date": "2026-07-16",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-varejo] período personalizado consome filtro global e agrega diárias no shape mensal"
-    },
-    {
-      "date": "2026-07-12",
-      "xp": 80,
-      "type": "test",
-      "desc": "[PULSAR-RH] import resiliente a package.json 'type:module' fora do repo"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-16",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[cliente-varejo] blinda selectedMes sujo, trava recorte num mes e fecha bordas",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-16",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[cliente-varejo] header do periodo deriva de selectedMes e reset volta ao mes",
       "xp": 30
     },
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[PULSAR-RH] _admission_to_tenure era IMMUTABLE lendo current_date + var no kpi-info",
       "xp": 30
-    },
-    {
-      "date": "2026-07-15",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[Ricaliff] registrador de sessao com portao de vazamento + ADR",
-      "xp": 50
     }
   ]
 }
