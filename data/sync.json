@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-16T00:07:07",
+    "lastSync": "2026-07-16T00:10:28",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 13345,
+    "xp": 13395,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -27,13 +27,13 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 82,
+        "value": 86,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
       },
       "wis": {
-        "value": 65,
+        "value": 68,
         "label": "Sabedoria",
         "icon": "🦉",
         "rule": "+5 por entrada DECISIONS.md, +3 por revisao"
@@ -243,6 +243,18 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-16",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[PULSAR-RH] tela de entrada anunciava o Agente IA, removido do produto no PR #63"
+    },
+    {
+      "date": "2026-07-16",
+      "xp": 20,
+      "type": "review",
+      "desc": "[Ricaliff] descrição do PULSAR-RH dizia \"KPIs de RH com IA\" — a IA saiu do produto"
+    },
     {
       "date": "2026-07-16",
       "xp": 30,
@@ -530,18 +542,6 @@
       "xp": 25,
       "type": "refactor",
       "desc": "[cliente-varejo] helpers compartilhados p/ drill-down e exportação"
-    },
-    {
-      "date": "2026-07-09",
-      "xp": 20,
-      "type": "review",
-      "desc": "[cliente-oficina-backend] hero card matches cliente-oficina family (red-bordered light card, not dark block)"
-    },
-    {
-      "date": "2026-07-09",
-      "xp": 40,
-      "type": "learning",
-      "desc": "skills destiladas: padrao-visual-comercial, filtros-globais, padrao-atrativo + registro de padrões e revisao§11"
     }
   ],
   "achievements": [
@@ -701,6 +701,20 @@
       "date": "2026-07-16",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[PULSAR-RH] tela de entrada anunciava o Agente IA, removido do produto no PR #63",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-16",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[Ricaliff] descrição do PULSAR-RH dizia \"KPIs de RH com IA\" — a IA saiu do produto",
+      "xp": 20
+    },
+    {
+      "date": "2026-07-16",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[PULSAR-RH] _admission_to_tenure era IMMUTABLE lendo current_date + var no kpi-info",
       "xp": 30
     },
@@ -752,20 +766,6 @@
       "icon": "🐛",
       "title": "[PULSAR-RH] audit_log guardava a identidade que o schema tinha deixado de guardar",
       "xp": 30
-    },
-    {
-      "date": "2026-07-15",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[PULSAR-RH] responder, admin e portal deixam de gravar/exibir identidade",
-      "xp": 50
-    },
-    {
-      "date": "2026-07-15",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[PULSAR-RH] anonimato real da pesquisa — ledger de participação separado da resposta",
-      "xp": 50
     }
   ]
 }
