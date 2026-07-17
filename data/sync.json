@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-17T11:40:32",
+    "lastSync": "2026-07-17T11:57:40",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 14685,
+    "xp": 14715,
     "xpToNext": 19001,
     "streak": 4,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 126,
+        "value": 130,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-17",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[cliente-varejo] erro so derruba sem dado em cache + funde caruaru-2 no PDV pai"
+    },
     {
       "date": "2026-07-17",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-varejo] cadastros pendentes — caixa pronta pro supervisor"
-    },
-    {
-      "date": "2026-07-14",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-varejo] cadastros pendentes — caixa pronta pro supervisor"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-17",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[cliente-varejo] erro so derruba sem dado em cache + funde caruaru-2 no PDV pai",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-17",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[cliente-varejo] relatorio casa vendas por colaborador_id, escopo de loja e estados",
       "xp": 30
     },
@@ -758,13 +765,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[cliente-varejo] supervisor desvincula/remove via edge desligar-colaborador",
-      "xp": 50
-    },
-    {
-      "date": "2026-07-16",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] split Smartphones×Serviços (R$) na aba Por Loja",
       "xp": 50
     }
   ]
