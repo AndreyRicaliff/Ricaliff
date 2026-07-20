@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-20T10:06:25",
+    "lastSync": "2026-07-20T10:07:55",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 14905,
+    "xp": 14955,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 153,
+        "value": 156,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-20",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[Ricaliff] 8 dominios novos + expansao de seguranca (66 modulos)"
+    },
     {
       "date": "2026-07-20",
       "xp": 40,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[PULSAR-RH] audit_log guardava a identidade que o schema tinha deixado de guardar"
-    },
-    {
-      "date": "2026-07-15",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[PULSAR-RH] responder, admin e portal deixam de gravar/exibir identidade"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-20",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[Ricaliff] 8 dominios novos + expansao de seguranca (66 modulos)",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-20",
       "type": "learning",
       "icon": "📚",
       "title": "skill destilada: site-imersivo (de alche.studio) + template estudio-imersivo",
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[cliente-varejo] relatorio casa vendas por colaborador_id, escopo de loja e estados",
       "xp": 30
-    },
-    {
-      "date": "2026-07-17",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] relatorio consolidado (com folha) + cards Smartphones vs Servicos",
-      "xp": 50
     }
   ]
 }
