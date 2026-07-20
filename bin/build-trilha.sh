@@ -21,7 +21,7 @@ command -v node >/dev/null 2>&1 || { echo "ERRO: node não encontrado (necessár
 echo "[trilha] gerando $INDEX a partir de $TRILHA_DIR..."
 
 # Ordem canônica das trilhas
-TRILHAS=(00-fundamentos 10-codigo-limpo 15-git 20-arquitetura 30-banco 35-ia-ml 40-frontend 50-backend 55-apis 60-seguranca 70-devops 80-system-design 85-escala 90-entrevista 95-diferencial)
+TRILHAS=(00-fundamentos 05-raciocinio 10-codigo-limpo 12-testes 15-git 20-arquitetura 25-gestao-projetos 30-banco 32-engenharia-dados 35-ia-ml 40-frontend 42-design 44-motion-design 46-3d-web 50-backend 55-apis 60-seguranca 70-devops 80-system-design 82-robustez 85-escala 90-entrevista 95-diferencial)
 
 # Coleta TSV: trilha_id \t arquivo \t titulo  (uma linha por módulo, em ordem)
 collect() {
@@ -47,17 +47,25 @@ collect | INDEX_TMP="$TMP" node -e '
 const fs = require("fs");
 const META = {
   "00-fundamentos":  ["Fundamentos", "Base que TODA entrevista júnior cobra", "🎯", "alta"],
+  "05-raciocinio":   ["Raciocínio de Engenheiro", "Como pensar: verificar, refutar, trade-offs, alvo certo", "🧠", "maxima"],
   "10-codigo-limpo": ["Código Limpo", "Teoria por trás das regras do CLAUDE.md", "🧹", "alta"],
+  "12-testes":       ["Testes", "Pirâmide, vitest, Playwright, mocks em boundary, TDD honesto", "🧪", "alta"],
   "15-git":          ["Git", "Modelo mental, branches, rebase, desfazer, fluxo de PR", "🔀", "alta"],
   "20-arquitetura":  ["Arquitetura", "SOLID, camadas, ADRs, padrões", "🏛️", "media"],
+  "25-gestao-projetos": ["Gestão de Projetos", "Escopo, priorização, estimativa, dívida, cliente, decisões", "📋", "alta"],
   "30-banco":        ["Banco de Dados", "Postgres, índices, N+1, transactions, RLS", "🗄️", "alta"],
+  "32-engenharia-dados": ["Engenharia de Dados", "ETL, idempotência, qualidade, cache, backup, zero-downtime", "🔁", "alta"],
   "35-ia-ml":        ["IA & Machine Learning", "ML do zero: aprendizado, dados, redes neurais, LLMs e usar IA na prática", "🤖", "maxima"],
   "40-frontend":     ["Frontend", "React render cycle, hooks, performance", "🎨", "media"],
+  "42-design":       ["Design de Interface", "Hierarquia, tipografia, cor, grid, estados, acessibilidade", "🖌️", "alta"],
+  "44-motion-design":["Motion Design", "Easing, coreografia, microinterações, performance de animação", "🎞️", "media"],
+  "46-3d-web":       ["3D na Web", "three.js, CSS3D, luz, animação e performance — o look dos decks", "🧊", "media"],
   "50-backend":      ["Backend", "Express, Prisma, queues, idempotência", "⚙️", "media"],
   "55-apis":         ["APIs", "HTTP, REST, design, auth (JWT/OAuth), consumir e construir", "🔌", "alta"],
-  "60-seguranca":    ["Segurança", "OWASP, LGPD, XSS, SQLi, secrets", "🔒", "alta"],
+  "60-seguranca":    ["Segurança", "OWASP, LGPD, XSS, SQLi, secrets + authn/z, threat model, incident response", "🔒", "alta"],
   "70-devops":       ["DevOps", "Docker, CI/CD, observabilidade", "📦", "baixa"],
   "80-system-design":["System Design", "Cache, fila, replicação, CAP", "🌐", "baixa"],
+  "82-robustez":     ["Robustez", "Retry, idempotência, timeouts, degradação, observabilidade, chaos", "🛡️", "alta"],
   "85-escala":       ["Cargas & Escala", "Throughput, latência, projeção, cache, filas, banco sob carga", "📈", "media"],
   "90-entrevista":   ["Entrevista", "Banco de 40 perguntas + pitch dos 8 projetos AG + mock", "🎤", "alta"],
   "95-diferencial":  ["Diferencial", "O que sobrevive ao Claude — prioridade máxima", "⚡", "maxima"],
