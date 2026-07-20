@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-20T08:50:03",
+    "lastSync": "2026-07-20T09:54:07",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 14835,
+    "xp": 14865,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 138,
+        "value": 142,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-20",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[PULSAR-FINANCE] remove seeds com dados reais de cliente do repo (CNPJs de terceiros)"
+    },
     {
       "date": "2026-07-20",
       "xp": 20,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[PULSAR-RH] anonimato real da pesquisa — ledger de participação separado da resposta"
-    },
-    {
-      "date": "2026-07-15",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-varejo] cliente-varejo lanca os botons do quadro (a tela que nunca existiu)"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-20",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "[PULSAR-FINANCE] remove seeds com dados reais de cliente do repo (CNPJs de terceiros)",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-20",
       "type": "review",
       "icon": "👁️",
       "title": "[PULSAR-RH] marca o lote crítico-trivial da auditoria como FEITO",
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[cliente-varejo] alinha 'serviços mais vendidos' com a linha do gráfico + estados",
       "xp": 30
-    },
-    {
-      "date": "2026-07-17",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] grafico celular x servico e mais vendidos (loja + voce) + correcoes de estado",
-      "xp": 50
     }
   ]
 }
