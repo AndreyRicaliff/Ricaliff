@@ -1,6 +1,6 @@
 {
-  "geradoEm": "2026-07-14T18:08:01.327Z",
-  "totalTrilhas": 15,
+  "geradoEm": "2026-07-20T02:12:43.625Z",
+  "totalTrilhas": 19,
   "trilhas": [
     {
       "id": "00-fundamentos",
@@ -79,6 +79,52 @@
           "arquivo": "04-abstracao-regra-dos-3.md",
           "titulo": "04 — Abstração e a Regra dos 3",
           "caminho": "/trilha/10-codigo-limpo/04-abstracao-regra-dos-3.md"
+        }
+      ]
+    },
+    {
+      "id": "12-testes",
+      "nome": "Testes",
+      "foco": "Pirâmide, vitest, Playwright, mocks em boundary, TDD honesto",
+      "icone": "🧪",
+      "prioridade": "alta",
+      "totalModulos": 6,
+      "modulos": [
+        {
+          "id": "12-testes/01-piramide-de-testes.md",
+          "arquivo": "01-piramide-de-testes.md",
+          "titulo": "01 — Pirâmide de Testes",
+          "caminho": "/trilha/12-testes/01-piramide-de-testes.md"
+        },
+        {
+          "id": "12-testes/02-primeiro-teste-vitest.md",
+          "arquivo": "02-primeiro-teste-vitest.md",
+          "titulo": "02 — Primeiro Teste com Vitest",
+          "caminho": "/trilha/12-testes/02-primeiro-teste-vitest.md"
+        },
+        {
+          "id": "12-testes/03-testar-logica-de-negocio.md",
+          "arquivo": "03-testar-logica-de-negocio.md",
+          "titulo": "03 — Testar Lógica de Negócio",
+          "caminho": "/trilha/12-testes/03-testar-logica-de-negocio.md"
+        },
+        {
+          "id": "12-testes/04-mocks-so-em-boundary.md",
+          "arquivo": "04-mocks-so-em-boundary.md",
+          "titulo": "04 — Mocks Só em Boundary",
+          "caminho": "/trilha/12-testes/04-mocks-so-em-boundary.md"
+        },
+        {
+          "id": "12-testes/05-e2e-playwright.md",
+          "arquivo": "05-e2e-playwright.md",
+          "titulo": "05 — E2E com Playwright",
+          "caminho": "/trilha/12-testes/05-e2e-playwright.md"
+        },
+        {
+          "id": "12-testes/06-tdd-quando-vale.md",
+          "arquivo": "06-tdd-quando-vale.md",
+          "titulo": "06 — TDD: Quando Vale",
+          "caminho": "/trilha/12-testes/06-tdd-quando-vale.md"
         }
       ]
     },
@@ -183,6 +229,52 @@
           "arquivo": "07-modularidade-pacotes.md",
           "titulo": "07 — Modularidade e Pacotes",
           "caminho": "/trilha/20-arquitetura/07-modularidade-pacotes.md"
+        }
+      ]
+    },
+    {
+      "id": "25-gestao-projetos",
+      "nome": "Gestão de Projetos",
+      "foco": "Escopo, priorização, estimativa, dívida, cliente, decisões",
+      "icone": "📋",
+      "prioridade": "alta",
+      "totalModulos": 6,
+      "modulos": [
+        {
+          "id": "25-gestao-projetos/01-escopo-e-fatiamento.md",
+          "arquivo": "01-escopo-e-fatiamento.md",
+          "titulo": "01 — Escopo e Fatiamento",
+          "caminho": "/trilha/25-gestao-projetos/01-escopo-e-fatiamento.md"
+        },
+        {
+          "id": "25-gestao-projetos/02-priorizacao.md",
+          "arquivo": "02-priorizacao.md",
+          "titulo": "02 — Priorização",
+          "caminho": "/trilha/25-gestao-projetos/02-priorizacao.md"
+        },
+        {
+          "id": "25-gestao-projetos/03-estimativa-honesta.md",
+          "arquivo": "03-estimativa-honesta.md",
+          "titulo": "03 — Estimativa Honesta",
+          "caminho": "/trilha/25-gestao-projetos/03-estimativa-honesta.md"
+        },
+        {
+          "id": "25-gestao-projetos/04-debito-tecnico-gerenciado.md",
+          "arquivo": "04-debito-tecnico-gerenciado.md",
+          "titulo": "04 — Débito Técnico Gerenciado",
+          "caminho": "/trilha/25-gestao-projetos/04-debito-tecnico-gerenciado.md"
+        },
+        {
+          "id": "25-gestao-projetos/05-comunicacao-com-cliente.md",
+          "arquivo": "05-comunicacao-com-cliente.md",
+          "titulo": "05 — Comunicação com Cliente",
+          "caminho": "/trilha/25-gestao-projetos/05-comunicacao-com-cliente.md"
+        },
+        {
+          "id": "25-gestao-projetos/06-fluxo-solo-com-ia.md",
+          "arquivo": "06-fluxo-solo-com-ia.md",
+          "titulo": "06 — Fluxo Solo com IA",
+          "caminho": "/trilha/25-gestao-projetos/06-fluxo-solo-com-ia.md"
         }
       ]
     },
@@ -355,6 +447,74 @@
       ]
     },
     {
+      "id": "42-design",
+      "nome": "Design de Interface",
+      "foco": "Hierarquia, tipografia, cor, grid, estados, acessibilidade",
+      "icone": "🖌️",
+      "prioridade": "alta",
+      "totalModulos": 3,
+      "modulos": [
+        {
+          "id": "42-design/01-hierarquia-visual.md",
+          "arquivo": "01-hierarquia-visual.md",
+          "titulo": "01 — Hierarquia Visual",
+          "caminho": "/trilha/42-design/01-hierarquia-visual.md"
+        },
+        {
+          "id": "42-design/02-tipografia.md",
+          "arquivo": "02-tipografia.md",
+          "titulo": "02 — Tipografia",
+          "caminho": "/trilha/42-design/02-tipografia.md"
+        },
+        {
+          "id": "42-design/03-cor-com-intencao.md",
+          "arquivo": "03-cor-com-intencao.md",
+          "titulo": "03 — Cor com Intenção",
+          "caminho": "/trilha/42-design/03-cor-com-intencao.md"
+        }
+      ]
+    },
+    {
+      "id": "44-motion-design",
+      "nome": "Motion Design",
+      "foco": "Easing, coreografia, microinterações, performance de animação",
+      "icone": "🎞️",
+      "prioridade": "media",
+      "totalModulos": 5,
+      "modulos": [
+        {
+          "id": "44-motion-design/01-motion-com-proposito.md",
+          "arquivo": "01-motion-com-proposito.md",
+          "titulo": "01 — Motion com Propósito",
+          "caminho": "/trilha/44-motion-design/01-motion-com-proposito.md"
+        },
+        {
+          "id": "44-motion-design/02-easing-timing.md",
+          "arquivo": "02-easing-timing.md",
+          "titulo": "02 — Easing & Timing",
+          "caminho": "/trilha/44-motion-design/02-easing-timing.md"
+        },
+        {
+          "id": "44-motion-design/03-coreografia-stagger.md",
+          "arquivo": "03-coreografia-stagger.md",
+          "titulo": "03 — Coreografia & Stagger",
+          "caminho": "/trilha/44-motion-design/03-coreografia-stagger.md"
+        },
+        {
+          "id": "44-motion-design/04-transicoes-de-estado.md",
+          "arquivo": "04-transicoes-de-estado.md",
+          "titulo": "04 — Transições de Estado & FLIP",
+          "caminho": "/trilha/44-motion-design/04-transicoes-de-estado.md"
+        },
+        {
+          "id": "44-motion-design/05-microinteracoes.md",
+          "arquivo": "05-microinteracoes.md",
+          "titulo": "05 — Microinterações",
+          "caminho": "/trilha/44-motion-design/05-microinteracoes.md"
+        }
+      ]
+    },
+    {
       "id": "50-backend",
       "nome": "Backend",
       "foco": "Express, Prisma, queues, idempotência",
@@ -467,7 +627,7 @@
     {
       "id": "60-seguranca",
       "nome": "Segurança",
-      "foco": "OWASP, LGPD, XSS, SQLi, secrets",
+      "foco": "OWASP, LGPD, XSS, SQLi, secrets + authn/z, threat model, incident response",
       "icone": "🔒",
       "prioridade": "alta",
       "totalModulos": 8,

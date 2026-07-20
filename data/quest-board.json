@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-14T18:08:51.370Z",
+  "geradoEm": "2026-07-20T02:17:38.010Z",
   "projetos": [
     {
       "id": "PULSAR-RH",
@@ -16,7 +16,7 @@
         "HTML+JS",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-13T01:09:57-03:00",
+      "ultimaAtividade": "2026-07-19T23:16:18-03:00",
       "sideQuests": [
         {
           "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
@@ -194,6 +194,15 @@
           "titulo": "06 — Performance Web",
           "trilha": "40-frontend",
           "moduloPath": "/trilha/40-frontend/06-performance-web.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "44-motion-design/05-microinteracoes.md",
+          "titulo": "05 — Microinterações",
+          "trilha": "44-motion-design",
+          "moduloPath": "/trilha/44-motion-design/05-microinteracoes.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -424,7 +433,7 @@
         "Supabase",
         "Lovable"
       ],
-      "ultimaAtividade": "2026-07-14T12:17:59-03:00",
+      "ultimaAtividade": "2026-07-17T11:57:37-03:00",
       "sideQuests": [
         {
           "id": ".mapa-local.md",
@@ -436,10 +445,82 @@
           "concluida": false
         },
         {
+          "id": "12-testes/02-primeiro-teste-vitest.md",
+          "titulo": "02 — Primeiro Teste com Vitest",
+          "trilha": "12-testes",
+          "moduloPath": "/trilha/12-testes/02-primeiro-teste-vitest.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "12-testes/03-testar-logica-de-negocio.md",
+          "titulo": "03 — Testar Lógica de Negócio",
+          "trilha": "12-testes",
+          "moduloPath": "/trilha/12-testes/03-testar-logica-de-negocio.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "12-testes/05-e2e-playwright.md",
+          "titulo": "05 — E2E com Playwright",
+          "trilha": "12-testes",
+          "moduloPath": "/trilha/12-testes/05-e2e-playwright.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
           "id": "20-arquitetura/04-padroes-comunicacao.md",
           "titulo": "04 — Padrões de Comunicação",
           "trilha": "20-arquitetura",
           "moduloPath": "/trilha/20-arquitetura/04-padroes-comunicacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "25-gestao-projetos/01-escopo-e-fatiamento.md",
+          "titulo": "01 — Escopo e Fatiamento",
+          "trilha": "25-gestao-projetos",
+          "moduloPath": "/trilha/25-gestao-projetos/01-escopo-e-fatiamento.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "25-gestao-projetos/02-priorizacao.md",
+          "titulo": "02 — Priorização",
+          "trilha": "25-gestao-projetos",
+          "moduloPath": "/trilha/25-gestao-projetos/02-priorizacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "25-gestao-projetos/06-fluxo-solo-com-ia.md",
+          "titulo": "06 — Fluxo Solo com IA",
+          "trilha": "25-gestao-projetos",
+          "moduloPath": "/trilha/25-gestao-projetos/06-fluxo-solo-com-ia.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "42-design/01-hierarquia-visual.md",
+          "titulo": "01 — Hierarquia Visual",
+          "trilha": "42-design",
+          "moduloPath": "/trilha/42-design/01-hierarquia-visual.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "44-motion-design/04-transicoes-de-estado.md",
+          "titulo": "04 — Transições de Estado & FLIP",
+          "trilha": "44-motion-design",
+          "moduloPath": "/trilha/44-motion-design/04-transicoes-de-estado.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -592,6 +673,24 @@
           "concluida": false
         },
         {
+          "id": "05-raciocinio/01-verificar-antes-de-afirmar.md",
+          "titulo": "01 — Verificar Antes de Afirmar",
+          "trilha": "05-raciocinio",
+          "moduloPath": "/trilha/05-raciocinio/01-verificar-antes-de-afirmar.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "12-testes/04-mocks-so-em-boundary.md",
+          "titulo": "04 — Mocks Só em Boundary",
+          "trilha": "12-testes",
+          "moduloPath": "/trilha/12-testes/04-mocks-so-em-boundary.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
           "id": "20-arquitetura/03-monolito-vs-microsservico.md",
           "titulo": "03 — Monolito vs Microsserviço",
           "trilha": "20-arquitetura",
@@ -628,6 +727,24 @@
           "concluida": false
         },
         {
+          "id": "25-gestao-projetos/04-debito-tecnico-gerenciado.md",
+          "titulo": "04 — Débito Técnico Gerenciado",
+          "trilha": "25-gestao-projetos",
+          "moduloPath": "/trilha/25-gestao-projetos/04-debito-tecnico-gerenciado.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "25-gestao-projetos/05-comunicacao-com-cliente.md",
+          "titulo": "05 — Comunicação com Cliente",
+          "trilha": "25-gestao-projetos",
+          "moduloPath": "/trilha/25-gestao-projetos/05-comunicacao-com-cliente.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
           "id": "30-banco/02-explain-analyze-query-plan.md",
           "titulo": "02 — EXPLAIN ANALYZE e query plan",
           "trilha": "30-banco",
@@ -650,6 +767,24 @@
           "titulo": "08 — Backup e recovery",
           "trilha": "30-banco",
           "moduloPath": "/trilha/30-banco/08-backup-e-recovery.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "32-engenharia-dados/01-pipeline-etl-elt.md",
+          "titulo": "01 — Pipeline ETL/ELT",
+          "trilha": "32-engenharia-dados",
+          "moduloPath": "/trilha/32-engenharia-dados/01-pipeline-etl-elt.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "32-engenharia-dados/02-idempotencia-reprocessamento.md",
+          "titulo": "02 — Idempotência e Reprocessamento",
+          "trilha": "32-engenharia-dados",
+          "moduloPath": "/trilha/32-engenharia-dados/02-idempotencia-reprocessamento.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -1440,7 +1575,7 @@
         "localStorage",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-14T15:07:47-03:00",
+      "ultimaAtividade": "2026-07-19T23:11:44-03:00",
       "sideQuests": [
         {
           "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
