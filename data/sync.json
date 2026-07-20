@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-20T09:54:07",
+    "lastSync": "2026-07-20T10:06:25",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,14 +8,14 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 14865,
+    "xp": 14905,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
     "lastActiveDate": "2026-07-20",
     "attributes": {
       "int": {
-        "value": 9,
+        "value": 12,
         "label": "Inteligência",
         "icon": "🧠",
         "rule": "+2 por módulo lido, +5 por checkpoint"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-20",
+      "xp": 40,
+      "type": "learning",
+      "desc": "skill destilada: site-imersivo (de alche.studio) + template estudio-imersivo"
+    },
     {
       "date": "2026-07-20",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[PULSAR-RH] responder, admin e portal deixam de gravar/exibir identidade"
-    },
-    {
-      "date": "2026-07-15",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[PULSAR-RH] anonimato real da pesquisa — ledger de participação separado da resposta"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-20",
+      "type": "learning",
+      "icon": "📚",
+      "title": "skill destilada: site-imersivo (de alche.studio) + template estudio-imersivo",
+      "xp": 40
+    },
+    {
+      "date": "2026-07-20",
       "type": "bugfix",
       "icon": "🐛",
       "title": "[PULSAR-FINANCE] remove seeds com dados reais de cliente do repo (CNPJs de terceiros)",
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[cliente-varejo] relatorio consolidado (com folha) + cards Smartphones vs Servicos",
       "xp": 50
-    },
-    {
-      "date": "2026-07-17",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[cliente-varejo] alinha 'serviços mais vendidos' com a linha do gráfico + estados",
-      "xp": 30
     }
   ]
 }
