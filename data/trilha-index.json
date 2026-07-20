@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-20T11:43:41.249Z",
+  "geradoEm": "2026-07-20T13:03:35.179Z",
   "totalTrilhas": 23,
   "trilhas": [
     {
@@ -852,7 +852,7 @@
       "foco": "OWASP, LGPD, XSS, SQLi, secrets + authn/z, threat model, incident response",
       "icone": "🔒",
       "prioridade": "alta",
-      "totalModulos": 9,
+      "totalModulos": 14,
       "modulos": [
         {
           "id": "60-seguranca/01-owasp-top-10-resumo.md",
@@ -907,6 +907,36 @@
           "arquivo": "09-authn-authz-profundo.md",
           "titulo": "09 — Authn/Authz Profundo",
           "caminho": "/trilha/60-seguranca/09-authn-authz-profundo.md"
+        },
+        {
+          "id": "60-seguranca/10-threat-modeling.md",
+          "arquivo": "10-threat-modeling.md",
+          "titulo": "10 — Threat Modeling",
+          "caminho": "/trilha/60-seguranca/10-threat-modeling.md"
+        },
+        {
+          "id": "60-seguranca/11-criptografia-aplicada.md",
+          "arquivo": "11-criptografia-aplicada.md",
+          "titulo": "11 — Criptografia Aplicada",
+          "caminho": "/trilha/60-seguranca/11-criptografia-aplicada.md"
+        },
+        {
+          "id": "60-seguranca/12-hardening.md",
+          "arquivo": "12-hardening.md",
+          "titulo": "12 — Hardening",
+          "caminho": "/trilha/60-seguranca/12-hardening.md"
+        },
+        {
+          "id": "60-seguranca/13-supply-chain.md",
+          "arquivo": "13-supply-chain.md",
+          "titulo": "13 — Supply Chain",
+          "caminho": "/trilha/60-seguranca/13-supply-chain.md"
+        },
+        {
+          "id": "60-seguranca/14-incident-response.md",
+          "arquivo": "14-incident-response.md",
+          "titulo": "14 — Incident Response",
+          "caminho": "/trilha/60-seguranca/14-incident-response.md"
         }
       ]
     },
@@ -1020,7 +1050,7 @@
       "foco": "Retry, idempotência, timeouts, degradação, observabilidade, chaos",
       "icone": "🛡️",
       "prioridade": "alta",
-      "totalModulos": 3,
+      "totalModulos": 8,
       "modulos": [
         {
           "id": "82-robustez/01-error-handling-sistemico.md",
@@ -1039,6 +1069,36 @@
           "arquivo": "03-idempotencia.md",
           "titulo": "03 — Idempotência",
           "caminho": "/trilha/82-robustez/03-idempotencia.md"
+        },
+        {
+          "id": "82-robustez/04-timeouts-cancelamento.md",
+          "arquivo": "04-timeouts-cancelamento.md",
+          "titulo": "04 — Timeouts e Cancelamento",
+          "caminho": "/trilha/82-robustez/04-timeouts-cancelamento.md"
+        },
+        {
+          "id": "82-robustez/05-graceful-degradation.md",
+          "arquivo": "05-graceful-degradation.md",
+          "titulo": "05 — Degradação Graciosa",
+          "caminho": "/trilha/82-robustez/05-graceful-degradation.md"
+        },
+        {
+          "id": "82-robustez/06-observabilidade.md",
+          "arquivo": "06-observabilidade.md",
+          "titulo": "06 — Observabilidade",
+          "caminho": "/trilha/82-robustez/06-observabilidade.md"
+        },
+        {
+          "id": "82-robustez/07-concorrencia-locks.md",
+          "arquivo": "07-concorrencia-locks.md",
+          "titulo": "07 — Concorrência e Locks",
+          "caminho": "/trilha/82-robustez/07-concorrencia-locks.md"
+        },
+        {
+          "id": "82-robustez/08-teste-de-falha.md",
+          "arquivo": "08-teste-de-falha.md",
+          "titulo": "08 — Teste de Falha",
+          "caminho": "/trilha/82-robustez/08-teste-de-falha.md"
         }
       ]
     },

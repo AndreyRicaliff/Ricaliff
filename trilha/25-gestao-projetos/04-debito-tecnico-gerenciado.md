@@ -7,14 +7,14 @@ A metáfora é de **Ward Cunningham (OOPSLA, 1992)**: entregar código imperfeit
 - **Deliberado × inadvertido**: "sabemos que é gambiarra, prazo manda" × "não sabíamos fazer melhor".
 - **Prudente × imprudente**: "atalho consciente com plano" × "não temos tempo pra design" (que sempre custa mais caro depois).
 
-Débito **prudente-deliberado** é ferramenta legítima de gestão. Débito **imprudente-inadvertido** é só código ruim. O trabalho do engenheiro é converter todo débito em prudente-deliberado — ou seja: **registrado, datado, com contexto**.
+Débito **prudente-deliberado** é ferramenta legítima; **imprudente-inadvertido** é só código ruim. O trabalho do engenheiro é converter todo débito em prudente-deliberado: **registrado, datado, com contexto**.
 
 ### PENDENCIAS.md como sistema (o padrão AG)
 
 Não é um TODO solto — é um contrato com regras:
 
 1. **Item datado + contexto + ponteiro**: quando entrou, POR QUE foi aceito, e onde mora no código. Sem ponteiro, daqui a 3 meses ninguém acha; sem contexto, ninguém sabe se ainda vale.
-2. **Resolver = apagar a linha NO MESMO COMMIT do fix**: o arquivo nunca mente sobre o estado atual. Um PENDENCIAS.md desatualizado é pior que nenhum — é registro que afirma coisa falsa, e o hábito sênior é nunca deixar artefato afirmando o que não se verificou.
+2. **Resolver = apagar a linha NO MESMO COMMIT do fix**: o arquivo nunca mente sobre o estado atual. PENDENCIAS.md desatualizado é pior que nenhum: registro que afirma coisa falsa. Hábito sênior: nenhum artefato afirmando o que não se verificou.
 3. **A revisão lê o arquivo no início**: item crítico (🔴) sobe direto pro relatório. O débito participa do ciclo, não hiberna.
 
 ```markdown
@@ -32,13 +32,13 @@ Não é um TODO solto — é um contrato com regras:
 
 Juros = frequência de toque × dor por toque. Regra prática:
 
-- **Área tocada pela 3ª vez e o débito atrapalhou de novo → pagar agora**, antes da feature. É o mesmo espírito da regra dos três da abstração: a 3ª ocorrência prova o padrão.
+- **Área tocada pela 3ª vez e o débito atrapalhou de novo → pagar agora**, antes da feature. Mesmo espírito da regra dos três: a 3ª ocorrência prova o padrão.
 - **Débito que causou bug em produção → pagar já** — o juro virou principal.
-- **Débito em código que ninguém toca há meses → deixar.** Juro de código parado é zero. Refatorar código estável e intocado é pagar empréstimo que não corre juros — custo sem retorno, e ainda arrisca regressão.
+- **Débito em código que ninguém toca há meses → deixar.** Juro de código parado é zero; refatorar código estável é pagar empréstimo sem juros — custo sem retorno, com risco de regressão.
 
 ### Quando aceitar pra sempre
 
-Alguns débitos morrem de velhice, não de pagamento: workaround para limitação de ambiente (ex.: o `prefers-reduced-motion` forçado por acesso remoto que exigiu ignorar o flag nos decks — enquanto o ambiente for esse, o "débito" é na verdade a decisão certa), código de módulo que será desativado, atalho num relatório one-off já entregue. O honesto é registrar como **decisão aceita** (DECISIONS.md, módulo 07), não fingir que um dia será "arrumado".
+Alguns débitos morrem de velhice, não de pagamento: workaround para limitação de ambiente (ex.: o `prefers-reduced-motion` forçado por acesso remoto que exigiu ignorar o flag nos decks — enquanto o ambiente for esse, o "débito" é a decisão certa), código de módulo que será desativado, atalho num one-off já entregue. O honesto é registrar como **decisão aceita** (DECISIONS.md, módulo 07), não fingir que um dia será "arrumado".
 
 ### Passo a passo: instalar o sistema num projeto AG
 

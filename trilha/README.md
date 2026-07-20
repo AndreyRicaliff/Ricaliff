@@ -26,17 +26,33 @@ Marque `[x]` no checkpoint **só quando** (1) conseguir recitar a resposta e (2)
 
 | # | Trilha | Foco | Prioridade | Status |
 |---|---|---|---|---|
-| 00 | [Fundamentos](./00-fundamentos/) | Base que **toda** entrevista júnior cobra | 🔴 Alta | 6/6 ✅ |
-| 10 | [Código Limpo](./10-codigo-limpo/) | Teoria por trás do `CLAUDE.md` | 🔴 Alta | 4/4 ✅ |
-| 20 | [Arquitetura](./20-arquitetura/) | SOLID, camadas, ADRs | 🟡 Média | 7/7 ✅ |
-| 30 | [Banco de Dados](./30-banco/) | Postgres, índices, N+1, RLS | 🔴 Alta | 8/8 ✅ |
-| 40 | [Frontend](./40-frontend/) | React render cycle, hooks, perf | 🟡 Média | 7/7 ✅ |
-| 50 | [Backend](./50-backend/) | Express, Prisma, queues, idempotência | 🟡 Média | 8/8 ✅ |
-| 60 | [Segurança](./60-seguranca/) | OWASP, LGPD, XSS, SQLi | 🔴 Alta | 8/8 ✅ |
-| 70 | [DevOps](./70-devops/) | Docker, CI/CD, observabilidade | 🟢 Baixa | 6/6 ✅ |
-| 80 | [System Design](./80-system-design/) | Cache, fila, replicação, CAP | 🟢 Baixa | 8/8 ✅ |
-| 90 | [Entrevista](./90-entrevista/) | Banco de 40 perguntas + pitch de 5min de cada projeto AG + mock | 🔴 Alta | 3/3 ✅ |
-| **95** | [**Diferencial**](./95-diferencial/) | **O que sobrevive ao Claude** | 🔴 **MÁXIMA** | **6/6 ✅** |
+| 00 | [Fundamentos](./00-fundamentos/) | Base que **toda** entrevista júnior cobra | 🔴 Alta | 6 |
+| 05 | [Raciocínio de Engenheiro](./05-raciocinio/) | Como pensar: verificar, refutar, trade-offs, alvo certo | 🔴 **MÁXIMA** | 7 🆕 |
+| 10 | [Código Limpo](./10-codigo-limpo/) | Teoria por trás do `CLAUDE.md` | 🔴 Alta | 4 |
+| 12 | [Testes](./12-testes/) | Pirâmide, vitest, Playwright, mocks, TDD honesto | 🔴 Alta | 7 🆕 |
+| 15 | [Git](./15-git/) | Modelo mental, rebase, desfazer, fluxo de PR | 🔴 Alta | 7 |
+| 20 | [Arquitetura](./20-arquitetura/) | SOLID, camadas, ADRs | 🟡 Média | 7 |
+| 25 | [Gestão de Projetos](./25-gestao-projetos/) | Escopo, priorização, estimativa, dívida, cliente | 🔴 Alta | 7 🆕 |
+| 30 | [Banco de Dados](./30-banco/) | Postgres, índices, N+1, RLS | 🔴 Alta | 8 |
+| 32 | [Engenharia de Dados](./32-engenharia-dados/) | ETL, idempotência, qualidade, cache, zero-downtime | 🔴 Alta | 8 🆕 |
+| 35 | [IA & Machine Learning](./35-ia-ml/) | ML do zero, redes, LLMs, usar IA na prática | 🔴 MÁXIMA | 8 |
+| 40 | [Frontend](./40-frontend/) | React render cycle, hooks, perf | 🟡 Média | 7 |
+| 42 | [Design de Interface](./42-design/) | Hierarquia, tipografia, cor, grid, estados, a11y | 🔴 Alta | 8 🆕 |
+| 44 | [Motion Design](./44-motion-design/) | Easing, coreografia, microinterações, perf | 🟡 Média | 7 🆕 |
+| 46 | [3D na Web](./46-3d-web/) | three.js, CSS3D, luz, animação — o look dos decks | 🟡 Média | 8 🆕 |
+| 50 | [Backend](./50-backend/) | Express, Prisma, queues, idempotência | 🟡 Média | 8 |
+| 55 | [APIs](./55-apis/) | HTTP, REST, design, auth (JWT/OAuth) | 🔴 Alta | 7 |
+| 60 | [Segurança](./60-seguranca/) | OWASP, LGPD, XSS, SQLi + authn/z, threat model, IR | 🔴 Alta | 14 ⬆️ |
+| 70 | [DevOps](./70-devops/) | Docker, CI/CD, observabilidade | 🟢 Baixa | 6 |
+| 80 | [System Design](./80-system-design/) | Cache, fila, replicação, CAP | 🟢 Baixa | 8 |
+| 82 | [Robustez](./82-robustez/) | Retry, timeout, degradação, observabilidade, chaos | 🔴 Alta | 8 🆕 |
+| 85 | [Cargas & Escala](./85-escala/) | Throughput, latência, cache, filas sob carga | 🟡 Média | 7 |
+| 90 | [Entrevista](./90-entrevista/) | Banco de perguntas + pitch dos projetos + mock | 🔴 Alta | 3 |
+| **95** | [**Diferencial**](./95-diferencial/) | **O que sobrevive ao Claude** | 🔴 **MÁXIMA** | **5** |
+
+> **23 trilhas · 165 módulos.** 🆕 = trilha nova (jul/2026). ⬆️ = expandida. A coluna de status agora conta **módulos existentes** — marque seu progresso pessoal nos checkpoints de cada módulo, não aqui.
+>
+> **A trilha `05-raciocinio` é a espinha das outras:** ela destila a forma de raciocinar (verificar antes de afirmar, hipótese→refutação, trade-off explícito, alvo certo) que todo módulo técnico aplica. Se for ler uma só primeiro, é essa.
 
 ---
 
