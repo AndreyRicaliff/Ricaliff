@@ -77,7 +77,7 @@ function addAttribute(attr, rawVal, source) {
 
   const bonusStr = mult > 1 ? ` (×${mult.toFixed(2)} build)` : '';
   const sinal = finalVal >= 0 ? '+' : '';
-  toast(`${SYNC.player.attributes[attr].icon} ${sinal}${finalVal} ${attr.toUpperCase()}${bonusStr} — ${source}`);
+  toast(`${sinal}${finalVal} ${attr.toUpperCase()}${bonusStr} — ${source}`);
   renderPlayerCard();
 }
 
@@ -118,7 +118,7 @@ function renderPlayerCard() {
 function renderPlayerCardLegacy(p, xpPct, xpToNext) {
   return `<div class="player-card">
     <div class="player-card-top">
-      <div class="player-avatar">⚡</div>
+      <div class="player-avatar"><svg class="ico" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7Z"/></svg></div>
       <div class="player-info">
         <div class="player-name">${esc(p.name)}</div>
         <div class="player-title">${esc(p.title)}</div>
@@ -130,7 +130,7 @@ function renderPlayerCardLegacy(p, xpPct, xpToNext) {
       <div class="player-stats-right">
         <div class="player-level">Lv${p.level}</div>
         <div class="player-level-lbl">nível</div>
-        <div class="streak-badge" style="margin-top:6px">🔥 ${p.streak}d</div>
+        <div class="streak-badge" style="margin-top:6px"><svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c3 3 5 6 5 9a5 5 0 0 1-10 0c0-1.5.7-3 2-4 .3 1.2 1 2 2 2-1-3 0-5 1-7Z"/></svg> ${p.streak}d</div>
       </div>
     </div>
   </div>`;
@@ -152,7 +152,7 @@ function renderPlayerCardRpg(p, attrs, build, xpPct, xpToNext) {
     const mult  = build?.bonus?.[key] ?? 1;
     const bonusLabel = mult > 1 ? `+${Math.round((mult - 1) * 100)}%` : '';
     return `<div class="attr-row">
-      <span class="attr-icon">${a.icon}</span>
+      <span class="attr-icon">${deEmoji(a.icon,16)}</span>
       <span class="attr-label">${esc(a.label)}</span>
       <div class="attr-bar-wrap">
         <div class="attr-bar-fill" style="width:${pct}%;background:${color}"></div>
@@ -164,11 +164,11 @@ function renderPlayerCardRpg(p, attrs, build, xpPct, xpToNext) {
 
   // Identifica os 2 atributos mais fracos para o hint de próximo nível
   const sorted = Object.entries(attrs).sort((a, b) => (a[1].value ?? 0) - (b[1].value ?? 0));
-  const hints  = sorted.slice(0, 2).map(([k, a]) => `${a.icon} ${k.toUpperCase()} ${(a.value ?? 0) + 10}`);
+  const hints  = sorted.slice(0, 2).map(([k, a]) => `${deEmoji(a.icon,13)} ${k.toUpperCase()} ${(a.value ?? 0) + 10}`);
 
   return `<div class="player-card">
     <div class="player-card-top">
-      <div class="player-avatar">${build.icon ?? '⚡'}</div>
+      <div class="player-avatar">${deEmoji(build.icon ?? '⚡',24)}</div>
       <div class="player-info">
         <div class="player-name">${esc(p.name)} — ${esc(build.label)}</div>
         <div class="player-title">Lv${p.level} · ${esc(p.title)}</div>
@@ -180,14 +180,14 @@ function renderPlayerCardRpg(p, attrs, build, xpPct, xpToNext) {
       <div class="player-stats-right">
         <div class="player-level">Lv${p.level}</div>
         <div class="player-level-lbl">nível</div>
-        <div class="streak-badge" style="margin-top:6px">🔥 ${p.streak}d</div>
+        <div class="streak-badge" style="margin-top:6px"><svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c3 3 5 6 5 9a5 5 0 0 1-10 0c0-1.5.7-3 2-4 .3 1.2 1 2 2 2-1-3 0-5 1-7Z"/></svg> ${p.streak}d</div>
       </div>
     </div>
     <div class="attr-grid">${attrRows}</div>
     <div class="player-card-footer">
       <div class="player-next-lv">Próximo nível: <span>${hints.join(' ou ')}</span></div>
       <button class="build-badge" onclick="openBuildModal()">
-        ${build.icon} ${esc(build.label)} · Trocar Build
+        ${deEmoji(build.icon,16)} ${esc(build.label)} · Trocar Build
       </button>
     </div>
   </div>`;
@@ -209,7 +209,7 @@ function openBuildModal() {
         .join('');
       return `<div class="build-option${b.id === current.id ? ' active' : ''}"
           onclick="selectBuildOption('${b.id}', this)">
-          <div class="build-icon">${b.icon}</div>
+          <div class="build-icon">${deEmoji(b.icon,20)}</div>
           <div class="build-info">
             <div class="build-name">${esc(b.label)}</div>
             <div class="build-desc">${esc(b.desc)}</div>
@@ -233,7 +233,7 @@ function confirmBuild() {
   closeM('m-build');
   renderPlayerCard();
   const b = getActiveBuild();
-  toast(`Build: ${b.icon} ${b.label}`);
+  toast(`Build: ${b.label}`);
 }
 
 function renderQuests() {
@@ -244,7 +244,7 @@ function renderQuests() {
   document.getElementById('quests-list').innerHTML =
     [...active, ...done].map(q => `
       <div class="quest-card ${q.status === 'done' ? 'done' : ''}">
-        <div class="quest-icon">${q.icon || '🎯'}</div>
+        <div class="quest-icon">${deEmoji(q.icon || '🎯',18)}</div>
         <div class="quest-body">
           <div class="quest-title">${esc(q.title)} ${q.status === 'done' ? '✓' : ''}</div>
           <div class="quest-desc">${esc(q.desc)}</div>
@@ -263,10 +263,10 @@ function renderAchievements() {
   document.getElementById('achievements-section').style.display = '';
   document.getElementById('achievements-grid').innerHTML = achs.map(a => {
     const unlocked = !!a.unlockedAt || locais.includes(a.id);
-    const dateLbl = a.unlockedAt ? fmtD(a.unlockedAt) : unlocked ? 'desbloqueada' : '🔒 bloqueada';
+    const dateLbl = a.unlockedAt ? fmtD(a.unlockedAt) : unlocked ? 'desbloqueada' : '<svg class="ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1.4" fill="currentColor" stroke="none"/></svg> bloqueada';
     return `
     <div class="achievement-card${unlocked ? '' : ' ach-locked'}">
-      <div class="ach-icon">${a.icon}</div>
+      <div class="ach-icon">${deEmoji(a.icon,20)}</div>
       <div class="ach-info">
         <div class="ach-name">${esc(a.name)}</div>
         <div class="ach-desc">${esc(a.desc)}</div>
@@ -282,7 +282,7 @@ function renderXpLog() {
   document.getElementById('xp-log-section').style.display = '';
   document.getElementById('xp-log-list').innerHTML = log.map(e => `
     <div class="xp-entry">
-      <div class="xp-entry-icon">${e.icon || '✅'}</div>
+      <div class="xp-entry-icon">${deEmoji(e.icon || '✅',14)}</div>
       <div class="xp-entry-desc">${esc(e.title)}</div>
       <div class="xp-entry-date">${fmtD(e.date)}</div>
       <div class="xp-entry-pts">+${e.xp}</div>
@@ -482,7 +482,7 @@ function renderDash() {
   const greet = hr<6?'Boa madrugada, ':hr<12?'Bom dia, ':hr<18?'Boa tarde, ':'Boa noite, ';
 
   document.querySelector('.dash-greeting').innerHTML =
-    `${greet}<span id="greet-name">Ricaliff</span> 👋`;
+    `${greet}<span id="greet-name">Ricaliff</span> <svg class="ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12V7a1.5 1.5 0 0 1 3 0M9 11V5.5a1.5 1.5 0 0 1 3 0V11M12 11V6.5a1.5 1.5 0 0 1 3 0V12M15 9.5a1.5 1.5 0 0 1 3 0V14a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-3l-2.5-4a1.6 1.6 0 0 1 2.7-1.6L9 14"/></svg>`;
   document.getElementById('greet-sub').textContent =
     now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
 
@@ -517,7 +517,7 @@ function renderDash() {
 
   const focusEl = document.getElementById('focus-list');
   if(!focus.length) {
-    focusEl.innerHTML='<div class="empty-s" style="color:var(--muted);font-size:.78rem;padding:8px 0">Nenhuma tarefa pendente 🎉</div>';
+    focusEl.innerHTML='<div class="empty-s" style="color:var(--muted);font-size:.78rem;padding:8px 0">Nenhuma tarefa pendente <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l5-13 8 8Z"/><path d="M9 7l1 2M14 4c1 1 1 2 0 3M18 8c1 0 2 .5 2 2M17 13h.01M20 15h.01"/></svg></div>';
   } else {
     focusEl.innerHTML = focus.map(tk=>`
       <div class="focus-item" onclick="openTaskModal('${tk.id}')">
@@ -527,8 +527,8 @@ function renderDash() {
         <div>
           <div class="focus-text ${tk.status==='done'?'done-text':''}">${esc(tk.title)}</div>
           <div class="focus-meta">
-            ${tk.due?`${tk.due<t?'⚠ ':''}`+fmtD(tk.due):''}
-            ${tk.priority==='high'?' · 🔴 Alta':''}
+            ${tk.due?`${tk.due<t?'<svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3Z"/><path d="M12 10v4M12 17h.01"/></svg> ':''}`+fmtD(tk.due):''}
+            ${tk.priority==='high'?' · <svg class="ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor" stroke="none"/></svg> Alta':''}
           </div>
         </div>
       </div>`).join('');
@@ -579,7 +579,7 @@ function renderProjects() {
 
   if(!projs.length) {
     grid.innerHTML=`<div class="empty" style="grid-column:1/-1">
-      <div class="empty-i">◈</div>
+      <div class="empty-i"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l9 9-9 9-9-9Z"/></svg></div>
       <div class="empty-t">Nenhum projeto ainda</div>
       <div class="empty-s">Crie projetos para organizar suas tarefas</div>
     </div>`;
@@ -603,8 +603,8 @@ function renderProjects() {
       <div class="proj-body">
         <div class="proj-name">${esc(p.name)}</div>
         ${p.description?`<div class="proj-desc">${esc(p.description)}</div>`:''}
-        ${gh ? `<a class="proj-github" href="${esc(gh)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>${p.isPrivate ? '🔒 ' : ''}GitHub</a>` : ''}
-        ${(()=>{const imp=p.improvements?.filter(Boolean)||[];return imp.length?`<div class="proj-improvements"><span>⚡ ${imp.length} melhoria${imp.length!==1?'s':''} identificada${imp.length!==1?'s':''}</span></div>`:''})()}
+        ${gh ? `<a class="proj-github" href="${esc(gh)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><svg width="11" height="11" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>${p.isPrivate ? '<svg class="ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1.4" fill="currentColor" stroke="none"/></svg> ' : ''}GitHub</a>` : ''}
+        ${(()=>{const imp=p.improvements?.filter(Boolean)||[];return imp.length?`<div class="proj-improvements"><span><svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7Z"/></svg> ${imp.length} melhoria${imp.length!==1?'s':''} identificada${imp.length!==1?'s':''}</span></div>`:''})()}
         <div class="proj-footer">
           <div>
             <div class="proj-prog-text">${pt.length} tarefa${pt.length!==1?'s':''} · ${(()=>{const d=projStaleDays(p.id);return d===null?'':d>14?`<span style="color:var(--warn)">sem atividade há ${d}d</span>`:d>7?`<span style="color:var(--muted)">${d}d atrás</span>`:''})()}</div>
@@ -739,7 +739,7 @@ function renderTasks() {
   const projs=DB.projects, el=document.getElementById('task-list');
   if(!list.length) {
     el.innerHTML=`<div class="empty">
-      <div class="empty-i">✓</div>
+      <div class="empty-i"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></div>
       <div class="empty-t">${taskFilter==='done'?'Nenhuma concluída':'Nenhuma tarefa aqui'}</div>
       <div class="empty-s">${taskFilter==='all'?'Clique em "Nova Tarefa" para começar':'Tente outro filtro'}</div>
     </div>`;
@@ -760,7 +760,7 @@ function renderTasks() {
         <div class="tmeta">
           <span class="tag tg-${tk.priority}">${tk.priority==='high'?'↑ Alta':tk.priority==='low'?'↓ Baixa':'– Média'}</span>
           ${proj?`<span class="tag tg-proj" style="background:${projColor}22;color:${projColor}">${esc(proj.name)}</span>`:''}
-          ${tk.due?`<span class="tdue ${isOver?'over':''}">${isOver?'⚠ ':''}${fmtD(tk.due)}</span>`:''}
+          ${tk.due?`<span class="tdue ${isOver?'over':''}">${isOver?'<svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3Z"/><path d="M12 10v4M12 17h.01"/></svg> ':''}${fmtD(tk.due)}</span>`:''}
         </div>
       </div>
       <div class="tact">
@@ -1079,7 +1079,7 @@ const DOMAINS = [
 // Atualizado por /mentor em 2026-05-25
 const SUGGESTIONS = [
   { title:'Escrever o primeiro teste real',          sub:'Escolha uma função crítica do PULSAR-RH (validação de dados, cálculo de indicador) e escreva o primeiro teste unitário. Teoria virou prática.' },
-  { title:'Aplicar /revisao num projeto real',       sub:'Rode /revisao no PULSAR-RH ou Cliente Varejo e corrija os achados 🔴. Aprendizado de clean code fixado em código que você conhece.' },
+  { title:'Aplicar /revisao num projeto real',       sub:'Rode /revisao no PULSAR-RH ou Cliente Varejo e corrija os achados <svg class="ico" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor" stroke="none"/></svg>. Aprendizado de clean code fixado em código que você conhece.' },
   { title:'Publicar um case técnico no GitHub',      sub:'Documente o bug de quota do Cliente Varejo ou o leak do PULSAR-RH. Portfólio real > projetos fictícios.' },
   { title:'Estudar MCP (Model Context Protocol)',    sub:'Você já usa Claude Code com MCP — aprofundar abre projetos de tooling e integração IA de próximo nível.' },
   { title:'Formalizar o processo Dev+IA como método',sub:'Documente como você trabalha com Claude (planejamento → execução → revisão). Pode virar conteúdo ou serviço AG.' },
@@ -1194,9 +1194,9 @@ function renderTopicRow(modId, t, p) {
   const key = `${modId}-${t.id}`;
   const isOpen = expandedTopics.has(key);
   return `<div class="topic-row">
-    <span class="topic-status-icon" style="color:${STATUS_CLR[s]};cursor:pointer;margin-right:4px" onclick="toggleTopic('${modId}','${t.id}')">${STATUS_ICON[s]}</span>
+    <span class="topic-status-icon" style="color:${STATUS_CLR[s]};cursor:pointer;margin-right:4px" onclick="toggleTopic('${modId}','${t.id}')">${deEmoji(STATUS_ICON[s],13)}</span>
     <span class="topic-name ${s === 'mastered' ? 'topic-done' : ''}" style="flex:1;cursor:pointer" onclick="toggleTopicExpand('${modId}','${t.id}')">${esc(t.title || t.id)}</span>
-    ${isOpen ? '<span style="color:var(--muted);font-size:.65rem">⬆</span>' : '<span style="color:var(--muted);font-size:.65rem">⬇</span>'}
+    ${isOpen ? '<span style="color:var(--muted);font-size:.65rem"><svg class="ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></span>' : '<span style="color:var(--muted);font-size:.65rem"><svg class="ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>'}
     <div class="topic-material ${isOpen ? 'open' : ''}" id="material-${key}">
       ${renderTopicMaterial(modId, t)}
     </div>
@@ -1344,7 +1344,7 @@ function renderGrowthBody() {
   const sl = document.getElementById('sessions-list');
   const sorted = [...sessions].sort((a,b)=>b.date.localeCompare(a.date));
   if(!sorted.length) {
-    sl.innerHTML = `<div class="empty"><div class="empty-i">📋</div><div class="empty-t">Nenhuma sessão registrada</div><div class="empty-s">Clique em "Registrar Sessão" após cada trabalho com Claude</div></div>`;
+    sl.innerHTML = `<div class="empty"><div class="empty-i"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1H9Z"/><path d="M9 11h6M9 15h4"/></svg></div><div class="empty-t">Nenhuma sessão registrada</div><div class="empty-s">Clique em "Registrar Sessão" após cada trabalho com Claude</div></div>`;
   } else {
     sl.innerHTML = sorted.map(s => `
       <div class="session-card" onclick="openSessionModal('${s.id}')">
@@ -1705,12 +1705,12 @@ function buildTrilhaCard(trilha, progress) {
   const { lidos, checkpoints, total, percentual } = calcularProgressoTrilha(trilha.id, progress);
   const corBorda = TRILHA_COR_PRIORIDADE[trilha.prioridade] || 'var(--muted)';
   const badgeClass = `trilha-badge-${trilha.prioridade}`;
-  const badgeLabel = trilha.prioridade === 'maxima' ? '⚡ máxima' : trilha.prioridade;
+  const badgeLabel = trilha.prioridade === 'maxima' ? '<svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7Z"/></svg> máxima' : trilha.prioridade;
 
   return `
     <div class="trilha-card" onclick="renderTrilhaModulos('${trilha.id}')"
       style="border-top:3px solid ${corBorda}">
-      <div class="trilha-card-icon">${trilha.icone}</div>
+      <div class="trilha-card-icon">${deEmoji(trilha.icone,22)}</div>
       <div class="trilha-card-nome">${esc(trilha.nome)}</div>
       <div class="trilha-card-foco">${esc(trilha.foco)}</div>
       <span class="trilha-badge ${badgeClass}">${esc(badgeLabel)}</span>
@@ -1728,7 +1728,7 @@ async function renderTrilha() {
   const data = await loadTrilhaIndex();
   if (!data) {
     document.getElementById('trilha-body').innerHTML =
-      '<div class="empty"><div class="empty-i">📚</div><div class="empty-t">Erro ao carregar trilhas</div><div class="empty-s">Verifique se data/trilha-index.json existe</div></div>';
+      '<div class="empty"><div class="empty-i"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4h4v16H5ZM11 4h4v16h-4Z"/><path d="M17 5l3 .5-2.5 15L14.5 20"/></svg></div><div class="empty-t">Erro ao carregar trilhas</div><div class="empty-s">Verifique se data/trilha-index.json existe</div></div>';
     return;
   }
   renderTrilhaMapa();
@@ -1854,7 +1854,7 @@ function buildSkillTreeSvg(progress) {
   const headers = trilhas.map((trilha, ci) => {
     const cx = ST_PAD_X + ci * ST_COL_W + ST_COL_W / 2;
     const cy = ST_PAD_Y - 24;
-    return `<text x="${cx}" y="${cy}" text-anchor="middle" font-size="14" font-family="Montserrat,system-ui,sans-serif">${trilha.icone}</text>`;
+    return `${iconG(trilha.icone, cx, cy, 20, "var(--muted)")}`;
   });
 
   // Nós
@@ -1976,9 +1976,9 @@ function renderTrilhaModulos(trilhaId) {
 
   const buildStatusEl = (moduloId) => {
     const st = progress[moduloId];
-    if (st === 'checkpoint') return '<div class="trilha-status trilha-status-checkpoint">✓</div>';
-    if (st === 'lido')       return '<div class="trilha-status trilha-status-lido">◐</div>';
-    return '<div class="trilha-status">○</div>';
+    if (st === 'checkpoint') return '<div class="trilha-status trilha-status-checkpoint"><svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg></div>';
+    if (st === 'lido')       return '<div class="trilha-status trilha-status-lido"><svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/><path d="M12 5a7 7 0 0 1 0 14Z" fill="currentColor" stroke="none"/></svg></div>';
+    return '<div class="trilha-status"><svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="7"/></svg></div>';
   };
 
   const buildCheckBtn = (moduloId) => {
@@ -1996,7 +1996,7 @@ function renderTrilhaModulos(trilhaId) {
         Voltar ao mapa
       </button>
       <div class="trilha-modulos-header">
-        <span style="font-size:1.4rem">${trilha.icone}</span>
+        <span style="font-size:1.4rem">${deEmoji(trilha.icone,22)}</span>
         <div class="trilha-modulos-titulo">${esc(trilha.nome)}</div>
         <span style="font-size:.75rem;color:var(--muted)">${trilha.foco}</span>
       </div>
@@ -2112,7 +2112,7 @@ function marcarCheckpoint(moduloId) {
     const st = btn.closest('.trilha-modulo-item')?.querySelector('.trilha-status');
     if (st) {
       st.className = 'trilha-status ' + (isNowCheck ? 'trilha-status-checkpoint' : 'trilha-status-lido');
-      st.textContent = isNowCheck ? '✓' : '◐';
+      st.innerHTML = isNowCheck ? icon('check', 13) : icon('half-circle', 13);
     }
   });
   // Cross-quest: notifica Quest Board se este módulo é side quest de algum projeto
@@ -2156,14 +2156,14 @@ function verificarConquistasTrilha(progress) {
     t.modulos.every(m => progress[m.id] === 'checkpoint')
   );
   if (trilhaCompleta && desbloquear('trilha-primeira')) {
-    toast('🎓 Conquista: Primeira Trilha!', 'ok');
+    toast('Conquista: Primeira Trilha!', 'ok');
   }
 
   // trilha-diferencial: todos os módulos de 95-diferencial com checkpoint
   const diferencial = TRILHA_DATA.trilhas.find(t => t.id === '95-diferencial');
   if (diferencial && diferencial.modulos.every(m => progress[m.id] === 'checkpoint')) {
     if (desbloquear('trilha-diferencial')) {
-      toast('⚡ Conquista: Diferencial Dominado!', 'ok');
+      toast('Conquista: Diferencial Dominado!', 'ok');
     }
   }
 
@@ -2171,7 +2171,7 @@ function verificarConquistasTrilha(progress) {
   const sessaoCheckpoints = parseInt(sessionStorage.getItem('trilhaCheckpointsHoje') || '0') + 1;
   sessionStorage.setItem('trilhaCheckpointsHoje', String(sessaoCheckpoints));
   if (sessaoCheckpoints >= 10 && desbloquear('trilha-maratonista')) {
-    toast('🏃 Conquista: Maratonista!', 'ok');
+    toast('Conquista: Maratonista!', 'ok');
   }
 
   // trilha-portfolio: todas as trilhas de prioridade alta com checkpoint completo
@@ -2182,7 +2182,7 @@ function verificarConquistasTrilha(progress) {
     return t && t.modulos.every(m => progress[m.id] === 'checkpoint');
   });
   if (todasAlta && desbloquear('trilha-portfolio')) {
-    toast('💼 Conquista: Portfólio Defensável!', 'ok');
+    toast('Conquista: Portfólio Defensável!', 'ok');
   }
 }
 
@@ -2242,7 +2242,7 @@ function buildBountyItem(b, projId, progress) {
 function buildQuestCardHeader(proj, prioClass, atividadeLabel) {
   return `
     <div class="qb-proj-header ${prioClass}">
-      <div class="qb-proj-icon">${proj.icone}</div>
+      <div class="qb-proj-icon">${deEmoji(proj.icone,20)}</div>
       <div class="qb-proj-info">
         <div class="qb-proj-name">${esc(proj.nome)}</div>
         <div class="qb-proj-meta">
@@ -2294,7 +2294,7 @@ async function renderQuestBoard() {
   const data = await loadQuestBoard();
   if (!data) {
     document.getElementById('qb-body').innerHTML =
-      '<div class="empty"><div class="empty-i">&#127919;</div><div class="empty-t">Erro ao carregar Quest Board</div><div class="empty-s">Verifique se data/quest-board.json existe</div></div>';
+      '<div class="empty"><div class="empty-i"><svg class="ico" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg></div><div class="empty-t">Erro ao carregar Quest Board</div><div class="empty-s">Verifique se data/quest-board.json existe</div></div>';
     return;
   }
 
@@ -2618,13 +2618,13 @@ function updatePomoBtns(session) {
   if (!focoBtn) return;
 
   if (session) {
-    focoBtn.textContent = '⏹ Parar';
+    focoBtn.innerHTML = '<svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2"/></svg> Parar';
     focoBtn.className = 'pomo-btn running';
     focoBtn.onclick = () => pararPomodoro(session);
     breakBtn.style.display = 'none';
     sagradaBtn.style.display = 'none';
   } else {
-    focoBtn.textContent = '▶ Foco 25min';
+    focoBtn.innerHTML = '<svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4l13 8-13 8Z"/></svg> Foco 25min';
     focoBtn.className = 'pomo-btn';
     focoBtn.onclick = () => iniciarPomodoro('foco');
     breakBtn.style.display = '';
@@ -2835,7 +2835,7 @@ function buildStandupBody() {
       <div class="standup-section-label">Ontem</div>
       ${ontemItems.map(i => `
         <div class="standup-item">
-          <span class="standup-item-icon">${i.icon}</span>
+          <span class="standup-item-icon">${deEmoji(i.icon,16)}</span>
           <span>${esc(i.text)}</span>
         </div>`).join('')}
     </div>
@@ -2853,7 +2853,7 @@ function buildStandupBody() {
       <div class="standup-section-label">Hoje sugiro priorizar</div>
       ${sugestoes.map(s => `
         <div class="standup-suggest">
-          <span class="standup-suggest-arrow">▶</span>
+          <span class="standup-suggest-arrow"><svg class="ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4l13 8-13 8Z"/></svg></span>
           <span>${esc(s)}</span>
         </div>`).join('')}
     </div>` : ''}
@@ -2863,7 +2863,7 @@ function buildStandupBody() {
 function buildStreakCard(icon, streak, label) {
   return `
     <div class="streak-card" title="Recorde: ${streak.recorde} dias">
-      <span class="streak-card-icon">${icon}</span>
+      <span class="streak-card-icon">${deEmoji(icon,16)}</span>
       <span class="streak-card-val">${streak.atual}</span>
       <span class="streak-card-lbl">${esc(label)}</span>
       <span class="streak-card-rec">rec: ${streak.recorde}</span>

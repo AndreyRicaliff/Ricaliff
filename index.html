@@ -1109,10 +1109,10 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
       </button>
     </div>
     <button id="p3-sfx-btn" onclick="p3SfxUiToggle()" title="Som de menu estilo Persona 3" class="btn btn-ghost btn-sm" style="width:calc(100% - 8px);margin:6px 4px 0;justify-content:center;font-size:.7rem;padding:6px 8px">
-      🎵 SFX P3: <span id="p3-sfx-state" style="font-weight:700;color:var(--p3-pink)">off</span>
+      <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg> SFX P3: <span id="p3-sfx-state" style="font-weight:700;color:var(--p3-pink)">off</span>
     </button>
     <button id="p3-theme-btn" onclick="p3ThemeUiToggle()" title="Alternar tema persona/pro — tecla T (espelho do Win+T do rice)" class="btn btn-ghost btn-sm" style="width:calc(100% - 8px);margin:6px 4px 0;justify-content:center;font-size:.7rem;padding:6px 8px">
-      🎭 Tema: <span id="p3-theme-state" style="font-weight:700;color:var(--secondary)">persona</span>
+      <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4v16" /><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor" stroke="none"/></svg> Tema: <span id="p3-theme-state" style="font-weight:700;color:var(--secondary)">persona</span>
     </button>
   </div>
 </nav>
@@ -1123,7 +1123,7 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
   <!-- DASHBOARD -->
   <div class="view active" id="view-dash">
     <div class="dash-hero">
-      <div class="dash-greeting">Olá, <span id="greet-name">Ricaliff</span> 👋</div>
+      <div class="dash-greeting">Olá, <span id="greet-name">Ricaliff</span> <svg class="ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 12V7a1.5 1.5 0 0 1 3 0M9 11V5.5a1.5 1.5 0 0 1 3 0V11M12 11V6.5a1.5 1.5 0 0 1 3 0V12M15 9.5a1.5 1.5 0 0 1 3 0V14a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-3l-2.5-4a1.6 1.6 0 0 1 2.7-1.6L9 14"/></svg></div>
       <div class="dash-sub" id="greet-sub">Carregando...</div>
       <div class="dash-quick-stats" id="dash-qs"></div>
     </div>
@@ -1186,8 +1186,8 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
       <button class="fbtn" onclick="setFilter('todo',this)">A Fazer</button>
       <button class="fbtn" onclick="setFilter('doing',this)">Em Andamento</button>
       <button class="fbtn" onclick="setFilter('done',this)">Concluídas</button>
-      <button class="fbtn" onclick="setFilter('high',this)">🔴 Alta</button>
-      <button class="fbtn" onclick="setFilter('overdue',this)">⚠ Atrasadas</button>
+      <button class="fbtn" onclick="setFilter('high',this)"><svg class="ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5" fill="currentColor" stroke="none"/></svg> Alta</button>
+      <button class="fbtn" onclick="setFilter('overdue',this)"><svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3Z"/><path d="M12 10v4M12 17h.01"/></svg> Atrasadas</button>
     </div>
     <div class="task-list" id="task-list"></div>
   </div>
@@ -1478,14 +1478,14 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 <!-- HORA SAGRADA BANNER -->
 <div class="hora-sagrada-banner" id="hora-sagrada-banner">
   <div class="hora-sagrada-left">
-    <span>🚫 Hora Sagrada ativa — sem IA. Você no comando.</span>
+    <span><svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg> Hora Sagrada ativa — sem IA. Você no comando.</span>
     <span class="hora-sagrada-timer" id="hora-sagrada-timer">30:00</span>
   </div>
   <button class="hora-sagrada-close" onclick="interromperHoraSagrada()" title="Interromper">Interromper</button>
 </div>
 
 <!-- POMODORO FAB -->
-<button class="pomodoro-fab" id="pomodoro-fab" onclick="togglePomodoroPanel()" title="Pomodoro">🍅</button>
+<button class="pomodoro-fab" id="pomodoro-fab" onclick="togglePomodoroPanel()" title="Pomodoro"><svg class="ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 13V9M9 2h6M12 5V2"/></svg></button>
 
 <!-- POMODORO PANEL -->
 <div class="pomodoro-panel" id="pomodoro-panel">
@@ -1494,9 +1494,9 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
     <div class="pomodoro-type-label" id="pomo-type-label">pronto</div>
   </div>
   <div class="pomodoro-btns" id="pomo-btns">
-    <button class="pomo-btn" id="pomo-btn-foco" onclick="iniciarPomodoro('foco')">▶ Foco 25min</button>
-    <button class="pomo-btn" id="pomo-btn-break" onclick="iniciarPomodoro('break')">▶ Break 5min</button>
-    <button class="pomo-btn sagrada" id="pomo-btn-sagrada" onclick="iniciarHoraSagrada()">🚫 Hora Sagrada 30min</button>
+    <button class="pomo-btn" id="pomo-btn-foco" onclick="iniciarPomodoro('foco')"><svg class="ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4l13 8-13 8Z"/></svg> Foco 25min</button>
+    <button class="pomo-btn" id="pomo-btn-break" onclick="iniciarPomodoro('break')"><svg class="ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4l13 8-13 8Z"/></svg> Break 5min</button>
+    <button class="pomo-btn sagrada" id="pomo-btn-sagrada" onclick="iniciarHoraSagrada()"><svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg> Hora Sagrada 30min</button>
   </div>
   <div class="pomo-stats" id="pomo-stats">Carregando...</div>
 </div>
@@ -1513,8 +1513,8 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
     </div>
     <div id="standup-body"></div>
     <div class="standup-actions">
-      <button class="btn btn-ghost" onclick="openReflectionModal()">✍ Reflection</button>
-      <button class="btn btn-ghost" onclick="iniciarHoraSagradaFromStandup()">🚫 Hora Sagrada</button>
+      <button class="btn btn-ghost" onclick="openReflectionModal()"><svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19Z"/><path d="M14 7l3 3"/></svg> Reflection</button>
+      <button class="btn btn-ghost" onclick="iniciarHoraSagradaFromStandup()"><svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/></svg> Hora Sagrada</button>
       <button class="btn btn-primary" onclick="closeStandup()">Vamos lá</button>
     </div>
   </div>
@@ -1524,7 +1524,7 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 <div class="reflection-overlay" id="reflection-overlay">
   <div class="reflection-modal">
     <div class="mhead">
-      <div class="mtitle">✍ Daily Reflection</div>
+      <div class="mtitle"><svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16 5l3 3L8 19Z"/><path d="M14 7l3 3"/></svg> Daily Reflection</div>
       <button class="mclose" onclick="closeReflection()">×</button>
     </div>
     <div class="fg">
@@ -1543,7 +1543,8 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 </div>
 
 <script src="seed.js"></script>
-<script src="app.js"></script>
+<script src="icons.js"></script>
+  <script src="app.js"></script>
 
 </body>
 </html>
