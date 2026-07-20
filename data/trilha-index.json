@@ -1,6 +1,6 @@
 {
-  "geradoEm": "2026-07-20T02:12:43.625Z",
-  "totalTrilhas": 19,
+  "geradoEm": "2026-07-20T02:20:44.307Z",
+  "totalTrilhas": 22,
   "trilhas": [
     {
       "id": "00-fundamentos",
@@ -49,6 +49,58 @@
       ]
     },
     {
+      "id": "05-raciocinio",
+      "nome": "Raciocínio de Engenheiro",
+      "foco": "Como pensar: verificar, refutar, trade-offs, alvo certo",
+      "icone": "🧠",
+      "prioridade": "maxima",
+      "totalModulos": 7,
+      "modulos": [
+        {
+          "id": "05-raciocinio/01-verificar-antes-de-afirmar.md",
+          "arquivo": "01-verificar-antes-de-afirmar.md",
+          "titulo": "01 — Verificar Antes de Afirmar",
+          "caminho": "/trilha/05-raciocinio/01-verificar-antes-de-afirmar.md"
+        },
+        {
+          "id": "05-raciocinio/02-hipotese-e-refutacao.md",
+          "arquivo": "02-hipotese-e-refutacao.md",
+          "titulo": "02 — Hipótese e Refutação",
+          "caminho": "/trilha/05-raciocinio/02-hipotese-e-refutacao.md"
+        },
+        {
+          "id": "05-raciocinio/03-trade-offs-explicitos.md",
+          "arquivo": "03-trade-offs-explicitos.md",
+          "titulo": "03 — Trade-offs Explícitos",
+          "caminho": "/trilha/05-raciocinio/03-trade-offs-explicitos.md"
+        },
+        {
+          "id": "05-raciocinio/04-ler-o-erro-de-verdade.md",
+          "arquivo": "04-ler-o-erro-de-verdade.md",
+          "titulo": "04 — Ler o Erro de Verdade",
+          "caminho": "/trilha/05-raciocinio/04-ler-o-erro-de-verdade.md"
+        },
+        {
+          "id": "05-raciocinio/05-decompor-problemas.md",
+          "arquivo": "05-decompor-problemas.md",
+          "titulo": "05 — Decompor Problemas",
+          "caminho": "/trilha/05-raciocinio/05-decompor-problemas.md"
+        },
+        {
+          "id": "05-raciocinio/06-verificar-o-alvo-certo.md",
+          "arquivo": "06-verificar-o-alvo-certo.md",
+          "titulo": "06 — Verificar o Alvo Certo",
+          "caminho": "/trilha/05-raciocinio/06-verificar-o-alvo-certo.md"
+        },
+        {
+          "id": "05-raciocinio/07-quando-parar.md",
+          "arquivo": "07-quando-parar.md",
+          "titulo": "07 — Quando Parar",
+          "caminho": "/trilha/05-raciocinio/07-quando-parar.md"
+        }
+      ]
+    },
+    {
       "id": "10-codigo-limpo",
       "nome": "Código Limpo",
       "foco": "Teoria por trás das regras do CLAUDE.md",
@@ -88,7 +140,7 @@
       "foco": "Pirâmide, vitest, Playwright, mocks em boundary, TDD honesto",
       "icone": "🧪",
       "prioridade": "alta",
-      "totalModulos": 6,
+      "totalModulos": 7,
       "modulos": [
         {
           "id": "12-testes/01-piramide-de-testes.md",
@@ -125,6 +177,12 @@
           "arquivo": "06-tdd-quando-vale.md",
           "titulo": "06 — TDD: Quando Vale",
           "caminho": "/trilha/12-testes/06-tdd-quando-vale.md"
+        },
+        {
+          "id": "12-testes/07-regressao-e-ci.md",
+          "arquivo": "07-regressao-e-ci.md",
+          "titulo": "07 — Regressão e CI",
+          "caminho": "/trilha/12-testes/07-regressao-e-ci.md"
         }
       ]
     },
@@ -238,7 +296,7 @@
       "foco": "Escopo, priorização, estimativa, dívida, cliente, decisões",
       "icone": "📋",
       "prioridade": "alta",
-      "totalModulos": 6,
+      "totalModulos": 7,
       "modulos": [
         {
           "id": "25-gestao-projetos/01-escopo-e-fatiamento.md",
@@ -275,6 +333,12 @@
           "arquivo": "06-fluxo-solo-com-ia.md",
           "titulo": "06 — Fluxo Solo com IA",
           "caminho": "/trilha/25-gestao-projetos/06-fluxo-solo-com-ia.md"
+        },
+        {
+          "id": "25-gestao-projetos/07-documentar-decisoes.md",
+          "arquivo": "07-documentar-decisoes.md",
+          "titulo": "07 — Documentar Decisões",
+          "caminho": "/trilha/25-gestao-projetos/07-documentar-decisoes.md"
         }
       ]
     },
@@ -333,6 +397,64 @@
           "arquivo": "08-backup-e-recovery.md",
           "titulo": "08 — Backup e recovery",
           "caminho": "/trilha/30-banco/08-backup-e-recovery.md"
+        }
+      ]
+    },
+    {
+      "id": "32-engenharia-dados",
+      "nome": "Engenharia de Dados",
+      "foco": "ETL, idempotência, qualidade, cache, backup, zero-downtime",
+      "icone": "🔁",
+      "prioridade": "alta",
+      "totalModulos": 8,
+      "modulos": [
+        {
+          "id": "32-engenharia-dados/01-pipeline-etl-elt.md",
+          "arquivo": "01-pipeline-etl-elt.md",
+          "titulo": "01 — Pipeline ETL/ELT",
+          "caminho": "/trilha/32-engenharia-dados/01-pipeline-etl-elt.md"
+        },
+        {
+          "id": "32-engenharia-dados/02-idempotencia-reprocessamento.md",
+          "arquivo": "02-idempotencia-reprocessamento.md",
+          "titulo": "02 — Idempotência e Reprocessamento",
+          "caminho": "/trilha/32-engenharia-dados/02-idempotencia-reprocessamento.md"
+        },
+        {
+          "id": "32-engenharia-dados/03-modelagem-analitica.md",
+          "arquivo": "03-modelagem-analitica.md",
+          "titulo": "03 — Modelagem Analítica",
+          "caminho": "/trilha/32-engenharia-dados/03-modelagem-analitica.md"
+        },
+        {
+          "id": "32-engenharia-dados/04-qualidade-de-dados.md",
+          "arquivo": "04-qualidade-de-dados.md",
+          "titulo": "04 — Qualidade de Dados",
+          "caminho": "/trilha/32-engenharia-dados/04-qualidade-de-dados.md"
+        },
+        {
+          "id": "32-engenharia-dados/05-caching-invalidacao.md",
+          "arquivo": "05-caching-invalidacao.md",
+          "titulo": "05 — Caching e Invalidação",
+          "caminho": "/trilha/32-engenharia-dados/05-caching-invalidacao.md"
+        },
+        {
+          "id": "32-engenharia-dados/06-backup-recovery.md",
+          "arquivo": "06-backup-recovery.md",
+          "titulo": "06 — Backup e Recovery",
+          "caminho": "/trilha/32-engenharia-dados/06-backup-recovery.md"
+        },
+        {
+          "id": "32-engenharia-dados/07-migrations-zero-downtime.md",
+          "arquivo": "07-migrations-zero-downtime.md",
+          "titulo": "07 — Migrations Zero-Downtime",
+          "caminho": "/trilha/32-engenharia-dados/07-migrations-zero-downtime.md"
+        },
+        {
+          "id": "32-engenharia-dados/08-privacidade-por-design.md",
+          "arquivo": "08-privacidade-por-design.md",
+          "titulo": "08 — Privacidade por Design",
+          "caminho": "/trilha/32-engenharia-dados/08-privacidade-por-design.md"
         }
       ]
     },
@@ -452,7 +574,7 @@
       "foco": "Hierarquia, tipografia, cor, grid, estados, acessibilidade",
       "icone": "🖌️",
       "prioridade": "alta",
-      "totalModulos": 3,
+      "totalModulos": 8,
       "modulos": [
         {
           "id": "42-design/01-hierarquia-visual.md",
@@ -471,6 +593,36 @@
           "arquivo": "03-cor-com-intencao.md",
           "titulo": "03 — Cor com Intenção",
           "caminho": "/trilha/42-design/03-cor-com-intencao.md"
+        },
+        {
+          "id": "42-design/04-espacamento-grid.md",
+          "arquivo": "04-espacamento-grid.md",
+          "titulo": "04 — Espaçamento e Grid",
+          "caminho": "/trilha/42-design/04-espacamento-grid.md"
+        },
+        {
+          "id": "42-design/05-estados-da-interface.md",
+          "arquivo": "05-estados-da-interface.md",
+          "titulo": "05 — Estados da Interface",
+          "caminho": "/trilha/42-design/05-estados-da-interface.md"
+        },
+        {
+          "id": "42-design/06-acessibilidade-minima.md",
+          "arquivo": "06-acessibilidade-minima.md",
+          "titulo": "06 — Acessibilidade Mínima",
+          "caminho": "/trilha/42-design/06-acessibilidade-minima.md"
+        },
+        {
+          "id": "42-design/07-design-system-pratico.md",
+          "arquivo": "07-design-system-pratico.md",
+          "titulo": "07 — Design System Prático",
+          "caminho": "/trilha/42-design/07-design-system-pratico.md"
+        },
+        {
+          "id": "42-design/08-critica-estruturada.md",
+          "arquivo": "08-critica-estruturada.md",
+          "titulo": "08 — Crítica Estruturada",
+          "caminho": "/trilha/42-design/08-critica-estruturada.md"
         }
       ]
     },
@@ -480,7 +632,7 @@
       "foco": "Easing, coreografia, microinterações, performance de animação",
       "icone": "🎞️",
       "prioridade": "media",
-      "totalModulos": 5,
+      "totalModulos": 7,
       "modulos": [
         {
           "id": "44-motion-design/01-motion-com-proposito.md",
@@ -511,6 +663,64 @@
           "arquivo": "05-microinteracoes.md",
           "titulo": "05 — Microinterações",
           "caminho": "/trilha/44-motion-design/05-microinteracoes.md"
+        },
+        {
+          "id": "44-motion-design/06-performance-de-animacao.md",
+          "arquivo": "06-performance-de-animacao.md",
+          "titulo": "06 — Performance de Animação",
+          "caminho": "/trilha/44-motion-design/06-performance-de-animacao.md"
+        },
+        {
+          "id": "44-motion-design/07-motion-acessivel-e-armadilhas.md",
+          "arquivo": "07-motion-acessivel-e-armadilhas.md",
+          "titulo": "07 — Motion Acessível & Armadilhas",
+          "caminho": "/trilha/44-motion-design/07-motion-acessivel-e-armadilhas.md"
+        }
+      ]
+    },
+    {
+      "id": "46-3d-web",
+      "nome": "3D na Web",
+      "foco": "three.js, CSS3D, luz, animação e performance — o look dos decks",
+      "icone": "🧊",
+      "prioridade": "media",
+      "totalModulos": 6,
+      "modulos": [
+        {
+          "id": "46-3d-web/01-mapa-do-3d.md",
+          "arquivo": "01-mapa-do-3d.md",
+          "titulo": "01 — Mapa do 3D na Web",
+          "caminho": "/trilha/46-3d-web/01-mapa-do-3d.md"
+        },
+        {
+          "id": "46-3d-web/02-three-fundamentos.md",
+          "arquivo": "02-three-fundamentos.md",
+          "titulo": "02 — three.js: Fundamentos",
+          "caminho": "/trilha/46-3d-web/02-three-fundamentos.md"
+        },
+        {
+          "id": "46-3d-web/03-css3d-sem-webgl.md",
+          "arquivo": "03-css3d-sem-webgl.md",
+          "titulo": "03 — CSS3D: 3D sem WebGL",
+          "caminho": "/trilha/46-3d-web/03-css3d-sem-webgl.md"
+        },
+        {
+          "id": "46-3d-web/04-geometria-materiais.md",
+          "arquivo": "04-geometria-materiais.md",
+          "titulo": "04 — Geometria e Materiais",
+          "caminho": "/trilha/46-3d-web/04-geometria-materiais.md"
+        },
+        {
+          "id": "46-3d-web/05-animacao-3d.md",
+          "arquivo": "05-animacao-3d.md",
+          "titulo": "05 — Animação 3D",
+          "caminho": "/trilha/46-3d-web/05-animacao-3d.md"
+        },
+        {
+          "id": "46-3d-web/06-luz-e-atmosfera.md",
+          "arquivo": "06-luz-e-atmosfera.md",
+          "titulo": "06 — Luz e Atmosfera",
+          "caminho": "/trilha/46-3d-web/06-luz-e-atmosfera.md"
         }
       ]
     },

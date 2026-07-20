@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-20T02:17:38.010Z",
+  "geradoEm": "2026-07-20T02:24:01.588Z",
   "projetos": [
     {
       "id": "PULSAR-RH",
@@ -172,6 +172,15 @@
           "concluida": false
         },
         {
+          "id": "32-engenharia-dados/08-privacidade-por-design.md",
+          "titulo": "08 — Privacidade por Design",
+          "trilha": "32-engenharia-dados",
+          "moduloPath": "/trilha/32-engenharia-dados/08-privacidade-por-design.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
           "id": "40-frontend/01-render-cycle-e-reconciliation.md",
           "titulo": "01 — Render Cycle e Reconciliation",
           "trilha": "40-frontend",
@@ -203,6 +212,15 @@
           "titulo": "05 — Microinterações",
           "trilha": "44-motion-design",
           "moduloPath": "/trilha/44-motion-design/05-microinteracoes.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "44-motion-design/07-motion-acessivel-e-armadilhas.md",
+          "titulo": "07 — Motion Acessível & Armadilhas",
+          "trilha": "44-motion-design",
+          "moduloPath": "/trilha/44-motion-design/07-motion-acessivel-e-armadilhas.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -445,6 +463,15 @@
           "concluida": false
         },
         {
+          "id": "05-raciocinio/06-verificar-o-alvo-certo.md",
+          "titulo": "06 — Verificar o Alvo Certo",
+          "trilha": "05-raciocinio",
+          "moduloPath": "/trilha/05-raciocinio/06-verificar-o-alvo-certo.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
           "id": "12-testes/02-primeiro-teste-vitest.md",
           "titulo": "02 — Primeiro Teste com Vitest",
           "trilha": "12-testes",
@@ -508,6 +535,15 @@
           "concluida": false
         },
         {
+          "id": "32-engenharia-dados/01-pipeline-etl-elt.md",
+          "titulo": "01 — Pipeline ETL/ELT",
+          "trilha": "32-engenharia-dados",
+          "moduloPath": "/trilha/32-engenharia-dados/01-pipeline-etl-elt.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
           "id": "42-design/01-hierarquia-visual.md",
           "titulo": "01 — Hierarquia Visual",
           "trilha": "42-design",
@@ -557,6 +593,15 @@
           "titulo": "07 — Idempotência e Deduplicação",
           "trilha": "80-system-design",
           "moduloPath": "/trilha/80-system-design/07-idempotencia-e-deduplicacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "82-robustez/01-error-handling-sistemico.md",
+          "titulo": "01 — Error Handling Sistêmico",
+          "trilha": "82-robustez",
+          "moduloPath": "/trilha/82-robustez/01-error-handling-sistemico.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -682,6 +727,15 @@
           "concluida": false
         },
         {
+          "id": "05-raciocinio/03-trade-offs-explicitos.md",
+          "titulo": "03 — Trade-offs Explícitos",
+          "trilha": "05-raciocinio",
+          "moduloPath": "/trilha/05-raciocinio/03-trade-offs-explicitos.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
           "id": "12-testes/04-mocks-so-em-boundary.md",
           "titulo": "04 — Mocks Só em Boundary",
           "trilha": "12-testes",
@@ -790,6 +844,24 @@
           "concluida": false
         },
         {
+          "id": "32-engenharia-dados/03-modelagem-analitica.md",
+          "titulo": "03 — Modelagem Analítica",
+          "trilha": "32-engenharia-dados",
+          "moduloPath": "/trilha/32-engenharia-dados/03-modelagem-analitica.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "32-engenharia-dados/05-caching-invalidacao.md",
+          "titulo": "05 — Caching e Invalidação",
+          "trilha": "32-engenharia-dados",
+          "moduloPath": "/trilha/32-engenharia-dados/05-caching-invalidacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
           "id": "50-backend/04-idempotencia-em-apis.md",
           "titulo": "04 — Idempotência em APIs",
           "trilha": "50-backend",
@@ -857,6 +929,15 @@
           "titulo": "07 — Idempotência e Deduplicação",
           "trilha": "80-system-design",
           "moduloPath": "/trilha/80-system-design/07-idempotencia-e-deduplicacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "82-robustez/02-retry-backoff-circuit-breaker.md",
+          "titulo": "02 — Retry, Backoff e Circuit Breaker",
+          "trilha": "82-robustez",
+          "moduloPath": "/trilha/82-robustez/02-retry-backoff-circuit-breaker.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -1575,7 +1656,7 @@
         "localStorage",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-19T23:11:44-03:00",
+      "ultimaAtividade": "2026-07-19T23:18:57-03:00",
       "sideQuests": [
         {
           "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
