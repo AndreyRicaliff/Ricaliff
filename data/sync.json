@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-20T15:49:53",
+    "lastSync": "2026-07-20T15:57:17",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 15105,
+    "xp": 15135,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 146,
+        "value": 150,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-20",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[cliente-varejo] card Faturamento usa CardButton no recorte (a11y consistente)"
+    },
     {
       "date": "2026-07-20",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[PULSAR-RH] todo indicador expõe a fórmula, a fonte e o período (popup glass)"
-    },
-    {
-      "date": "2026-07-15",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[cliente-varejo] supervisao ve venda, nao lucro — tira o mini-DRE do dashboard"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-20",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[cliente-varejo] card Faturamento usa CardButton no recorte (a11y consistente)",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-20",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[cliente-varejo] Faturamento/Liquido do topo refletem o recorte de periodo",
       "xp": 30
     },
@@ -758,13 +765,6 @@
       "type": "bugfix",
       "icon": "🐛",
       "title": "[PULSAR-RH] guarda cross-tenant no ON CONFLICT de 6 upserts do portal",
-      "xp": 30
-    },
-    {
-      "date": "2026-07-20",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[PULSAR-RH] aspas curvas matavam o i18n + teclado não alcançava nenhuma resposta",
       "xp": 30
     }
   ]
