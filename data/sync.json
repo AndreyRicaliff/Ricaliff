@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-20T15:31:41",
+    "lastSync": "2026-07-20T15:49:53",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 15075,
+    "xp": 15105,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 142,
+        "value": 146,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-20",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[cliente-varejo] Faturamento/Liquido do topo refletem o recorte de periodo"
+    },
     {
       "date": "2026-07-20",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[cliente-varejo] supervisao ve venda, nao lucro — tira o mini-DRE do dashboard"
-    },
-    {
-      "date": "2026-07-15",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[PULSAR-RH] \"Insights IA\" -> \"Insights\" e remove resíduos da IA que sobreviveram ao PR #63"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-20",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "[cliente-varejo] Faturamento/Liquido do topo refletem o recorte de periodo",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-20",
       "type": "feat",
       "icon": "⚙️",
       "title": "[PULSAR-RH] desligar/reativar colaborador no admin (app.html) — mesma UX do portal",
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[PULSAR-RH] aspas curvas matavam o i18n + teclado não alcançava nenhuma resposta",
       "xp": 30
-    },
-    {
-      "date": "2026-07-19",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[Ricaliff] sessoes s-62 (auditoria PULSAR-RH) e s-63 (sanfona+polaridade)",
-      "xp": 20
     }
   ]
 }
