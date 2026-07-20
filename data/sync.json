@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-20T15:27:12",
+    "lastSync": "2026-07-20T15:31:41",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 15025,
+    "xp": 15075,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 159,
+        "value": 162,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-20",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[PULSAR-RH] desligar/reativar colaborador no admin (app.html) — mesma UX do portal"
+    },
     {
       "date": "2026-07-20",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[PULSAR-RH] \"Insights IA\" -> \"Insights\" e remove resíduos da IA que sobreviveram ao PR #63"
-    },
-    {
-      "date": "2026-07-15",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-varejo] geral + contribuicao propria, sem nada do colega"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-20",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[PULSAR-RH] desligar/reativar colaborador no admin (app.html) — mesma UX do portal",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-20",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[PULSAR-RH] desligar/reativar colaborador mantendo o registro (portal)",
       "xp": 50
     },
@@ -758,13 +765,6 @@
       "type": "review",
       "icon": "👁️",
       "title": "[Ricaliff] sessoes s-62 (auditoria PULSAR-RH) e s-63 (sanfona+polaridade)",
-      "xp": 20
-    },
-    {
-      "date": "2026-07-19",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[Ricaliff] registra sessao acesso-cliente pulsar-finance (s-61)",
       "xp": 20
     }
   ]
