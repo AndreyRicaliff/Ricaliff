@@ -1,10 +1,10 @@
-// seed.js v12 — v11 + sessão s-61 (pulsar-finance, 2026-07-16)
+// seed.js v14 — v13 + sessão s-63 (pulsar-rh, 2026-07-17)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '12') return;
+  if (localStorage.getItem('agh_seed_v') === '14') return;
 
   const now = new Date().toISOString();
 
@@ -258,6 +258,8 @@
     { id:'s-59', title:'Criação de cobrança via serverless e callback só quando há URL de retorno', projectId:'algoritmo-lideranca', type:'bugfix', date:'2026-07-14', impact:'medio', notes:'Endpoint serverless cria a cobrança; o callback passa a ser condicional pra não exigir domínio configurado e derrubar a inscrição.', createdAt: now },
     { id:'s-60', title:'Fechou leitura anon de tabelas legado em prod e travou o login fail-closed', projectId:'pulsar-finance', type:'bugfix', date:'2026-07-16', impact:'alto', notes:'Frota multi-agente caiu na cota; revisao inline. Dropei 3 policies de SELECT anon em tabelas legado (provado */0), gate de auth invertido p/ fail-closed, backoff+aviso de truncamento no sync ERP.', createdAt: now },
     { id:'s-61', title:'Acesso-cliente do painel financeiro: papel + RLS role-aware fail-closed + HUD read-only', projectId:'pulsar-finance', type:'feature', date:'2026-07-16', impact:'alto', notes:'painel_acessos + helpers SECURITY DEFINER; operador ve tudo, cliente so o proprio tenant por prefixo de chave, read-only; gate no front forca HUD kiosk; isolamento validado por sessao simulada.', createdAt: now },
+    { id:'s-62', title:'Auditoria profunda multi-agente: 65 achados, 7 correcoes graves confirmadas', projectId:'pulsar-rh', type:'planning', date:'2026-07-19', impact:'alto', notes:'Frota de 8 finders + verify adversarial em prod. Achou: responder exibe perguntas erradas (dados orfaos), aspas curvas matam i18n, cap 1000 do PostgREST. Roadmap por valor/esforco.', createdAt: now },
+    { id:'s-63', title:'Dimensao de pesquisa via sanfona canonica + seletor de polaridade no builder', projectId:'pulsar-rh', type:'feature', date:'2026-07-17', impact:'medio', notes:'Dimensao vira sanfona de 26 dimensoes agrupadas (nao texto livre); polaridade obrigatoria faz pergunta custom entrar na favorabilidade NR-1 (COPSOQ).', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -305,7 +307,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '12');
+  localStorage.setItem('agh_seed_v',   '14');
 
-  console.log('[Ricaliff seed v12 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v14 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
