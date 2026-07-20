@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-20T02:24:01.588Z",
+  "geradoEm": "2026-07-20T11:44:57.455Z",
   "projetos": [
     {
       "id": "PULSAR-RH",
@@ -16,7 +16,7 @@
         "HTML+JS",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-19T23:16:18-03:00",
+      "ultimaAtividade": "2026-07-20T08:44:22-03:00",
       "sideQuests": [
         {
           "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
@@ -275,6 +275,15 @@
           "titulo": "08 — Vulnerabilidades em Dependências",
           "trilha": "60-seguranca",
           "moduloPath": "/trilha/60-seguranca/08-dependency-vulnerabilities.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "60-seguranca/09-authn-authz-profundo.md",
+          "titulo": "09 — Authn/Authz Profundo",
+          "trilha": "60-seguranca",
+          "moduloPath": "/trilha/60-seguranca/09-authn-authz-profundo.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -602,6 +611,24 @@
           "titulo": "01 — Error Handling Sistêmico",
           "trilha": "82-robustez",
           "moduloPath": "/trilha/82-robustez/01-error-handling-sistemico.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "82-robustez/02-retry-backoff-circuit-breaker.md",
+          "titulo": "02 — Retry, Backoff e Circuit Breaker",
+          "trilha": "82-robustez",
+          "moduloPath": "/trilha/82-robustez/02-retry-backoff-circuit-breaker.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "82-robustez/03-idempotencia.md",
+          "titulo": "03 — Idempotência",
+          "trilha": "82-robustez",
+          "moduloPath": "/trilha/82-robustez/03-idempotencia.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -938,6 +965,15 @@
           "titulo": "02 — Retry, Backoff e Circuit Breaker",
           "trilha": "82-robustez",
           "moduloPath": "/trilha/82-robustez/02-retry-backoff-circuit-breaker.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "82-robustez/03-idempotencia.md",
+          "titulo": "03 — Idempotência",
+          "trilha": "82-robustez",
+          "moduloPath": "/trilha/82-robustez/03-idempotencia.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -1656,7 +1692,7 @@
         "localStorage",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-19T23:18:57-03:00",
+      "ultimaAtividade": "2026-07-19T23:24:03-03:00",
       "sideQuests": [
         {
           "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",

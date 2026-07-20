@@ -1,6 +1,6 @@
 {
-  "geradoEm": "2026-07-20T02:20:44.307Z",
-  "totalTrilhas": 22,
+  "geradoEm": "2026-07-20T11:43:41.249Z",
+  "totalTrilhas": 23,
   "trilhas": [
     {
       "id": "00-fundamentos",
@@ -684,7 +684,7 @@
       "foco": "three.js, CSS3D, luz, animação e performance — o look dos decks",
       "icone": "🧊",
       "prioridade": "media",
-      "totalModulos": 6,
+      "totalModulos": 8,
       "modulos": [
         {
           "id": "46-3d-web/01-mapa-do-3d.md",
@@ -721,6 +721,18 @@
           "arquivo": "06-luz-e-atmosfera.md",
           "titulo": "06 — Luz e Atmosfera",
           "caminho": "/trilha/46-3d-web/06-luz-e-atmosfera.md"
+        },
+        {
+          "id": "46-3d-web/07-performance-3d.md",
+          "arquivo": "07-performance-3d.md",
+          "titulo": "07 — Performance 3D",
+          "caminho": "/trilha/46-3d-web/07-performance-3d.md"
+        },
+        {
+          "id": "46-3d-web/08-3d-integrado-a-ui.md",
+          "arquivo": "08-3d-integrado-a-ui.md",
+          "titulo": "08 — 3D Integrado à UI",
+          "caminho": "/trilha/46-3d-web/08-3d-integrado-a-ui.md"
         }
       ]
     },
@@ -840,7 +852,7 @@
       "foco": "OWASP, LGPD, XSS, SQLi, secrets + authn/z, threat model, incident response",
       "icone": "🔒",
       "prioridade": "alta",
-      "totalModulos": 8,
+      "totalModulos": 9,
       "modulos": [
         {
           "id": "60-seguranca/01-owasp-top-10-resumo.md",
@@ -889,6 +901,12 @@
           "arquivo": "08-dependency-vulnerabilities.md",
           "titulo": "08 — Vulnerabilidades em Dependências",
           "caminho": "/trilha/60-seguranca/08-dependency-vulnerabilities.md"
+        },
+        {
+          "id": "60-seguranca/09-authn-authz-profundo.md",
+          "arquivo": "09-authn-authz-profundo.md",
+          "titulo": "09 — Authn/Authz Profundo",
+          "caminho": "/trilha/60-seguranca/09-authn-authz-profundo.md"
         }
       ]
     },
@@ -993,6 +1011,34 @@
           "arquivo": "08-design-de-sistema-exemplo.md",
           "titulo": "08 — Design de Sistema: Meet Hub do Zero",
           "caminho": "/trilha/80-system-design/08-design-de-sistema-exemplo.md"
+        }
+      ]
+    },
+    {
+      "id": "82-robustez",
+      "nome": "Robustez",
+      "foco": "Retry, idempotência, timeouts, degradação, observabilidade, chaos",
+      "icone": "🛡️",
+      "prioridade": "alta",
+      "totalModulos": 3,
+      "modulos": [
+        {
+          "id": "82-robustez/01-error-handling-sistemico.md",
+          "arquivo": "01-error-handling-sistemico.md",
+          "titulo": "01 — Error Handling Sistêmico",
+          "caminho": "/trilha/82-robustez/01-error-handling-sistemico.md"
+        },
+        {
+          "id": "82-robustez/02-retry-backoff-circuit-breaker.md",
+          "arquivo": "02-retry-backoff-circuit-breaker.md",
+          "titulo": "02 — Retry, Backoff e Circuit Breaker",
+          "caminho": "/trilha/82-robustez/02-retry-backoff-circuit-breaker.md"
+        },
+        {
+          "id": "82-robustez/03-idempotencia.md",
+          "arquivo": "03-idempotencia.md",
+          "titulo": "03 — Idempotência",
+          "caminho": "/trilha/82-robustez/03-idempotencia.md"
         }
       ]
     },
