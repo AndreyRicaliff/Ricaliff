@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-21T17:53:26",
+    "lastSync": "2026-07-21T17:56:06",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 15425,
+    "xp": 15475,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 177,
+        "value": 180,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-21",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[ag-crm] módulo de atividades (agenda de follow-ups)"
+    },
     {
       "date": "2026-07-21",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 20,
       "type": "review",
       "desc": "[Ricaliff] registra sessao pulsar-finance (revisao + hardening 2026-07-16)"
-    },
-    {
-      "date": "2026-07-16",
-      "xp": 20,
-      "type": "review",
-      "desc": "[PULSAR-FINANCE] ignora .netlify/ e tsconfig.tsbuildinfo (resíduo Vercel→Netlify)"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-21",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[ag-crm] módulo de atividades (agenda de follow-ups)",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-21",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[ag-crm] kanban de oportunidades com dnd-kit",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[cliente-varejo] Faturamento/Liquido do topo refletem o recorte de periodo",
       "xp": 30
-    },
-    {
-      "date": "2026-07-20",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[PULSAR-RH] desligar/reativar colaborador no admin (app.html) — mesma UX do portal",
-      "xp": 50
     }
   ]
 }
