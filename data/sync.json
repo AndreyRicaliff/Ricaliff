@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-21T16:29:19",
+    "lastSync": "2026-07-21T16:31:44",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 15255,
+    "xp": 15305,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 168,
+        "value": 171,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-21",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[ag-crm] módulo de leads (feature-first)"
+    },
     {
       "date": "2026-07-21",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[PULSAR-RH] tela de entrada anunciava o Agente IA, removido do produto no PR #63"
-    },
-    {
-      "date": "2026-07-16",
-      "xp": 20,
-      "type": "review",
-      "desc": "[Ricaliff] descrição do PULSAR-RH dizia \"KPIs de RH com IA\" — a IA saiu do produto"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-21",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[ag-crm] módulo de leads (feature-first)",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-21",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[ag-crm] módulo de contatos (feature-first)",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[Ricaliff] 8 dominios novos + expansao de seguranca (66 modulos)",
       "xp": 50
-    },
-    {
-      "date": "2026-07-20",
-      "type": "learning",
-      "icon": "📚",
-      "title": "skill destilada: site-imersivo (de alche.studio) + template estudio-imersivo",
-      "xp": 40
     }
   ]
 }
