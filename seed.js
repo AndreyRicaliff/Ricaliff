@@ -1,15 +1,18 @@
-// seed.js v16 — v15 + sessão s-65 (ag-hub, 2026-07-20)
+// seed.js v19 — v18 + sessão s-68 (pulsar-site, 2026-07-21)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '16') return;
+  if (localStorage.getItem('agh_seed_v') === '19') return;
 
   const now = new Date().toISOString();
 
   // ── PROJETOS ─────────────────────────────────────────────────
   const projects = [
+    { id: 'pulsar-site',     name: 'Pulsar — Site',    description: 'Landing imersiva da plataforma Pulsar — WebGL autoral, coreografia por scroll, som sintetizado e sistema de marca cardíaco (EKG). Arquivo único, zero dependências.', status: 'ativo',    color: '#7048E8', githubUrl: null,                                                      isPrivate: true,  createdAt: now, updatedAt: now,
+      improvements: ['Trocar link de contato pelo WhatsApp/e-mail reais', 'Fazer ?static=1 zerar também batimentos/malha novos', 'Limpar CSS e JS mortos de iterações de design'] },
+
     { id: 'pulsar-rh',       name: 'PULSAR-RH',        description: 'SaaS de People Analytics — eNPS, NR-1 e KPIs de RH com cálculo determinístico e pesquisa anônima de verdade. Em produção em pulsar-rh.agconsultorialtda.com.', status: 'ativo',    color: '#1A7FFF', githubUrl: null,                                                      isPrivate: true,  createdAt: now, updatedAt: now,
       improvements: ['Corrigir memory leak no subscription de Realtime (não faz unsubscribe)', 'Remover eval() na função de fórmulas — vulnerabilidade XSS', 'Corrigir cálculo O(n*m) de compliance — usar Map para O(n)', 'Adicionar validação de schema antes de salvar indicadores', 'Implementar ARIA labels nos gráficos Chart.js', 'Padronizar feedback de erro nos formulários', 'Extrair cálculo de compliance para worker assíncrono'] },
     { id: 'cliente-varejo', name: 'Cliente Varejo',   description: 'Integração API ERP-externo→Supabase→Lovable. Diagnóstico: quota diária (350 req) esgota em 14h. Aguarda credenciais.', status: 'ativo',    color: '#FF5C5C', githubUrl: null,                                                      isPrivate: false, createdAt: now, updatedAt: now,
@@ -262,6 +265,9 @@
     { id:'s-63', title:'Dimensao de pesquisa via sanfona canonica + seletor de polaridade no builder', projectId:'pulsar-rh', type:'feature', date:'2026-07-17', impact:'medio', notes:'Dimensao vira sanfona de 26 dimensoes agrupadas (nao texto livre); polaridade obrigatoria faz pergunta custom entrar na favorabilidade NR-1 (COPSOQ).', createdAt: now },
     { id:'s-64', title:'Trilha de estudo expandida: 8 dominios novos + seguranca avancada (66 modulos)', projectId:'ag-hub', type:'feature', date:'2026-07-20', impact:'alto', notes:'Raciocinio de engenheiro, testes, gestao, eng. de dados, design, motion, 3D e robustez. Formato canonico, sanitizado p/ repo publico, indices data-driven regenerados. 15->23 trilhas.', createdAt: now },
     { id:'s-65', title:'Emojis trocados por sistema de icones autorais SVG (monoline)', projectId:'ag-hub', type:'design', date:'2026-07-20', impact:'medio', notes:'icons.js central: icon()/deEmoji()/iconG(). Literais viram SVG cru, dados passam por deEmoji no render, toast stripado. 0 emoji visivel, verificado no browser.', createdAt: now },
+    { id:'s-66', title:'Construí template imersivo zero-deps: WebGL autoral, scroll com inércia e som sintetizado', projectId:'pulsar-site', type:'feature', date:'2026-07-19', impact:'alto', notes:'Dissecação técnica de site premiado virou template + skill reutilizável; shaders à mão, lerp frame-independente, coreografia por seção', createdAt: now },
+    { id:'s-67', title:'Landing Pulsar: identidade v3, transições de POV 3D e showcase de telas com dados mock', projectId:'pulsar-site', type:'design', date:'2026-07-20', impact:'alto', notes:'Corredor dolly (translateZ) + coverflow sin/cos em CSS 3D dirigidos por scroll; lockup intro-hero em fase, sem corte perceptível', createdAt: now },
+    { id:'s-68', title:'Sistema de marca: símbolo cardíaco (EKG) e batimento como animação-padrão; site em PT-BR', projectId:'pulsar-site', type:'design', date:'2026-07-21', impact:'medio', notes:'Batimento lub-dub + anel emanando + blip no EKG substituiu rotação orbital; Space Grotesk display embutida; menu e rail polidos', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -309,7 +315,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '16');
+  localStorage.setItem('agh_seed_v',   '19');
 
-  console.log('[Ricaliff seed v16 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v19 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
