@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-21T18:01:51",
+    "lastSync": "2026-07-21T18:03:59",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 15625,
+    "xp": 15675,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 189,
+        "value": 192,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-21",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[ag-crm] relatório de vendas ganhas e comissões"
+    },
     {
       "date": "2026-07-21",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[cliente-varejo] badge de escopo do recorte e guard de futuro simetrico"
-    },
-    {
-      "date": "2026-07-16",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[cliente-varejo] blinda selectedMes sujo, trava recorte num mes e fecha bordas"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-21",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[ag-crm] relatório de vendas ganhas e comissões",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-21",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[ag-crm] gestão de usuários e papéis (admin via edge)",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[ag-crm] módulo de contatos (feature-first)",
       "xp": 50
-    },
-    {
-      "date": "2026-07-20",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[Ricaliff] registra sessao dos icones autorais",
-      "xp": 20
     }
   ]
 }
