@@ -1,0 +1,1382 @@
+{
+ "geradoEm": "2026-07-22T19:33:35.531Z",
+ "total": 172,
+ "cards": [
+  {
+   "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md#1",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
+   "tituloModulo": "01 — Tipos, Memória, Valor vs Referência",
+   "pergunta": "Por que `obj1 === obj2` retorna false mesmo que os dois tenham os mesmos campos e valores?",
+   "resposta": "Porque `===` em objetos compara referências de memória, não conteúdo. `obj1` e `obj2` são dois objetos diferentes alocados no heap em endereços distintos — eles só seriam iguais com `===` se fossem exatamente a mesma instância. Para comparar conteúdo, você usa `JSON.stringify` nos dois (funciona para objetos simples) ou uma lib de deep equality. Isso é diferente de primitivos: `42 === 42` é true porque o valor em si é comparado."
+  },
+  {
+   "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md#2",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
+   "tituloModulo": "01 — Tipos, Memória, Valor vs Referência",
+   "pergunta": "Como você evita que uma função altere um objeto que ela recebeu como parâmetro?",
+   "resposta": "Crio uma cópia antes de mexer. Para objetos e arrays simples (sem aninhamento que me importa), uso spread: `{ ...obj }` ou `[...arr]`. Para estruturas profundamente aninhadas, uso `structuredClone` — disponível nativo desde Node 17. Evito `JSON.parse(JSON.stringify(obj))` porque perde Dates, funções e undefined. Em TypeScript, declaro o parâmetro como `Readonly<T>` ou `ReadonlyArray<T>` para o compilador me avisar se eu tentar mutar."
+  },
+  {
+   "id": "00-fundamentos/02-async-event-loop-promises.md#1",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/02-async-event-loop-promises.md",
+   "tituloModulo": "02 — Async, Event Loop e Promises",
+   "pergunta": "Você tem um array de 100 IDs e precisa buscar cada um numa API. Como faz?",
+   "resposta": "Depende de duas coisas: as chamadas são independentes? A API tem rate limit?"
+  },
+  {
+   "id": "00-fundamentos/02-async-event-loop-promises.md#2",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/02-async-event-loop-promises.md",
+   "tituloModulo": "02 — Async, Event Loop e Promises",
+   "pergunta": "Por que `console.log('B')` aparece depois de `console.log('C')` no exemplo do topo?",
+   "resposta": "Porque `Promise.resolve().then` enfileira na fila de **microtasks**, e `setTimeout` na de **macrotasks**. Depois que a call stack esvazia, o event loop drena **toda** a fila de microtasks antes de pegar a próxima macrotask. Por isso C (microtask) sai antes de B (macrotask), mesmo com timeout 0."
+  },
+  {
+   "id": "00-fundamentos/03-http-rest-status-codes.md#1",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/03-http-rest-status-codes.md",
+   "tituloModulo": "03 — HTTP, REST e Status Codes",
+   "pergunta": "Qual a diferença entre 401 e 403?",
+   "resposta": "401 é falta de autenticação: o servidor não sabe quem você é — token ausente, expirado ou inválido. A ação certa do cliente é fazer login e tentar de novo. 403 é falta de autorização: o servidor sabe quem você é, mas você não tem permissão para aquele recurso. Logar de novo não vai resolver — você simplesmente não tem acesso. No PULSAR-RH, por exemplo: acessar sem token é 401, acessar dados de outro tenant autenticado é 403."
+  },
+  {
+   "id": "00-fundamentos/03-http-rest-status-codes.md#2",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/03-http-rest-status-codes.md",
+   "tituloModulo": "03 — HTTP, REST e Status Codes",
+   "pergunta": "O que significa um endpoint ser idempotente e por que isso importa?",
+   "resposta": "Idempotente significa que chamar o endpoint N vezes produz o mesmo estado final que chamar uma vez. GET, PUT e DELETE são idempotentes por definição HTTP. POST não é — dois POSTs criam dois recursos. Isso importa porque redes são instáveis: se um DELETE ou PUT der timeout, o cliente pode tentar de novo com segurança. Com POST, o cliente não pode fazer retry cego — pode criar duplicatas. Por isso APIs bem desenhadas usam idempotency keys em POST quando retry é necessário."
+  },
+  {
+   "id": "00-fundamentos/04-sql-vs-nosql-quando-cada.md#1",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/04-sql-vs-nosql-quando-cada.md",
+   "tituloModulo": "04 — SQL vs NoSQL: Quando Usar Cada",
+   "pergunta": "Por que você usaria Postgres ao invés de MongoDB para um sistema de vendas com múltiplas lojas?",
+   "resposta": "Porque uma venda é uma transação: ou o sale e todos os sale_items são gravados juntos, ou nenhum é. MongoDB no modo básico não garante isso entre documentos. Com Postgres tenho ACID nativo — se algo falha no meio, o banco faz rollback automático. Além disso, as queries do negócio são todas relacionais: total vendido por loja, produtos mais vendidos, comparativo entre filiais. Com Mongo eu estaria escrevendo aggregation pipelines complexas para fazer o que um JOIN resolve em 3 linhas de SQL."
+  },
+  {
+   "id": "00-fundamentos/04-sql-vs-nosql-quando-cada.md#2",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/04-sql-vs-nosql-quando-cada.md",
+   "tituloModulo": "04 — SQL vs NoSQL: Quando Usar Cada",
+   "pergunta": "O que é eventual consistency e quando ela é aceitável?",
+   "resposta": "Eventual consistency significa que, após uma escrita, os dados podem ficar desatualizados por um tempo antes de propagar por todos os nós do cluster — mas eventualmente convergem. É aceitável quando o negócio tolera leitura levemente defasada: feed de redes sociais, contador de curtidas, dashboard de analytics com delay de segundos. Não é aceitável quando a consistência é invariante do negócio: saldo bancário, estoque, permissões de acesso. No PULSAR-RH, por exemplo, uma pesquisa marcada como publicada precisa aparecer imediatamente para todos os respondentes — eventual consistency quebraria a UX."
+  },
+  {
+   "id": "00-fundamentos/05-auth-oauth-jwt-session.md#1",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/05-auth-oauth-jwt-session.md",
+   "tituloModulo": "05 — Auth: OAuth, JWT e Session",
+   "pergunta": "Por que guardar JWT no localStorage é um problema de segurança?",
+   "resposta": "Porque localStorage é acessível por qualquer JavaScript rodando na página. Um ataque XSS — por exemplo, um script injetado via input não sanitizado — consegue ler o token e exfiltrá-lo para um servidor externo. Com o JWT, o atacante age como o usuário até o token expirar. Cookie httpOnly não tem esse problema: o browser envia automaticamente nas requests, mas nenhum JS consegue lê-lo. Por isso a recomendação é: access token curto (15 min) em memória ou header, refresh token em cookie httpOnly."
+  },
+  {
+   "id": "00-fundamentos/05-auth-oauth-jwt-session.md#2",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/05-auth-oauth-jwt-session.md",
+   "tituloModulo": "05 — Auth: OAuth, JWT e Session",
+   "pergunta": "Como funciona o OAuth Authorization Code Flow? Por que existe o PKCE?",
+   "resposta": "O app redireciona o usuário pro Google com um client_id e redirect_uri. O Google autentica, redireciona de volta com um code de uso único. O app troca esse code por tokens server-side. O code tem vida de segundos — mesmo que vaze na URL, é inútil sozinho. PKCE (Proof Key for Code Exchange) resolve o caso de SPAs e apps mobile que não podem guardar um client_secret: antes do redirect, o app gera um code_verifier e manda o hash (code_challenge). Ao trocar o code, manda o verifier original — só quem iniciou o fluxo consegue completar."
+  },
+  {
+   "id": "00-fundamentos/06-git-fluxo-rebase-merge.md#1",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/06-git-fluxo-rebase-merge.md",
+   "tituloModulo": "06 — Git: Fluxo, Rebase, Merge e Ferramentas",
+   "pergunta": "Qual a diferença entre `git merge` e `git rebase`? Quando você usa cada?",
+   "resposta": "Merge une dois branches criando um commit com dois pais — o histórico fica não-linear mas preserva exatamente o que aconteceu e quando. Rebase reaplica meus commits por cima de outro branch, reescrevendo os SHAs — o histórico fica linear, mais fácil de ler. Uso rebase para manter minha feature branch atualizada com main antes de abrir PR. Uso merge para integrar a feature branch em main via PR — aí quero preservar quando a feature foi feita. A regra que nunca quebro: nunca rebase em branch que outras pessoas estão usando — estou reescrevendo história que elas já têm local."
+  },
+  {
+   "id": "00-fundamentos/06-git-fluxo-rebase-merge.md#2",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/06-git-fluxo-rebase-merge.md",
+   "tituloModulo": "06 — Git: Fluxo, Rebase, Merge e Ferramentas",
+   "pergunta": "Como você encontraria em qual commit um bug foi introduzido numa base com 500 commits?",
+   "resposta": "Usaria `git bisect`. Digo pro Git qual commit tem o bug (`git bisect bad`) e qual era bom (`git bisect good <sha>`) — o Git faz uma busca binária no histórico, dando checkout no commit do meio. Eu testo, digo se é bom ou ruim, e repito. Em ~9 passos ele isola o commit culpado num histórico de 500. É exatamente busca binária O(log n) aplicada a commits. Se o projeto tem testes automatizados, dá para fazer `git bisect run npm test` e o processo roda sozinho."
+  },
+  {
+   "id": "05-raciocinio/01-verificar-antes-de-afirmar.md#1",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/01-verificar-antes-de-afirmar.md",
+   "tituloModulo": "01 — Verificar Antes de Afirmar",
+   "pergunta": "Como você sabe que o seu fix realmente resolveu o bug?",
+   "resposta": "Só digo 'resolvido' com três provas: reproduzi o bug antes do fix, rodei a mesma reprodução depois e li o output mudar, e conferi o estado final no alvo certo — banco, não log; prod, não local. Se não deu tempo de rodar, falo 'implementei mas não verifiquei' — é informação diferente de 'resolvido', e quem decide o deploy precisa saber a diferença. O custo de assumir tem caso famoso: a Knight Capital perdeu 440 milhões de dólares em 45 minutos por um 'deployado' sem prova."
+  },
+  {
+   "id": "05-raciocinio/02-hipotese-e-refutacao.md#1",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/02-hipotese-e-refutacao.md",
+   "tituloModulo": "02 — Hipótese e Refutação",
+   "pergunta": "Descreve um bug difícil que você resolveu e como.",
+   "resposta": "Num dashboard multi-tenant, um registro sumia para um cliente. Três hipóteses, por probabilidade: RLS filtrando, filtro do front, dado não ingerido. Desenhei o teste que refutava a primeira: a mesma query com token do tenant e com service_role. Veio vazio nos dois — então não era RLS, era ingestão. No pipeline de sync, achei a execução travada por um lock de uma rodada anterior. O ponto do processo: não mexi em nenhuma policy, porque o teste provou antes que o problema não estava lá."
+  },
+  {
+   "id": "05-raciocinio/03-trade-offs-explicitos.md#1",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/03-trade-offs-explicitos.md",
+   "tituloModulo": "03 — Trade-offs Explícitos",
+   "pergunta": "Por que você usou retry com backoff em vez de uma fila de mensagens?",
+   "resposta": "Critério decisivo: infra e volume. Eram centenas de registros por dia num sync de ERP e eu não tinha servidor para sustentar Redis — fila adicionaria uma peça de infra inteira para um problema que backoff exponencial mais lock com TTL resolve. Aceitei duas consequências, documentadas no ADR: não escala horizontal e lock órfão depende do TTL. E deixei o gatilho escrito: volume dez vezes maior, a decisão certa passa a ser fila. Não é 'fila é ruim' — é 'fila custa mais do que este problema paga'."
+  },
+  {
+   "id": "05-raciocinio/04-ler-o-erro-de-verdade.md#1",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/04-ler-o-erro-de-verdade.md",
+   "tituloModulo": "04 — Ler o Erro de Verdade",
+   "pergunta": "Aparece um erro que você nunca viu. Qual é o seu processo?",
+   "resposta": "Primeiro leio a mensagem literal e o stack até o primeiro frame que é meu código — a mensagem me dá a camada: ECONNREFUSED é rede, 403 é permissão, exceção minha é lógica. Depois reproduzo com o menor comando possível, geralmente um curl, porque fix sem reprodução não tem prova. Só então pesquiso, com a mensagem exata entre aspas. E se o erro chegou genérico, minha primeira suspeita é um catch no caminho engolindo a causa — já perdi horas com um wrapper que escondia o corpo da resposta onde estava o erro verdadeiro."
+  },
+  {
+   "id": "05-raciocinio/05-decompor-problemas.md#1",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/05-decompor-problemas.md",
+   "tituloModulo": "05 — Decompor Problemas",
+   "pergunta": "Te dou uma feature grande e vaga. Por onde você começa?",
+   "resposta": "Corto em subproblemas independentes e ordeno por risco, não por conforto: o pedaço que eu não sei fazer vai primeiro, como spike curto, porque é onde o plano pode morrer barato. Depois identifico o caminho crítico e o que dá pra paralelizar. E tenho uma regra: bloqueador não me para — frente que trava esperando terceiro vira pendência anotada com contexto, e eu ataco a próxima; no report final entrego 'fiz X e Y, Z bloqueado por W'. Numa sanitização de repo real, isso significou publicar no prazo com um único item pendente documentado, em vez de atrasar tudo por causa dele."
+  },
+  {
+   "id": "05-raciocinio/06-verificar-o-alvo-certo.md#1",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/06-verificar-o-alvo-certo.md",
+   "tituloModulo": "06 — Verificar o Alvo Certo",
+   "pergunta": "Me conta um erro seu e o que você mudou por causa dele.",
+   "resposta": "Reportei um fix como testado — mas tinha rodado o teste na branch errada; o fix nem estava no código que testei. Foi pego em revisão antes de causar dano, mas me mostrou que 'verificado' sem dizer ONDE não é verificação. Desde então, toda conferência minha sai com carimbo de alvo: branch e hash, URL do ambiente, current_database na query, hard reload no front. É o padrão do incidente do GitLab em 2017 — a ação certa no servidor errado apagou produção. Verificar o resultado não basta; tem que provar o alvo."
+  },
+  {
+   "id": "05-raciocinio/07-quando-parar.md#1",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/07-quando-parar.md",
+   "tituloModulo": "07 — Quando Parar",
+   "pergunta": "Como você decide que uma solução está boa o suficiente?",
+   "resposta": "Critério de pronto definido antes de começar, e medição contra ele — não sensação. Num deck com animação 3D, o critério era 50 FPS na máquina de apresentação; medi no DevTools, bateu, parei — mesmo com vontade de reescrever em three.js, porque acima do critério a reescrita compra zero valor e custa dias. Sigo o Knuth completo: 97% das otimizações são prematuras, mas os 3% críticos a medição revela. E aprendi a desconfiar de mim: refatorar pela terceira vez sem requisito novo não é qualidade, é procrastinação."
+  },
+  {
+   "id": "10-codigo-limpo/01-srp-funcoes-curtas.md#1",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/01-srp-funcoes-curtas.md",
+   "tituloModulo": "01 — SRP e Funções Curtas",
+   "pergunta": "Como você decide quando extrair uma função?",
+   "resposta": "Tenho dois critérios. Primeiro: a função passou de 20 linhas? Acima disso, o leitor perde contexto antes de terminar de ler — já vale extrair."
+  },
+  {
+   "id": "10-codigo-limpo/01-srp-funcoes-curtas.md#2",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/01-srp-funcoes-curtas.md",
+   "tituloModulo": "01 — SRP e Funções Curtas",
+   "pergunta": "O que é SRP pra você?",
+   "resposta": "É o princípio de que uma função — ou módulo, ou classe — deve ter uma única razão pra mudar. Não 'faz uma coisa só', que é vago. Uma razão pra mudar quer dizer: existe um único requisito ou responsabilidade de negócio que, ao mudar, exigiria mexer aqui."
+  },
+  {
+   "id": "10-codigo-limpo/02-early-return-guard-clauses.md#1",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/02-early-return-guard-clauses.md",
+   "tituloModulo": "02 — Early Return e Guard Clauses",
+   "pergunta": "Você pode me explicar esse código aninhado e me mostrar como simplificaria?",
+   "resposta": "Vou ler de dentro pra fora — o caminho feliz está no nível mais interno, então preciso rastrear todas as condições acima pra entender o que realmente acontece."
+  },
+  {
+   "id": "10-codigo-limpo/02-early-return-guard-clauses.md#2",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/02-early-return-guard-clauses.md",
+   "tituloModulo": "02 — Early Return e Guard Clauses",
+   "pergunta": "Por que nesting profundo é um problema?",
+   "resposta": "Não é estético — é cognitivo. Cada nível de indentação é uma condição que o leitor precisa manter ativa na memória de trabalho enquanto lê o código dentro. Com 4 níveis, você está rastreando 4 condições ao mesmo tempo pra entender o que aquele bloco interno faz."
+  },
+  {
+   "id": "10-codigo-limpo/03-nomes-vs-comentarios.md#1",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/03-nomes-vs-comentarios.md",
+   "tituloModulo": "03 — Nomes vs Comentários",
+   "pergunta": "Você comenta seu código?",
+   "resposta": "Depende do tipo de comentário. Comentário que explica O QUÊ o código faz — não. Esse é sinal de que o nome está fraco. Se preciso comentar `// get user's remaining credit`, o problema é que a variável se chama `x`. Renomeio ela e deleto o comentário."
+  },
+  {
+   "id": "10-codigo-limpo/03-nomes-vs-comentarios.md#2",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/03-nomes-vs-comentarios.md",
+   "tituloModulo": "03 — Nomes vs Comentários",
+   "pergunta": "Quando você deletaria um comentário existente num code review?",
+   "resposta": "Quando ele descreve o quê o código faz. Se tenho `// loop through employees and filter active` antes de um forEach, o comentário está repetindo o código em inglês. Deleto e possivelmente extrai aquele bloco em uma função `filterActiveEmployees` — o nome passa a carregar o contexto."
+  },
+  {
+   "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md#1",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
+   "tituloModulo": "04 — Abstração e a Regra dos 3",
+   "pergunta": "Quando você cria uma abstração vs duplica o código?",
+   "resposta": "Eu uso a regra dos 3: só abstraio no terceiro uso. Não no segundo."
+  },
+  {
+   "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md#2",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
+   "tituloModulo": "04 — Abstração e a Regra dos 3",
+   "pergunta": "O que é YAGNI?",
+   "resposta": "You Aren't Gonna Need It — não construa por antecipação. Se não tem um segundo caso real que justifique a abstração agora, não crie a abstração agora."
+  },
+  {
+   "id": "12-testes/01-piramide-de-testes.md#1",
+   "trilha": "12-testes",
+   "modulo": "12-testes/01-piramide-de-testes.md",
+   "tituloModulo": "01 — Pirâmide de Testes",
+   "pergunta": "Descreve a pirâmide de testes e como você a aplica nos seus projetos.",
+   "resposta": "Base unitária, meio integração, topo e2e — porque custo e fidelidade sobem juntos. Mas nos meus dashboards (React + Supabase) a pirâmide inverte pro formato troféu: quase não há lógica pura, o risco mora nos contratos com o banco e no RLS multi-tenant, então concentro em testes de integração contra um banco real. Unit eu reservo pros cálculos financeiros, que extraio pra funções puras. E2E só nos 4-5 fluxos que derrubam o cliente: login, troca de tenant, lançamento."
+  },
+  {
+   "id": "12-testes/02-primeiro-teste-vitest.md#1",
+   "trilha": "12-testes",
+   "modulo": "12-testes/02-primeiro-teste-vitest.md",
+   "tituloModulo": "02 — Primeiro Teste com Vitest",
+   "pergunta": "Você tem um projeto React sem nenhum teste. Por onde começa?",
+   "resposta": "Não começo instalando ferramenta — começo achando a lógica pura de maior risco, geralmente cálculo financeiro que vive inline em componente. Extraio pra uma função sem I/O, instalo Vitest — que num projeto Vite usa o mesmo pipeline do app, config quase zero — e escrevo três casos: o feliz e duas bordas. Antes de confiar no verde, quebro o teste de propósito pra provar que ele detecta falha. Depois ligo `vitest run` no GitHub Actions pra virar gate de merge. Um teste que bloqueia PR vale mais que cinquenta que ninguém roda."
+  },
+  {
+   "id": "12-testes/03-testar-logica-de-negocio.md#1",
+   "trilha": "12-testes",
+   "modulo": "12-testes/03-testar-logica-de-negocio.md",
+   "tituloModulo": "03 — Testar Lógica de Negócio",
+   "pergunta": "Como testar um cálculo de comissão que vive dentro de um componente React?",
+   "resposta": "Primeiro extraio a regra pra função pura — entrada: lista de vendas; saída: número; zero fetch, zero data interna. Isso paga sozinho: já vi dois dashboards divergirem porque a 'mesma' fórmula existia em dois lugares com arredondamentos diferentes. Depois escrevo a tabela de casos antes dos asserts — vazio, corte exato da faixa, cancelada, centavos no limite. As lacunas da tabela viram pergunta pro cliente, não suposição minha. Cálculo crítico eu fecho com propriedades no fast-check."
+  },
+  {
+   "id": "12-testes/04-mocks-so-em-boundary.md#1",
+   "trilha": "12-testes",
+   "modulo": "12-testes/04-mocks-so-em-boundary.md",
+   "tituloModulo": "04 — Mocks Só em Boundary",
+   "pergunta": "Quando você usa mock e quando evita?",
+   "resposta": "Mocko só boundary: rede, banco, relógio — o que não controlo. No sync de ERP que mantenho, mocko o fetch com fixture capturada de payload real anonimizado — fixture inventada testa minha imaginação, não o contrato. Módulo interno nunca: se preciso mockar meu próprio código pra testar, isso é acoplamento, e o teste passa a travar refactor em vez de proteger. Quando dá, nem mocko: injeto a dependência — relógio como parâmetro em vez de `vi.setSystemTime`. Mock é plano B; design é o plano A."
+  },
+  {
+   "id": "12-testes/05-e2e-playwright.md#1",
+   "trilha": "12-testes",
+   "modulo": "12-testes/05-e2e-playwright.md",
+   "tituloModulo": "05 — E2E com Playwright",
+   "pergunta": "Como você decide o que merece teste e2e?",
+   "resposta": "Pelo custo da quebra, não pela facilidade de testar. E2E é a camada mais cara — lenta, exige estado conhecido, quebra por motivo que não é bug — então reservo pros fluxos onde produção quebrada custa caro: login, lançamento de dinheiro, isolamento entre tenants. Uso Playwright com seletores por role, credencial de teste via secret e trace ligado no retry. Minha meta é um smoke de meia dúzia de fluxos em poucos minutos no CI, não oitenta testes que o time aprende a ignorar."
+  },
+  {
+   "id": "12-testes/06-tdd-quando-vale.md#1",
+   "trilha": "12-testes",
+   "modulo": "12-testes/06-tdd-quando-vale.md",
+   "tituloModulo": "06 — TDD: Quando Vale",
+   "pergunta": "Você pratica TDD? Sempre?",
+   "resposta": "Pratico onde ele rende: lógica de negócio com regra conhecida e bugfix — bug vira teste vermelho antes do fix, o que prova o fix e me dá regressão de graça. Em UI exploratória eu deliberadamente não uso: ali estou descobrindo o requisito, e teste escrito antes congela um chute que vai mudar três vezes no dia — escrevo o teste quando a regra estabiliza e extraio a lógica pra função pura. O que considero inegociável não é a ordem, é ver o teste falhar em algum momento: teste que nasceu verde e nunca ficou vermelho não provou nada."
+  },
+  {
+   "id": "12-testes/07-regressao-e-ci.md#1",
+   "trilha": "12-testes",
+   "modulo": "12-testes/07-regressao-e-ci.md",
+   "tituloModulo": "07 — Regressão e CI",
+   "pergunta": "Sua suíte tem um teste que falha às vezes. O que você faz?",
+   "resposta": "Trato como incidente, porque flaky é pior que sem teste — treina o time a dar re-run no vermelho, e aí o vermelho verdadeiro passa junto. Primeiro reproduzo e meço: rodo 20 vezes, embaralho a ordem. As causas quase sempre são estado residual entre testes, relógio real ou espera implícita. Se não consigo corrigir no dia, quarenteno com skip e registro pendência datada com dono — o que não faço é deixar falhando intermitente nem esconder com retry global, porque retry mascara exatamente o sinal que o teste existe pra dar."
+  },
+  {
+   "id": "20-arquitetura/01-solid-na-pratica.md#1",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/01-solid-na-pratica.md",
+   "tituloModulo": "01 — SOLID na Prática",
+   "pergunta": "Me dá um exemplo de onde você aplicou SOLID num projeto real.",
+   "resposta": "No Meet Hub, a rota de gravações importava o Prisma diretamente — violação de DIP. A rota (alto nível) dependia do ORM (detalhe). Quando precisei testar a lógica sem banco, era impossível fazer mock. Identifiquei que deveria depender de uma interface, não da implementação. Mesmo sem refatorar completamente, entendo o problema: se o banco mudar de Prisma para outra coisa, preciso editar cada rota. Com DIP, só mudaria o serviço de dados."
+  },
+  {
+   "id": "20-arquitetura/01-solid-na-pratica.md#2",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/01-solid-na-pratica.md",
+   "tituloModulo": "01 — SOLID na Prática",
+   "pergunta": "Por que SRP é o princípio mais violado na prática?",
+   "resposta": "Porque a violação é invisível enquanto o projeto é pequeno. Quando você está escrevendo, 'buscar e exibir' parece uma coisa só. O custo aparece quando você precisa testar: não dá pra testar a lógica sem disparar o banco. Ou quando muda o design: precisa editar a função que também contém regra de negócio. SRP não é sobre separar por razão estética — é sobre separar por razão de mudança."
+  },
+  {
+   "id": "20-arquitetura/02-camadas-controller-service-repository.md#1",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/02-camadas-controller-service-repository.md",
+   "tituloModulo": "02 — Camadas: Controller / Service / Repository",
+   "pergunta": "O que vai no Controller e o que vai no Service? Me dá um exemplo.",
+   "resposta": "Controller sabe só de HTTP: pega a requisição, valida o formato de entrada com Zod, chama o service, monta a resposta com o status correto. Não contém regra de negócio nem sabe que banco existe."
+  },
+  {
+   "id": "20-arquitetura/02-camadas-controller-service-repository.md#2",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/02-camadas-controller-service-repository.md",
+   "tituloModulo": "02 — Camadas: Controller / Service / Repository",
+   "pergunta": "Qual a diferença entre Controller/Service/Repository e Hexagonal Architecture?",
+   "resposta": "Camadas simples são sequenciais: Controller → Service → Repository, e as dependências apontam sempre para dentro. Hexagonal vai além: coloca a lógica de negócio no centro como 'domínio', e define portas — interfaces que o domínio expõe. Banco, HTTP, fila são adaptadores que implementam essas portas. A ideia é que o domínio não sabe que existe banco ou HTTP."
+  },
+  {
+   "id": "20-arquitetura/03-monolito-vs-microsservico.md#1",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/03-monolito-vs-microsservico.md",
+   "tituloModulo": "03 — Monolito vs Microsserviço",
+   "pergunta": "Você escolheria monolito ou microsserviço para o Meet Hub? Justifique.",
+   "resposta": "Monolito. Os motivos válidos para microsserviço são: partes que escalam de forma radicalmente diferente, times independentes que precisam deployar sem bloquear uns aos outros, ou necessidades técnicas incompatíveis. O Meet Hub tem 1 dev, e o bot se comunica com a API via queue Redis que é interna. Separar em microsserviços adicionaria 3 pipelines de CI/CD, rastreamento distribuído e latência de rede entre partes que hoje conversam localmente. Vou reavaliar quando o bot precisar escalar para dezenas de instâncias independentes — aí o caso começa a aparecer."
+  },
+  {
+   "id": "20-arquitetura/03-monolito-vs-microsservico.md#2",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/03-monolito-vs-microsservico.md",
+   "tituloModulo": "03 — Monolito vs Microsserviço",
+   "pergunta": "Quais os problemas de microsserviços que as pessoas subestimam?",
+   "resposta": "Consistência de dados e debugging. Num monolito, uma transação garante atomicidade. Em microsserviços, se o Serviço A gravou mas o Serviço B falhou, você tem dado inconsistente — precisa de saga pattern ou eventual consistency, que são complexidades sérias. Em debugging: um erro que cruzou 4 serviços precisa de tracing distribuído para rastrear. Sem isso, você fica procurando bug em 4 logs diferentes. Esses dois problemas juntos custam mais do que a maioria das equipes estima antes de adotar."
+  },
+  {
+   "id": "20-arquitetura/04-padroes-comunicacao.md#1",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/04-padroes-comunicacao.md",
+   "tituloModulo": "04 — Padrões de Comunicação",
+   "pergunta": "Quando você usaria SSE em vez de WebSocket?",
+   "resposta": "SSE é HTTP unidirecional — servidor empurra eventos para o cliente, mas o cliente não envia dados pelo mesmo canal. WebSocket é bidirecional: os dois lados enviam mensagens sobre a mesma conexão."
+  },
+  {
+   "id": "20-arquitetura/04-padroes-comunicacao.md#2",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/04-padroes-comunicacao.md",
+   "tituloModulo": "04 — Padrões de Comunicação",
+   "pergunta": "O que é idempotência e por que ela importa em webhooks?",
+   "resposta": "Idempotência é a propriedade de que executar a operação N vezes tem o mesmo resultado que executar 1 vez. Em webhooks, o sistema que envia pode reenviar o evento se não receber confirmação — a Stripe, por exemplo, tenta até 3 vezes. Se o meu handler não for idempotente, eu processo o mesmo pagamento duas vezes. A solução padrão é guardar o ID do evento e checar antes de processar: se já existe, ignora. Isso é upsert por chave externa, não insert cego."
+  },
+  {
+   "id": "20-arquitetura/05-adrs-architecture-decision-records.md#1",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/05-adrs-architecture-decision-records.md",
+   "tituloModulo": "05 — ADRs: Architecture Decision Records",
+   "pergunta": "Como você documenta decisões técnicas no seu dia a dia?",
+   "resposta": "Uso um arquivo `DECISIONS.md` em cada projeto com entradas datadas. Cada entrada tem: o problema, as opções que considerei, a decisão, o porquê e as consequências esperadas. No PULSAR-RH, tenho decisões de stack, de segurança, de frontend — todas datadas. Isso me permite reler 6 meses depois e entender se a decisão ainda faz sentido dado o que aprendi. Em entrevista, consigo defender qualquer escolha porque está documentado o raciocínio, não só o resultado."
+  },
+  {
+   "id": "20-arquitetura/05-adrs-architecture-decision-records.md#2",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/05-adrs-architecture-decision-records.md",
+   "tituloModulo": "05 — ADRs: Architecture Decision Records",
+   "pergunta": "Me fala de uma decisão técnica difícil que você tomou.",
+   "resposta": "No PULSAR-RH, decidi usar RLS no Postgres para multi-tenancy em vez de filtrar no middleware. A alternativa era mais fácil de implementar, mas isolamento no código depende de código correto — um bug pode vazar dados entre clientes. RLS no banco é uma garantia que não depende de eu escrever o filtro certo em cada query. O custo foi que operações de escrita precisaram de RPCs com SECURITY DEFINER, que têm superfície de ataque. Documentei esse trade-off no DECISIONS.md e considero que valeu."
+  },
+  {
+   "id": "20-arquitetura/06-design-patterns-uteis.md#1",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/06-design-patterns-uteis.md",
+   "tituloModulo": "06 — Design Patterns Úteis",
+   "pergunta": "Me dê um exemplo de design pattern que você usa ou já usou.",
+   "resposta": "O Meet Hub usa Observer com a biblioteca Bull. A rota que inicia uma gravação chama `botQueue.add(data)` — ela não sabe quem vai processar nem quando. O worker em `queue.ts` chama `botQueue.process(N, handler)` para assinar esse evento. Isso é Observer: produtor publica, consumidor escuta, os dois desacoplados. O benefício prático é que posso ter N workers em paralelo só ajustando o número no `process` — sem mudar a rota."
+  },
+  {
+   "id": "20-arquitetura/06-design-patterns-uteis.md#2",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/06-design-patterns-uteis.md",
+   "tituloModulo": "06 — Design Patterns Úteis",
+   "pergunta": "Por que Repository pattern facilita testes?",
+   "resposta": "Repository esconde o banco atrás de uma interface. O service depende da interface, não do Prisma diretamente. Para testar, crio uma implementação fake da interface que guarda dados em memória — sem banco, sem I/O, testes rápidos. O problema de ter Prisma direto na rota é que não tem interface: não tem como substituir por fake nos testes sem subir banco real."
+  },
+  {
+   "id": "20-arquitetura/07-modularidade-pacotes.md#1",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/07-modularidade-pacotes.md",
+   "tituloModulo": "07 — Modularidade e Pacotes",
+   "pergunta": "O que é monorepo e quando você escolheria?",
+   "resposta": "Monorepo é colocar múltiplos projetos no mesmo repositório git, mas com builds e deploys independentes. Escolho quando projetos precisam compartilhar código — tipos, utilitários, validações. No Meet Hub, API e front compartilham os tipos do domínio: se o tipo `Recording` muda na API, o front vê a mudança no mesmo commit, não precisa sincronizar dois repos."
+  },
+  {
+   "id": "20-arquitetura/07-modularidade-pacotes.md#2",
+   "trilha": "20-arquitetura",
+   "modulo": "20-arquitetura/07-modularidade-pacotes.md",
+   "tituloModulo": "07 — Modularidade e Pacotes",
+   "pergunta": "Como você evita que mudança num pacote interno quebre outro sem você saber?",
+   "resposta": "Com TypeScript, a mudança de tipo em `packages/shared` já quebra em compile time nos apps que dependem dele — antes do CI rodar. Isso é o principal benefício. Se quiser mais rigor, adiciona um teste de integração que importa os tipos dos apps — qualquer breaking change vai aparecer ali. Em monorepos grandes, Nx e Turborepo têm análise de impacto: mostram quais apps são afetados por uma mudança em determinado pacote antes de você fazer o merge."
+  },
+  {
+   "id": "25-gestao-projetos/01-escopo-e-fatiamento.md#1",
+   "trilha": "25-gestao-projetos",
+   "modulo": "25-gestao-projetos/01-escopo-e-fatiamento.md",
+   "tituloModulo": "01 — Escopo e Fatiamento",
+   "pergunta": "Te dou um dashboard de vendas pra entregar em uma semana. Como você organiza o trabalho?",
+   "resposta": "Primeiro dia eu subo um walking skeleton: login, uma query agregada e um KPI real em produção — isso de-risca auth, deploy e acesso ao dado de uma vez. Daí em diante, uma fatia vertical por dia: filtro de período, ranking, comparativo por loja — cada uma demonstrável no fim do dia. Fiz assim num dashboard multi-loja real: o cliente viu número verdadeiro no dia 1, e os problemas de integração apareceram cedo, quando eram baratos."
+  },
+  {
+   "id": "25-gestao-projetos/02-priorizacao.md#1",
+   "trilha": "25-gestao-projetos",
+   "modulo": "25-gestao-projetos/02-priorizacao.md",
+   "tituloModulo": "02 — Priorização",
+   "pergunta": "O cliente pede uma feature nova no meio da sprint. O que você faz?",
+   "resposta": "Não digo sim nem não na hora — exponho o trade-off. Olho o custo de atraso: se o pedido destrava faturamento dele, provavelmente fura a fila mesmo; se é cosmético, mostro o que atrasa em troca e deixo ele decidir. Mantenho uma fila única ordenada, então a conversa é 'isso entra na posição 2 e empurra X pra semana que vem, ok?'. Já fiz isso com cliente de varejo real: ele mesmo despriorizou o pedido quando viu o custo."
+  },
+  {
+   "id": "25-gestao-projetos/03-estimativa-honesta.md#1",
+   "trilha": "25-gestao-projetos",
+   "modulo": "25-gestao-projetos/03-estimativa-honesta.md",
+   "tituloModulo": "03 — Estimativa Honesta",
+   "pergunta": "Quanto tempo você levaria pra integrar um ERP novo?",
+   "resposta": "Honestamente: não sei ainda — e um número agora seria chute. O que eu faço: meio dia de spike lendo a doc e batendo em 2 endpoints reais; aí dou uma faixa. Pelo meu histórico com integração de ERP, minhas estimativas nessa categoria estouram ~2x por surpresa não documentada — rate-limit, paginação, dado sujo — então eu já embuto buffer explícito de integração e aviso no primeiro sinal de estouro, não na véspera."
+  },
+  {
+   "id": "25-gestao-projetos/04-debito-tecnico-gerenciado.md#1",
+   "trilha": "25-gestao-projetos",
+   "modulo": "25-gestao-projetos/04-debito-tecnico-gerenciado.md",
+   "tituloModulo": "04 — Débito Técnico Gerenciado",
+   "pergunta": "Seu prazo aperta e você precisa cortar caminho. O que faz com a gambiarra?",
+   "resposta": "Aceito o atalho conscientemente, mas ele nasce registrado: linha datada no PENDENCIAS.md com o porquê e o ponteiro pro arquivo. Minha regra de pagamento é juros: se toco a área pela terceira vez e o débito atrasa de novo, pago antes da feature; se causou bug em produção, pago já; se é código que ninguém toca, deixo — juro de código parado é zero. E quando resolvo, apago a linha no mesmo commit do fix, pra o registro nunca mentir."
+  },
+  {
+   "id": "25-gestao-projetos/05-comunicacao-com-cliente.md#1",
+   "trilha": "25-gestao-projetos",
+   "modulo": "25-gestao-projetos/05-comunicacao-com-cliente.md",
+   "tituloModulo": "05 — Comunicação com Cliente",
+   "pergunta": "Você percebe no meio do projeto que não vai dar tempo. O que faz?",
+   "resposta": "Aviso no dia em que descubro, não na véspera — má notícia cedo dá opções ao cliente, tarde só transfere o incêndio. Levo o pacote completo: o fato verificado que causou o estouro, o impacto em prazo, duas opções com trade-off e a minha recomendação. E fecho por escrito o que decidirmos. Num projeto multi-loja real, um dado que veio sujo do ERP mudou o prazo: avisei no mesmo dia com duas opções, o cliente cortou uma feature da entrega e a relação saiu mais forte, não mais fraca."
+  },
+  {
+   "id": "25-gestao-projetos/06-fluxo-solo-com-ia.md#1",
+   "trilha": "25-gestao-projetos",
+   "modulo": "25-gestao-projetos/06-fluxo-solo-com-ia.md",
+   "tituloModulo": "06 — Fluxo Solo com IA",
+   "pergunta": "Como você trabalha com IA no dia a dia sem virar refém dela?",
+   "resposta": "Trato cada sessão como um sprint de objetivo único: defino antes o que é 'pronto' e qual evidência prova. Limito trabalho em progresso a dois itens — Lei de Little: mais WIP só atrasa tudo. E tenho um ritual de fechamento inegociável: leio o diff inteiro, porque sou o único reviewer, e rodo a verificação real antes de dizer pronto — 'a IA disse que funciona' não é evidência. O código que sobe é meu, a responsabilidade não terceiriza."
+  },
+  {
+   "id": "25-gestao-projetos/07-documentar-decisoes.md#1",
+   "trilha": "25-gestao-projetos",
+   "modulo": "25-gestao-projetos/07-documentar-decisoes.md",
+   "tituloModulo": "07 — Documentar Decisões",
+   "pergunta": "Me conte uma decisão técnica difícil que você tomou e do que abriu mão.",
+   "resposta": "No meu pipeline financeiro, execuções simultâneas de sync duplicavam registros. Comparei fila de jobs, lockfile e idempotência total. Escolhi lockfile com timeout — fila exigia infra nova pra um cron de 1x/h, e idempotência, o ideal, custava um refactor inteiro; virou dívida consciente. Abri mão de robustez máxima por custo proporcional ao risco. Está no DECISIONS.md do projeto, com as alternativas rejeitadas — posso mostrar."
+  },
+  {
+   "id": "32-engenharia-dados/01-pipeline-etl-elt.md#1",
+   "trilha": "32-engenharia-dados",
+   "modulo": "32-engenharia-dados/01-pipeline-etl-elt.md",
+   "tituloModulo": "01 — Pipeline ETL/ELT",
+   "pergunta": "ETL ou ELT? Qual você usaria e por quê?",
+   "resposta": "Depende de onde a transformação é mais barata e auditável. Nos meus syncs de ERP faço um híbrido: validação leve no boundary da Edge Function — dado inválido não pode nem entrar — e o resto em SQL, em views no Postgres, que é ELT. Vantagem: o dado cru fica preservado, então quando a regra de negócio muda eu retransformo sem re-extrair. Streaming só com requisito de latência medido; dashboard comercial tolera minutos, e batch com janela incremental é uma ordem de magnitude mais simples de operar."
+  },
+  {
+   "id": "32-engenharia-dados/02-idempotencia-reprocessamento.md#1",
+   "trilha": "32-engenharia-dados",
+   "modulo": "32-engenharia-dados/02-idempotencia-reprocessamento.md",
+   "tituloModulo": "02 — Idempotência e Reprocessamento",
+   "pergunta": "Como você reprocessa dados sem gerar duplicata?",
+   "resposta": "Idempotência por chave natural. Minha tabela de ingestão tem unique no ID que o ERP emite, e toda escrita é upsert com on conflict — reprocessar qualquer janela é seguro por construção. Assumo entrega at-least-once: prefiro duplicar tentativa e deduplicar no banco a arriscar perda. Por cima, cada execução tem janela de overlap para pegar edição atrasada na origem, e um full-sync periódico funciona como conciliação — compara totais por dia e corrige deriva. E antes de aumentar frequência de reconciliação eu meço a deriva: se diverge, tem bug para achar, não sintoma para maquiar."
+  },
+  {
+   "id": "32-engenharia-dados/03-modelagem-analitica.md#1",
+   "trilha": "32-engenharia-dados",
+   "modulo": "32-engenharia-dados/03-modelagem-analitica.md",
+   "tituloModulo": "03 — Modelagem Analítica",
+   "pergunta": "Dois dashboards seus mostram faturamentos diferentes. O que você faz?",
+   "resposta": "Já vivi isso num cliente multi-loja. Primeiro testo a hipótese barata: é o mesmo dado com fórmulas diferentes, ou dado diferente? Comparei as queries e eram duas definições homônimas de faturamento — uma descontava cancelamento, a outra não. O fix estrutural não é corrigir um número: é mover a métrica para UMA view SQL no banco e os dois fronts consumirem a mesma fonte, porque fórmula duplicada diverge por construção. E só materializo essa view se o explain analyze provar leitura lenta — staleness e refresh são custos que não pago sem evidência."
+  },
+  {
+   "id": "32-engenharia-dados/04-qualidade-de-dados.md#1",
+   "trilha": "32-engenharia-dados",
+   "modulo": "32-engenharia-dados/04-qualidade-de-dados.md",
+   "tituloModulo": "04 — Qualidade de Dados",
+   "pergunta": "O fornecedor mudou o formato de um campo e seu pipeline quebrou de madrugada. Como evitar?",
+   "resposta": "Não dá para evitar o fornecedor mudar; dá para escolher COMO quebra. Valido com schema Zod no boundary: linha pontualmente inválida vai para quarentena com o payload cru e o motivo, e o lote segue; se o lote INTEIRO falha, é quebra de contrato — paro fail-closed e alarmo, porque prefiro dado atrasado a dado errado. Datas gravo sempre em timestamptz com fuso explícito — data sem fuso desloca venda noturna de dia e o faturamento diverge. E a quarentena é evidência: saiu o fix, reprocesso dali, sem re-extrair nada."
+  },
+  {
+   "id": "32-engenharia-dados/05-caching-invalidacao.md#1",
+   "trilha": "32-engenharia-dados",
+   "modulo": "32-engenharia-dados/05-caching-invalidacao.md",
+   "tituloModulo": "05 — Caching e Invalidação",
+   "pergunta": "Usuário diz que o dashboard só atualiza com Ctrl+Shift+R. Por onde você começa?",
+   "resposta": "Enumero as camadas e testo da mais barata: Network no DevTools — o index.html veio do cache ou do servidor? Já peguei exatamente esse bug: SPA com index.html cacheado agressivamente apontando para assets de um deploy antigo. A regra é index no-cache e assets com hash immutable por um ano — invertida, congela o app. Se o HTTP está limpo, subo de camada: cache do React Query, depois materialized view sem refresh. Cada camada tem um teste barato antes de eu tocar em código — e stampede eu previno com stale-while-revalidate em vez de TTL seco."
+  },
+  {
+   "id": "32-engenharia-dados/06-backup-recovery.md#1",
+   "trilha": "32-engenharia-dados",
+   "modulo": "32-engenharia-dados/06-backup-recovery.md",
+   "tituloModulo": "06 — Backup e Recovery",
+   "pergunta": "Como você sabe que seu backup funciona?",
+   "resposta": "Porque eu restauro ele de verdade, periodicamente, num banco descartável — e valido com queries comparando contagem, máximo e soma contra produção, porque dump truncado restaura sem erro. Cronometro o processo: esse é meu RTO medido, não estimado. O RPO depende do mecanismo: dump diário é 24h; com PITR, que arquiva WAL continuamente, cai para segundos — é o que quero em banco transacional. Sigo o 3-2-1 com uma cópia fora do provedor primário, porque backup dentro de conta suspensa não existe. O postmortem do GitLab de 2017 é meu lembrete: cinco mecanismos, zero funcionando."
+  },
+  {
+   "id": "32-engenharia-dados/07-migrations-zero-downtime.md#1",
+   "trilha": "32-engenharia-dados",
+   "modulo": "32-engenharia-dados/07-migrations-zero-downtime.md",
+   "tituloModulo": "07 — Migrations Zero-Downtime",
+   "pergunta": "Como você renomeia uma coluna com o app no ar?",
+   "resposta": "Não renomeio — expando e contraio. Rename direto quebra o app velho na janela do deploy. Crio a coluna nova nullable, ponho um trigger de dual-write para as duas versões conviverem, faço backfill em lotes de alguns milhares para não segurar lock, e só troco a leitura no release seguinte. O drop da coluna velha é outra migration, dias depois, com evidência de que ninguém mais lê — grep no código e logs. E cuidado com locks: not null via check constraint not valid mais validate, índice sempre concurrently. O contract pode esperar de graça; outage não."
+  },
+  {
+   "id": "32-engenharia-dados/08-privacidade-por-design.md#1",
+   "trilha": "32-engenharia-dados",
+   "modulo": "32-engenharia-dados/08-privacidade-por-design.md",
+   "tituloModulo": "08 — Privacidade por Design",
+   "pergunta": "Como você garante anonimato numa pesquisa interna, sabendo que admin tem acesso total ao banco?",
+   "resposta": "Por construção, não por política. No PULSAR-RH separei em duas tabelas sem chave de ligação: o ledger de participação — quem respondeu, para lembrete e adesão — e a tabela de respostas, sem user_id. A escrita é uma transação nas duas, mas não existe join possível: nem eu reconstruo quem disse o quê. E ataquei o próprio design: timestamp preciso permitiria correlação temporal, então o ledger guarda só a data; recorte pequeno identifica sem nome, então agregado respeita k mínimo. Hash não bastaria — pseudonimização revertível continua dado pessoal perante a LGPD."
+  },
+  {
+   "id": "40-frontend/01-render-cycle-e-reconciliation.md#1",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/01-render-cycle-e-reconciliation.md",
+   "tituloModulo": "01 — Render Cycle e Reconciliation",
+   "pergunta": "O que dispara uma re-renderização em React?",
+   "resposta": "Três coisas: chamada de `setState` no próprio componente, mudança de prop — comparação por referência, então objeto novo com mesma forma ainda dispara — ou mudança de contexto via `useContext`. O componente pai re-renderizar também causa render no filho por padrão, a menos que seja `React.memo`. No React 18 tem Automatic Batching — múltiplos `setState` no mesmo tick viram um único render, o que antes só funcionava em event handlers síncronos."
+  },
+  {
+   "id": "40-frontend/01-render-cycle-e-reconciliation.md#2",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/01-render-cycle-e-reconciliation.md",
+   "tituloModulo": "01 — Render Cycle e Reconciliation",
+   "pergunta": "Por que `key={index}` é ruim em listas que podem ser filtradas?",
+   "resposta": "React usa `key` pra mapear o componente da árvore anterior ao da árvore nova. Com `key={index}`, o item que estava na posição 0 e agora está na posição 2 depois de um filtro recebe a key `2` — React acha que é um componente diferente e descarta o estado. Com `key={item.id}`, o React rastreia pelo ID independente de posição e preserva o estado corretamente. Já debuguei esse bug em produção: input de formulário aparecia preenchido com dado do item anterior."
+  },
+  {
+   "id": "40-frontend/02-hooks-essenciais.md#1",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/02-hooks-essenciais.md",
+   "tituloModulo": "02 — Hooks Essenciais",
+   "pergunta": "Qual a diferença entre `useEffect` com array vazio `[]` e sem array?",
+   "resposta": "`[]` — o effect roda uma vez, logo após o primeiro render (equivalente ao antigo `componentDidMount`). O cleanup roda no unmount. A closure captura os valores iniciais de tudo — se você usa estado dentro do effect sem colocar no array, vai ter closure trap. Sem array — o effect roda após todo render, o que quase sempre é erro de design. Geralmente significa que você esqueceu de pensar nas dependências. O mental model certo é: array de deps define 'quando a sincronização precisa acontecer novamente', não 'quando o componente monta'."
+  },
+  {
+   "id": "40-frontend/02-hooks-essenciais.md#2",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/02-hooks-essenciais.md",
+   "tituloModulo": "02 — Hooks Essenciais",
+   "pergunta": "O que é a closure trap em hooks?",
+   "resposta": "Quando uma função dentro de um hook captura uma variável do render anterior e não vê o valor atual. Exemplo clássico: `setInterval` com `useEffect` e `[]` lê um contador que sempre vale o valor inicial, porque a função foi criada no primeiro render e nunca recriada. O fix é usar a forma funcional do setter — `setCount(c => c + 1)` — que recebe o valor atual como argumento em vez de capturar do closure."
+  },
+  {
+   "id": "40-frontend/03-quando-memoizar-e-quando-nao.md#1",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/03-quando-memoizar-e-quando-nao.md",
+   "tituloModulo": "03 — Quando Memoizar e Quando Não",
+   "pergunta": "Quando você usaria `useMemo`?",
+   "resposta": "Raramente, e só depois de medir. O fluxo que sigo: escrevo sem memo, meço com o React DevTools Profiler se a UI parecer lenta, e só adiciono se o componente aparece como gargalo com render > 5ms e re-renderiza com frequência. Na prática, os casos que justificam são sort ou filter em listas grandes, ou transformações que dependem de dados externos. Computações triviais não — o overhead do memo de comparar dependências a cada render pode ser maior do que o custo do cálculo que estou 'evitando'."
+  },
+  {
+   "id": "40-frontend/03-quando-memoizar-e-quando-nao.md#2",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/03-quando-memoizar-e-quando-nao.md",
+   "tituloModulo": "03 — Quando Memoizar e Quando Não",
+   "pergunta": "`useCallback` sempre melhora performance?",
+   "resposta": "Não. `useCallback` só ajuda quando a função é passada para um componente filho que usa `React.memo`, ou quando é dep de um `useEffect` que não pode ser recriado. Fora desses casos, `useCallback` aloca um closure e compara deps a cada render sem benefício nenhum. Vi code base com `useCallback` em todo handler de click e nenhum `React.memo` no projeto — o overhead era maior que qualquer ganho."
+  },
+  {
+   "id": "40-frontend/04-state-management.md#1",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/04-state-management.md",
+   "tituloModulo": "04 — State Management",
+   "pergunta": "Quando você escolheria Context API em vez de Zustand?",
+   "resposta": "Context para dados que mudam raramente e têm muitos consumidores — tema, locale, dados do usuário logado. O custo do Context é que todo consumidor re-renderiza quando o valor muda, então frequência baixa de updates é importante. Zustand para estado que muda com frequência e precisa ser acessado de múltiplos lugares — filtros, seleções, estado de UI que precisa ser compartilhado. Zustand permite selecionar só o pedaço que o componente usa, então re-renderiza só quem precisa. Para o caso específico de dados da API, nenhum dos dois — uso TanStack Query, que resolve cache, loading e refetch de forma muito mais completa."
+  },
+  {
+   "id": "40-frontend/04-state-management.md#2",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/04-state-management.md",
+   "tituloModulo": "04 — State Management",
+   "pergunta": "O que é a diferença entre estado do servidor e estado do cliente?",
+   "resposta": "Estado do cliente é o que só existe no browser: qual tab está ativa, se o modal está aberto, o texto digitado num filtro. Estado do servidor é dado que existe no backend e você está cacheando localmente: lista de gravações, perfil do usuário, dashboard de métricas. A diferença prática é que servidor state tem problemas que cliente state não tem: pode ficar stale, precisa de refetch, pode ser invalidado por outra ação. Gerenciar isso com useState é reinventar a roda. TanStack Query foi construído exatamente para esse problema."
+  },
+  {
+   "id": "40-frontend/05-acessibilidade-aria.md#1",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/05-acessibilidade-aria.md",
+   "tituloModulo": "05 — Acessibilidade e ARIA",
+   "pergunta": "Por que usar `<div onClick>` em vez de `<button>` é problemático?",
+   "resposta": "Porque `<div>` não tem semântica de controle interativo. O browser não coloca na ordem de tabulação por padrão — usuário de teclado não consegue chegar nele. Não responde a Enter ou Space — precisaria de JavaScript extra. Screen reader não sabe que é clicável — anuncia como texto genérico. `<button>` resolve tudo isso de graça: está na tab order, dispara com teclado, tem `role='button'`, pode receber `disabled`. Se o design exige um elemento sem as bordas de botão, `<button>` com CSS `appearance: none` é a resposta — não `<div>` com gambiarra."
+  },
+  {
+   "id": "40-frontend/05-acessibilidade-aria.md#2",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/05-acessibilidade-aria.md",
+   "tituloModulo": "05 — Acessibilidade e ARIA",
+   "pergunta": "Qual a diferença entre `aria-label` e `aria-labelledby`?",
+   "resposta": "Ambos fornecem texto descritivo para screen reader, mas de fontes diferentes. `aria-label` é texto inline direto no atributo — útil para ícones sem texto visível, como um botão de fechar com só um X. `aria-labelledby` aponta para o ID de outro elemento que já tem o texto — útil para formulários onde o label visual já existe. A regra é: se já tem texto visível na página que descreve o elemento, use `aria-labelledby` apontando para ele. Se não há texto visível, use `aria-label`. Nunca os dois ao mesmo tempo — `aria-labelledby` tem precedência mas é confuso."
+  },
+  {
+   "id": "40-frontend/06-performance-web.md#1",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/06-performance-web.md",
+   "tituloModulo": "06 — Performance Web",
+   "pergunta": "O que é LCP e como você melhoraria em uma página lenta?",
+   "resposta": "LCP é o tempo que leva para o maior elemento visível renderizar — em geral a imagem hero ou o bloco de texto principal. É o principal indicador de quando o usuário vê conteúdo útil. Para melhorar: primeiro medir com Lighthouse para saber qual é o elemento LCP e por que tarda. Causas comuns: imagem hero sem preload (browser descobre tarde no parse), imagem não comprimida (download lento), fonte custom bloqueando texto (font-display: swap resolve). No PULSAR-RH o LCP era a imagem do logo sem preload — adicionei `<link rel=\"preload\">` e caiu de 3.8s para 1.9s."
+  },
+  {
+   "id": "40-frontend/06-performance-web.md#2",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/06-performance-web.md",
+   "tituloModulo": "06 — Performance Web",
+   "pergunta": "O que causa CLS e como evitar?",
+   "resposta": "CLS acontece quando elementos mudam de posição depois de renderizados. Causas mais comuns: imagens sem `width` e `height` definidos — quando carregam, empurram o conteúdo abaixo. Ads ou embeds sem tamanho reservado. Fontes custom que causam reflow quando substituem a fallback. Para evitar: sempre definir dimensões em imagens, reservar espaço para conteúdo dinâmico com `min-height`, e usar `font-display: optional` ou `swap` com fallback de métricas similares."
+  },
+  {
+   "id": "40-frontend/07-testes-ui.md#1",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/07-testes-ui.md",
+   "tituloModulo": "07 — Testes de UI",
+   "pergunta": "Como você testaria um componente de lista sem acoplar à implementação?",
+   "resposta": "Usando React Testing Library com queries semânticas. Em vez de buscar por className ou data-testid, uso `getByRole('listitem')` ou `getByText`. Para mockar a API, uso MSW — ele intercepta a requisição na camada de rede, então o componente roda de verdade e eu verifico o que aparece na tela. A asserção é sobre o que o usuário vê: texto visível, botão habilitado, mensagem de erro. Não verifico se `setRecordings` foi chamado ou qual prop passou para o filho — isso é implementação. Se refatorar o componente sem mudar o comportamento, o teste continua verde."
+  },
+  {
+   "id": "40-frontend/07-testes-ui.md#2",
+   "trilha": "40-frontend",
+   "modulo": "40-frontend/07-testes-ui.md",
+   "tituloModulo": "07 — Testes de UI",
+   "pergunta": "Qual o problema com snapshot tests?",
+   "resposta": "Snapshots capturam o HTML inteiro. Qualquer mudança — incluindo adicionar uma class CSS, mudar um texto ou refatorar um componente filho — quebra o snapshot. O resultado na prática é que os devs rodam `--updateSnapshot` sem revisar, porque 'o componente visualmente não mudou'. O snapshot vira papelada que ninguém confia. Para garantir que o componente renderiza corretamente, prefiro asserções explícitas: `screen.getByRole('button', { name: /salvar/i })` — verifica que o botão existe e tem o texto certo, sem capturar o HTML completo."
+  },
+  {
+   "id": "42-design/01-hierarquia-visual.md#1",
+   "trilha": "42-design",
+   "modulo": "42-design/01-hierarquia-visual.md",
+   "tituloModulo": "01 — Hierarquia Visual",
+   "pergunta": "Como você decide o que destacar numa tela cheia de informação?",
+   "resposta": "Primeiro defino o ponto focal — um só por tela. Num dashboard comercial que fiz, o número-mestre é um hero card e os KPIs secundários ficam menores, porque o dono abre a tela pra responder uma pergunta: 'como está o faturamento?'. Uso quatro alavancas em ordem: tamanho, peso, contraste e espaço — e valido com teste de 5 segundos: mostro a tela a alguém de fora e pergunto o que era mais importante. Se a resposta diverge da intenção, a hierarquia falhou e eu ajusto uma alavanca por vez."
+  },
+  {
+   "id": "42-design/02-tipografia.md#1",
+   "trilha": "42-design",
+   "modulo": "42-design/02-tipografia.md",
+   "tituloModulo": "02 — Tipografia",
+   "pergunta": "Quais decisões tipográficas você toma ao começar uma interface nova?",
+   "resposta": "Quatro: escala modular — base 16 e razão 1.2 pra dashboard, 1.25 pra uso geral, assim tamanho de fonte vira degrau, não debate. Line-height por contexto — 1.5 no corpo, 1.1 em título grande, e quanto mais larga a linha, mais entrelinha. Medida de 45 a 75 caracteres com `max-width: 65ch`. E família única com vários pesos, tipo Inter, antes de pensar em par. Num pipeline de DRE que fiz, o detalhe decisivo foi `tabular-nums`: sem ele coluna de valor financeiro não alinha e a tabela parece quebrada."
+  },
+  {
+   "id": "42-design/03-cor-com-intencao.md#1",
+   "trilha": "42-design",
+   "modulo": "42-design/03-cor-com-intencao.md",
+   "tituloModulo": "03 — Cor com Intenção",
+   "pergunta": "Como você aborda dark mode num produto que nasceu light?",
+   "resposta": "Não é inversão — é re-projeto de quatro coisas. Fundo cinza-azulado escuro, nunca preto puro. Elevação vira superfície mais clara, porque sombra some no escuro. Cores saturadas do light vibram — eu dessaturo. E refaço a verificação de contraste AA par a par, porque os pares se refazem. Trabalho com produto dark-first onde a cor da marca é só acento em área pequena — acento saturado em área grande no escuro cansa o olho. E semântica se mantém nos dois temas: verde é positivo nos dois, com ícone dobrando o sinal por causa de daltonismo."
+  },
+  {
+   "id": "42-design/04-espacamento-grid.md#1",
+   "trilha": "42-design",
+   "modulo": "42-design/04-espacamento-grid.md",
+   "tituloModulo": "04 — Espaçamento e Grid",
+   "pergunta": "Como você decide os espaçamentos de uma tela? É no olho?",
+   "resposta": "Não — escala fixa de múltiplos de 4, na prática degraus de 8: 8, 16, 24, 32, 48. O Tailwind já embute isso, então valor arbitrário tipo `p-[13px]` é red flag que eu audito com grep. A regra que mais uso é de Gestalt: espaço dentro de um grupo sempre menor que espaço entre grupos — resolve formulário e card sem precisar de borda. E densidade é decisão de contexto: dashboard que fiz pra operação é denso de propósito, o usuário compara números todo dia; landing é generosa porque o visitante precisa de um foco só."
+  },
+  {
+   "id": "42-design/05-estados-da-interface.md#1",
+   "trilha": "42-design",
+   "modulo": "42-design/05-estados-da-interface.md",
+   "tituloModulo": "05 — Estados da Interface",
+   "pergunta": "O design te entregou só a tela com dados. O que você faz?",
+   "resposta": "Enumero os cinco estados antes de codar: vazio, carregando, erro, parcial e cheio. O vazio é o mais crítico — é a primeira impressão de todo usuário novo; num dashboard com sync de ERP que fiz, o primeiro acesso acontece antes da primeira sincronização, então a tela diz 'sincronizando' em vez de mostrar zeros que parecem dado real. Carregando é skeleton com a geometria do conteúdo pra evitar layout shift. Erro é acionável, com retry — e nunca zero silencioso, porque zero silencioso mente. Aí forço cada estado no DevTools antes de dar como pronto."
+  },
+  {
+   "id": "42-design/06-acessibilidade-minima.md#1",
+   "trilha": "42-design",
+   "modulo": "42-design/06-acessibilidade-minima.md",
+   "tituloModulo": "06 — Acessibilidade Mínima",
+   "pergunta": "O que você faz de acessibilidade no dia a dia? Sem equipe dedicada.",
+   "resposta": "Tenho um mínimo não-negociável de cinco itens: foco visível com `:focus-visible`, navegação completa por teclado — meu teste é largar o mouse e tabular a tela, inclusive focus trap em modal —, HTML semântico antes de ARIA, porque button nativo dá teclado e foco de graça, alvo de toque de 44px e contraste AA. Rodo axe DevTools, mas sei que scanner cobre só uns 30% dos critérios — o teste de teclado pega o que ele não vê. E respeito prefers-reduced-motion em produto; já tive caso de RDP forçando essa flag e congelando animação, então sei na pele que ela existe."
+  },
+  {
+   "id": "42-design/07-design-system-pratico.md#1",
+   "trilha": "42-design",
+   "modulo": "42-design/07-design-system-pratico.md",
+   "tituloModulo": "07 — Design System Prático",
+   "pergunta": "Vocês têm design system? Como funciona na prática?",
+   "resposta": "Temos a versão pragmática: tokens em dois níveis — primitivo, tipo `purple-500`, e semântico, tipo `accent` — e componente só consome o semântico, que é o que deixa dark mode e theming baratos. Componentes com variantes via CVA em vez de cópias: um Button com variant e size tipados. E documentamos o porquê de cada token numa linha, porque token sem racional é forkado no primeiro prazo apertado. Aprendi na prática um gotcha: canvas não resolve `var()` — gráfico recebe a cor computada via getComputedStyle. O princípio que defendo é consistência acima de originalidade: o usuário aprende o sistema uma vez."
+  },
+  {
+   "id": "42-design/08-critica-estruturada.md#1",
+   "trilha": "42-design",
+   "modulo": "42-design/08-critica-estruturada.md",
+   "tituloModulo": "08 — Crítica Estruturada",
+   "pergunta": "Olha essa tela do nosso produto. O que você mudaria?",
+   "resposta": "Antes de mudar, eu perguntaria a intenção: pra que serve a tela e qual a informação crítica — sem isso, crítica é gosto. Aí rodo cinco eixos: hierarquia — tem um ponto focal só? —, os cinco estados, consistência com o sistema, acessibilidade de teclado e contraste, e respiro do espaçamento. Formulo cada achado como hipótese testável: 'isso parece confuso porque há dois pontos focais — um teste de 5 segundos confirma'. E mudaria incrementalmente: top 3 por impacto, re-testa, repete — big-bang destrói a evidência de o que melhorou o quê."
+  },
+  {
+   "id": "44-motion-design/01-motion-com-proposito.md#1",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/01-motion-com-proposito.md",
+   "tituloModulo": "01 — Motion com Propósito",
+   "pergunta": "Quando você decide adicionar ou remover uma animação de uma interface?",
+   "resposta": "Eu classifico por propósito: orientar, confirmar ou encantar. Se não faz nenhum dos três, removo — animação sem propósito rouba atenção, e atenção é serial. Confirmação de ação precisa chegar em menos de 100ms ou o usuário clica de novo. Encantamento eu reservo pra momentos raros, tipo intro de apresentação — nos dashboards de trabalho que fiz pra clientes, o miolo é quase estático de propósito, porque quem usa 50 vezes por dia não pode pagar 300ms por clique."
+  },
+  {
+   "id": "44-motion-design/02-easing-timing.md#1",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/02-easing-timing.md",
+   "tituloModulo": "02 — Easing & Timing",
+   "pergunta": "Como você escolhe easing e duração de uma animação?",
+   "resposta": "Easing pelo papel: ease-out pra entrada, porque a parte rápida acontece primeiro e o elemento responde na hora; ease-in pra saída, porque o final de quem sai não importa; linear só pra opacidade ou spinner. Duração pelo porte: 100–150ms pra micro-interação, até 400ms pra transição de tela — acima disso o usuário está esperando a UI. E se a interação é um gesto interrompível, tipo drag, eu troco bezier por spring, porque spring preserva a velocidade quando o usuário intervém no meio."
+  },
+  {
+   "id": "44-motion-design/03-coreografia-stagger.md#1",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/03-coreografia-stagger.md",
+   "tituloModulo": "03 — Coreografia & Stagger",
+   "pergunta": "Você tem uma lista de resultados que entra na tela. Como anima?",
+   "resposta": "Stagger de 40 a 50ms entre itens, cada um com fade + translateY curto de uns 12px, ease-out, 300–400ms. A ordem segue a hierarquia: cabeçalho antes dos itens. E eu ponho um teto — se a lista tem 30 itens, só os 8 primeiros ganham stagger e o resto entra junto, senão o usuário espera 1,5s de puro delay. O princípio é que atenção é serial: tudo junto, nada se destaca; em sequência, eu controlo a ordem de leitura. Uso esse padrão nos reveals de slide das apresentações que faço."
+  },
+  {
+   "id": "44-motion-design/04-transicoes-de-estado.md#1",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/04-transicoes-de-estado.md",
+   "tituloModulo": "04 — Transições de Estado & FLIP",
+   "pergunta": "Como você animaria um item de lista que muda de posição após um sort?",
+   "resposta": "FLIP: meço a posição antes com getBoundingClientRect, deixo o DOM reordenar, meço de novo, aplico um transform que devolve o item visualmente pro lugar antigo e transiciono até transform none. O layout acontece uma vez só e a animação inteira é transform no compositor. Usei esse padrão em ranking de vendedores que reordena com filtro de período. Hoje eu testaria também View Transitions API, que faz isso nativo — mas com fallback, porque é progressive enhancement, não baseline."
+  },
+  {
+   "id": "44-motion-design/05-microinteracoes.md#1",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/05-microinteracoes.md",
+   "tituloModulo": "05 — Microinterações",
+   "pergunta": "O usuário clica em 'Salvar' e a API leva meio segundo. O que sua UI faz?",
+   "resposta": "O botão vira a máquina de estados: no clique ele desabilita — isso mata duplo-submit — e mostra loading; no sucesso, vira '✓ Salvo' por uns 2 segundos e volta sozinho; no erro, mostra o quê e o porquê, não 'algo deu errado'. Feedback visual do press em menos de 100ms, que é o limiar de instantâneo. E eu testo com throttling de rede, porque em localhost o loading nem aparece — foi assim que peguei um duplo-submit num formulário de RH que em rede rápida nunca se manifestava."
+  },
+  {
+   "id": "44-motion-design/06-performance-de-animacao.md#1",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/06-performance-de-animacao.md",
+   "tituloModulo": "06 — Performance de Animação",
+   "pergunta": "Uma animação está engasgando. Como você investiga?",
+   "resposta": "Primeiro meço: Performance panel com CPU 4x, gravo a interação e olho os frames que estouram 16,7ms. Se tem Layout roxo em todo frame, alguém está animando top/width ou intercalando leitura e escrita de geometria — troco por transform, que roda só no compositor. Se é Paint, suspeito de box-shadow ou filter animado — pré-pinto num pseudo-elemento e animo opacity. Aplico um fix por vez e meço de novo; se não confirmar, a hipótese estava errada. Foi assim que estabilizei os efeitos 3D dos decks de apresentação que faço."
+  },
+  {
+   "id": "44-motion-design/07-motion-acessivel-e-armadilhas.md#1",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/07-motion-acessivel-e-armadilhas.md",
+   "tituloModulo": "07 — Motion Acessível & Armadilhas",
+   "pergunta": "Como você lida com prefers-reduced-motion?",
+   "resposta": "Reduzo, não congelo: troco translações grandes e parallax por fade ou corte seco, e mantenho feedback funcional. Estruturalmente, o estado final vive no CSS normal e a animação só descreve a viagem — assim, animação que não roda nunca esconde conteúdo. E aprendi na prática que o flag pode vir do ambiente, não do usuário: sessão RDP no Windows liga reduced-motion sozinha e congelou uma apresentação minha em opacity zero. Verifiquei com matchMedia antes de culpar o código — e a exceção pra decks ficou documentada em DECISIONS.md com escopo fechado."
+  },
+  {
+   "id": "46-3d-web/01-mapa-do-3d.md#1",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/01-mapa-do-3d.md",
+   "tituloModulo": "01 — Mapa do 3D na Web",
+   "pergunta": "Você faria um site 3D com WebGPU hoje?",
+   "resposta": "Depende de quem acessa. WebGPU é melhor tecnicamente — menos overhead, compute shaders — mas o suporte ainda não é universal, então em produto de cliente eu escrevo para WebGL e deixo WebGPU como backend opcional, que o three.js já abstrai. Num deck que fiz, fui além: o alvo rodava via RDP, sem GPU real, então nem WebGL — usei CSS3D puro, que o compositor do browser aguenta. Primeiro eu meço o ambiente, depois escolho a API."
+  },
+  {
+   "id": "46-3d-web/02-three-fundamentos.md#1",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/02-three-fundamentos.md",
+   "tituloModulo": "02 — three.js: Fundamentos",
+   "pergunta": "Descreva o pipeline mínimo do three.js pra pôr um objeto na tela.",
+   "resposta": "Quatro peças: uma Scene, que é o grafo de objetos; uma Camera, que define projeção e ponto de vista; um Mesh, que é geometria mais material; e um Renderer, que a cada frame traduz cena e câmera em draw calls de WebGL. Nada desenha sozinho — eu chamo render num animation loop. Os dois erros que sempre pego em code review: material com luz numa cena sem luz, que renderiza preto, e esquecer `updateProjectionMatrix` no resize, que distorce tudo."
+  },
+  {
+   "id": "46-3d-web/03-css3d-sem-webgl.md#1",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/03-css3d-sem-webgl.md",
+   "tituloModulo": "03 — CSS3D: 3D sem WebGL",
+   "pergunta": "O que `transform-style: preserve-3d` faz e o que pode quebrá-lo?",
+   "resposta": "Por padrão o browser projeta os filhos no plano do pai — achata. `preserve-3d` mantém os filhos no espaço 3D. O detalhe que já me custou debug: propriedades que criam stacking context — `overflow: hidden`, `filter`, `opacity` menor que 1 — reativam o achatamento sem erro nenhum no console. Num deck com cards em esfera, o sintoma foi 'o 3D sumiu'; a causa era um `overflow: hidden` adicionado num contêiner intermediário. Hoje eu isolo: `perspective` no palco, `preserve-3d` só na cadeia que precisa."
+  },
+  {
+   "id": "46-3d-web/04-geometria-materiais.md#1",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/04-geometria-materiais.md",
+   "tituloModulo": "04 — Geometria e Materiais",
+   "pergunta": "O que custa mais numa cena three.js: 100 mil triângulos ou 300 objetos?",
+   "resposta": "Quase sempre os 300 objetos. Cada mesh com seu material é um draw call — uma ida CPU→GPU com rebind de estado — e é aí que o frame morre, não na rasterização. GPU moderna processa milhões de triângulos, mas centenas de draw calls estrangulam a CPU. Eu verifico em `renderer.info.render.calls` antes de otimizar qualquer coisa; se calls está alto, a resposta é mergear geometria ou instancing, não baixar polígono."
+  },
+  {
+   "id": "46-3d-web/05-animacao-3d.md#1",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/05-animacao-3d.md",
+   "tituloModulo": "05 — Animação 3D",
+   "pergunta": "Por que animar com `x += 0.01` por frame é bug, e como corrige?",
+   "resposta": "Porque frame não é unidade de tempo: em 120 Hz esse código roda o dobro da velocidade, e num engasgo ele salta. Corrijo com delta time — escalo velocidade pelo tempo real entre frames — ou derivo o estado direto do timestamp. E tem a armadilha do retorno de aba: rAF pausa em aba oculta, então o primeiro dt na volta pode ser de segundos; eu clampo o dt pra evitar o teleporte. Pra suavização, uso damping exponencial com dt, que o three já dá pronto no `MathUtils.damp`."
+  },
+  {
+   "id": "46-3d-web/06-luz-e-atmosfera.md#1",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/06-luz-e-atmosfera.md",
+   "tituloModulo": "06 — Luz e Atmosfera",
+   "pergunta": "Sua cena está lenta e tem 4 luzes com sombra. O que você faz?",
+   "resposta": "Primeiro meço — cada luz com sombra re-renderiza a cena pro shadow map dela, então 4 luzes podem significar 5× o custo de render. Normalmente deixo sombra só na luz-chave direcional, troco as demais por luzes sem sombra ou por um environment map, que ilumina tudo por imagem a custo fixo. E confiro o frustum da shadow camera com um CameraHelper antes de mexer em resolução: sombra ruim geralmente é frustum largo, não mapSize baixo. Num deck nosso a decisão foi mais radical: zero sombras, porque o alvo rodava via RDP sem GPU."
+  },
+  {
+   "id": "46-3d-web/07-performance-3d.md#1",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/07-performance-3d.md",
+   "tituloModulo": "07 — Performance 3D",
+   "pergunta": "Sua cena three.js caiu pra 20 fps. Qual seu processo?",
+   "resposta": "Meço antes de tocar em código: `renderer.info` me dá draw calls e triângulos; se calls está nas centenas, a hipótese principal é submissão CPU, e instancing ou merge de geometria resolve. Pra separar CPU de GPU, um teste barato: derrubo o pixel ratio pra 1 — se o fps sobe, o gargalo é fill rate, e eu capo o dpr ou simplifico o shader. Se nada disso explica, capturo um frame no Spector.js e olho call a call. E num caso de SPA, sempre confiro `info.memory` após desmontar — leak de VRAM por falta de dispose degrada aos poucos e não aparece em profiler de JS."
+  },
+  {
+   "id": "46-3d-web/08-3d-integrado-a-ui.md#1",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/08-3d-integrado-a-ui.md",
+   "tituloModulo": "08 — 3D Integrado à UI",
+   "pergunta": "Como você poria uma cena 3D atrás de um dashboard sem prejudicar a UX?",
+   "resposta": "Três regras. Primeiro: o 3D é decorativo por contrato — nenhuma informação existe só nele, então a degradação pra um gradiente estático não perde nada; eu detecto WebGL antes de importar o three, com import dinâmico, e trato render por software como 'sem GPU', porque já vi cliente rodando via RDP. Segundo: orçamento — pixel ratio capado, sem sombras, draw calls medidos, porque o frame é dividido com a UI. Terceiro: contraste e foco — canvas com pointer-events none atrás de tudo, e a legibilidade da UI garantida por scrim, medida, não estimada."
+  },
+  {
+   "id": "50-backend/01-express-estrutura-middlewares.md#1",
+   "trilha": "50-backend",
+   "modulo": "50-backend/01-express-estrutura-middlewares.md",
+   "tituloModulo": "01 — Express: Estrutura e Middlewares",
+   "pergunta": "Por que `throw` dentro de uma rota `async` não chega no seu `errorHandler`?",
+   "resposta": "Porque Express foi criado antes de async/await existir. Ele não envolve handlers em try/catch — chama a função, recebe a Promise de volta e não escuta rejeições. Quando um `throw` ocorre num handler async, vai para uma Promise rejeitada que Express não observa. O processo recebe `unhandledRejection`. A solução é `express-async-errors` — uma linha que faz monkey-patch nos métodos de rota e envolve cada handler em `.catch(next)`. Agora qualquer erro em handler async é passado para o `next` e chega no `errorHandler`."
+  },
+  {
+   "id": "50-backend/01-express-estrutura-middlewares.md#2",
+   "trilha": "50-backend",
+   "modulo": "50-backend/01-express-estrutura-middlewares.md",
+   "tituloModulo": "01 — Express: Estrutura e Middlewares",
+   "pergunta": "Como você estruturaria um projeto Express para uma equipe de 3 devs?",
+   "resposta": "Routes, controllers, services — três camadas. Route só registra path e método, delega para controller. Controller cuida de HTTP: extrai params, valida com Zod, formata resposta, chama service. Service tem lógica de negócio e não sabe que HTTP existe. Essa separação significa que posso testar o service sem subir o servidor, e o controller sem mockar o banco. Um middleware global de erro no final captura tudo. Auth middleware registrado no nível do app antes das rotas protegidas — nunca por rota individual, porque alguém vai esquecer."
+  },
+  {
+   "id": "50-backend/02-prisma-typesafe-orm.md#1",
+   "trilha": "50-backend",
+   "modulo": "50-backend/02-prisma-typesafe-orm.md",
+   "tituloModulo": "02 — Prisma: ORM Type-Safe",
+   "pergunta": "Qual a diferença entre `include` e `select` no Prisma?",
+   "resposta": "`include` carrega a relação inteira junto com o modelo pai — todos os campos, todos os registros relacionados que existirem. É conveniente para desenvolvimento, mas perigoso em produção: se um `Recording` tem 500 `MeetSession`s e cada session tem um campo de transcrição, você acabou de trazer centenas de MB sem querer. `select` especifica exatamente quais campos você precisa, inclusive nos modelos relacionados. Em listagens, sempre `select` com os campos mínimos necessários. `include` só em endpoints de detalhe quando você genuinamente precisa da relação completa, e mesmo assim considerar `select` nested."
+  },
+  {
+   "id": "50-backend/02-prisma-typesafe-orm.md#2",
+   "trilha": "50-backend",
+   "modulo": "50-backend/02-prisma-typesafe-orm.md",
+   "tituloModulo": "02 — Prisma: ORM Type-Safe",
+   "pergunta": "Como você garantiria atomicidade em múltiplas escritas com Prisma?",
+   "resposta": "`prisma.$transaction`. Para writes independentes que devem todos ter sucesso ou todos falhar, passo um array: `prisma.$transaction([create1, create2])`. Para lógica condicional — onde eu preciso ler antes de escrever — uso a forma com callback: `prisma.$transaction(async tx => { ... })`. O `tx` é um client especial que garante que todas as operações rodam na mesma transação de banco. Se qualquer `throw` ocorrer dentro do callback, o Prisma faz rollback automático."
+  },
+  {
+   "id": "50-backend/03-queues-bull-redis.md#1",
+   "trilha": "50-backend",
+   "modulo": "50-backend/03-queues-bull-redis.md",
+   "tituloModulo": "03 — Filas com Bull e Redis",
+   "pergunta": "O que acontece se o worker cair no meio de um job?",
+   "resposta": "Bull marca o job como `stalled` após um timeout configurável. Quando um novo worker assume ou o mesmo reinicia, o job volta para `waiting` e é reprocessado. Por isso idempotência no handler é obrigatória — se o job rodar duas vezes, o resultado tem que ser o mesmo. Na prática: verificar se o efeito colateral já aconteceu antes de fazê-lo. No Meet Hub, o worker de transcrição checa se o campo `status` da gravação já é `'transcribed'` antes de chamar o Whisper — se sim, retorna imediatamente sem trabalho duplicado."
+  },
+  {
+   "id": "50-backend/03-queues-bull-redis.md#2",
+   "trilha": "50-backend",
+   "modulo": "50-backend/03-queues-bull-redis.md",
+   "tituloModulo": "03 — Filas com Bull e Redis",
+   "pergunta": "Quando você escolheria backoff exponencial em vez de delay fixo?",
+   "resposta": "Exponencial para falhas que podem ser temporárias e causadas por sobrecarga — API de terceiro, serviço externo sobrecarregado. Retry imediato ou com delay fixo curto vai piorar a situação — você e outros clientes bombardeando o serviço já sobrecarregado. Exponencial dá espaço para o problema se resolver: 2s, 4s, 8s, 16s. Delay fixo faz sentido quando o problema tem uma causa conhecida e um tempo de recuperação previsível — 'o banco reinicia e fica disponível em 30s', por exemplo."
+  },
+  {
+   "id": "50-backend/04-idempotencia-em-apis.md#1",
+   "trilha": "50-backend",
+   "modulo": "50-backend/04-idempotencia-em-apis.md",
+   "tituloModulo": "04 — Idempotência em APIs",
+   "pergunta": "O que acontece se o mesmo webhook chegar duas vezes no seu servidor?",
+   "resposta": "Sem proteção, o handler roda duas vezes — duplica o efeito colateral. Webhook de pagamento roda duas vezes = cliente cobrado duas vezes. Minha proteção padrão: no recebimento do webhook, faço hash do payload e salvo numa tabela de `processed_events`. Se o mesmo hash já existe, retorno 200 para o emissor mas não processo. Se não existe, salvo o hash e processo — numa transaction para garantir que registro e processamento são atômicos. A maioria dos serviços de webhook garante 'at least once delivery', então idempotência no handler é responsabilidade minha."
+  },
+  {
+   "id": "50-backend/04-idempotencia-em-apis.md#2",
+   "trilha": "50-backend",
+   "modulo": "50-backend/04-idempotencia-em-apis.md",
+   "tituloModulo": "04 — Idempotência em APIs",
+   "pergunta": "Qual a diferença entre uma operação idempotente e uma operação segura?",
+   "resposta": "Segura significa que a operação não causa efeitos colaterais — GET é seguro porque só lê. Idempotente significa que executar N vezes tem o mesmo resultado que executar 1 vez — GET é idempotente, PUT é idempotente (substituir com os mesmos dados = mesmo resultado), DELETE é idempotente (deletar o que não existe = ainda não existe). POST geralmente não é nenhum dos dois por padrão — cria novo recurso a cada chamada. A distinção importa porque clientes podem repetir requests seguros livremente e podem repetir requests idempotentes com segurança, mas POST requer proteção explícita contra duplicatas."
+  },
+  {
+   "id": "50-backend/05-rate-limit-e-throttle.md#1",
+   "trilha": "50-backend",
+   "modulo": "50-backend/05-rate-limit-e-throttle.md",
+   "tituloModulo": "05 — Rate Limit e Throttle",
+   "pergunta": "Como você integraria com uma API terceira que tem rate limit de 10 req/s?",
+   "resposta": "Depende do volume e da criticidade. Para volume pequeno, `p-limit(8)` — 8 requests simultâneos, razoavelmente abaixo do limite para ter margem. Para volume grande onde não posso perder dados, fila Bull com `rateLimiter: { max: 8, duration: 1000 }` — a fila persiste em Redis, jobs que recebem 429 fazem retry automático, posso monitorar jobs falhados. O circuit breaker adiciona a camada final: se a API está fora do ar, paro de tentar por 30s em vez de inundar com requests que vão falhar. Vi esse problema no Cliente Varejo — sem throttle, a integração recebia 429 constantemente e travava."
+  },
+  {
+   "id": "50-backend/05-rate-limit-e-throttle.md#2",
+   "trilha": "50-backend",
+   "modulo": "50-backend/05-rate-limit-e-throttle.md",
+   "tituloModulo": "05 — Rate Limit e Throttle",
+   "pergunta": "Qual a diferença entre rate limit e throttle?",
+   "resposta": "Rate limit rejeita a operação que excede o limite — retorna 429. Throttle adia — enfileira e processa quando há capacidade. Na prática: rate limit inbound na minha API protege contra abuso, retorna erro para o cliente. Throttle outbound nas minhas chamadas a APIs terceiras garante que eu respeito o limite delas sem perder as operações — coloco em fila e processo na velocidade certa. Fila Bull com `rateLimiter` é throttle: o job não é rejeitado, fica na fila e é processado quando o token estiver disponível."
+  },
+  {
+   "id": "50-backend/06-graceful-shutdown-sigterm.md#1",
+   "trilha": "50-backend",
+   "modulo": "50-backend/06-graceful-shutdown-sigterm.md",
+   "tituloModulo": "06 — Graceful Shutdown e SIGTERM",
+   "pergunta": "O que acontece quando você faz `docker stop` num container sem graceful shutdown?",
+   "resposta": "Docker manda SIGTERM e espera 10 segundos. Se o processo não terminou, Docker manda SIGKILL — encerra forçado. Sem handler de SIGTERM: requests HTTP em voo recebem connection reset, jobs Bull em processamento ficam como `stalled` e são reprocessados no próximo start (se o handler for idempotente). Conexões de banco ficam abertas no pool até timeout do Postgres. A solução é capturar SIGTERM, chamar `server.close()` para parar de aceitar novas conexões, `worker.close()` que aguarda o job atual, `prisma.$disconnect()`, e só então `process.exit(0)`. Configurar `stop_grace_period: 30s` no docker-compose para ter tempo suficiente."
+  },
+  {
+   "id": "50-backend/06-graceful-shutdown-sigterm.md#2",
+   "trilha": "50-backend",
+   "modulo": "50-backend/06-graceful-shutdown-sigterm.md",
+   "tituloModulo": "06 — Graceful Shutdown e SIGTERM",
+   "pergunta": "Por que chamar `process.exit()` diretamente é problemático?",
+   "resposta": "Porque fecha tudo abrupto — sem flushar buffers de log, sem fechar conexões de banco corretamente, sem aguardar jobs em andamento. É equivalente a SIGKILL por dentro. O resultado: log de erro do job que estava rodando some porque o buffer de log não foi flushado, conexão de banco fica aberta no pool do Postgres até timeout, job no Redis fica como `active` sem worker — trava até o `lockDuration` expirar. `process.exit(0)` é correto **ao final** do graceful shutdown, depois que tudo foi fechado. Nunca no meio de um handler como saída rápida."
+  },
+  {
+   "id": "50-backend/07-logging-estruturado-pino.md#1",
+   "trilha": "50-backend",
+   "modulo": "50-backend/07-logging-estruturado-pino.md",
+   "tituloModulo": "07 — Logging Estruturado com Pino",
+   "pergunta": "Como você debugaria um problema em produção sem acesso ao debugger?",
+   "resposta": "Pela estrutura de logs. Se os logs forem estruturados com correlation ID, filtro pelo requestId do request problemático e vejo toda a sequência: quando chegou, quais serviços foram chamados, onde o erro ocorreu, com quais dados. Sem estrutura, fico com `grep` em texto livre — funciona para erros óbvios, inútil para problemas de estado. Por isso Pino com requestId é infraestrutura, não opcional. Na prática: o cliente reporta que a gravação X não foi transcrita, pego o requestId dos logs de criação da gravação X, filtro todos os logs com esse ID, e vejo exatamente onde o job falhou."
+  },
+  {
+   "id": "50-backend/07-logging-estruturado-pino.md#2",
+   "trilha": "50-backend",
+   "modulo": "50-backend/07-logging-estruturado-pino.md",
+   "tituloModulo": "07 — Logging Estruturado com Pino",
+   "pergunta": "O que você nunca colocaria em um log?",
+   "resposta": "Dados pessoais (email, CPF, telefone) em logs de debug ou info — LGPD exige finalidade, e log não é finalidade de tratamento de dado pessoal. Tokens de autenticação — header Authorization ou cookie de sessão. Passwords, mesmo que em tentativa de login. Conteúdo de áudio ou transcrição. Em geral: qualquer coisa que, se o log vazar para o lugar errado, cause problema de segurança ou compliance. O risco específico: logs costumam ser exportados para ferramentas de observabilidade — Datadog, Grafana — que podem ter segurança diferente do banco principal."
+  },
+  {
+   "id": "50-backend/08-validation-zod-em-boundary.md#1",
+   "trilha": "50-backend",
+   "modulo": "50-backend/08-validation-zod-em-boundary.md",
+   "tituloModulo": "08 — Validação com Zod em Boundary",
+   "pergunta": "Qual a diferença entre type checking do TypeScript e validação em runtime?",
+   "resposta": "TypeScript verifica tipos em tempo de compilação — garante que o código está correto do ponto de vista estático. Mas TypeScript some em produção: é JavaScript. Quando dados externos chegam — HTTP body, variável de ambiente, resposta de API — o TypeScript não consegue verificar em runtime. Se o cliente manda `{ title: 123 }` quando esperamos `string`, TypeScript não detecta porque o dado veio de fora do sistema compilado. Zod faz a validação em runtime: parse o dado externo contra o schema, retorna tipo correto se válido, erro claro se inválido. Os dois são complementares — TypeScript garante o interior do código, Zod garante a fronteira."
+  },
+  {
+   "id": "50-backend/08-validation-zod-em-boundary.md#2",
+   "trilha": "50-backend",
+   "modulo": "50-backend/08-validation-zod-em-boundary.md",
+   "tituloModulo": "08 — Validação com Zod em Boundary",
+   "pergunta": "Por que validar variáveis de ambiente no startup e não onde são usadas?",
+   "resposta": "Fail fast: se falta `DATABASE_URL`, quero saber imediatamente ao subir o processo, não quando a primeira request tentar conectar ao banco 5 minutos depois. Com Zod no startup: `EnvSchema.parse(process.env)` — se qualquer variável faltar ou tiver formato errado, o processo encerra com mensagem clara. Sem isso: `undefined` é passado silenciosamente para a connection string, erro de conexão aparece tarde, mensagem é confusa. Além disso, `process.env.DATABASE_URL` espalhado em 10 arquivos é `string | undefined` em todo lugar — com validação no startup e export de `config`, é `string` garantido."
+  },
+  {
+   "id": "60-seguranca/01-owasp-top-10-resumo.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/01-owasp-top-10-resumo.md",
+   "tituloModulo": "01 — OWASP Top 10: Mapa do Território",
+   "pergunta": "Me cite 3 categorias do OWASP Top 10 e como você as mitigou nos seus projetos.",
+   "resposta": "Injection: uso Prisma como ORM — queries parameterizadas por padrão, então SQL injection está coberto. Temos um caso real de XSS que corrigimos em maio de 2026 no PULSAR-RH: parâmetros de URL eram inseridos no DOM sem encoding — ficou um commit documentado disso. Para Auth Failures, adotamos Google OAuth restrito ao domínio `agconsultorialtda.com` — eliminamos gestão de senha completamente, que é a fonte de 80% dos problemas de auth."
+  },
+  {
+   "id": "60-seguranca/01-owasp-top-10-resumo.md#2",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/01-owasp-top-10-resumo.md",
+   "tituloModulo": "01 — OWASP Top 10: Mapa do Território",
+   "pergunta": "O que é o Log4Shell e por que foi tão grave?",
+   "resposta": "CVE-2021-44228: a biblioteca de logging Java `log4j` interpretava strings no formato `${jndi:ldap://...}` como comandos — bastava logar input do usuário para executar código remoto. Grave porque: log4j está em metade da internet Java, o exploit tinha uma linha, e funciona contra qualquer serviço que logava qualquer coisa do usuário. É o caso definitivo de A06 (Vulnerable Components) — a lib estava em todo lugar, mas ninguém rastreava a versão."
+  },
+  {
+   "id": "60-seguranca/02-xss-stored-reflected-dom.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/02-xss-stored-reflected-dom.md",
+   "tituloModulo": "02 — XSS: Stored, Reflected e DOM-Based",
+   "pergunta": "Qual a diferença entre Stored XSS e DOM-Based XSS?",
+   "resposta": "Stored XSS persiste no banco e afeta todos os usuários que carregam aquela página — o script injetado fica lá até ser removido. DOM-Based XSS nunca passa pelo servidor: o payload fica na URL ou no fragmento `#hash` e é processado só pelo JavaScript do browser, então não aparece nos logs do servidor. A consequência prática é que WAF não detecta DOM-Based XSS. A mitigação é a mesma para ambos: nunca usar `innerHTML` com dado de origem externa, usar `textContent` para texto puro ou DOMPurify quando precisa aceitar HTML."
+  },
+  {
+   "id": "60-seguranca/02-xss-stored-reflected-dom.md#2",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/02-xss-stored-reflected-dom.md",
+   "tituloModulo": "02 — XSS: Stored, Reflected e DOM-Based",
+   "pergunta": "Você já corrigiu um XSS? Me conta.",
+   "resposta": "Sim, no PULSAR-RH em maio de 2026. Era DOM-Based: parâmetros de URL eram lidos com URLSearchParams e inseridos no DOM via innerHTML sem nenhum encoding. Um atacante podia enviar um link com o payload na URL. O fix foi trocar por textContent para os casos simples. Depois adicionamos CSP via helmet como segunda linha de defesa — se encoding falhar em algum ponto, o browser recusa executar script não listado na policy."
+  },
+  {
+   "id": "60-seguranca/03-sql-injection-prepared-statements.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/03-sql-injection-prepared-statements.md",
+   "tituloModulo": "03 — SQL Injection e Prepared Statements",
+   "pergunta": "Como Prisma protege contra SQL injection? Existe algum caso onde ele não protege?",
+   "resposta": "Prisma usa prepared statements por baixo — toda query via a API padrão é parameterizada automaticamente: o dado nunca é interpolado na string SQL. O caso onde ele não protege é quando você usa `$queryRawUnsafe` com uma string que você mesmo constrói. Também tem um ponto de atenção em nomes de tabela e coluna dinâmicos: esses não podem ser parametrizados em SQL — o banco não aceita. A solução é allowlist: definir os valores permitidos como array fixo e validar o input antes de usar."
+  },
+  {
+   "id": "60-seguranca/03-sql-injection-prepared-statements.md#2",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/03-sql-injection-prepared-statements.md",
+   "tituloModulo": "03 — SQL Injection e Prepared Statements",
+   "pergunta": "Me mostra um exemplo de SQL injection e como você preveniria.",
+   "resposta": "Input de usuário concatenado em query: `SELECT * FROM users WHERE email = '${input}'` — se input for `' OR '1'='1`, retorna todos os usuários. A prevenção correta é prepared statement: a query é compilada com placeholder `$1`, e o input chega separado como parâmetro — o banco nunca interpreta o dado como código. Em Node com Prisma isso é automático. Em raw query com `pg`, você passa `[userInput]` como segundo argumento do `pool.query`."
+  },
+  {
+   "id": "60-seguranca/04-csrf-e-samesite-cookies.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/04-csrf-e-samesite-cookies.md",
+   "tituloModulo": "04 — CSRF e SameSite Cookies",
+   "pergunta": "O que é CSRF e como SameSite resolve isso?",
+   "resposta": "CSRF é quando um site malicioso força o browser da vítima a fazer uma request autenticada para outro site. Funciona porque o browser envia cookies automaticamente para o domínio — o atacante explora isso. SameSite no cookie instrui o browser a só enviar o cookie quando a request parte do mesmo site. Com `SameSite=Strict`, o cookie não é enviado em nenhuma request cross-site. Com `Lax`, é enviado em navegação direta mas não em sub-resources ou fetch com credentials. Para a maioria dos apps, `Lax` é suficiente e é o default atual dos browsers modernos."
+  },
+  {
+   "id": "60-seguranca/04-csrf-e-samesite-cookies.md#2",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/04-csrf-e-samesite-cookies.md",
+   "tituloModulo": "04 — CSRF e SameSite Cookies",
+   "pergunta": "Se minha API usa JWT em Authorization header, preciso me preocupar com CSRF?",
+   "resposta": "Não, se o JWT está em `Authorization: Bearer` header. O browser não envia headers customizados em requests cross-site automáticas — form e tag de imagem nunca incluem Authorization. Então o atacante não tem como forjar a request com credenciais. O risco vira XSS: se o JWT está em localStorage, JavaScript malicioso pode lê-lo. Por isso o par ideal é JWT em cookie `HttpOnly` (protege de XSS) com `SameSite=Strict` (protege de CSRF)."
+  },
+  {
+   "id": "60-seguranca/05-secrets-management-env-rotacao.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/05-secrets-management-env-rotacao.md",
+   "tituloModulo": "05 — Secrets Management e Rotação",
+   "pergunta": "Como você gerencia secrets em projetos Node.js? E o que faz se descobrir que um secret vazou no repositório?",
+   "resposta": "Secrets ficam em `.env` local, nunca commitados. `.gitignore` tem `.env*` antes do primeiro commit, e `.env.example` documenta as variáveis sem valores. Em produção, o arquivo `.env` fica no servidor com permissão `600`. Não uso Vault ainda — para time pequeno não compensa a operação. Se um secret vazar: primeira ação é revogar imediatamente no provider — a chave antiga para de funcionar na hora. Depois limpar o histórico git com `git filter-repo` e force push. Depois auditar logs do serviço para ver se houve uso malicioso. Rotacionar preventivamente a cada 6 meses."
+  },
+  {
+   "id": "60-seguranca/05-secrets-management-env-rotacao.md#2",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/05-secrets-management-env-rotacao.md",
+   "tituloModulo": "05 — Secrets Management e Rotação",
+   "pergunta": "O que é SERVICE_ROLE_KEY no Supabase e por que é perigoso?",
+   "resposta": "É a chave de superusuário do Supabase — bypassa todas as políticas de RLS. Quem tem a chave pode ler e escrever qualquer dado de qualquer tenant sem restrição, via HTTPS de qualquer IP. É mais perigosa que a senha do banco porque não precisa de acesso de rede ao servidor. Deve ficar só no backend, nunca no bundle do frontend, e ser rotacionada a cada 6 meses ou imediatamente se houver suspeita de exposição."
+  },
+  {
+   "id": "60-seguranca/06-lgpd-na-pratica.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/06-lgpd-na-pratica.md",
+   "tituloModulo": "06 — LGPD na Prática",
+   "pergunta": "Como você implementaria o direito ao esquecimento num sistema de RH?",
+   "resposta": "Primeiro mapear todas as tabelas que têm dado pessoal do titular. Para dados de usuário em tabelas com relações, prefiro pseudoanonimização — substituo nome e email por valores genéricos, preservo a integridade referencial e o histórico de uso fica intacto sem identificar ninguém. Para arquivos como transcrições e gravações, exclusão hard mesmo. O caminho fica documentado: recebi pedido, verifiquei identidade, anonimizei, deletei arquivos, registrei no audit log o evento (sem PII) e confirmei para o titular. O audit log é imutável, então o registro da exclusão fica — mas sem dado pessoal."
+  },
+  {
+   "id": "60-seguranca/06-lgpd-na-pratica.md#2",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/06-lgpd-na-pratica.md",
+   "tituloModulo": "06 — LGPD na Prática",
+   "pergunta": "O que é dado de categoria especial na LGPD e como isso afeta o design de um sistema?",
+   "resposta": "São dados que exigem proteção reforçada: saúde, origem racial, religião, opinião política, dados biométricos. No PULSAR-RH temos indicadores NR-1 de risco psicossocial — isso é dado de saúde ocupacional, categoria especial. O impacto no design: precisamos de base legal explícita para processar (não basta interesse legítimo genérico), controle de acesso mais granular (nem todo funcionário da empresa cliente pode ver), retenção mais curta e auditoria de quem acessou o quê."
+  },
+  {
+   "id": "60-seguranca/07-auditoria-logs-imutavel.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/07-auditoria-logs-imutavel.md",
+   "tituloModulo": "07 — Auditoria e Logs Imutáveis",
+   "pergunta": "Como você garantiria que logs de auditoria não pudessem ser adulterados?",
+   "resposta": "A abordagem que implementamos no Café com AG é a mais simples e eficaz para começar: trigger PostgreSQL que lança exceção em qualquer UPDATE ou DELETE na tabela de audit log. A tabela aceita só INSERT. Complementando, a role de banco usada pela aplicação tem só permissão de INSERT e SELECT nessa tabela — nem o app consegue alterar. Se precisar de prova criptográfica para auditoria externa, adiciono hash chain: cada linha inclui o hash da anterior, verificável por qualquer auditor sem acesso ao banco."
+  },
+  {
+   "id": "60-seguranca/07-auditoria-logs-imutavel.md#2",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/07-auditoria-logs-imutavel.md",
+   "tituloModulo": "07 — Auditoria e Logs Imutáveis",
+   "pergunta": "O que você loga numa auditoria de acesso a dados sensíveis?",
+   "resposta": "User ID, não dados pessoais do usuário — para não criar PII no próprio log. A ação em vocabulário de negócio: 'view_employee_report', não só 'GET /api/reports/123'. O ID do recurso acessado. Timestamp e IP. Sucesso ou falha. O que eu nunca loco: senha, token de sessão, CPF, dados de saúde em texto claro — o log é um dado de auditoria que vai ter acesso mais amplo que o dado original."
+  },
+  {
+   "id": "60-seguranca/08-dependency-vulnerabilities.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/08-dependency-vulnerabilities.md",
+   "tituloModulo": "08 — Vulnerabilidades em Dependências",
+   "pergunta": "Você encontrou uma vulnerabilidade critical no npm audit, mas é numa devDependency. O que você faz?",
+   "resposta": "Analiso o path de dependência. Se é devDependency e o código nunca vai para produção — o pacote só roda na minha máquina durante desenvolvimento — o risco para os usuários é zero. O risco é para minha máquina e para o pipeline de CI. Ainda assim, documento a decisão: CVE, motivo de não corrigir agora, prazo para reavaliar. Se tiver fix disponível sem breaking change, aplico assim mesmo — é rápido e elimina o ruído nos próximos audits. Se exigir major update, avalio o esforço vs exposição real."
+  },
+  {
+   "id": "60-seguranca/08-dependency-vulnerabilities.md#2",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/08-dependency-vulnerabilities.md",
+   "tituloModulo": "08 — Vulnerabilidades em Dependências",
+   "pergunta": "O que é Log4Shell e como você teria detectado isso nos seus projetos?",
+   "resposta": "CVE-2021-44228, CVSS 10.0: a biblioteca de log Java `log4j` interpretava strings como `${jndi:ldap://...}` como comandos — qualquer input logado podia executar código remoto. Detecção: npm audit teria mostrado a vulnerabilidade, ou Dependabot teria aberto PR automaticamente assim que o advisory foi publicado. No nosso caso usamos Node, não Java, então log4j não era risco direto — mas a lição é que log libraries são attack surface porque processam todo input do usuário."
+  },
+  {
+   "id": "60-seguranca/09-authn-authz-profundo.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/09-authn-authz-profundo.md",
+   "tituloModulo": "09 — Authn/Authz Profundo",
+   "pergunta": "Sessão ou JWT? Qual você usaria e por quê?",
+   "resposta": "Depende do requisito de revogação. JWT valida sem tocar no banco, mas revogar antes de expirar exige denylist — que é estado, então o 'stateless' morre. Meu padrão: access token de 15 minutos com refresh token rotation e detecção de reuso — é o que o Supabase Auth faz nos meus projetos. E autorização eu não deixo só no código: no PULSAR-RH o isolamento multi-tenant é RLS no Postgres, com o tenant em app_metadata, que o usuário não consegue editar. Assim mesmo um bug no app não vaza dado entre clientes."
+  },
+  {
+   "id": "60-seguranca/10-threat-modeling.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/10-threat-modeling.md",
+   "tituloModulo": "10 — Threat Modeling",
+   "pergunta": "Você vai construir um formulário público que coleta dados. Como pensa a segurança dele antes de codar?",
+   "resposta": "Rodo um threat model rápido com STRIDE nas fronteiras de confiança. O dado vem de um cliente não-confiável, então: Tampering eu fecho com validação de schema no boundary; Information disclosure eu checo perguntando 'algum canal lateral vaza o que deveria ser anônimo?' — já me queimei com isso, o audit log gravava a identidade que o schema tinha parado de guardar; DoS eu mitigo com rate limit; Elevation eu fecho exigindo authz por role no endpoint de resultado, não só login. O ponto é fazer essas perguntas no design, quando mudar é de graça — insegurança de design não tem patch, tem redesenho."
+  },
+  {
+   "id": "60-seguranca/11-criptografia-aplicada.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/11-criptografia-aplicada.md",
+   "tituloModulo": "11 — Criptografia Aplicada",
+   "pergunta": "Como você guarda a senha do usuário no banco?",
+   "resposta": "Não guardo a senha — guardo um hash lento. Uso bcrypt ou argon2 com salt único por senha e work factor ajustável, nunca SHA-256, que é rápido demais e ajuda o atacante a testar bilhões de tentativas. Se o hash de senha é instantâneo, está errado. E hash porque é mão única: eu só preciso *verificar* no login comparando, nunca *recuperar* a senha original — se eu conseguisse recuperar, seria encryption, e seria a escolha errada. Na real, nos meus apps a resposta é OAuth: não gerir senha nenhuma é a defesa mais forte."
+  },
+  {
+   "id": "60-seguranca/12-hardening.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/12-hardening.md",
+   "tituloModulo": "12 — Hardening",
+   "pergunta": "Seu app está funcionando. O que você aperta antes de considerá-lo pronto pra produção?",
+   "resposta": "Hardening da configuração, que é onde mora o A05. Ligo os security headers — CSP restritivo como defesa forte contra XSS, HSTS pra forçar HTTPS, frame-ancestors contra clickjacking. Ponho rate limit em login e endpoints caros pra fechar força bruta e DoS. Reviso privilégio de credencial: a chave que aparece no front é a limitada por RLS, a service key com acesso total nunca sai do servidor — usar a poderosa onde a fraca bastava é o erro clássico. E confiro que nenhum segredo está no código, com escopo e plano de rotação. O princípio é o mesmo em tudo: o default vem inseguro de propósito, hardening é a passada que corrige isso onde importa."
+  },
+  {
+   "id": "60-seguranca/13-supply-chain.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/13-supply-chain.md",
+   "tituloModulo": "13 — Supply Chain",
+   "pergunta": "Como você mantém as dependências do seu projeto seguras?",
+   "resposta": "Três camadas. Lockfile commitado e `npm ci` pra instalar exatamente a árvore auditada, com hash de integridade que detecta pacote adulterado — não `npm install`, que resolve 'compatível' e abre janela. `npm audit` recorrente, classificando por severidade e exploitabilidade — Critical em runtime é ação imediata, tipo o Log4Shell. E a defesa mais forte, que é cultural: instalar menos. Cada dependência é código de um estranho rodando em produção e uma superfície de ataque — o caso xz de 2024, um backdoor plantado por um mantenedor infiltrado, mostra que nem pacote 'legítimo' é garantia. A lib mais segura é a que eu não adicionei."
+  },
+  {
+   "id": "60-seguranca/14-incident-response.md#1",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/14-incident-response.md",
+   "tituloModulo": "14 — Incident Response",
+   "pergunta": "Você descobre que uma chave de API está commitada num repositório. Qual sua primeira ação?",
+   "resposta": "Revogar a chave, imediatamente, antes de qualquer investigação. O instinto é ir olhar quem commitou e quando — errado: cada minuto investigando é um minuto com a chave válida na mão de quem já a pegou. Contenção vem antes de análise. Revogo, emito uma nova com escopo mínimo, troco em produção, e só então investigo desde quando estava exposta e se foi usada. E se o repo é público, revogar é a única saída real — a chave já está em todo o histórico do git, indexada e clonada; reescrever histórico não desfaz vazamento. Depois, post-mortem sem culpado: conserto o processo que deixou a chave chegar no commit, que é o problema de verdade."
+  },
+  {
+   "id": "70-devops/01-docker-imagem-camadas-cache.md#1",
+   "trilha": "70-devops",
+   "modulo": "70-devops/01-docker-imagem-camadas-cache.md",
+   "tituloModulo": "01 — Docker: Imagem, Camadas e Cache",
+   "pergunta": "Por que copiar `package.json` antes do código-fonte no Dockerfile?",
+   "resposta": "Por causa do cache de camadas do Docker. Cada instrução cria uma camada cacheada pelo hash do conteúdo. Se você faz `COPY . .` antes do `npm install`, qualquer mudança em qualquer arquivo do projeto invalida o cache e reinstala todas as dependências — mesmo que `package.json` não tenha mudado. Separando em `COPY package*.json ./` + `RUN npm install` + `COPY . .`, o cache de `npm install` só é invalidado quando as dependências realmente mudam. Num projeto com 200 pacotes, isso economiza 2-3 minutos por build."
+  },
+  {
+   "id": "70-devops/01-docker-imagem-camadas-cache.md#2",
+   "trilha": "70-devops",
+   "modulo": "70-devops/01-docker-imagem-camadas-cache.md",
+   "tituloModulo": "01 — Docker: Imagem, Camadas e Cache",
+   "pergunta": "O que é multi-stage build e por que você usaria?",
+   "resposta": "Multi-stage usa dois `FROM` no mesmo Dockerfile. O primeiro stage compila o código — tem TypeScript, devDependencies, tudo. O segundo stage começa do zero, instala só as dependências de produção e copia o `dist/` compilado do primeiro. Resultado: imagem de produção sem TypeScript, sem código-fonte, sem devDeps — pode passar de 800 MB para 150 MB. Menor = mais seguro (menor superfície de ataque) e deploy mais rápido."
+  },
+  {
+   "id": "70-devops/02-docker-compose-dev-vs-prod.md#1",
+   "trilha": "70-devops",
+   "modulo": "70-devops/02-docker-compose-dev-vs-prod.md",
+   "tituloModulo": "02 — Docker Compose: Dev vs. Prod",
+   "pergunta": "Qual a diferença entre volume e bind mount no Docker?",
+   "resposta": "Bind mount mapeia um diretório do host para dentro do container. Em dev, uso bind mount para montar o código-fonte: mudança no editor reflete instantaneamente no container sem rebuild. O problema é que o container depende do caminho do host existir — não é portável."
+  },
+  {
+   "id": "70-devops/02-docker-compose-dev-vs-prod.md#2",
+   "trilha": "70-devops",
+   "modulo": "70-devops/02-docker-compose-dev-vs-prod.md",
+   "tituloModulo": "02 — Docker Compose: Dev vs. Prod",
+   "pergunta": "Como você diferencia configuração de dev e prod no Docker Compose?",
+   "resposta": "Com `docker-compose.override.yml`. O Compose faz merge automático: `docker-compose.yml` tem a base que serve para prod; `override.yml` adiciona o que é só de dev — portas de banco expostas para localhost, bind mounts para hot reload, variáveis de debug. Em dev, rodo `docker compose up` e carrega os dois. Em prod, `docker compose -f docker-compose.yml up -d` ignora o override. Isso evita ter dois arquivos que divergem e garante que config de dev não vaza pra prod."
+  },
+  {
+   "id": "70-devops/03-ci-cd-github-actions.md#1",
+   "trilha": "70-devops",
+   "modulo": "70-devops/03-ci-cd-github-actions.md",
+   "tituloModulo": "03 — CI/CD com GitHub Actions",
+   "pergunta": "Como você estruturaria um pipeline de CI/CD básico para um projeto Node+TypeScript no Vercel?",
+   "resposta": "Dois jobs sequenciais. O primeiro é CI: checkout, setup-node com cache de npm, `npm ci` para instalar o lockfile, lint e build TypeScript. Se qualquer um falhar, o pipeline para. O segundo é CD: só roda se o CI passou E é um push em main — nunca num PR. Executa o deploy no Vercel com o token em secret do repositório."
+  },
+  {
+   "id": "70-devops/03-ci-cd-github-actions.md#2",
+   "trilha": "70-devops",
+   "modulo": "70-devops/03-ci-cd-github-actions.md",
+   "tituloModulo": "03 — CI/CD com GitHub Actions",
+   "pergunta": "Como você gerencia secrets num pipeline de CI?",
+   "resposta": "No GitHub, secrets ficam em `Settings → Secrets and variables → Actions`. Você referencia no YAML com `${{ secrets.NOME_DO_SECRET }}`. O GitHub mascara automaticamente o valor em qualquer output de log — mesmo que você tente fazer `echo ${{ secrets.TOKEN }}`, aparece `***`. O token nunca vai para o código, nunca para o git. A única coisa que você commita é o nome da variável."
+  },
+  {
+   "id": "70-devops/04-deploy-vercel-edge.md#1",
+   "trilha": "70-devops",
+   "modulo": "70-devops/04-deploy-vercel-edge.md",
+   "tituloModulo": "04 — Deploy no Vercel e Edge Runtime",
+   "pergunta": "Quando você escolheria Vercel em vez de um VPS?",
+   "resposta": "Para frontend e APIs sem estado: Vercel. Você tem CDN global, preview deploy por branch, zero config de nginx, SSL automático. No PULSAR-RH uso Vercel porque é HTML estático com Supabase — não tem servidor pra manter."
+  },
+  {
+   "id": "70-devops/04-deploy-vercel-edge.md#2",
+   "trilha": "70-devops",
+   "modulo": "70-devops/04-deploy-vercel-edge.md",
+   "tituloModulo": "04 — Deploy no Vercel e Edge Runtime",
+   "pergunta": "O que é Edge Function e quando você usaria?",
+   "resposta": "Edge Function executa no ponto de presença Vercel mais próximo do usuário — latência de 1ms vs. 100ms de uma função serverless normal. Mas tem restrições: só Web APIs, sem Node.js nativo, timeout de 5 segundos."
+  },
+  {
+   "id": "70-devops/05-observabilidade-logs-e-metricas.md#1",
+   "trilha": "70-devops",
+   "modulo": "70-devops/05-observabilidade-logs-e-metricas.md",
+   "tituloModulo": "05 — Observabilidade: Logs e Métricas",
+   "pergunta": "Como você investigaria um bug em produção no Meet Hub sem acesso ao servidor?",
+   "resposta": "Primeiro acesso os logs — com log estruturado, filtro por `recordingId` ou `userId` do usuário afetado. Se os logs tiverem campos consistentes, reconstruo o que aconteceu: qual stage falhou, qual erro saiu, qual foi o contexto. Sem log estruturado, você fica com 'erro: something went wrong' sem contexto."
+  },
+  {
+   "id": "70-devops/05-observabilidade-logs-e-metricas.md#2",
+   "trilha": "70-devops",
+   "modulo": "70-devops/05-observabilidade-logs-e-metricas.md",
+   "tituloModulo": "05 — Observabilidade: Logs e Métricas",
+   "pergunta": "O que você monitora numa aplicação web pequena?",
+   "resposta": "RED method para serviços: taxa de requests, taxa de erros e latência (p95). USE method para infra: CPU, memória e I/O do servidor. Com isso você sabe quando a aplicação está lenta antes do usuário reclamar, e quando o servidor está saturando antes de cair."
+  },
+  {
+   "id": "70-devops/06-iac-introducao-terraform.md#1",
+   "trilha": "70-devops",
+   "modulo": "70-devops/06-iac-introducao-terraform.md",
+   "tituloModulo": "06 — IaC: Introdução ao Terraform",
+   "pergunta": "O que é IaC e por que importa?",
+   "resposta": "IaC é gerenciar infraestrutura por código versionado. Sem IaC, você clica no painel para criar servidor, instala dependências manualmente, e quando o servidor morre você precisa lembrar o que fez. Com Terraform, você descreve o que quer em HCL, e `terraform apply` cria ou atualiza tudo de forma idempotente — mesma config, mesmo resultado. O benefício prático é: infra reproduzível, mudanças auditáveis no git, e rollback possível."
+  },
+  {
+   "id": "70-devops/06-iac-introducao-terraform.md#2",
+   "trilha": "70-devops",
+   "modulo": "70-devops/06-iac-introducao-terraform.md",
+   "tituloModulo": "06 — IaC: Introdução ao Terraform",
+   "pergunta": "Qual a diferença entre Terraform e Ansible?",
+   "resposta": "Terraform é declarativo: você descreve o estado desejado e ele calcula o que precisa mudar. Ótimo para provisionar recursos — criar VMs, configurar DNS, definir firewalls. Ansible é imperativo: você escreve uma sequência de passos para executar no servidor. Ótimo para configurar um servidor existente — instalar nginx, criar usuários, fazer deploy."
+  },
+  {
+   "id": "80-system-design/01-cache-estrategias.md#1",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/01-cache-estrategias.md",
+   "tituloModulo": "01 — Cache: Estratégias e Trade-offs",
+   "pergunta": "Quando você usaria cache? Qual estratégia e por quê?",
+   "resposta": "Cache quando: o mesmo dado é lido com muito mais frequência do que é escrito, e o custo de calcular/buscar é significativo. A estratégia depende do requisito de consistência. Para um dashboard de RH que atualiza a cada hora mas é visualizado 100 vezes — cache-aside com TTL de 5 minutos. Para carrinho de compras que precisa sempre estar atual — write-through. O que eu nunca faço é cachear sem medir — adiciono `console.time` na query, verifico se ela está no hot path, e só então adiciono cache."
+  },
+  {
+   "id": "80-system-design/01-cache-estrategias.md#2",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/01-cache-estrategias.md",
+   "tituloModulo": "01 — Cache: Estratégias e Trade-offs",
+   "pergunta": "Por que invalidação de cache é difícil? Me dá um exemplo concreto.",
+   "resposta": "Porque um dado pode ser derivado de múltiplas fontes. Exemplo: cachei `dashboard:cliente-X` que inclui contagem de funcionários. Se alguém adiciona um funcionário, preciso invalidar esse cache — mas também o `report:total-headcount` e o `analytics:growth-rate` que dependem do mesmo dado. À medida que o sistema cresce, a lista de chaves a invalidar cresce e fica impossível de manter manualmente. Solução: TTL como fallback garantido, e prefixos de namespace para invalidação em grupo."
+  },
+  {
+   "id": "80-system-design/02-filas-quando-e-como.md#1",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/02-filas-quando-e-como.md",
+   "tituloModulo": "02 — Filas: Quando e Como Usar",
+   "pergunta": "Por que você usaria uma fila para processar transcrições em vez de fazer de forma síncrona?",
+   "resposta": "Três motivos. Primeiro, transcrição leva minutos — não posso deixar a request HTTP aberta esperando. Com fila, respondo imediato e processo em background. Segundo, se a API do Gemini estiver instável, o job fica na fila e é reprocessado automaticamente com backoff — sem código de retry manual. Terceiro, posso controlar concorrência: se tenho 6 bots gravando ao mesmo tempo, processo 3 transcrições em paralelo e os outros 3 jobs esperam — evito sobrecarregar a API de transcrição e o banco."
+  },
+  {
+   "id": "80-system-design/02-filas-quando-e-como.md#2",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/02-filas-quando-e-como.md",
+   "tituloModulo": "02 — Filas: Quando e Como Usar",
+   "pergunta": "O que é exactly-once delivery? Você consegue garantir isso?",
+   "resposta": "Exactly-once em sistemas distribuídos é impossível na prática. O que você pode ter é at-least-once — o job pode ser entregue mais de uma vez — combinado com consumer idempotente. No Meet Hub, antes de processar uma transcrição, o worker verifica se `recording.status === 'completed'`. Se sim, ignora o job. Então mesmo que o job seja entregue duas vezes, o resultado é o mesmo: a transcrição existe uma única vez no banco."
+  },
+  {
+   "id": "80-system-design/03-replicacao-leader-follower.md#1",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/03-replicacao-leader-follower.md",
+   "tituloModulo": "03 — Replicação Leader-Follower",
+   "pergunta": "Quando você usaria read replicas? Não valeria sempre ter?",
+   "resposta": "Só quando o tráfego de leitura estiver saturando o banco primário. Réplica adiciona complexidade: duas connection strings, lógica de roteamento no código, e o problema de replication lag — se eu escrever e imediatamente ler da réplica, posso não encontrar o dado. Para o PULSAR-RH atual, com poucos clientes, cache Redis resolve 80% do problema de leitura sem essa complexidade. Réplica seria o próximo passo depois que cache não for suficiente."
+  },
+  {
+   "id": "80-system-design/03-replicacao-leader-follower.md#2",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/03-replicacao-leader-follower.md",
+   "tituloModulo": "03 — Replicação Leader-Follower",
+   "pergunta": "O que é replication lag e por que importa?",
+   "resposta": "Lag é o atraso entre o leader confirmar uma escrita e a réplica aplicá-la. Em rede local, tipicamente menos de 1ms — imperceptível. O problema aparece em duas situações: quando a réplica está sobrecarregada, o lag pode crescer para segundos. E se você usa replicação cross-região, tem o lag físico da rede — 50ms a 200ms. A implicação de design: nunca leia da réplica dado que você acabou de escrever. Depois de criar um usuário, a próxima leitura dos dados dele deve ir para o leader."
+  },
+  {
+   "id": "80-system-design/04-cap-theorem-na-pratica.md#1",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/04-cap-theorem-na-pratica.md",
+   "tituloModulo": "04 — CAP Theorem na Prática",
+   "pergunta": "O Postgres é CA, CP ou AP?",
+   "resposta": "'CA' não existe em sistemas distribuídos — com mais de um servidor, partições de rede são inevitáveis. Postgres é CP: durante operação normal, garante consistência via ACID. Durante uma partição de rede ou failover, o Postgres prefere ficar indisponível para escritas (returnar erro) a arriscar inconsistência. Quando o primary cai, há uma janela de indisponibilidade até a réplica ser promovida — é o sacrifício de A para manter C."
+  },
+  {
+   "id": "80-system-design/04-cap-theorem-na-pratica.md#2",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/04-cap-theorem-na-pratica.md",
+   "tituloModulo": "04 — CAP Theorem na Prática",
+   "pergunta": "Quando você usaria Cassandra em vez de Postgres?",
+   "resposta": "Cassandra quando: escrita é o gargalo (10x mais throughput que Postgres para writes), leituras são simples por chave primária (sem joins complexos), consistência eventual por alguns segundos é aceitável para o negócio, e você precisa de escala horizontal nativa. Para a AG hoje? Nunca — Postgres resolve tudo que temos com muito menos complexidade operacional. Cassandra faz sentido em escala de petabytes ou writes de 100k/s — não é o nosso problema."
+  },
+  {
+   "id": "80-system-design/05-load-balancing.md#1",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/05-load-balancing.md",
+   "tituloModulo": "05 — Load Balancing",
+   "pergunta": "Qual algoritmo de load balancing você usaria para processar transcrições de vídeo? Por quê?",
+   "resposta": "Least connections. Transcrições duram de 30 segundos a 5 minutos dependendo da duração da reunião. Com round-robin, um worker que pegou 3 transcrições longas ficaria sobrecarregado enquanto outro ficaria ocioso. Least connections olha para quantas conexões cada worker tem abertas e rota para o menos ocupado — distribui pela carga real. Round-robin funciona bem quando as requests têm duração similar, que não é o caso aqui."
+  },
+  {
+   "id": "80-system-design/05-load-balancing.md#2",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/05-load-balancing.md",
+   "tituloModulo": "05 — Load Balancing",
+   "pergunta": "Quando sticky session é necessária? Como você evita precisar dela?",
+   "resposta": "Sticky session é necessária quando a instância guarda estado local que outras instâncias não têm — sessão em memória, arquivo temporário. Evita-se tornando o serviço stateless: estado vai para um armazenamento compartilhado como Redis. Sessão de auth em Redis — qualquer instância autentica o usuário. Cache em Redis — qualquer instância serve o cache. Se o serviço é stateless, o LB pode rotear para qualquer instância sem problema."
+  },
+  {
+   "id": "80-system-design/06-escalabilidade-horizontal-vs-vertical.md#1",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/06-escalabilidade-horizontal-vs-vertical.md",
+   "tituloModulo": "06 — Escalabilidade: Horizontal vs Vertical",
+   "pergunta": "Como você escalaria o Meet Hub para suportar 100 bots simultâneos?",
+   "resposta": "Primeiro, mediria o bottleneck atual. Para bots Puppeteer, o gargalo é RAM: ~300MB por instância Chrome. Para 100 bots: ~30GB de RAM só para Chrome — não cabe em uma máquina razoável. Então, horizontal por sharding de bots: cada servidor físico roda N bots, com um orquestrador distribuindo reuniões entre eles. A API pode ser horizontal stateless atrás de um LB. O banco fica single instance por mais tempo — a leitura/escrita de metadados de reunião não é o bottleneck. A pergunta é: antes de tudo isso, quais os motivos de negócio para 100 bots simultâneos? Se for real, Kubernetes no Hetzner distribui os pods de bot automaticamente."
+  },
+  {
+   "id": "80-system-design/06-escalabilidade-horizontal-vs-vertical.md#2",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/06-escalabilidade-horizontal-vs-vertical.md",
+   "tituloModulo": "06 — Escalabilidade: Horizontal vs Vertical",
+   "pergunta": "Por que monolito modular pode ser melhor que microsserviços para uma startup?",
+   "resposta": "Microsserviços têm custo operacional alto: N deploys, N monitorings, N pontos de falha, latência de rede entre serviços, debugging cross-service. Para time de 1 a 3 devs, isso é overhead que consome mais tempo do que o problema de escala que você está tentando resolver. Monolito modular com separação clara de responsabilidades escala horizontalmente igual — você roda N instâncias do mesmo processo. A separação em microsserviços faz sentido quando diferentes partes do sistema têm requisitos de escala e deploy completamente diferentes, e quando o time é grande o suficiente para absorver o custo operacional."
+  },
+  {
+   "id": "80-system-design/07-idempotencia-e-deduplicacao.md#1",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/07-idempotencia-e-deduplicacao.md",
+   "tituloModulo": "07 — Idempotência e Deduplicação",
+   "pergunta": "Como você garante que um job de pagamento não seja cobrado duas vezes se o worker cair durante o processamento?",
+   "resposta": "Usando idempotency key. O producer gera um UUID para a operação e inclui no job payload. O worker, antes de cobrar, verifica no Redis se essa chave já foi processada. Se sim: retorna o resultado salvo sem cobrar de novo. Se não: cobra, salva o resultado com a chave no Redis com TTL de 24h. Se o worker cair durante o processamento (depois de cobrar, antes de salvar no Redis), o pior caso é cobrar de novo — por isso salvar no Redis deve vir logo após a cobrança, antes de qualquer outra operação. Stripe usa esse padrão nativamente com o cabeçalho `Idempotency-Key`."
+  },
+  {
+   "id": "80-system-design/07-idempotencia-e-deduplicacao.md#2",
+   "trilha": "80-system-design",
+   "modulo": "80-system-design/07-idempotencia-e-deduplicacao.md",
+   "tituloModulo": "07 — Idempotência e Deduplicação",
+   "pergunta": "O que é UPSERT e quando você usaria?",
+   "resposta": "UPSERT é uma operação atômica que insere o registro se não existe ou atualiza se existe, baseado em uma chave de conflito. Uso sempre em sync de dados de sistemas externos: se o mesmo registro chegar duas vezes, o resultado é idêntico — sem duplicação, sem erro. No CLIENTE OFICINA, o sync reprocessa uma janela de 2 dias para garantir que nenhum dado seja perdido. Sem UPSERT, cada reexecução duplicaria registros. Com UPSERT por `external_id`, a segunda execução apenas atualiza o que mudou."
+  },
+  {
+   "id": "82-robustez/01-error-handling-sistemico.md#1",
+   "trilha": "82-robustez",
+   "modulo": "82-robustez/01-error-handling-sistemico.md",
+   "tituloModulo": "01 — Error Handling Sistêmico",
+   "pergunta": "Como você trata erros numa aplicação real? Me dá um exemplo concreto.",
+   "resposta": "Por política de camada, não caso a caso. Na entrada eu falho rápido — validação rejeita dado inválido na porta. No miolo eu propago com contexto usando `Error.cause`: a mensagem diz qual operação, qual tenant e qual dado falhou. Na UI eu degrado: error boundary por região, então um card de dashboard quebrado vira um card de erro, não uma tela branca. E catch vazio eu trato como dívida: no sync de ERP que mantenho, o client retorna erro em campo em vez de lançar — se eu ignorasse, o sync 'passaria' gravando dado incompleto."
+  },
+  {
+   "id": "82-robustez/02-retry-backoff-circuit-breaker.md#1",
+   "trilha": "82-robustez",
+   "modulo": "82-robustez/02-retry-backoff-circuit-breaker.md",
+   "tituloModulo": "02 — Retry, Backoff e Circuit Breaker",
+   "pergunta": "Sua integração com um ERP começou a tomar 429. O que você faz?",
+   "resposta": "Primeiro classifico: 429 é transiente, então cabe retry — mas com backoff exponencial e jitter, senão meus retries sincronizados viram parte do problema. Respeito o Retry-After quando vem. No sync que mantenho, somei duas proteções: teto de tentativas com erro contextualizado no estouro, e lock de processo garantindo execução única — parte dos 429 vinha de dois syncs em paralelo. E se a API ficar fora por horas, breaker: depois de N falhas seguidas paro e alerto, em vez de martelar um serviço morto."
+  },
+  {
+   "id": "82-robustez/03-idempotencia.md#1",
+   "trilha": "82-robustez",
+   "modulo": "82-robustez/03-idempotencia.md",
+   "tituloModulo": "03 — Idempotência",
+   "pergunta": "Seu job de sincronização rodou duas vezes por engano. Qual o estrago?",
+   "resposta": "Nenhum — por design. O sync que mantenho grava por upsert numa chave natural composta, tenant mais id do registro no ERP, com UNIQUE no banco. Rodar duas vezes colapsa no mesmo estado final. Pra eventos sem chave natural, uso chave de idempotência: registro o id do evento numa tabela com UNIQUE antes do efeito colateral; violação de unicidade significa 'já processei, responde 200 e sai'. E eu testo disparando o duplicado de propósito — idempotência que nunca viu duplicado é suposição, não garantia."
+  },
+  {
+   "id": "82-robustez/04-timeouts-cancelamento.md#1",
+   "trilha": "82-robustez",
+   "modulo": "82-robustez/04-timeouts-cancelamento.md",
+   "tituloModulo": "04 — Timeouts e Cancelamento",
+   "pergunta": "Um endpoint seu ficou 'pendurado' em produção sob carga. Sem erro nos logs. O que houve e como você previne?",
+   "resposta": "Provavelmente uma chamada de rede sem timeout — o banco ou uma API externa parou de responder e cada request ficou esperando, ocupando conexão do pool até esgotar. Não dá erro porque tecnicamente ninguém falhou, só ninguém respondeu. Previno com timeout explícito em todo I/O via AbortController, e com orçamento decrescente em cascata: cada camada recebe o tempo restante, não um prazo fixo, senão o total fica maior que a soma. No estouro, decido entre retry, fallback ou erro com contexto — nunca silêncio."
+  },
+  {
+   "id": "82-robustez/05-graceful-degradation.md#1",
+   "trilha": "82-robustez",
+   "modulo": "82-robustez/05-graceful-degradation.md",
+   "tituloModulo": "05 — Degradação Graciosa",
+   "pergunta": "A API de pagamento fica intermitente. E a de recomendação de produtos também. Como cada uma deve falhar?",
+   "resposta": "Direções opostas, de propósito. Pagamento é fail-closed: na dúvida eu recuso a transação — cobrar errado ou duplicado é dano irreversível, melhor falhar visível e deixar o usuário tentar de novo. Recomendação é fail-open: se cair, escondo a esteira e a loja segue vendendo — bloquear a compra porque a recomendação falhou seria auto-sabotagem. A regra que aplico: segurança e dinheiro negam por padrão, conveniência permite degradado. E o default é sempre uma decisão explícita, nunca omissão — o modo de falha errado quase sempre é 'ninguém pensou nesse caso'."
+  },
+  {
+   "id": "82-robustez/06-observabilidade.md#1",
+   "trilha": "82-robustez",
+   "modulo": "82-robustez/06-observabilidade.md",
+   "tituloModulo": "06 — Observabilidade",
+   "pergunta": "Um cliente diz que o app 'às vezes fica lento'. Você não reproduz. Como investiga?",
+   "resposta": "Primeiro olho a métrica de latência em percentil, não média — p99 alto com p50 normal confirma que é intermitente e mostra o tamanho do problema. Aí uso trace ou correlation id: pego um request lento real e vejo em qual camada o tempo foi — quase sempre é espera de I/O externo, não o meu código. Se eu não tiver isso instrumentado, o problema não é o bug, é a cegueira: log estruturado com request id e latência por camada é o que eu adiciono primeiro, porque 'não consigo ver' é pior que 'está lento'."
+  },
+  {
+   "id": "82-robustez/07-concorrencia-locks.md#1",
+   "trilha": "82-robustez",
+   "modulo": "82-robustez/07-concorrencia-locks.md",
+   "tituloModulo": "07 — Concorrência e Locks",
+   "pergunta": "Duas requisições simultâneas compram o último ingresso. Como você garante que só uma leva?",
+   "resposta": "O bug é check-then-act: as duas verificam 'tem vaga' antes de qualquer uma gravar. A defesa mais forte é não ter a janela — deixo o banco decidir com uma constraint ou uma transação com `SELECT ... FOR UPDATE`, que trava a linha entre ler e escrever, então a segunda requisição espera e vê vaga zero. Se conflito fosse raro, usaria lock otimista com coluna de versão e retry. Já corrigi isso na prática serializando jobs concorrentes com lockfile. E provo com teste: disparo em paralelo com Promise.all e asserto que o contador nunca fura — corrida não aparece em teste sequencial."
+  },
+  {
+   "id": "82-robustez/08-teste-de-falha.md#1",
+   "trilha": "82-robustez",
+   "modulo": "82-robustez/08-teste-de-falha.md",
+   "tituloModulo": "08 — Teste de Falha",
+   "pergunta": "Você diz que seu sistema é resiliente a falha do serviço externo. Como você sabe que é, de verdade?",
+   "resposta": "Porque eu derrubei o serviço de propósito e olhei. Resiliência que nunca viu a falha acontecer é suposição, não fato. No mínimo eu injeto a falha em teste: mock que dá timeout pra provar que o fallback dispara, payload duplicado em paralelo pra provar idempotência, JSON malformado que o fornecedor real manda pra provar que o parser segura. A régua que eu uso: 'compila' e 'passa no teste feliz' não são robustez — robustez é ter exercitado o caminho infeliz e visto o sistema degradar como planejado, não explodir."
+  }
+ ]
+}

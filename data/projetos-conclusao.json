@@ -1,0 +1,259 @@
+{
+  "versao": 1,
+  "nota": "Projeto de conclusão por trilha. A trilha só está FORMADA com todos os checkpoints + projeto aceito. Aceite = evidência real (commit/PR) aprovada numa /revisao — nunca auto-declarado.",
+  "projetos": {
+    "00-fundamentos": {
+      "titulo": "Diagnóstico de tipos e memória num bug real",
+      "missao": "Encontre (ou reproduza) um bug de referência compartilhada / coerção num app AG, corrija e documente o mecanismo de memória por trás.",
+      "rubrica": [
+        "Commit com o fix e mensagem explicando o mecanismo (valor vs referência / coerção)",
+        "Teste ou snippet que reproduz o bug antes do fix",
+        "Explicação de 5 linhas no PR: por que o JS se comporta assim",
+        "Zero var e zero == no código tocado"
+      ],
+      "evidencia": "hash do commit + repositório"
+    },
+    "05-raciocinio": {
+      "titulo": "Post-mortem de um debugging seu, método explícito",
+      "missao": "Pegue um bug real que você resolveu e escreva o post-mortem no formato hipótese→refutação: o que se acreditava, qual teste refutou, qual evidência fechou. Máx. 1 página.",
+      "rubrica": [
+        "Sintoma descrito sem interpretação (o que se via, não o que se achava)",
+        "≥2 hipóteses ranqueadas com o teste que refutou/confirmou cada uma",
+        "A evidência final é um output/log citado, não uma opinião",
+        "Fecha com a regra generalizável (1 frase) que evita a recorrência"
+      ],
+      "evidencia": "link do post-mortem (DECISIONS.md ou docs/) commitado"
+    },
+    "10-codigo-limpo": {
+      "titulo": "Refactor guiado por smell, com diff defendido",
+      "missao": "Escolha um arquivo >200 linhas de um app AG, identifique 3 smells com nome, refatore e defenda cada mudança no PR.",
+      "rubrica": [
+        "3 smells nomeados (ex: função longa, nesting, duplicação) com linha original",
+        "Nenhuma função >20 linhas e nesting ≤2 no código final",
+        "Comportamento preservado: prova (teste ou execução comparada)",
+        "PR descreve o PORQUÊ de cada extração, não o quê"
+      ],
+      "evidencia": "link do PR mergeado"
+    },
+    "12-testes": {
+      "titulo": "Primeira suíte real: lógica de negócio sob teste",
+      "missao": "Extraia um cálculo de negócio real (comissão, DRE, ranking) pra função pura e cubra com vitest: casos normais + bordas + 1 teste de falha.",
+      "rubrica": [
+        "≥8 casos incluindo bordas (zero, negativo, vazio, null)",
+        "1 teste que injeta falha/entrada malformada e asserta a degradação",
+        "Suíte roda em CI (GitHub Actions) no push",
+        "Mock só em boundary — zero mock de módulo interno"
+      ],
+      "evidencia": "link do workflow verde + pasta de testes"
+    },
+    "15-git": {
+      "titulo": "Fluxo completo: branch → PR → review → merge limpo",
+      "missao": "Entregue uma feature real passando pelo fluxo inteiro com histórico legível: branch própria, commits atômicos conventional, PR com descrição, rebase antes do merge.",
+      "rubrica": [
+        "≥3 commits atômicos com mensagens conventional explicando o porquê",
+        "PR com descrição de contexto/decisões (não só 'update')",
+        "git pull --rebase usado (histórico linear, sem merge commits de sync)",
+        "1 operação de resgate documentada (reflog, revert ou cherry-pick)"
+      ],
+      "evidencia": "link do PR mergeado"
+    },
+    "20-arquitetura": {
+      "titulo": "ADR de uma decisão estrutural real + implementação",
+      "missao": "Tome uma decisão arquitetural real (camada nova, quebra de módulo, contrato entre partes), registre em ADR com alternativas e implemente.",
+      "rubrica": [
+        "ADR com ≥2 alternativas reais e o trade-off decisivo",
+        "Consequências aceitas escritas ANTES da implementação",
+        "Implementação respeita a fronteira desenhada (sem vazamento de camada)",
+        "Em entrevista (30s) escrito e recitável"
+      ],
+      "evidencia": "ADR no DECISIONS.md + commits da implementação"
+    },
+    "25-gestao-projetos": {
+      "titulo": "Uma entrega fatiada e comunicada de ponta a ponta",
+      "missao": "Pegue uma demanda real de cliente/projeto e conduza: fatiamento em entregas de ≤1 dia, priorização explícita, comunicação de escopo e fechamento.",
+      "rubrica": [
+        "Demanda quebrada em fatias verticais entregáveis (lista com critério de pronto)",
+        "1 'não' documentado: o que ficou de fora e por quê",
+        "Estimativa em faixa com buffer explícito vs o realizado",
+        "PENDENCIAS.md atualizado com o que sobrou (datado, com contexto)"
+      ],
+      "evidencia": "link das fatias entregues (commits/PRs) + PENDENCIAS"
+    },
+    "30-banco": {
+      "titulo": "Query lenta real: diagnóstico e otimização medida",
+      "missao": "Ache uma query real lenta (ou N+1) num app AG, meça com EXPLAIN ANALYZE, otimize (índice/reescrita) e prove o ganho.",
+      "rubrica": [
+        "EXPLAIN ANALYZE antes e depois, com números no PR",
+        "Causa nomeada (seq scan, N+1, falta de índice composto…)",
+        "Índice justificado: por que ESSAS colunas nessa ordem",
+        "Sem SELECT * no código tocado"
+      ],
+      "evidencia": "PR com os dois planos de execução"
+    },
+    "32-engenharia-dados": {
+      "titulo": "Pipeline idempotente com reprocessamento provado",
+      "missao": "Num sync real (ERP-externo→Supabase), prove idempotência: rode o mesmo lote 2×, mostre estado final idêntico, e documente a chave natural.",
+      "rubrica": [
+        "UNIQUE da chave natural no schema (migration commitada)",
+        "Execução dupla documentada: contagens antes/depois idênticas",
+        "Janela de reprocessamento definida e testada (overlap sem duplicata)",
+        "Dado sujo real tratado em boundary (caso documentado)"
+      ],
+      "evidencia": "migration + log da execução dupla"
+    },
+    "35-ia-ml": {
+      "titulo": "Feature com LLM em produção, com guarda-rails",
+      "missao": "Construa (ou audite) uma feature real usando LLM via API: prompt versionado, saída validada, fallback pra falha do modelo, custo estimado.",
+      "rubrica": [
+        "Prompt versionado no repo (não hardcoded inline)",
+        "Saída do modelo validada antes de usar (schema/parse com fallback)",
+        "Falha da API degrada gracioso (timeout + fallback declarado)",
+        "Custo por chamada estimado e registrado no PR"
+      ],
+      "evidencia": "PR da feature + doc de custo"
+    },
+    "40-frontend": {
+      "titulo": "Caçada de re-render com prova de profiler",
+      "missao": "Num app React AG, identifique um re-render desnecessário real com o Profiler, corrija (memo/estrutura/estado) e prove a redução.",
+      "rubrica": [
+        "Screenshot/número do Profiler antes e depois",
+        "Causa nomeada (prop instável, estado alto demais, contexto largo…)",
+        "Fix não usa memo cego: justificativa de por que ESSA técnica",
+        "Nenhuma pegadinha AG introduzida (classe interpolada, fixed sob transform…)"
+      ],
+      "evidencia": "PR com os dois perfis"
+    },
+    "42-design": {
+      "titulo": "Redesign de uma tela real com crítica estruturada",
+      "missao": "Escolha a pior tela de um app AG, escreva a crítica (hierarquia/estados/a11y), redesenhe e implemente. Antes/depois no PR.",
+      "rubrica": [
+        "Crítica escrita apontando ≥4 problemas com o princípio violado",
+        "Os 5 estados implementados (vazio/carregando/erro/parcial/cheio)",
+        "Contraste AA verificado e navegação por teclado funcional",
+        "Antes/depois visual no PR"
+      ],
+      "evidencia": "PR com screenshots"
+    },
+    "44-motion-design": {
+      "titulo": "Motion com propósito numa interação real",
+      "missao": "Adicione motion a um fluxo real (entrada de view, confirmação, microinteração) seguindo easing/duração/coreografia — e barato (compositor only).",
+      "rubrica": [
+        "Só transform/opacity animados (DevTools: sem layout thrashing)",
+        "Durações 150-400ms com easing correto (out pra entrada, in pra saída)",
+        "Cada animação tem propósito declarado no PR (orientar/confirmar/encantar)",
+        "reduced-motion tratado do jeito certo (colapsa ao estado final; exceção RDP documentada)"
+      ],
+      "evidencia": "PR + gravação curta do resultado"
+    },
+    "46-3d-web": {
+      "titulo": "Cena 3D autoral integrada a uma entrega real",
+      "missao": "Construa uma cena 3D (three.js ou CSS3D) num deck/página real: iluminada, animada, performática e com fallback.",
+      "rubrica": [
+        "Cena própria (não tutorial copiado): geometria/composição justificada",
+        "60fps no desktop (medido) e dispose() sem leak de GPU",
+        "Fallback funcional sem WebGL (degrada, não quebra)",
+        "Asset pipeline documentado (o que pesa, por que carrega assim)"
+      ],
+      "evidencia": "deck/página deployada + PR"
+    },
+    "50-backend": {
+      "titulo": "Endpoint robusto de ponta a ponta",
+      "missao": "Construa/refatore um endpoint real com o pacote completo: validação em boundary, erro com contexto, idempotência, timeout e log estruturado.",
+      "rubrica": [
+        "Payload validado no boundary com resposta de erro acionável",
+        "Idempotente sob retry (provado com chamada dupla)",
+        "Timeout explícito em toda chamada externa",
+        "Log estruturado com request-id correlacionável"
+      ],
+      "evidencia": "PR + log de uma execução real"
+    },
+    "55-apis": {
+      "titulo": "Integração externa resiliente documentada",
+      "missao": "Integre (ou audite uma integração com) API de terceiro cobrindo: auth, rate limit, paginação, erro do fornecedor e contrato violado.",
+      "rubrica": [
+        "Rate limit respeitado com backoff (código, não promessa)",
+        "Paginação completa provada (contagem bate com a origem)",
+        "Resposta malformada do fornecedor tratada (caso real testado)",
+        "Doc de 1 página: endpoints usados, limites, armadilhas descobertas"
+      ],
+      "evidencia": "PR + doc da integração"
+    },
+    "60-seguranca": {
+      "titulo": "Auditoria de segurança completa de um app seu",
+      "missao": "Rode uma auditoria OWASP num app AG em produção: threat model, varredura das 10 categorias, headers, RLS, secrets — e corrija os achados críticos.",
+      "rubrica": [
+        "Threat model STRIDE da feature mais sensível",
+        "Achados classificados por categoria OWASP com severidade",
+        "Críticos corrigidos no mesmo ciclo (commits linkados)",
+        "Teste empírico de RLS: usuário sem role vê zero linhas (provado)"
+      ],
+      "evidencia": "relatório da auditoria + commits dos fixes"
+    },
+    "70-devops": {
+      "titulo": "Pipeline de deploy com gate de qualidade",
+      "missao": "Monte CI/CD real: push roda teste+lint+build, deploy só com verde, rollback documentado e testado uma vez.",
+      "rubrica": [
+        "Workflow com gate (falhou → não deploya) demonstrado",
+        "Secrets fora do repo (env do provedor, escopo mínimo)",
+        "1 rollback executado de verdade e documentado",
+        "Tempo do pipeline <5min (medido)"
+      ],
+      "evidencia": "link do workflow + doc do rollback"
+    },
+    "80-system-design": {
+      "titulo": "Design doc de um sistema seu, com números",
+      "missao": "Escreva o design doc de um sistema AG real (sync, dashboard, multi-tenant): requisitos, estimativas de carga, decisões de cache/fila/consistência e limites conhecidos.",
+      "rubrica": [
+        "Estimativas numéricas (req/dia, dados/mês, pico) com base real",
+        "≥2 trade-offs de consistência/disponibilidade decididos e justificados",
+        "Diagrama do fluxo de dados com os pontos de falha marcados",
+        "Seção 'o que quebra primeiro em 10x de carga'"
+      ],
+      "evidencia": "design doc commitado (docs/)"
+    },
+    "82-robustez": {
+      "titulo": "Blindar um fluxo crítico e provar com chaos caseiro",
+      "missao": "Escolha o fluxo mais crítico de um app AG e blinde: retry+backoff, timeout, idempotência, degradação — depois derrube as dependências de propósito e documente.",
+      "rubrica": [
+        "Timeout + retry com jitter em toda chamada externa do fluxo",
+        "Chaos caseiro executado: dependência derrubada, credencial expirada (log real)",
+        "Degradação visível e honesta na UI (não catch silencioso)",
+        "Teste automatizado que injeta ≥1 falha"
+      ],
+      "evidencia": "PR + log do chaos"
+    },
+    "85-escala": {
+      "titulo": "Teste de carga real com diagnóstico",
+      "missao": "Submeta um endpoint/app AG a carga (k6/autocannon), ache o primeiro gargalo, otimize e meça de novo.",
+      "rubrica": [
+        "Baseline medido (p50/p95/p99, não média) com a ferramenta no repo",
+        "Gargalo identificado com evidência (CPU? conexão? query?)",
+        "Otimização aplicada e re-medida (números lado a lado)",
+        "Limite documentado: 'aguenta X req/s; depois disso, Y'"
+      ],
+      "evidencia": "scripts de carga + relatório antes/depois"
+    },
+    "90-entrevista": {
+      "titulo": "Bateria de mock interviews gravadas",
+      "missao": "3 sessões de mock (comportamental, técnica, system design) respondendo em voz alta com timer, auto-avaliadas com nota e plano de melhora.",
+      "rubrica": [
+        "3 sessões completas com ≥10 perguntas cada",
+        "Respostas de 30s cronometradas (não leu — falou)",
+        "Auto-avaliação escrita: 3 piores respostas e o porquê",
+        "2ª rodada das 3 piores com melhora perceptível"
+      ],
+      "evidencia": "notas das sessões no hub (registro de estudo)"
+    },
+    "95-diferencial": {
+      "titulo": "Artefato público que prova pensamento próprio",
+      "missao": "Publique 1 artefato técnico público (case, post, talk, repo-exemplo) sobre um problema que VOCÊ resolveu, com o raciocínio exposto.",
+      "rubrica": [
+        "Problema real seu (não tutorial requentado)",
+        "O raciocínio aparece: alternativas, refutação, trade-off",
+        "Publicado onde um recrutador acha (GitHub/blog/LinkedIn)",
+        "Defensável em 2min sem consultar"
+      ],
+      "evidencia": "link público do artefato"
+    }
+  }
+}

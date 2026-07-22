@@ -421,6 +421,7 @@ function activateView(view) {
   if (view==='growth')       { renderGrowth(); renderModules(); }
   if (view==='quest-board')  renderQuestBoard();
   if (view==='trilha')       renderTrilha();
+  if (view==='revisar')      renderRevisar();
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────
@@ -477,6 +478,7 @@ function ring(pct, color, size=44) {
 
 // ── DASHBOARD ─────────────────────────────────────────────────────
 function renderDash() {
+  if (typeof srsAtualizarDash === 'function') srsAtualizarDash();
   const now   = new Date();
   const hr    = now.getHours();
   const greet = hr<6?'Boa madrugada, ':hr<12?'Bom dia, ':hr<18?'Boa tarde, ':'Boa noite, ';
@@ -1705,7 +1707,13 @@ function buildTrilhaCard(trilha, progress) {
   const { lidos, checkpoints, total, percentual } = calcularProgressoTrilha(trilha.id, progress);
   const corBorda = TRILHA_COR_PRIORIDADE[trilha.prioridade] || 'var(--muted)';
   const badgeClass = `trilha-badge-${trilha.prioridade}`;
-  const badgeLabel = trilha.prioridade === 'maxima' ? '<svg class="ico" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7Z"/></svg> máxima' : trilha.prioridade;
+  // badgeLabel carrega SVG próprio — NÃO passa por esc() (viraria texto visível)
+  const badgeLabel = trilha.prioridade === 'maxima' ? icon('zap', 13) + ' máxima' : trilha.prioridade;
+  const pcSt = loadProjetoState()[trilha.id];
+  const formada = pcSt?.status === 'aceito' && total > 0 && checkpoints === total;
+  const formadaBadge = formada
+    ? `<span class="trilha-badge pc-formada">${icon('grad-cap', 13)} FORMADA</span>`
+    : pcSt?.status === 'aceito' ? `<span class="trilha-badge pc-aceito-mini">${icon('grad-cap', 12)} projeto ok</span>` : '';
 
   return `
     <div class="trilha-card" onclick="renderTrilhaModulos('${trilha.id}')"
@@ -1713,7 +1721,7 @@ function buildTrilhaCard(trilha, progress) {
       <div class="trilha-card-icon">${deEmoji(trilha.icone,22)}</div>
       <div class="trilha-card-nome">${esc(trilha.nome)}</div>
       <div class="trilha-card-foco">${esc(trilha.foco)}</div>
-      <span class="trilha-badge ${badgeClass}">${esc(badgeLabel)}</span>
+      <span class="trilha-badge ${badgeClass}">${badgeLabel}</span>${formadaBadge}
       <div class="trilha-progress-bar">
         <div class="trilha-progress-fill" style="width:${percentual}%"></div>
       </div>
@@ -1725,6 +1733,7 @@ function buildTrilhaCard(trilha, progress) {
 }
 
 async function renderTrilha() {
+  await loadProjetosConclusao();
   const data = await loadTrilhaIndex();
   if (!data) {
     document.getElementById('trilha-body').innerHTML =
@@ -2011,7 +2020,73 @@ function renderTrilhaModulos(trilhaId) {
         <button class="btn btn-ghost btn-sm"
           onclick="event.stopPropagation();renderTrilhaModulo('${m.id}','${trilhaId}')">Abrir</button>
       </div>
-    </div>`).join('');
+    </div>`).join('') + buildProjetoConclusao(trilhaId);
+}
+
+// ── PROJETO DE CONCLUSÃO (a trilha só está FORMADA com checkpoints + projeto aceito) ──
+let PROJETOS_CONCLUSAO = null;
+async function loadProjetosConclusao() {
+  if (PROJETOS_CONCLUSAO) return;
+  try {
+    const r = await fetch('/data/projetos-conclusao.json?v=' + Date.now());
+    if (r.ok) { PROJETOS_CONCLUSAO = (await r.json()).projetos || {}; }
+  } catch (e) { console.warn('[projeto] falha ao carregar projetos-conclusao.json:', e); }
+}
+const loadProjetoState = () => safeParse('agh_projetos_trilha', {});
+
+function buildProjetoConclusao(trilhaId) {
+  const p = PROJETOS_CONCLUSAO?.[trilhaId];
+  if (!p) return '';
+  const st = loadProjetoState()[trilhaId];
+  const status = st?.status; // undefined | 'entregue' | 'aceito'
+  const badge = status === 'aceito'
+    ? `<span class="pc-badge pc-aceito">${icon('grad-cap',13)} aceito</span>`
+    : status === 'entregue'
+      ? '<span class="pc-badge pc-entregue">entregue — aguarda revisão</span>'
+      : '<span class="pc-badge">pendente</span>';
+  return `
+    <div class="pc-card">
+      <div class="pc-head">
+        <div class="pc-ico">${icon('grad-cap',20)}</div>
+        <div style="flex:1">
+          <div class="pc-titulo">Projeto de conclusão: ${esc(p.titulo)}</div>
+          <div class="pc-missao">${esc(p.missao)}</div>
+        </div>
+        ${badge}
+      </div>
+      <div class="pc-rubrica">${p.rubrica.map(r => `<div class="pc-rub-item">${icon('check',12)} ${esc(r)}</div>`).join('')}</div>
+      <div class="pc-evid">
+        <input id="pc-evid-${trilhaId}" type="text" placeholder="Evidência: ${esc(p.evidencia)}"
+          value="${esc(st?.evidencia || '')}" ${status === 'aceito' ? 'disabled' : ''}>
+        ${status === 'aceito' ? '' : status === 'entregue'
+          ? `<button class="btn btn-primary btn-sm" onclick="pcAceitar('${trilhaId}')">Marcar aceito (revisão aprovou)</button>`
+          : `<button class="btn btn-primary btn-sm" onclick="pcEntregar('${trilhaId}')">Marcar entregue</button>`}
+      </div>
+      <div class="pc-nota">Aceite honesto: rode a /revisao no projeto e só marque aceito com a rubrica aprovada lá. Formar-se no fácil é se enganar no caro.</div>
+    </div>`;
+}
+
+function pcEntregar(trilhaId) {
+  const evid = document.getElementById('pc-evid-' + trilhaId)?.value.trim();
+  if (!evid) { toast('Cole a evidência (commit/PR/link) antes de entregar', 'err'); return; }
+  const all = loadProjetoState();
+  all[trilhaId] = { status: 'entregue', evidencia: evid, data: today() };
+  localStorage.setItem('agh_projetos_trilha', JSON.stringify(all));
+  toast('Projeto entregue — agora a /revisao decide');
+  renderTrilhaModulos(trilhaId);
+}
+
+function pcAceitar(trilhaId) {
+  if (!confirm('A /revisao aprovou a rubrica? Aceite sem revisão é auto-engano.')) return;
+  const all = loadProjetoState();
+  if (!all[trilhaId]) return;
+  all[trilhaId].status = 'aceito';
+  all[trilhaId].aceitoEm = today();
+  localStorage.setItem('agh_projetos_trilha', JSON.stringify(all));
+  addXpTrilha(50, 'projeto de conclusão aceito: ' + trilhaId);
+  applyAttributeRules('checkpoint', 'projeto de conclusão: ' + trilhaId);
+  toast('Projeto aceito — trilha a caminho de FORMADA');
+  renderTrilhaModulos(trilhaId);
 }
 
 async function renderTrilhaModulo(moduloId, trilhaId) {

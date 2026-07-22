@@ -1047,6 +1047,55 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
   .view.active,.view.active>*,body::after,.nav-item.active::before,
   #p3-wipe.run i,.sb-mark.shake,#pomo-pulse{animation:none!important}
 }
+/* ── SRS (Revisar) ─────────────────────────────────────────────── */
+.srs-card{max-width:680px;margin:24px auto;background:var(--card);border:1px solid var(--line);
+  border-radius:14px;padding:26px 28px}
+.srs-meta{display:flex;align-items:center;gap:10px;margin-bottom:18px;font-size:.75rem;color:var(--muted)}
+.srs-chip{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);
+  border-radius:6px;padding:2px 8px;font-weight:600;text-transform:capitalize}
+.srs-mod{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.srs-pos{font-variant-numeric:tabular-nums}
+.srs-q{font-size:1.15rem;font-weight:600;line-height:1.45;margin-bottom:18px}
+.srs-a{font-size:.95rem;line-height:1.6;color:var(--txt);background:color-mix(in srgb,var(--accent) 6%,transparent);
+  border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:14px}
+.srs-hint{font-size:.75rem;color:var(--muted);margin:10px 0 14px}
+.srs-actions{display:flex;gap:10px;flex-wrap:wrap}
+.srs-btn{flex:1;min-width:100px;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:10px 8px;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--txt);
+  font-size:.85rem;font-weight:600;cursor:pointer;transition:transform .08s,border-color .15s}
+.srs-btn:hover{transform:translateY(-1px)}
+.srs-btn span{font-size:.68rem;color:var(--muted);font-weight:400;font-variant-numeric:tabular-nums}
+.srs-show{border-color:var(--accent);color:var(--accent)}
+.srs-denovo:hover{border-color:#ff5c72}.srs-dificil:hover{border-color:#ffbc7d}
+.srs-bom:hover{border-color:var(--accent)}.srs-facil:hover{border-color:var(--primary)}
+.srs-dash{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);
+  border-radius:12px;padding:14px 16px;cursor:pointer;transition:border-color .15s}
+.srs-dash:hover{border-color:var(--accent)}
+.srs-dash-ico{color:var(--accent);display:grid;place-items:center;width:36px;height:36px;
+  border-radius:9px;background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.srs-dash-n{font-weight:600;font-size:.92rem}
+.srs-dash-s{font-size:.72rem;color:var(--muted)}
+/* ── Projeto de conclusão ──────────────────────────────────────── */
+.pc-card{margin-top:22px;background:var(--card);border:1px dashed var(--line);border-radius:14px;padding:20px 22px}
+.pc-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px}
+.pc-ico{color:var(--primary);width:38px;height:38px;border-radius:9px;display:grid;place-items:center;
+  background:color-mix(in srgb,var(--primary) 12%,transparent);flex-shrink:0}
+.pc-titulo{font-weight:700;font-size:.98rem}
+.pc-missao{font-size:.82rem;color:var(--muted);line-height:1.45;margin-top:3px}
+.pc-badge{font-size:.68rem;padding:3px 9px;border-radius:6px;border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.pc-badge.pc-entregue{border-color:var(--primary);color:var(--primary)}
+.pc-badge.pc-aceito{border-color:var(--accent);color:var(--accent);display:inline-flex;gap:4px;align-items:center}
+.pc-rubrica{display:grid;gap:6px;margin:0 0 14px}
+.pc-rub-item{font-size:.8rem;color:var(--txt);display:flex;gap:8px;align-items:flex-start}
+.pc-rub-item .ico{color:var(--accent);flex-shrink:0;margin-top:2px}
+.pc-evid{display:flex;gap:10px}
+.pc-evid input{flex:1;background:var(--bg);border:1px solid var(--line);border-radius:8px;
+  color:var(--txt);padding:9px 12px;font-size:.8rem}
+.pc-nota{font-size:.7rem;color:var(--muted);margin-top:10px;font-style:italic}
+.trilha-badge.pc-formada{border:1px solid var(--accent);color:var(--accent);font-weight:700;
+  display:inline-flex;gap:4px;align-items:center;margin-left:6px}
+.trilha-badge.pc-aceito-mini{border:1px solid var(--line);color:var(--muted);
+  display:inline-flex;gap:4px;align-items:center;margin-left:6px}
 </style>
 </head>
 <body>
@@ -1087,6 +1136,13 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
     <button class="nav-item" onclick="go('quest-board')" id="nav-quest-board">
       <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
       Quest Board
+    </button>
+    <button class="nav-item" onclick="go('revisar')" id="nav-revisar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M9 4a2.5 2.5 0 0 0-2.5 2.5A2.5 2.5 0 0 0 5 9c0 1 .4 1.7 1 2.3-.6.6-1 1.4-1 2.4A2.6 2.6 0 0 0 7.5 16 2.5 2.5 0 0 0 10 18.5V4.2A.2.2 0 0 0 9 4Z"/>
+        <path d="M15 4a2.5 2.5 0 0 1 2.5 2.5A2.5 2.5 0 0 1 19 9c0 1-.4 1.7-1 2.3.6.6 1 1.4 1 2.4A2.6 2.6 0 0 1 16.5 16 2.5 2.5 0 0 1 14 18.5V4.2A.2.2 0 0 1 15 4Z"/>
+      </svg>
+      Revisar
     </button>
     <button class="nav-item" onclick="go('trilha')" id="nav-trilha">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1150,6 +1206,7 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
         <div id="dash-today"></div>
       </div>
     </div>
+    <div id="dash-srs-card" style="margin-top:16px"></div>
     <div id="weekly-digest" style="margin-top:16px"></div>
   </div>
 
@@ -1304,6 +1361,17 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
     </div>
     <div id="trilha-body"></div>
     <div id="st-tooltip-el" class="st-tooltip" style="display:none"></div>
+  </div>
+
+  <!-- REVISAR (recall espaçado) -->
+  <div class="view" id="view-revisar">
+    <div class="view-header">
+      <div>
+        <div class="view-title">Revisar</div>
+        <div class="view-sub">Recall espaçado · responder de memória vale mais que reler</div>
+      </div>
+    </div>
+    <div id="revisar-body"></div>
   </div>
 
 </div><!-- /main -->
@@ -1544,6 +1612,7 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 
 <script src="seed.js"></script>
 <script src="icons.js"></script>
+  <script src="srs.js"></script>
   <script src="app.js"></script>
 
 </body>
