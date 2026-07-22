@@ -1,10 +1,10 @@
-// seed.js v23 — v22 + sessão s-72 (ag-hub, 2026-07-22)
+// seed.js v24 — v23 + sessão s-73 (ag-hub, 2026-07-22)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '23') return;
+  if (localStorage.getItem('agh_seed_v') === '24') return;
 
   const now = new Date().toISOString();
 
@@ -272,6 +272,7 @@
     { id:'s-70', title:'Trilha vira grade curricular: 23 syllabi com bibliografia, labs e 921h mapeadas', projectId:'ag-hub', type:'feature', date:'2026-07-22', impact:'alto', notes:'Cada trilha agora e disciplina: bibliografia obrigatoria por modulo (obra por capitulo nomeado), 2-3 labs do zero com criterio de pronto, carga horaria na UI e formatura so com projeto aceito.', createdAt: now },
     { id:'s-71', title:'Scrum solo unico + status window Solo Leveling com treino fisico', projectId:'ag-hub', type:'feature', date:'2026-07-22', impact:'alto', notes:'Sprint semanal com WIP 2 e done-com-evidencia absorve Tarefas/Quest Board; ranks E-S calibrados na distribuicao real de atributos; daily quest com penalidade e log de treino na mesma economia.', createdAt: now },
     { id:'s-72', title:'Tema Gojo: Six Eyes + Hollow Purple sobre fundo Infinite Void em canvas', projectId:'ag-hub', type:'design', date:'2026-07-22', impact:'medio', notes:'Reskin por tokens (semantica preservada) + fundo generativo leve: nebulosas em drift e estrelas por angulo aureo, 30fps, primeiro frame sincrono p/ rAF pausado. Tecnica do template imersivo adaptada.', createdAt: now },
+    { id:'s-73', title:'Dash estudos-first + videoteca YouTube curada nas 23 disciplinas', projectId:'ag-hub', type:'feature', date:'2026-07-22', impact:'medio', notes:'Card FORMACAO com horas cursadas/921h e CTA de continuar; nav Estudos/Revisar no topo; videoteca por canal consagrado + termos de busca (PT-BR priorizado), zero URL de memoria.', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -319,7 +320,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '23');
+  localStorage.setItem('agh_seed_v',   '24');
 
-  console.log('[Ricaliff seed v23 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v24 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
