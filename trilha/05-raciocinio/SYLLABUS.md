@@ -38,6 +38,18 @@ Regra de leitura: **com um bug real na mão** — cada regra que ler, aplique no
 **Lab 3 — `minimal-repro` (4h):** pegue um "bug" que só reproduz com muito contexto (app inteira) e reduza-o, por divisão ao meio, ao menor snippet que ainda falha, logando cada camada removida.
 *Pronto quando:* a reprodução final tem < 20 linhas, roda isolada, e o `REDUCAO.md` registra cada corte (o que removeu, se ainda falhava).
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com um bug real na mão; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Fabio Akita** *(PT-BR)* | "método científico no software", "como depurar de verdade", "como pensar em código" | módulos 01, 02, 04 — mentalidade de engenharia em português |
+| **ThePrimeagen** | "how I debug code", "reading error messages", "debugging workflow" | módulos 02, 04, 06 |
+| **Computerphile** | "problem solving", "how to think about bugs" | módulos 05, 07 |
+
+Ordem sugerida: vídeo curto ANTES da bibliografia pra criar o mapa; vídeo profundo (Akita) DEPOIS do módulo pra consolidar. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 7/7 módulos com checkpoint (recall aprovado na aba Revisar)

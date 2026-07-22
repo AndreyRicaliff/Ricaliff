@@ -42,6 +42,19 @@ Regra de leitura: **com um repo de teste aberto** — cada comando que ler, rode
 **Lab 3 — `recovery-drill` (3h):** "perca" commits de propósito de três jeitos (`reset --hard`, branch deletada, `commit --amend`) e recupere cada um.
 *Pronto quando:* todo commit "perdido" é recuperado e você nomeia corretamente o caminho de cada resgate (reflog vs `ORIG_HEAD` vs cherry-pick).
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com um repo de teste aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Curso em Vídeo / Gustavo Guanabara** *(PT-BR)* | "curso de Git e GitHub" (commit, branch, merge) | módulos 01, 02, 03, 07 — base do zero em português |
+| **Fabio Akita** *(PT-BR)* | "como o Git funciona por dentro", "Git internals" | módulos 01, 05 — o modelo mental em português |
+| **freeCodeCamp.org** | "Git and GitHub full course", "git branching and merging" | módulos 03, 04 |
+| **ThePrimeagen** | "git rebase", "git reflog recovery", "how I use git" | módulos 03, 05, 06 |
+
+Ordem sugerida: curso-base (Guanabara) ANTES pra criar o mapa; vídeo profundo (Akita/ThePrimeagen) DEPOIS do módulo pra consolidar. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 7/7 módulos com checkpoint (recall aprovado na aba Revisar)

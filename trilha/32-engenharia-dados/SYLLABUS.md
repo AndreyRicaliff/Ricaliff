@@ -39,6 +39,19 @@ Regra de leitura: **com um pipeline AG aberto** (sync de ERP-externo, tabela-res
 **Lab 3 — `pitr-drill` (4h):** ensaio de recuperação. Configura archiving numa instância Postgres local, insere dados marcados por timestamp, simula um `DELETE` acidental e restaura para o instante anterior ao erro.
 *Pronto quando:* a restauração recupera exatamente as linhas apagadas sem trazer de volta o que foi inserido depois do ponto-alvo, com o comando de recovery documentado no README.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com um pipeline AG aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Hussein Nasser** | "change data capture", "message queue", "database replication", "Kafka" | módulos 02, 05 |
+| **ByteByteGo** | "ETL vs ELT", "batch vs stream processing", "data pipeline", "CDC" | módulos 01, 03, 05 |
+| **Fabio Akita** *(PT-BR)* | "big data", "mensageria e filas", "streaming de dados" | módulos 01, 02 — fundamentos em português |
+| **Fireship** | "data engineering", "Apache Kafka in 100 seconds" | visão-relâmpago antes da leitura densa |
+
+Ordem sugerida: Fireship/ByteByteGo para o mapa ANTES da bibliografia; Nasser DEPOIS, sempre re-rodando um lote você mesmo. Vídeo nunca substitui o lab de idempotência/PITR.
+
 ## Critério de formatura
 
 - [ ] 8/8 módulos com checkpoint (recall aprovado na aba Revisar)

@@ -36,6 +36,19 @@ Regra de leitura: **produza o artefato enquanto lê** — cada leitura desta tri
 **Lab 3 — `10-problemas-sem-ia` (5h):** resolver 10 problemas (algoritmo ou bug real) **sem Claude**, documentando as 4 fases de Pólya em cada um, em repo público `_sem-ia`.
 *Pronto quando:* 10 registros datados, cada um mostrando entender→planejar→executar→revisar, com a solução final e o que a fase "revisar" mudou.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando vira artefato (post, decisão, problema resolvido); passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Fabio Akita** *(PT-BR)* | "carreira de programador", "como aprender a programar", "fundamentos" | módulos 01, 03, 05 — fundamentos e carreira em português |
+| **Filipe Deschamps** *(PT-BR)* | "carreira dev", "como estudar programação", "comunicação" | módulos 03, 04 — em português |
+| **ThePrimeagen** | "how i learned to code", "deliberate practice", "career advice" | módulos 01, 03 — prática deliberada e opinião crua |
+| **Código Fonte TV** *(PT-BR)* | "carreira programador", "portfólio dev", "linkedin dev" | módulo 04 — comunicação pública em português |
+
+Ordem sugerida: vídeo em português (Akita/Deschamps) ANTES pra criar o mapa; a leitura densa (Nygard/Graham/Pólya) DEPOIS pra virar artefato. Vídeo nunca substitui o post publicado.
+
 ## Critério de formatura
 
 - [ ] 5/5 módulos com checkpoint (recall aprovado — 10 conceitos explicados oralmente sem travar)

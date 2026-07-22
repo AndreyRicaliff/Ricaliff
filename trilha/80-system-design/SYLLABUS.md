@@ -39,6 +39,20 @@ Regra de leitura: **com o repositório aberto** — cada conceito que aparecer, 
 **Lab 3 — `dedup-queue` (3h):** fila em memória que recebe mensagens **duplicadas de propósito** (at-least-once simulado) e processa o efeito exatamente uma vez via idempotency key (Set ou UNIQUE em SQLite).
 *Pronto quando:* enviar o mesmo lote 3× resulta no mesmo estado final que 1×, provado por teste, e o consumidor loga "duplicata ignorada" para as reentregas.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o repositório aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **ByteByteGo** | "system design interview", "caching", "load balancing", "database replication", "url shortener" | módulos 01, 03, 05, 08 — canal do autor do livro-texto (Alex Xu) |
+| **Hussein Nasser** | "database replication", "message queue", "idempotency", "consistency", "CAP theorem" | módulos 02, 03, 04, 07 — backend engineering a fundo |
+| **Fabio Akita** *(PT-BR)* | "escalabilidade", "filas e mensageria", "sistemas distribuídos" | módulos 02, 04, 06 — fundamentos em português |
+| **Fireship** | "system design", "cap theorem", "message queue in 100 seconds" | visão-relâmpago antes da leitura densa |
+| **freeCodeCamp.org** | "system design full course" | panorama dos 8 módulos num curso só |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES da bibliografia pra criar o mapa; vídeo profundo (ByteByteGo/Nasser) DEPOIS do módulo pra consolidar. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 8/8 módulos com checkpoint (recall aprovado na aba Revisar)

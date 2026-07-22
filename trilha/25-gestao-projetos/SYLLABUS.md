@@ -35,6 +35,18 @@ Regra de leitura: **com um projeto AG aberto** — cada conceito que aparecer, a
 **Lab 2 — `adr-forge` (3h):** CLI que cria e gerencia ADRs em Markdown: numeração sequencial automática, template fixo (Contexto/Decisão/Consequências), transições de status (proposto → aceito → substituído) e link `superseded-by` entre registros.
 *Pronto quando:* `adr new "usar X"` cria `0007-usar-x.md` numerado; `adr supersede 3 by 7` marca o 3 como substituído e cria o vínculo bidirecional; suíte de teste cobre a numeração e a transição.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com um projeto AG aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Fabio Akita** *(PT-BR)* | "metodologias ágeis", "estimativa de software", "o mito do programador 10x" | módulos 01–03 — fundamentos com senso crítico em português |
+| **Código Fonte TV** *(PT-BR)* | "dívida técnica", "scrum vs kanban", "o que é MVP" | módulos 04, 06 |
+| **Fireship** | "agile in 100 seconds", "technical debt explained" | visão-relâmpago antes da leitura densa |
+
+A whitelist cobre pouco desta disciplina — o peso mora na bibliografia (*Shape Up*, EBS, ADR); use o vídeo só para o mapa inicial, nunca como substituto do lab.
+
 ## Critério de formatura
 
 - [ ] 7/7 módulos com checkpoint (recall aprovado na aba Revisar)

@@ -37,6 +37,20 @@ Regra de leitura: **com o console/DevTools aberto** — cada conceito que aparec
 **Lab 3 — `closure-lab` (3h):** implemente do zero, usando closures, três utilitários: `once(fn)` (executa 1×), `memoize(fn)` (cacheia por argumento) e um `contador()` com estado privado (nenhum acesso externo à variável interna).
 *Pronto quando:* testes provam que o estado é inacessível de fora (só muda pela API pública) e que `memoize` não recomputa para o mesmo argumento.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o console/DevTools aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Fabio Akita** *(PT-BR)* | "como o JavaScript funciona por dentro", "event loop explicado", "valor vs referência" | módulos 01, 02 — fundamentos profundos em português |
+| **Curso em Vídeo / Gustavo Guanabara** *(PT-BR)* | "curso de JavaScript" (tipos, operadores, funções) | módulo 01 — base do zero em português |
+| **Fireship** | "JavaScript in 100 seconds", "the event loop", "JWT in 100 seconds", "HTTP status codes" | módulos 02, 03, 05 — mapa-relâmpago antes da leitura |
+| **freeCodeCamp.org** | "SQL vs NoSQL", "OAuth 2.0 explained", "JavaScript full course" | módulos 04, 05 |
+| **Hussein Nasser** | "HTTP request methods", "database engineering", "JWT vs session" | módulos 03, 04, 05 |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES da bibliografia pra criar o mapa; vídeo profundo (Akita/Nasser) DEPOIS do módulo pra consolidar. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 6/6 módulos com checkpoint (recall aprovado na aba Revisar)

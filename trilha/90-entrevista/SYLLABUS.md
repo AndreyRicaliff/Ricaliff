@@ -36,6 +36,19 @@ Regra de leitura: **em voz alta e cronometrado** — nenhuma resposta conta como
 **Lab 3 — `banco-proprio` (2h):** expandir o `perguntas-junior.md` com 10 perguntas novas (do seu stack real), cada uma com resposta-base de 30s, "onde no portfólio prova" e "o que mata candidatos".
 *Pronto quando:* as 10 entradas estão commitadas no formato existente e você responde as 10 em voz alta sem ler.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito em voz alta com o roteiro aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **NeetCode** | "coding interview", "blind 75", "system design interview" | módulo perguntas-junior — algoritmo e estrutura da resposta técnica |
+| **Código Fonte TV** *(PT-BR)* | "entrevista de programação", "perguntas de entrevista dev" | perguntas-junior, simulacao — em português |
+| **Lucas Montano** *(PT-BR)* | "entrevista de emprego programador", "processo seletivo dev" | simulacao, walkthrough-projetos — comportamental e carreira em português |
+| **Fireship** | "coding interview", "how to pass a coding interview" | visão-relâmpago antes do mock |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES pra criar o mapa; vídeo em português (Código Fonte/Lucas Montano) DEPOIS pra consolidar. Vídeo nunca substitui o mock gravado.
+
 ## Critério de formatura
 
 - [ ] 3/3 módulos com recall (as 40 perguntas + STAR + os 8 walkthroughs ditos sem consultar)

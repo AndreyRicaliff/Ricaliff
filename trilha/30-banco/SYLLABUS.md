@@ -39,6 +39,19 @@ Regra de leitura: **com um banco AG real ou uma cópia dele** — cada conceito,
 **Lab 3 — `rls-isolation` (5h):** schema mínimo com uma tabela multi-tenant e duas policies (uma fail-open ingênua `USING(true)`, uma fail-closed correta). Um teste autentica como Tenant A, Tenant B e um usuário sem tenant.
 *Pronto quando:* o teste prova que a policy correta devolve só as linhas do próprio tenant e zero para o usuário sem role, enquanto a ingênua vaza — tudo em asserts automatizados.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com um banco AG aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Hussein Nasser** | "database indexing", "ACID isolation levels", "how a Postgres query executes", "connection pooling" | módulos 01, 02, 04 — a referência do tema |
+| **Fabio Akita** *(PT-BR)* | "banco de dados relacional", "índices", "transações e isolamento" | módulos 01, 04 — fundamentos profundos em português |
+| **ByteByteGo** | "database indexing", "SQL query optimization", "isolation levels" | módulos 01–04 |
+| **Fireship** | "Postgres in 100 seconds", "7 database paradigms" | visão-relâmpago antes da leitura densa |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) para o mapa; Nasser/ByteByteGo DEPOIS do módulo, sempre rodando o `EXPLAIN` você mesmo. Vídeo nunca substitui o lab de índice/RLS.
+
 ## Critério de formatura
 
 - [ ] 8/8 módulos com checkpoint (recall aprovado na aba Revisar)

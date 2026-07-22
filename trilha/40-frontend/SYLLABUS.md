@@ -38,6 +38,20 @@ Regra de leitura: **com um componente AG aberto** — cada conceito, ache onde e
 **Lab 3 — `perf-budget` (4h):** app Vite com um componente propositalmente pesado (lista grande + import gordo). Meça com Lighthouse/Web Vitals, aplique code-splitting (`lazy`/dynamic import) e virtualização/memo, e meça de novo.
 *Pronto quando:* um antes/depois documenta a queda de LCP/tamanho do bundle inicial com números reais, e o chunk pesado só carrega sob demanda (visível no network).
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com um componente AG aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Rocketseat** *(PT-BR)* | "React hooks", "useMemo useCallback", "Context API", "React do zero" | módulos 02–04 — fundamentos em português |
+| **DevSoutinho** *(PT-BR)* | "React re-render", "acessibilidade web", "como o React funciona por dentro" | módulos 01, 05 |
+| **Web Dev Simplified** | "React useMemo useCallback", "React context", "React Testing Library" | módulos 03, 04, 07 |
+| **Kevin Powell** | "web accessibility", "focus management", "keyboard navigation" | módulo 05 — a11y e CSS na prática |
+| **Fireship** | "React in 100 seconds", "10 React hooks", "web vitals" | módulos 01, 06 — visão-relâmpago |
+
+Ordem sugerida: Fireship/Rocketseat para o mapa; Web Dev Simplified/DevSoutinho DEPOIS, sempre contando renders no seu próprio app. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 7/7 módulos com checkpoint (recall aprovado na aba Revisar)

@@ -480,8 +480,51 @@ function ring(pct, color, size=44) {
 }
 
 // ── DASHBOARD ─────────────────────────────────────────────────────
+// card FORMAÇÃO do dashboard — o app é estudos-first: progresso da graduação em destaque
+async function renderFormacaoCard() {
+  const el = document.getElementById('dash-formacao'); if (!el) return;
+  const data = await loadTrilhaIndex(); if (!data) { el.innerHTML = ''; return; }
+  await loadProjetosConclusao();
+  const progress = loadTrilhaProgress();
+  const pcState = loadProjetoState();
+
+  let modDone = 0, modTotal = 0, horasCursadas = 0, horasTotal = 0, formadas = 0;
+  let emCurso = null, emCursoPct = -1;
+  for (const t of data.trilhas) {
+    const { checkpoints, total } = calcularProgressoTrilha(t.id, progress);
+    modDone += checkpoints; modTotal += total;
+    horasTotal += t.horas || 0;
+    horasCursadas += (t.horas || 0) * (total ? checkpoints / total : 0);
+    const formada = pcState[t.id]?.status === 'aceito' && total > 0 && checkpoints === total;
+    if (formada) formadas++;
+    else if (checkpoints > 0 && checkpoints < total) {
+      const pct = checkpoints / total;
+      if (pct > emCursoPct) { emCursoPct = pct; emCurso = t; }
+    }
+  }
+  const pctGeral = modTotal ? Math.round(modDone / modTotal * 100) : 0;
+
+  el.innerHTML = `
+    <div class="fm-card" onclick="go('trilha')" role="button">
+      <div class="fm-head">
+        <div class="fm-ico">${icon('grad-cap', 22)}</div>
+        <div style="flex:1">
+          <div class="fm-t">FORMAÇÃO — ${formadas}/${data.trilhas.length} disciplinas</div>
+          <div class="fm-s">${modDone}/${modTotal} módulos · ~${Math.round(horasCursadas)}h de ${horasTotal}h estimadas</div>
+        </div>
+        <div class="fm-pct">${pctGeral}%</div>
+      </div>
+      <div class="fm-bar"><div class="fm-fill" style="width:${pctGeral}%"></div></div>
+      ${emCurso ? `<div class="fm-cta" onclick="event.stopPropagation();go('trilha');setTimeout(()=>renderTrilhaModulos('${emCurso.id}'),480)">
+        ${icon('book-open', 13)} Continuar: <b>${esc(emCurso.nome)}</b> (${Math.round(emCursoPct * 100)}%)</div>`
+      : `<div class="fm-cta" onclick="event.stopPropagation();go('trilha');setTimeout(()=>renderTrilhaModulos('05-raciocinio'),480)">
+        ${icon('book-open', 13)} Começar por: <b>Raciocínio de Engenheiro</b> (30h, a espinha das outras)</div>`}
+    </div>`;
+}
+
 function renderDash() {
   if (typeof srsAtualizarDash === 'function') srsAtualizarDash();
+  renderFormacaoCard();
   const now   = new Date();
   const hr    = now.getHours();
   const greet = hr<6?'Boa madrugada, ':hr<12?'Bom dia, ':hr<18?'Boa tarde, ':'Boa noite, ';

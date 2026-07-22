@@ -45,6 +45,20 @@ Regra de leitura: **com o repositório aberto** — cada conceito que aparecer, 
 **Lab 3 — `rls-fail-closed` (6.5h):** tabela em Postgres/Supabase com RLS default-deny; provar que um usuário sem a role recebe zero linhas e um usuário permitido vê só as suas.
 *Pronto quando:* SELECT com anon/role errada retorna 0 linhas (teste afirma), a role correta vê apenas as próprias linhas, e uma policy é quebrada de propósito para exibir o fail-open (`USING(true)`) e então refechada.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o repositório aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **LiveOverflow** | "web hacking", "xss explained", "how sql injection works" | módulos 02, 03 — o ataque por dentro |
+| **IppSec** | "hackthebox web", "sql injection walkthrough", "access control" | módulos 02, 03, 09 — exploração guiada |
+| **John Hammond** | "malware analysis", "incident response", "dependency confusion" | módulos 08, 13, 14 |
+| **NetworkChuck** | "how hashing works", "password security", "https tls" | módulos 05, 11 |
+| **Curso em Vídeo / Gustavo Guanabara** *(PT-BR)* | "segurança da informação", "criptografia" | módulos 01, 11 — fundamentos em português |
+
+Ordem sugerida: entenda o ataque primeiro (LiveOverflow/IppSec) pra depois a cheat sheet do OWASP fazer sentido; fundamentos em PT-BR (Guanabara) pra assentar o vocabulário. Vídeo nunca substitui o lab — reproduza o exploit no seu playground.
+
 ## Critério de formatura
 
 - [ ] 14/14 módulos com checkpoint (recall aprovado na aba Revisar)

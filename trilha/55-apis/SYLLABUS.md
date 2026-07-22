@@ -38,6 +38,19 @@ Regra de leitura: **com o repositório aberto** — cada conceito que aparecer, 
 **Lab 3 — `oauth-flow-demo` (4h):** implementar o fluxo Authorization Code com PKCE no lado cliente contra um authorization server (mock ou sandbox real), sem client secret no browser.
 *Pronto quando:* a troca code→token funciona com PKCE, o parâmetro `state` é validado contra CSRF, e o token não trafega nem fica na URL.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o repositório aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Hussein Nasser** | "http explained", "tcp", "rest api", "oauth", "cors" | módulos 01, 04, 05 |
+| **ByteByteGo** | "rest api design", "oauth flow", "rest vs graphql", "api pagination" | módulos 03, 04, 07 |
+| **Fireship** | "http in 100 seconds", "oauth explained", "graphql in 100 seconds" | visão-relâmpago dos módulos 01, 04, 07 |
+| **Rocketseat** *(PT-BR)* | "api rest node", "consumindo api fetch" | módulos 02, 05, 06 — prática em português |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES da bibliografia pra fixar o mapa, protocolo a fundo (Hussein Nasser/ByteByteGo) DEPOIS do módulo pra defender cada status/método. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 7/7 módulos com checkpoint (recall aprovado na aba Revisar)

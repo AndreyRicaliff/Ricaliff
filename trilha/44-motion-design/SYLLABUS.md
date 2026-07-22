@@ -38,6 +38,19 @@ Regra de leitura: **com o repositório aberto** — cada conceito que aparecer, 
 **Lab 3 — `view-transition-demo` (4h):** navegação entre duas telas usando a View Transitions API para um morph de elemento compartilhado (ex.: card → detalhe).
 *Pronto quando:* o elemento faz morph entre as telas, há fallback gracioso (corte simples) quando a API não é suportada, e o efeito respeita reduced-motion.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o repositório aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Kevin Powell** | "css transitions", "css animation", "prefers-reduced-motion" | módulos 02, 04, 07 |
+| **Fireship** | "view transitions api", "css animations", "web animations api" | módulos 04 + visão-relâmpago antes da leitura |
+| **Web Dev Simplified** | "css animations tutorial", "microinteractions", "animate on scroll" | módulos 02, 05 |
+| **The Coding Train** | "easing functions", "animation with p5" | módulos 02, 03 — intuição de curva e stagger |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES da bibliografia pra criar o mapa; prática de curva/estado (Kevin Powell/Web Dev Simplified) DEPOIS do módulo pra consolidar. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 7/7 módulos com checkpoint (recall aprovado na aba Revisar)

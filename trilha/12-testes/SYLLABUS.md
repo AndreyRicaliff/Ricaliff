@@ -38,6 +38,19 @@ Regra de leitura: **com um teste rodando** — cada técnica que ler, escreva o 
 **Lab 3 — `e2e-happy-path` (4h):** monte uma app mínima de 2 telas (login → lista) e cubra o caminho feliz com Playwright usando locators por role/label e auto-wait.
 *Pronto quando:* o teste passa headless em CI, não contém nenhum `waitForTimeout`, e usa locators semânticos (não seletores CSS frágeis).
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com um teste rodando; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Rocketseat** *(PT-BR)* | "testes com Vitest", "testes automatizados no front" | módulos 02, 03 — em português |
+| **Web Dev Simplified** | "testing javascript", "mocking", "unit testing" | módulos 03, 04 |
+| **freeCodeCamp.org** | "Playwright full course", "TDD tutorial" | módulos 05, 06, 07 |
+| **Fireship** | "testing in 100 seconds", "Playwright" | módulos 01, 05 — mapa-relâmpago |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES da bibliografia pra criar o mapa; curso longo (freeCodeCamp) DEPOIS do módulo pra consolidar. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 7/7 módulos com checkpoint (recall aprovado na aba Revisar)

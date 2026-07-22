@@ -39,6 +39,19 @@ Regra de leitura: **assista com o editor aberto** — cada vídeo do Karpathy s�
 **Lab 3 — `claude-judge` (4h):** script que usa a Claude API para classificar textos (ex.: sentimento) com um prompt estruturado, e um harness LLM-as-judge que roda 2–3 variantes de prompt sobre um conjunto rotulado e compara acurácia.
 *Pronto quando:* o harness imprime a acurácia por variante sobre o mesmo conjunto e aponta a vencedora — com a chave de API em `.env` (nunca no código) e o custo da rodada registrado.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o editor aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **3Blue1Brown** | "neural networks" (série completa), "gradient descent", "backpropagation", "attention in transformers" | módulos 04, 06, 07 — a intuição visual por trás da matemática |
+| **Andrej Karpathy** | "Zero to Hero", "micrograd", "let's build GPT", "let's build the GPT tokenizer" | módulos 04, 06, 07 — recodar junto (já na bibliografia) |
+| **Two Minute Papers** | "large language models", "GPT", "what neural networks learn" | módulo 08 — panorama do estado da arte |
+| **Filipe Deschamps** *(PT-BR)* | "como a inteligência artificial funciona", "redes neurais", "o que é machine learning" | módulos 01, 02 — panorama em português |
+
+Ordem sugerida: 3Blue1Brown/Filipe Deschamps para a intuição ANTES; Karpathy DEPOIS, recodando cada trecho (só conta hora rodando). Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 8/8 módulos com checkpoint (recall aprovado na aba Revisar)

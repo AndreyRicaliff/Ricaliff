@@ -35,6 +35,19 @@ Regra de leitura: **com um diff seu na tela** — cada regra que ler, ache no se
 **Lab 3 — `rule-of-three` (4h):** implemente uma feature com 3 blocos quase-duplicados. Deixe os 2 primeiros duplicados de propósito; abstraia SÓ no terceiro uso, sem parâmetros "para o futuro".
 *Pronto quando:* a abstração nasce apenas no 3º caso, não tem nenhum parâmetro não usado (zero generalidade especulativa), e o `POR-QUE.md` justifica por que abstrair antes teria sido pior.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com um diff seu na tela; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Fabio Akita** *(PT-BR)* | "crítica ao Clean Code", "boas práticas fazem sentido?" | módulos 01, 04 — o contraponto crítico (dogma vs senso) |
+| **Web Dev Simplified** | "clean code", "guard clauses", "naming conventions" | módulos 01, 02, 03 |
+| **Fireship** | "code smells", "clean code" | módulos 01, 03 — visão-relâmpago |
+| **ThePrimeagen** | "clean code reaction", "is clean code good?" | módulos 01, 04 — debate sobre o dogma |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES da bibliografia pra criar o mapa; a crítica (Akita/ThePrimeagen) DEPOIS de ler o *Clean Code* pra formar senso próprio. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 4/4 módulos com checkpoint (recall aprovado na aba Revisar)

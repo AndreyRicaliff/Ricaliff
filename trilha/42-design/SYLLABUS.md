@@ -39,6 +39,19 @@ Regra de leitura: **com o repositório aberto** — cada conceito que aparecer, 
 **Lab 3 — `five-states` (4h):** um único componente (card de lista) construído 5 vezes — vazio, carregando, erro, parcial, cheio — em HTML/CSS puro.
 *Pronto quando:* os 5 estados aparecem na mesma página, o vazio tem CTA e não é uma tela em branco, e todo controle é alcançável por teclado com foco visível.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o repositório aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **DesignCourse** | "design theory", "UI design fundamentals", "visual hierarchy" | módulos 01, 07 |
+| **The Futur** | "typography principles", "color theory", "design critique" | módulos 02, 03, 08 |
+| **Kevin Powell** | "css typography", "spacing", "color contrast accessibility", "focus visible" | módulos 02, 03, 04, 06 |
+| **DevSoutinho** *(PT-BR)* | "css na prática", "acessibilidade web" | módulos 04, 06 — reforço em português |
+
+Ordem sugerida: princípio primeiro (The Futur/DesignCourse) pra ter o vocabulário, depois a mão no CSS (Kevin Powell/DevSoutinho) pra provar o número (contraste, escala). Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 8/8 módulos com checkpoint (recall aprovado na aba Revisar)

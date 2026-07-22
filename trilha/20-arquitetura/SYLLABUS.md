@@ -38,6 +38,19 @@ Regra de leitura: **com um app AG aberto** — cada princípio que ler, aponte o
 **Lab 3 — `deep-module` (3h):** projete um "módulo profundo" à la Ousterhout — uma interface de ≤ 3 métodos que esconde complexidade real (ex.: um `Cache` com TTL + evicção LRU + serialização por trás de `get`/`set`).
 *Pronto quando:* a API pública tem no máximo 3 métodos, esconde TTL/evicção/serialização por completo, e o README compara com uma versão "rasa" (wrapper fino) mostrando a diferença de superfície.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com um app AG aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Fabio Akita** *(PT-BR)* | "princípios SOLID", "arquitetura de software", "microsserviços" | módulos 01, 02, 03 — fundamentos profundos em português |
+| **Código Fonte TV** *(PT-BR)* | "SOLID", "design patterns", "monolito vs microsserviços" | módulos 01, 03, 06 — em português |
+| **ByteByteGo** | "monolith vs microservices", "sync vs async communication", "message queue" | módulos 03, 04 |
+| **Fireship** | "design patterns", "SOLID principles" | módulos 01, 06 — visão-relâmpago |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES da bibliografia pra criar o mapa; vídeo profundo (Akita) DEPOIS do módulo pra consolidar. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 7/7 módulos com checkpoint (recall aprovado na aba Revisar)

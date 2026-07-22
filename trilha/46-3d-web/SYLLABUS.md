@@ -39,6 +39,19 @@ Regra de leitura: **com o repositório aberto** — cada conceito que aparecer, 
 **Lab 3 — `scroll-3d` (6h):** objeto 3D que reage ao progresso de scroll da página, integrado atrás de DOM transparente (padrão de 2 camadas).
 *Pronto quando:* o estado do objeto mapeia ao progresso de scroll sem jank, e o rAF pausa quando a aba fica oculta (comprovado por log de frames em `document.hidden`).
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o repositório aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Fireship** | "three.js in 100 seconds", "webgl" | visão-relâmpago dos módulos 01, 02 |
+| **SimonDev** | "three.js tutorial", "shaders", "game engine three.js" | módulos 04, 05, 07 — three.js a fundo |
+| **The Coding Train** | "webgl shaders", "perlin noise", "3d in p5" | módulo 01 — intuição do pipeline |
+| **Sebastian Lague** | "coding adventure rendering", "compute shaders" | módulo 07 — profundidade de render (referência opcional) |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES da bibliografia pra ver a forma, three.js aplicado (SimonDev) DEPOIS do módulo, e Sebastian Lague só quando quiser entender o render por dentro. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 8/8 módulos com checkpoint (recall aprovado na aba Revisar)

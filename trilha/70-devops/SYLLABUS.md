@@ -38,6 +38,20 @@ Regra de leitura: **com o repositório aberto** — cada conceito que aparecer, 
 **Lab 3 — `structured-logs` (3h):** serviço HTTP (node puro) que emite log **estruturado em JSON** por requisição — `request_id`, rota, status, latência em ms — e um script `grep`/`jq` que responde "quais requests passaram de 500ms na última hora" sem abrir o código.
 *Pronto quando:* dá pra reconstruir o que aconteceu num request específico só pelo `request_id`, e a consulta de latência roda sobre o arquivo de log sem tocar no servidor.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o repositório aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **TechWorld with Nana** | "docker tutorial", "docker compose", "ci/cd pipeline", "terraform explained", "prometheus grafana monitoring" | módulos 01–06 — a referência de DevOps ponta a ponta |
+| **NetworkChuck** | "you need to learn docker", "docker networking" | módulos 01, 02 |
+| **Fabio Akita** *(PT-BR)* | "docker na prática", "containers e virtualização" | módulos 01, 02 — fundamentos em português |
+| **Fireship** | "docker in 100 seconds", "github actions", "vercel", "terraform in 100 seconds" | 01, 03, 04, 06 — visão-relâmpago antes da leitura densa |
+| **freeCodeCamp.org** | "docker full course", "github actions tutorial", "terraform course" | 01, 03, 06 — curso longo para o mergulho |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES da bibliografia pra criar o mapa; vídeo profundo (Nana/Akita) DEPOIS do módulo pra consolidar. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 6/6 módulos com checkpoint (recall aprovado na aba Revisar)

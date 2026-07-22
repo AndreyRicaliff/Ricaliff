@@ -38,6 +38,20 @@ Regra de leitura: **com o repositório aberto** — cada número e mecanismo que
 **Lab 3 — `overload-shed` (4h):** serviço que sob carga aplica **load shedding** — rejeita com 429 acima de N requisições in-flight — em vez de aceitar tudo e cair.
 *Pronto quando:* apontar o Lab 1 nele e demonstrar (log lado a lado) que acima do limite ele degrada com 429 e mantém p99 estável para o tráfego aceito, em vez de estourar a latência de todos.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o repositório aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Hussein Nasser** | "connection pooling", "database performance", "backpressure", "load balancing" | módulos 05, 06 — banco e rede sob carga a fundo |
+| **ByteByteGo** | "back-of-the-envelope estimation", "caching strategies", "horizontal scaling", "rate limiting" | módulos 02, 03, 04, 05 |
+| **ThePrimeagen** | "latency", "performance", "p99", "profiling" | módulos 01, 07 — cultura de percentis e performance |
+| **Fireship** | "load testing", "caching", "scaling" | 04, 07 — visão-relâmpago antes da leitura densa |
+| **Fabio Akita** *(PT-BR)* | "escalabilidade", "performance de sistemas" | módulos 03, 06 — fundamentos em português |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES da bibliografia pra criar o mapa; vídeo profundo (Nasser/ByteByteGo) DEPOIS do módulo pra consolidar. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 7/7 módulos com checkpoint (recall aprovado na aba Revisar)

@@ -40,6 +40,20 @@ Sem dependências. Suíte vitest cobrindo: backoff cresce exponencial com jitter
 **Lab 3 — `once-worker` (4h):** processador de fila idempotente: recebe jobs duplicados de propósito (at-least-once simulado com re-entrega), grava efeito exatamente uma vez via claim com UNIQUE (SQLite).
 *Pronto quando:* disparar o mesmo lote 3× em `Promise.all` e o estado final ser idêntico a 1×, provado por teste.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o repositório aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Hussein Nasser** | "timeouts", "connection pooling", "idempotency" | módulos 03, 04, 07 |
+| **ByteByteGo** | "rate limiting", "circuit breaker", "retry" | módulos 02, 05 |
+| **Fabio Akita** *(PT-BR)* | "concorrência e paralelismo", "filas e mensageria" | módulos 03, 07 — fundamentos profundos em português |
+| **freeCodeCamp.org** | "chaos engineering" | módulo 08 |
+| **Fireship** | "circuit breaker pattern", "message queue in 100 seconds" | visão-relâmpago antes da leitura densa |
+
+Ordem sugerida: vídeo-relâmpago (Fireship) ANTES da bibliografia pra criar o mapa; vídeo profundo (Akita/Nasser) DEPOIS do módulo pra consolidar. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 8/8 módulos com checkpoint (recall aprovado na aba Revisar)

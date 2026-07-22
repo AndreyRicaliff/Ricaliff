@@ -39,6 +39,19 @@ Regra de leitura: **com o repositório aberto** — cada conceito que aparecer, 
 **Lab 3 — `graceful-worker` (5h):** worker de fila (BullMQ ou fila em memória) que, ao receber SIGTERM, termina o job em voo antes de sair e para de pegar novos, com log pino estruturado.
 *Pronto quando:* SIGTERM drena o job atual, nenhum job novo é iniciado após o sinal, e todo log é JSON válido com um id de correlação por job.
 
+## Videoteca (YouTube)
+
+Complemento em vídeo por tema — **canal + o que buscar** (links mudam; canais ficam). Assistir É estudo quando feito com o repositório aberto; passivo no sofá não conta hora.
+
+| Canal | Buscar por | Cobre |
+|---|---|---|
+| **Hussein Nasser** | "node event loop", "message queue", "graceful shutdown", "connection pooling" | módulos 01, 03, 06 |
+| **Rocketseat** *(PT-BR)* | "node.js do zero", "express", "prisma orm" | módulos 01, 02 — base em português |
+| **Fabio Akita** *(PT-BR)* | "concorrência e paralelismo", "filas e mensageria" | módulo 03 — fundamentos profundos |
+| **freeCodeCamp.org** | "node.js full course", "backend api", "pino logging" | módulos 01, 02, 07 |
+
+Ordem sugerida: base aplicada em PT-BR (Rocketseat) pra montar o serviço, depois Hussein Nasser DEPOIS do módulo pra entender por que ele não cai. Vídeo nunca substitui o lab.
+
 ## Critério de formatura
 
 - [ ] 8/8 módulos com checkpoint (recall aprovado na aba Revisar)
