@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-22T21:05:42.763Z",
+  "geradoEm": "2026-07-22T22:32:15.709Z",
   "totalTrilhas": 23,
   "trilhas": [
     {
@@ -56,8 +56,14 @@
       "icone": "🧠",
       "prioridade": "maxima",
       "horas": 30,
-      "totalModulos": 7,
+      "totalModulos": 8,
       "modulos": [
+        {
+          "id": "05-raciocinio/00-metodologia-da-ia.md",
+          "arquivo": "00-metodologia-da-ia.md",
+          "titulo": "00 — Por que a IA programa bem (e como roubar o método)",
+          "caminho": "/trilha/05-raciocinio/00-metodologia-da-ia.md"
+        },
         {
           "id": "05-raciocinio/01-verificar-antes-de-afirmar.md",
           "arquivo": "01-verificar-antes-de-afirmar.md",

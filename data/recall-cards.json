@@ -1,6 +1,6 @@
 {
- "geradoEm": "2026-07-22T20:00:14.306Z",
- "total": 172,
+ "geradoEm": "2026-07-22T22:33:52.082Z",
+ "total": 173,
  "cards": [
   {
    "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md#1",
@@ -97,6 +97,14 @@
    "tituloModulo": "06 — Git: Fluxo, Rebase, Merge e Ferramentas",
    "pergunta": "Como você encontraria em qual commit um bug foi introduzido numa base com 500 commits?",
    "resposta": "Usaria `git bisect`. Digo pro Git qual commit tem o bug (`git bisect bad`) e qual era bom (`git bisect good <sha>`) — o Git faz uma busca binária no histórico, dando checkout no commit do meio. Eu testo, digo se é bom ou ruim, e repito. Em ~9 passos ele isola o commit culpado num histórico de 500. É exatamente busca binária O(log n) aplicada a commits. Se o projeto tem testes automatizados, dá para fazer `git bisect run npm test` e o processo roda sozinho."
+  },
+  {
+   "id": "05-raciocinio/00-metodologia-da-ia.md#1",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/00-metodologia-da-ia.md",
+   "tituloModulo": "00 — Por que a IA programa bem (e como roubar o método)",
+   "pergunta": "Você usa IA pra programar? Isso não te torna dependente?",
+   "resposta": "Uso, com método: a especificação e o critério de aceite são meus, a decomposição eu reviso, e nada entra sem eu verificar contra o critério — rodando, não confiando. A IA é melhor que eu em recall de padrões e iteração rápida; eu respondo pelo julgamento, pelo contexto de negócio e pela verificação. Dependente é quem aceita o que ela gera sem conseguir avaliar — e é exatamente pra conseguir avaliar que eu estudo o fundamento. O código que ela escreve, eu tenho que ser capaz de defender linha a linha, porque quem faz o deploy respondo sou eu."
   },
   {
    "id": "05-raciocinio/01-verificar-antes-de-afirmar.md#1",
