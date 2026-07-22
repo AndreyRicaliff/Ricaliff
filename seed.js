@@ -1,10 +1,10 @@
-// seed.js v19 — v18 + sessão s-68 (pulsar-site, 2026-07-21)
+// seed.js v20 — v19 + sessão s-69 (ag-hub, 2026-07-22)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '19') return;
+  if (localStorage.getItem('agh_seed_v') === '20') return;
 
   const now = new Date().toISOString();
 
@@ -268,6 +268,7 @@
     { id:'s-66', title:'Construí template imersivo zero-deps: WebGL autoral, scroll com inércia e som sintetizado', projectId:'pulsar-site', type:'feature', date:'2026-07-19', impact:'alto', notes:'Dissecação técnica de site premiado virou template + skill reutilizável; shaders à mão, lerp frame-independente, coreografia por seção', createdAt: now },
     { id:'s-67', title:'Landing Pulsar: identidade v3, transições de POV 3D e showcase de telas com dados mock', projectId:'pulsar-site', type:'design', date:'2026-07-20', impact:'alto', notes:'Corredor dolly (translateZ) + coverflow sin/cos em CSS 3D dirigidos por scroll; lockup intro-hero em fase, sem corte perceptível', createdAt: now },
     { id:'s-68', title:'Sistema de marca: símbolo cardíaco (EKG) e batimento como animação-padrão; site em PT-BR', projectId:'pulsar-site', type:'design', date:'2026-07-21', impact:'medio', notes:'Batimento lub-dub + anel emanando + blip no EKG substituiu rotação orbital; Space Grotesk display embutida; menu e rail polidos', createdAt: now },
+    { id:'s-69', title:'Hub vira curso: recall espacado (172 cards) + projeto de conclusao com rubrica por trilha', projectId:'ag-hub', type:'feature', date:'2026-07-22', impact:'alto', notes:'SRS Leitner sobre os blocos P/R da trilha, aba Revisar, e 23 projetos com rubrica de 4 criterios corrigidos via /revisao. Formar = checkpoints 100% + projeto aceito com evidencia.', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -315,7 +316,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '19');
+  localStorage.setItem('agh_seed_v',   '20');
 
-  console.log('[Ricaliff seed v19 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v20 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
