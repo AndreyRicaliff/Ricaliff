@@ -58,7 +58,7 @@
 
   function tick() {
     requestAnimationFrame(tick);
-    if (document.hidden) return;
+    if (document.hidden || cv.dataset.off) return;  // fx.js aposenta o pintor 2D quando o GL assume
     if (++frame % 2) return;              // 30fps: ambiente, não jogo
     t += 0.016;
     draw();
