@@ -1,10 +1,10 @@
-// seed.js v25 — v24 + sessão s-74 (ag-hub, 2026-07-22)
+// seed.js v26 — v25 + sessão s-75 (ag-hub, 2026-07-22)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '25') return;
+  if (localStorage.getItem('agh_seed_v') === '26') return;
 
   const now = new Date().toISOString();
 
@@ -274,6 +274,7 @@
     { id:'s-72', title:'Tema Gojo: Six Eyes + Hollow Purple sobre fundo Infinite Void em canvas', projectId:'ag-hub', type:'design', date:'2026-07-22', impact:'medio', notes:'Reskin por tokens (semantica preservada) + fundo generativo leve: nebulosas em drift e estrelas por angulo aureo, 30fps, primeiro frame sincrono p/ rAF pausado. Tecnica do template imersivo adaptada.', createdAt: now },
     { id:'s-73', title:'Dash estudos-first + videoteca YouTube curada nas 23 disciplinas', projectId:'ag-hub', type:'feature', date:'2026-07-22', impact:'medio', notes:'Card FORMACAO com horas cursadas/921h e CTA de continuar; nav Estudos/Revisar no topo; videoteca por canal consagrado + termos de busca (PT-BR priorizado), zero URL de memoria.', createdAt: now },
     { id:'s-74', title:'Animacoes destravadas no RDP (4a ocorrencia do flag) + craft visual Gojo', projectId:'ag-hub', type:'bugfix', date:'2026-07-22', impact:'medio', notes:'Dois gates de prefers-reduced-motion sobreviventes matavam wipe/view/nav na maquina do dono; escape virou ?static explicito. Gradiente six-eyes nos titulos, glow em cards/nav/barras, shader +27%.', createdAt: now },
+    { id:'s-75', title:'Formato v2 dos modulos: Base + Estruturacao + Metodologia (exemplar publicado)', projectId:'ag-hub', type:'feature', date:'2026-07-22', impact:'alto', notes:'Modulo \'Por que a IA programa bem\': 5 mecanismos, 3 camadas do conhecimento e o loop de 7 passos explicitado pra adocao humana. 12KB, o triplo do v1 — padrao pro rollout dos 165.', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -321,7 +322,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '25');
+  localStorage.setItem('agh_seed_v',   '26');
 
-  console.log('[Ricaliff seed v25 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v26 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
