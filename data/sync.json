@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-22T17:48:18",
+    "lastSync": "2026-07-22T18:05:21",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 16055,
+    "xp": 16105,
     "xpToNext": 19001,
     "streak": 4,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 210,
+        "value": 213,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-22",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[Ricaliff] dash estudos-first + videoteca YouTube nas 23 disciplinas"
+    },
     {
       "date": "2026-07-22",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[cliente-varejo] endurece edge desligar-colaborador + front (review pré-deploy)"
-    },
-    {
-      "date": "2026-07-16",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-varejo] supervisor desvincula/remove via edge desligar-colaborador"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-22",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[Ricaliff] dash estudos-first + videoteca YouTube nas 23 disciplinas",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-22",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[Ricaliff] camada imersiva — void WebGL theme-aware, intro 1x/sessao e reveals com stagger",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[Ricaliff] add pulsar-site project with 3 session blocks (immersive landing journey)",
       "xp": 50
-    },
-    {
-      "date": "2026-07-21",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[ag-crm] ADR do move otimista de kanban (pipeline/clients)",
-      "xp": 20
     }
   ]
 }
