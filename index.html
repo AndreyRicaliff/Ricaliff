@@ -14,13 +14,15 @@
 <script src="assets/vendor/purify-3.2.4.min.js"></script>
 <style>
 :root{
-  /* ── Persona 3 — tokens do rice (ThemeMode.qml + Colors.qml) ── */
-  --bg:#05070F;--surface:#0B1B33;--surface2:#12294D;--surface3:#1C3A5E;
-  --border:#1C3A5E;--primary:#0099FF;--secondary:#33C6FF;--tertiary:#8CEBFF;
-  --accent:#22D07A;--danger:#FF4D5E;--warn:#FFC24B;--cyan:#5DE0FF;
-  --text:#EAF6FF;--muted:#5C82B8;--muted2:#8AAED4;
-  --p3-pink:#FF3D7F;--ring:#1CC9D9;
-  --wipe-1:#0D1A3A;--wipe-2:#1A6AFF;--wipe-3:#7DD4FC;
+  /* ── Tema GOJO — Six Eyes + Hollow Purple sobre Infinite Void ──
+     (era Persona 3; tokens P3 preservados no git. Semântica: primary=six eyes,
+      accent=hollow purple — o "sucesso" aqui é poder, danger=reversal red) */
+  --bg:#040309;--surface:#0C0E20;--surface2:#141838;--surface3:#1D2350;
+  --border:#232B58;--primary:#2EA8FF;--secondary:#6FD3FF;--tertiary:#B3ECFF;
+  --accent:#9D6FFF;--danger:#FF3B4E;--warn:#FFC24B;--cyan:#5DE0FF;
+  --text:#EDF4FF;--muted:#5F79AD;--muted2:#92A9DB;
+  --p3-pink:#B26CFF;--ring:#45C4FF;
+  --wipe-1:#0A0620;--wipe-2:#6C3BFF;--wipe-3:#9BE8FF;
   /* ── backward-compat aliases ─────────────── */
   --card:var(--surface);--raise:var(--surface2);
   --purple:var(--primary);--phi:var(--secondary);--phlo:var(--tertiary);
@@ -1167,6 +1169,8 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 </head>
 <body>
 
+<canvas id="void-bg" aria-hidden="true"
+  style="position:fixed;inset:0;z-index:-1;pointer-events:none"></canvas>
 <div id="p3-accent-line" aria-hidden="true"></div>
 <div id="p3-wipe" aria-hidden="true"><i></i><i></i><i></i></div>
 <div id="pomo-pulse" aria-hidden="true"></div>
@@ -1685,6 +1689,7 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 
 <script src="seed.js"></script>
 <script src="icons.js"></script>
+  <script src="void.js"></script>
   <script src="srs.js"></script>
   <script src="sprint.js"></script>
   <script src="hunter.js"></script>
