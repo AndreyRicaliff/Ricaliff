@@ -19,7 +19,7 @@ for (const dir of fs.readdirSync(trilhaDir).sort()) {
   const full = path.join(trilhaDir, dir);
   if (!fs.statSync(full).isDirectory()) continue;
   for (const f of fs.readdirSync(full).sort()) {
-    if (!f.endsWith(".md") || f === "README.md") continue;
+    if (!f.endsWith(".md") || f === "README.md" || f === "SYLLABUS.md") continue;
     // split CRLF-safe: linha com \r no fim mata "(.*)$" em regex JS (o "." não atravessa \r)
     const lines = fs.readFileSync(path.join(full, f), "utf8").split(/\r?\n/);
     const titulo = (lines.find(l => l.startsWith("# ")) || "# ?").slice(2).trim();

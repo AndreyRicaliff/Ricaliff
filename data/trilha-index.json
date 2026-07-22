@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-20T13:06:48.793Z",
+  "geradoEm": "2026-07-22T19:56:44.499Z",
   "totalTrilhas": 23,
   "trilhas": [
     {
@@ -8,6 +8,7 @@
       "foco": "Base que TODA entrevista júnior cobra",
       "icone": "🎯",
       "prioridade": "alta",
+      "horas": 35,
       "totalModulos": 6,
       "modulos": [
         {
@@ -54,6 +55,7 @@
       "foco": "Como pensar: verificar, refutar, trade-offs, alvo certo",
       "icone": "🧠",
       "prioridade": "maxima",
+      "horas": 30,
       "totalModulos": 7,
       "modulos": [
         {
@@ -106,6 +108,7 @@
       "foco": "Teoria por trás das regras do CLAUDE.md",
       "icone": "🧹",
       "prioridade": "alta",
+      "horas": 35,
       "totalModulos": 4,
       "modulos": [
         {
@@ -140,6 +143,7 @@
       "foco": "Pirâmide, vitest, Playwright, mocks em boundary, TDD honesto",
       "icone": "🧪",
       "prioridade": "alta",
+      "horas": 40,
       "totalModulos": 7,
       "modulos": [
         {
@@ -192,6 +196,7 @@
       "foco": "Modelo mental, branches, rebase, desfazer, fluxo de PR",
       "icone": "🔀",
       "prioridade": "alta",
+      "horas": 30,
       "totalModulos": 7,
       "modulos": [
         {
@@ -244,6 +249,7 @@
       "foco": "SOLID, camadas, ADRs, padrões",
       "icone": "🏛️",
       "prioridade": "media",
+      "horas": 45,
       "totalModulos": 7,
       "modulos": [
         {
@@ -296,6 +302,7 @@
       "foco": "Escopo, priorização, estimativa, dívida, cliente, decisões",
       "icone": "📋",
       "prioridade": "alta",
+      "horas": 30,
       "totalModulos": 7,
       "modulos": [
         {
@@ -348,6 +355,7 @@
       "foco": "Postgres, índices, N+1, transactions, RLS",
       "icone": "🗄️",
       "prioridade": "alta",
+      "horas": 50,
       "totalModulos": 8,
       "modulos": [
         {
@@ -406,6 +414,7 @@
       "foco": "ETL, idempotência, qualidade, cache, backup, zero-downtime",
       "icone": "🔁",
       "prioridade": "alta",
+      "horas": 45,
       "totalModulos": 8,
       "modulos": [
         {
@@ -464,6 +473,7 @@
       "foco": "ML do zero: aprendizado, dados, redes neurais, LLMs e usar IA na prática",
       "icone": "🤖",
       "prioridade": "maxima",
+      "horas": 50,
       "totalModulos": 8,
       "modulos": [
         {
@@ -522,6 +532,7 @@
       "foco": "React render cycle, hooks, performance",
       "icone": "🎨",
       "prioridade": "media",
+      "horas": 45,
       "totalModulos": 7,
       "modulos": [
         {
@@ -574,6 +585,7 @@
       "foco": "Hierarquia, tipografia, cor, grid, estados, acessibilidade",
       "icone": "🖌️",
       "prioridade": "alta",
+      "horas": 40,
       "totalModulos": 8,
       "modulos": [
         {
@@ -632,6 +644,7 @@
       "foco": "Easing, coreografia, microinterações, performance de animação",
       "icone": "🎞️",
       "prioridade": "media",
+      "horas": 35,
       "totalModulos": 7,
       "modulos": [
         {
@@ -684,6 +697,7 @@
       "foco": "three.js, CSS3D, luz, animação e performance — o look dos decks",
       "icone": "🧊",
       "prioridade": "media",
+      "horas": 45,
       "totalModulos": 8,
       "modulos": [
         {
@@ -742,6 +756,7 @@
       "foco": "Express, Prisma, queues, idempotência",
       "icone": "⚙️",
       "prioridade": "media",
+      "horas": 45,
       "totalModulos": 8,
       "modulos": [
         {
@@ -800,6 +815,7 @@
       "foco": "HTTP, REST, design, auth (JWT/OAuth), consumir e construir",
       "icone": "🔌",
       "prioridade": "alta",
+      "horas": 40,
       "totalModulos": 7,
       "modulos": [
         {
@@ -852,6 +868,7 @@
       "foco": "OWASP, LGPD, XSS, SQLi, secrets + authn/z, threat model, incident response",
       "icone": "🔒",
       "prioridade": "alta",
+      "horas": 50,
       "totalModulos": 14,
       "modulos": [
         {
@@ -946,6 +963,7 @@
       "foco": "Docker, CI/CD, observabilidade",
       "icone": "📦",
       "prioridade": "baixa",
+      "horas": 40,
       "totalModulos": 6,
       "modulos": [
         {
@@ -992,6 +1010,7 @@
       "foco": "Cache, fila, replicação, CAP",
       "icone": "🌐",
       "prioridade": "baixa",
+      "horas": 50,
       "totalModulos": 8,
       "modulos": [
         {
@@ -1050,6 +1069,7 @@
       "foco": "Retry, idempotência, timeouts, degradação, observabilidade, chaos",
       "icone": "🛡️",
       "prioridade": "alta",
+      "horas": 46,
       "totalModulos": 8,
       "modulos": [
         {
@@ -1108,6 +1128,7 @@
       "foco": "Throughput, latência, projeção, cache, filas, banco sob carga",
       "icone": "📈",
       "prioridade": "media",
+      "horas": 40,
       "totalModulos": 7,
       "modulos": [
         {
@@ -1160,6 +1181,7 @@
       "foco": "Banco de 40 perguntas + pitch dos 8 projetos AG + mock",
       "icone": "🎤",
       "prioridade": "alta",
+      "horas": 25,
       "totalModulos": 3,
       "modulos": [
         {
@@ -1188,6 +1210,7 @@
       "foco": "O que sobrevive ao Claude — prioridade máxima",
       "icone": "⚡",
       "prioridade": "maxima",
+      "horas": 30,
       "totalModulos": 5,
       "modulos": [
         {

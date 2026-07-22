@@ -50,7 +50,7 @@ for proj_id in "${PROJETOS[@]}"; do
     [ -z "$titulo" ] && titulo="$(basename "$f" .md)"
     printf '%s\t%s\t%s\t%s\n' "$proj_id" "$rel" "$trilha_id" "$titulo" >> "$MATCHES"
     n=$((n + 1))
-  done < <(find "$TRILHA" -name "*.md" ! -name "README.md" | sort)
+  done < <(find "$TRILHA" -name "*.md" ! -name "README.md" ! -name "SYLLABUS.md" | sort)
   echo "[quest-board]   $proj_id: $n side quests" >&2
 done
 

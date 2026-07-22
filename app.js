@@ -1727,7 +1727,7 @@ function buildTrilhaCard(trilha, progress) {
       </div>
       <div class="trilha-progress-text">
         <span>${lidos}/${total} lidos · ${checkpoints} checkpoint${checkpoints!==1?'s':''}</span>
-        <span>${percentual}%</span>
+        <span>${trilha.horas ? `~${trilha.horas}h · ` : ''}${percentual}%</span>
       </div>
     </div>`;
 }
@@ -2008,6 +2008,9 @@ function renderTrilhaModulos(trilhaId) {
         <span style="font-size:1.4rem">${deEmoji(trilha.icone,22)}</span>
         <div class="trilha-modulos-titulo">${esc(trilha.nome)}</div>
         <span style="font-size:.75rem;color:var(--muted)">${trilha.foco}</span>
+        ${trilha.horas ? `<span class="trilha-horas">${icon('timer',12)} ~${trilha.horas}h</span>` : ''}
+        <button class="btn btn-ghost btn-sm" style="margin-left:auto"
+          onclick="renderSyllabus('${trilhaId}')">${icon('book-open',13)} Syllabus</button>
       </div>
     </div>`;
 
@@ -2021,6 +2024,35 @@ function renderTrilhaModulos(trilhaId) {
           onclick="event.stopPropagation();renderTrilhaModulo('${m.id}','${trilhaId}')">Abrir</button>
       </div>
     </div>`).join('') + buildProjetoConclusao(trilhaId);
+}
+
+async function renderSyllabus(trilhaId) {
+  const trilha = TRILHA_DATA?.trilhas?.find(t => t.id === trilhaId);
+  if (!trilha) return;
+  document.getElementById('trilha-header').innerHTML = `
+    <div style="width:100%">
+      <button class="trilha-back-btn" onclick="renderTrilhaModulos('${trilhaId}')">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Voltar à trilha
+      </button>
+      <div class="trilha-modulos-header">
+        ${icon('book-open',20)}
+        <div class="trilha-modulos-titulo">Syllabus — ${esc(trilha.nome)}</div>
+      </div>
+    </div>`;
+  const body = document.getElementById('trilha-body');
+  body.innerHTML = '<div style="color:var(--muted);text-align:center;padding:40px">Carregando…</div>';
+  try {
+    const r = await fetch(`/trilha/${trilhaId}/SYLLABUS.md?v=` + Date.now());
+    if (!r.ok) throw new Error(r.status);
+    const md = await r.text();
+    body.innerHTML = `<div id="trilha-md-content">${window.DOMPurify
+      ? DOMPurify.sanitize(marked.parse(md))
+      : `<pre style="white-space:pre-wrap">${esc(md)}</pre>`}</div>`;
+  } catch (e) {
+    body.innerHTML = `<div class="empty"><div class="empty-t">Syllabus ainda não escrito</div>
+      <div class="empty-s">Esta disciplina ainda não tem o plano de aprofundamento (trilha/${esc(trilhaId)}/SYLLABUS.md).</div></div>`;
+  }
 }
 
 // ── PROJETO DE CONCLUSÃO (a trilha só está FORMADA com checkpoints + projeto aceito) ──

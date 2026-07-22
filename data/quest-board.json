@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-20T13:07:51.014Z",
+  "geradoEm": "2026-07-22T20:00:13.879Z",
   "projetos": [
     {
       "id": "PULSAR-RH",
@@ -16,7 +16,7 @@
         "HTML+JS",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-20T08:50:01-03:00",
+      "ultimaAtividade": "2026-07-20T17:18:36-03:00",
       "sideQuests": [
         {
           "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
@@ -469,7 +469,7 @@
         "Supabase",
         "Lovable"
       ],
-      "ultimaAtividade": "2026-07-17T11:57:37-03:00",
+      "ultimaAtividade": "2026-07-20T15:57:14-03:00",
       "sideQuests": [
         {
           "id": ".mapa-local.md",
@@ -1701,7 +1701,7 @@
         "localStorage",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-20T10:07:28-03:00",
+      "ultimaAtividade": "2026-07-22T16:42:10-03:00",
       "sideQuests": [
         {
           "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",

@@ -35,7 +35,7 @@ collect() {
       titulo=$(grep -m1 "^# " "$mod" 2>/dev/null | sed 's/^# //' || true)
       [ -z "$titulo" ] && titulo="${arq%.md}"
       printf '%s\t%s\t%s\n' "$trilha" "$arq" "$titulo"
-    done < <(find "$dir" -maxdepth 1 -name "*.md" ! -name "README.md" | sort)
+    done < <(find "$dir" -maxdepth 1 -name "*.md" ! -name "README.md" ! -name "SYLLABUS.md" | sort)
   done
 }
 
@@ -46,29 +46,29 @@ trap 'rm -f "$TMP"' EXIT
 collect | INDEX_TMP="$TMP" node -e '
 const fs = require("fs");
 const META = {
-  "00-fundamentos":  ["Fundamentos", "Base que TODA entrevista júnior cobra", "🎯", "alta"],
-  "05-raciocinio":   ["Raciocínio de Engenheiro", "Como pensar: verificar, refutar, trade-offs, alvo certo", "🧠", "maxima"],
-  "10-codigo-limpo": ["Código Limpo", "Teoria por trás das regras do CLAUDE.md", "🧹", "alta"],
-  "12-testes":       ["Testes", "Pirâmide, vitest, Playwright, mocks em boundary, TDD honesto", "🧪", "alta"],
-  "15-git":          ["Git", "Modelo mental, branches, rebase, desfazer, fluxo de PR", "🔀", "alta"],
-  "20-arquitetura":  ["Arquitetura", "SOLID, camadas, ADRs, padrões", "🏛️", "media"],
-  "25-gestao-projetos": ["Gestão de Projetos", "Escopo, priorização, estimativa, dívida, cliente, decisões", "📋", "alta"],
-  "30-banco":        ["Banco de Dados", "Postgres, índices, N+1, transactions, RLS", "🗄️", "alta"],
-  "32-engenharia-dados": ["Engenharia de Dados", "ETL, idempotência, qualidade, cache, backup, zero-downtime", "🔁", "alta"],
-  "35-ia-ml":        ["IA & Machine Learning", "ML do zero: aprendizado, dados, redes neurais, LLMs e usar IA na prática", "🤖", "maxima"],
-  "40-frontend":     ["Frontend", "React render cycle, hooks, performance", "🎨", "media"],
-  "42-design":       ["Design de Interface", "Hierarquia, tipografia, cor, grid, estados, acessibilidade", "🖌️", "alta"],
-  "44-motion-design":["Motion Design", "Easing, coreografia, microinterações, performance de animação", "🎞️", "media"],
-  "46-3d-web":       ["3D na Web", "three.js, CSS3D, luz, animação e performance — o look dos decks", "🧊", "media"],
-  "50-backend":      ["Backend", "Express, Prisma, queues, idempotência", "⚙️", "media"],
-  "55-apis":         ["APIs", "HTTP, REST, design, auth (JWT/OAuth), consumir e construir", "🔌", "alta"],
-  "60-seguranca":    ["Segurança", "OWASP, LGPD, XSS, SQLi, secrets + authn/z, threat model, incident response", "🔒", "alta"],
-  "70-devops":       ["DevOps", "Docker, CI/CD, observabilidade", "📦", "baixa"],
-  "80-system-design":["System Design", "Cache, fila, replicação, CAP", "🌐", "baixa"],
-  "82-robustez":     ["Robustez", "Retry, idempotência, timeouts, degradação, observabilidade, chaos", "🛡️", "alta"],
-  "85-escala":       ["Cargas & Escala", "Throughput, latência, projeção, cache, filas, banco sob carga", "📈", "media"],
-  "90-entrevista":   ["Entrevista", "Banco de 40 perguntas + pitch dos 8 projetos AG + mock", "🎤", "alta"],
-  "95-diferencial":  ["Diferencial", "O que sobrevive ao Claude — prioridade máxima", "⚡", "maxima"],
+  "00-fundamentos":  ["Fundamentos", "Base que TODA entrevista júnior cobra", "🎯", "alta", 35],
+  "05-raciocinio":   ["Raciocínio de Engenheiro", "Como pensar: verificar, refutar, trade-offs, alvo certo", "🧠", "maxima", 30],
+  "10-codigo-limpo": ["Código Limpo", "Teoria por trás das regras do CLAUDE.md", "🧹", "alta", 35],
+  "12-testes":       ["Testes", "Pirâmide, vitest, Playwright, mocks em boundary, TDD honesto", "🧪", "alta", 40],
+  "15-git":          ["Git", "Modelo mental, branches, rebase, desfazer, fluxo de PR", "🔀", "alta", 30],
+  "20-arquitetura":  ["Arquitetura", "SOLID, camadas, ADRs, padrões", "🏛️", "media", 45],
+  "25-gestao-projetos": ["Gestão de Projetos", "Escopo, priorização, estimativa, dívida, cliente, decisões", "📋", "alta", 30],
+  "30-banco":        ["Banco de Dados", "Postgres, índices, N+1, transactions, RLS", "🗄️", "alta", 50],
+  "32-engenharia-dados": ["Engenharia de Dados", "ETL, idempotência, qualidade, cache, backup, zero-downtime", "🔁", "alta", 45],
+  "35-ia-ml":        ["IA & Machine Learning", "ML do zero: aprendizado, dados, redes neurais, LLMs e usar IA na prática", "🤖", "maxima", 50],
+  "40-frontend":     ["Frontend", "React render cycle, hooks, performance", "🎨", "media", 45],
+  "42-design":       ["Design de Interface", "Hierarquia, tipografia, cor, grid, estados, acessibilidade", "🖌️", "alta", 40],
+  "44-motion-design":["Motion Design", "Easing, coreografia, microinterações, performance de animação", "🎞️", "media", 35],
+  "46-3d-web":       ["3D na Web", "three.js, CSS3D, luz, animação e performance — o look dos decks", "🧊", "media", 45],
+  "50-backend":      ["Backend", "Express, Prisma, queues, idempotência", "⚙️", "media", 45],
+  "55-apis":         ["APIs", "HTTP, REST, design, auth (JWT/OAuth), consumir e construir", "🔌", "alta", 40],
+  "60-seguranca":    ["Segurança", "OWASP, LGPD, XSS, SQLi, secrets + authn/z, threat model, incident response", "🔒", "alta", 50],
+  "70-devops":       ["DevOps", "Docker, CI/CD, observabilidade", "📦", "baixa", 40],
+  "80-system-design":["System Design", "Cache, fila, replicação, CAP", "🌐", "baixa", 50],
+  "82-robustez":     ["Robustez", "Retry, idempotência, timeouts, degradação, observabilidade, chaos", "🛡️", "alta", 46],
+  "85-escala":       ["Cargas & Escala", "Throughput, latência, projeção, cache, filas, banco sob carga", "📈", "media", 40],
+  "90-entrevista":   ["Entrevista", "Banco de 40 perguntas + pitch dos 8 projetos AG + mock", "🎤", "alta", 25],
+  "95-diferencial":  ["Diferencial", "O que sobrevive ao Claude — prioridade máxima", "⚡", "maxima", 30],
 };
 const ORDER = Object.keys(META);
 const byTrilha = new Map();
@@ -79,9 +79,9 @@ for (const line of fs.readFileSync(0, "utf8").split("\n")) {
   byTrilha.get(tid).push({ id: `${tid}/${arquivo}`, arquivo, titulo, caminho: `/trilha/${tid}/${arquivo}` });
 }
 const trilhas = ORDER.filter(t => byTrilha.has(t)).map(t => {
-  const [nome, foco, icone, prioridade] = META[t];
+  const [nome, foco, icone, prioridade, horas] = META[t];
   const modulos = byTrilha.get(t);
-  return { id: t, nome, foco, icone, prioridade, totalModulos: modulos.length, modulos };
+  return { id: t, nome, foco, icone, prioridade, horas, totalModulos: modulos.length, modulos };
 });
 const out = { geradoEm: new Date().toISOString(), totalTrilhas: trilhas.length, trilhas };
 fs.writeFileSync(process.env.INDEX_TMP, JSON.stringify(out, null, 2) + "\n");
