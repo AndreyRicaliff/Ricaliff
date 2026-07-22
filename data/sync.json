@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-22T18:11:57",
+    "lastSync": "2026-07-22T18:12:25",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 16135,
+    "xp": 16155,
     "xpToNext": 19001,
     "streak": 4,
     "longestStreak": 16,
@@ -33,7 +33,7 @@
         "rule": "+4 por bugfix, +2 por refactor"
       },
       "wis": {
-        "value": 104,
+        "value": 107,
         "label": "Sabedoria",
         "icon": "🦉",
         "rule": "+5 por entrada DECISIONS.md, +3 por revisao"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-22",
+      "xp": 20,
+      "type": "review",
+      "desc": "[Ricaliff] registra sessao craft gojo"
+    },
     {
       "date": "2026-07-22",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-varejo] split Smartphones×Serviços (R$) na aba Por Loja"
-    },
-    {
-      "date": "2026-07-16",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-varejo] Meu Painel em abas (Por Loja/Equipe/Diárias/Individual)"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-22",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[Ricaliff] registra sessao craft gojo",
+      "xp": 20
+    },
+    {
+      "date": "2026-07-22",
       "type": "bugfix",
       "icon": "🐛",
       "title": "[Ricaliff] destrava animacoes no RDP + passe de craft Gojo",
@@ -759,13 +766,6 @@
       "icon": "👁️",
       "title": "[Ricaliff] registra sessao do sistema de aprendizado",
       "xp": 20
-    },
-    {
-      "date": "2026-07-22",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[Ricaliff] recall espacado + projeto de conclusao com rubrica",
-      "xp": 50
     }
   ]
 }
