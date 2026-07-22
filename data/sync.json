@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-22T18:12:25",
+    "lastSync": "2026-07-22T19:33:55",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 16155,
+    "xp": 16205,
     "xpToNext": 19001,
     "streak": 4,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 213,
+        "value": 216,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-22",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[Ricaliff] modulo padrao-v2 — por que a IA programa bem"
+    },
     {
       "date": "2026-07-22",
       "xp": 20,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-varejo] split Smartphones×Serviços (R$) na aba Por Loja"
-    },
-    {
-      "date": "2026-07-16",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-varejo] split Smartphones×Serviços (R$) na aba Por Loja"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-22",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[Ricaliff] modulo padrao-v2 — por que a IA programa bem",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-22",
       "type": "review",
       "icon": "👁️",
       "title": "[Ricaliff] registra sessao craft gojo",
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[Ricaliff] camada disciplina — syllabus, carga horaria e labs por trilha",
       "xp": 50
-    },
-    {
-      "date": "2026-07-22",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[Ricaliff] registra sessao do sistema de aprendizado",
-      "xp": 20
     }
   ]
 }
