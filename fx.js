@@ -15,6 +15,7 @@
 // O escape explícito e confiável é ?static=1.
 const REDUCED = false;
 const STATIC = new URLSearchParams(location.search).has('static');
+if (STATIC) document.documentElement.dataset.static = '1'; // CSS colapsa via html[data-static]
 
 /* ---------- helpers ---------- */
 const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
@@ -97,7 +98,7 @@ void main(){
   float n2=fbm(uv*1.4-vec2(uTime*.024,uTime*.01)+7.3);
   float f1=exp(-3.4*length(sc-c1))*(.55+.45*n1);
   float f2=exp(-3.0*length(sc-c2))*(.55+.45*n2);
-  col+=uColA*f1*.30+uColB*f2*.28;
+  col+=uColA*f1*.38+uColB*f2*.34;
   // 3 camadas de estrelas com parallax de mouse (profundidade)
   vec2 m1=uv+uMouse*.012, m2=uv+uMouse*.026, m3=uv+uMouse*.045;
   col+=uFg*stars(m1+vec2(0.,uTime*.006),20.,uTime)*.45;

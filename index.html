@@ -1045,10 +1045,12 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 /* press feedback (tabs/lowerBar do rice: scale .90–.97 no press) */
 .btn:active,.nav-item:active{transform:scale(.96)}
 
-@media (prefers-reduced-motion:reduce){
-  .view.active,.view.active>*,body::after,.nav-item.active::before,
-  #p3-wipe.run i,.sb-mark.shake,#pomo-pulse{animation:none!important}
-}
+/* escape estático explícito (?static=1 seta html[data-static] via fx.js) —
+   NUNCA @media reduced-motion: o RDP força o flag e congelava o app inteiro */
+html[data-static] .view.active,html[data-static] .view.active>*,
+html[data-static] body::after,html[data-static] .nav-item.active::before,
+html[data-static] #p3-wipe.run i,html[data-static] .sb-mark.shake,
+html[data-static] #pomo-pulse{animation:none!important}
 /* ── SRS (Revisar) ─────────────────────────────────────────────── */
 .srs-card{max-width:680px;margin:24px auto;background:var(--card);border:1px solid var(--line);
   border-radius:14px;padding:26px 28px}
@@ -1181,6 +1183,46 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 .fm-cta{margin-top:10px;font-size:.78rem;color:var(--txt);display:flex;gap:6px;align-items:center;
   padding:8px 10px;border:1px dashed color-mix(in srgb,var(--accent) 45%,transparent);border-radius:8px}
 .fm-cta:hover{border-style:solid}
+/* ── CRAFT GOJO — passe de qualidade visual ────────────────────── */
+/* títulos de view: display pesado com gradiente six-eyes → hollow purple */
+.view-title{font-weight:800;letter-spacing:.01em;
+  background:linear-gradient(92deg,var(--tertiary) 0%,var(--primary) 45%,var(--accent) 100%);
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.view-header{position:relative;padding-bottom:10px}
+.view-header::after{content:"";position:absolute;left:0;bottom:0;width:120px;height:2px;
+  background:linear-gradient(90deg,var(--primary),var(--accent),transparent);border-radius:2px}
+/* cards principais: elevação + aura no hover (compositor only) */
+.trilha-card,.sp-col,.srs-card,.fm-card,.sp-backlog,.pc-card,.focus-card,.rings-card,.today-card{
+  transition:transform .18s cubic-bezier(.22,1,.36,1),box-shadow .22s,border-color .2s}
+.trilha-card:hover,.fm-card:hover{transform:translateY(-2px);
+  box-shadow:0 8px 28px color-mix(in srgb,var(--primary) 18%,transparent),
+             0 0 0 1px color-mix(in srgb,var(--accent) 35%,transparent)}
+/* status window: aura viva six eyes */
+.hw{position:relative;box-shadow:0 0 34px color-mix(in srgb,var(--primary) 16%,transparent),
+    inset 0 0 40px color-mix(in srgb,var(--primary) 5%,transparent)}
+.hw-rank{text-shadow:0 0 14px currentColor}
+.hw-attr-fill{background:linear-gradient(90deg,var(--primary),var(--accent));
+  box-shadow:0 0 8px color-mix(in srgb,var(--primary) 55%,transparent)}
+/* nav ativa com glow */
+.nav-item.active{text-shadow:0 0 12px color-mix(in srgb,var(--secondary) 60%,transparent)}
+.nav-item.active svg{filter:drop-shadow(0 0 5px color-mix(in srgb,var(--primary) 70%,transparent))}
+/* barras de progresso com energia */
+.sp-bar-fill,.fm-fill,.xp-bar-fill,.trilha-progress-fill{
+  background:linear-gradient(90deg,var(--primary),var(--accent));
+  box-shadow:0 0 10px color-mix(in srgb,var(--accent) 45%,transparent)}
+/* seleção e scrollbar temáticas */
+::selection{background:color-mix(in srgb,var(--accent) 40%,transparent);color:var(--text)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:linear-gradient(var(--surface3),color-mix(in srgb,var(--primary) 40%,var(--surface3)));
+  border-radius:5px;border:2px solid var(--bg)}
+::-webkit-scrollbar-thumb:hover{background:var(--primary)}
+/* botão primário com energia hollow purple */
+.btn-primary{background:linear-gradient(135deg,var(--primary),color-mix(in srgb,var(--accent) 80%,var(--primary)));
+  border:none;box-shadow:0 2px 14px color-mix(in srgb,var(--primary) 30%,transparent)}
+.btn-primary:hover{box-shadow:0 4px 20px color-mix(in srgb,var(--accent) 45%,transparent)}
+/* colapso estático explícito também pro craft */
+html[data-static] .trilha-card,html[data-static] .fm-card{transition:none}
 </style>
 </head>
 <body>

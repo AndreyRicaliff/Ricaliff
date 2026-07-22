@@ -395,7 +395,10 @@ document.addEventListener('DOMContentLoaded', p3ThemeApply);
 // ── NAV ───────────────────────────────────────────────────────────
 let curView = 'dash';
 let p3WipeBusy = false;
-const P3_REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)');
+// NUNCA matchMedia(prefers-reduced-motion): Windows/RDP liga o flag sozinho e mata
+// toda a camada de animação justamente na máquina do dono (bug pago 4×).
+// Escape explícito e confiável: ?static=1 (mesma regra do fx.js).
+const P3_REDUCED = { matches: new URLSearchParams(location.search).has('static') };
 
 function go(view) {
   p3Sfx();
