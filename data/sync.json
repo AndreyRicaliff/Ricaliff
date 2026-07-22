@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-22T18:05:21",
+    "lastSync": "2026-07-22T18:11:57",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 16105,
+    "xp": 16135,
     "xpToNext": 19001,
     "streak": 4,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 150,
+        "value": 154,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-22",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[Ricaliff] destrava animacoes no RDP + passe de craft Gojo"
+    },
     {
       "date": "2026-07-22",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-varejo] Meu Painel em abas (Por Loja/Equipe/Diárias/Individual)"
-    },
-    {
-      "date": "2026-07-16",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[cliente-varejo] endurece edge desligar-colaborador + front (review pré-deploy)"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-22",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "[Ricaliff] destrava animacoes no RDP + passe de craft Gojo",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-22",
       "type": "feat",
       "icon": "⚙️",
       "title": "[Ricaliff] dash estudos-first + videoteca YouTube nas 23 disciplinas",
@@ -758,13 +765,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[Ricaliff] recall espacado + projeto de conclusao com rubrica",
-      "xp": 50
-    },
-    {
-      "date": "2026-07-21",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[Ricaliff] add pulsar-site project with 3 session blocks (immersive landing journey)",
       "xp": 50
     }
   ]
