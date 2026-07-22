@@ -80,6 +80,7 @@
     if (novoCard) st.day.novos = (st.day.novos || 0) + 1;
     st.day.feitos = (st.day.feitos || 0) + 1;
     saveState(st);
+    if (st.day.feitos === 10 && typeof dailyMarcarAuto === 'function') dailyMarcarAuto('recall');
     sessao.total++;
     if (rating === 'bom' || rating === 'facil') sessao.bons++;
     idx++; verso = false;

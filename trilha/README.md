@@ -56,20 +56,19 @@ Marque `[x]` no checkpoint **só quando** (1) conseguir recitar a resposta e (2)
 
 ---
 
-## Por onde começar (cronograma de 12 semanas)
+## Como se formar (o sistema)
 
-| Semana | Foco principal |
-|---|---|
-| 1-2 | `00-fundamentos` (1 módulo/dia) + **começar `95-diferencial/01` hoje** (hora sagrada sem IA, todo dia) |
-| 3 | `10-codigo-limpo` + `90-entrevista/walkthrough-projetos.md` (1 projeto por dia) |
-| 4-5 | `60-seguranca` (criar módulos a partir do stub) — domínio onde portfólio AG já é forte |
-| 6-7 | `30-banco` — base de todo backend, pesa em entrevistas júnior |
-| 8-9 | `50-backend` + `40-frontend` (alternando) |
-| 10 | `20-arquitetura` — aqui você defende escolhas de design |
-| 11-12 | `90-entrevista/simulacao.md` — mock diário |
-| **Sempre** | **`95-diferencial`** — exercícios diários/semanais/mensais paralelos a tudo |
+O ritmo agora é dirigido pela **Sprint semanal** do hub (Scrum solo) — não por cronograma fixo.
+Cada disciplina tem um **SYLLABUS.md** com carga horária, bibliografia obrigatória por módulo,
+labs e critério de formatura. O ciclo por disciplina:
 
-`70-devops` e `80-system-design` entram conforme tópicos aparecerem em entrevistas reais (não bloqueiam).
+1. **Aula** — ler o módulo (denso, ~20min) e marcar checkpoint honesto.
+2. **Recall** — a aba Revisar cobra as perguntas do módulo em recall espaçado. Responder em voz alta.
+3. **Bibliografia** — ler o item do SYLLABUS com o repositório aberto (leitura sem aplicação não conta hora).
+4. **Lab** — construir o mini-app do syllabus até o "pronto quando".
+5. **Projeto de conclusão** — entregar com evidência e só marcar aceito com a `/revisao` aprovando a rubrica 4/4.
+
+**FORMADA** = todos os checkpoints + labs + projeto aceito. Comece por `05-raciocinio` (30h, a espinha das outras). A daily quest (treino, recall, formação, entrega) mantém o ritmo diário; a sprint define o foco da semana.
 
 ---
 

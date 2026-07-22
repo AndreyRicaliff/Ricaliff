@@ -94,6 +94,8 @@ function applyAttributeRules(type, source, sign = 1) {
 // ── PLAYER CARD (RPG) ─────────────────────────────────────────────
 
 function renderPlayerCard() {
+  // status window Solo Leveling (hunter.js) assume o card quando carregada
+  if (typeof hunterWindow === 'function' && hunterWindow()) return;
   if (!SYNC?.player) return;
   const p      = SYNC.player;
   const levels = SYNC.levels ?? [];
@@ -422,6 +424,7 @@ function activateView(view) {
   if (view==='quest-board')  renderQuestBoard();
   if (view==='trilha')       renderTrilha();
   if (view==='revisar')      renderRevisar();
+  if (view==='sprint')       renderSprint();
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────
@@ -506,7 +509,18 @@ function renderDash() {
     <div class="qs"><div class="qs-val" style="color:var(--yellow)">${todayEv}</div><div class="qs-lbl">eventos hoje</div></div>
   `;
 
-  // focus: top 3 high/medium priority pending, by due
+  // focus: sprint da semana (Scrum solo) quando existe; senão tasks legadas
+  const sp = (typeof sprintFocusItems === 'function') ? sprintFocusItems() : null;
+  if (sp) {
+    const focusEl2 = document.getElementById('focus-list');
+    focusEl2.innerHTML = `
+      <div class="focus-meta" style="margin-bottom:6px">${icon('flag',12)} ${esc(sp.meta)} · ${sp.done}/${sp.total}</div>
+      ${sp.itens.length ? sp.itens.map(i => `
+        <div class="focus-item" onclick="go('sprint')">
+          <div class="focus-text">${esc(i.titulo)}</div>
+        </div>`).join('') : '<div class="empty-s" style="color:var(--muted);font-size:.78rem;padding:6px 0">Sprint zerada — tudo feito, ou nada puxado</div>'}
+      <div class="focus-meta" style="margin-top:6px;cursor:pointer" onclick="go('sprint')">abrir sprint →</div>`;
+  } else {
   const focus = tasks
     .filter(x=>x.status!=='done')
     .sort((a,b)=>{
@@ -535,6 +549,7 @@ function renderDash() {
         </div>
       </div>`).join('');
   }
+  } // fim do fallback de tasks (sprint assume o focus quando existe)
 
   const ringsEl = document.getElementById('rings-list');
   if(!projs.length) {
