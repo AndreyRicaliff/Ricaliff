@@ -1,10 +1,10 @@
-// seed.js v28 — v27 + sessão s-77 (ag-hub, 2026-07-24)
+// seed.js v29 — v28 + sessão s-78 (ag-hub, 2026-07-24)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '28') return;
+  if (localStorage.getItem('agh_seed_v') === '29') return;
 
   const now = new Date().toISOString();
 
@@ -277,6 +277,7 @@
     { id:'s-75', title:'Formato v2 dos modulos: Base + Estruturacao + Metodologia (exemplar publicado)', projectId:'ag-hub', type:'feature', date:'2026-07-22', impact:'alto', notes:'Modulo \'Por que a IA programa bem\': 5 mecanismos, 3 camadas do conhecimento e o loop de 7 passos explicitado pra adocao humana. 12KB, o triplo do v1 — padrao pro rollout dos 165.', createdAt: now },
     { id:'s-76', title:'Formula das skills aplicada: 3 temas nomeados, menu retratil, numeros vivos', projectId:'ag-hub', type:'design', date:'2026-07-24', impact:'medio', notes:'Ciclo gojo/persona/pro persistido (P3 restaurado do git), rail de icones 68px, count-up 620ms, rede anti-loop e skeletons. Verify com aba oculta: prova por CSS aplicado e rAF simulado.', createdAt: now },
     { id:'s-77', title:'Onda 1 da faculdade v2: raciocinio e fundamentos com teoria por extenso (13 modulos)', projectId:'ag-hub', type:'feature', date:'2026-07-24', impact:'alto', notes:'De ~5KB para 11-16KB por modulo: §BASE ancorada em Popper/Kahneman/Parnas/V8/MVCC/Merkle DAG, §METODOLOGIA replicavel, P/R dobrado (+13 cards). Verificacao independente + leak scan antes do deploy.', createdAt: now },
+    { id:'s-78', title:'Onda 2 v2.1: testes e seguranca em nivel cientifico (21 modulos)', projectId:'ag-hub', type:'feature', date:'2026-07-24', impact:'alto', notes:'Beck/Feathers/QuickCheck nos testes com controversias declaradas; Saltzer-Schroeder, Kerckhoffs, Thompson 1984 e NIST na seguranca. Dois mitos corrigidos com fonte primaria. 200 cards de recall.', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -324,7 +325,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '28');
+  localStorage.setItem('agh_seed_v',   '29');
 
-  console.log('[Ricaliff seed v28 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v29 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
