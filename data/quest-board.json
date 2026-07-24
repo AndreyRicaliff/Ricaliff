@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-24T21:11:43.356Z",
+  "geradoEm": "2026-07-24T22:11:23.786Z",
   "projetos": [
     {
       "id": "PULSAR-RH",
@@ -122,6 +122,24 @@
           "titulo": "05 — ADRs: Architecture Decision Records",
           "trilha": "20-arquitetura",
           "moduloPath": "/trilha/20-arquitetura/05-adrs-architecture-decision-records.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "25-gestao-projetos/08-etica-profissional.md",
+          "titulo": "08 — Ética Profissional",
+          "trilha": "25-gestao-projetos",
+          "moduloPath": "/trilha/25-gestao-projetos/08-etica-profissional.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "25-gestao-projetos/09-colaboracao-e-comunicacao.md",
+          "titulo": "09 — Colaboração e Comunicação",
+          "trilha": "25-gestao-projetos",
+          "moduloPath": "/trilha/25-gestao-projetos/09-colaboracao-e-comunicacao.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -553,6 +571,15 @@
           "concluida": false
         },
         {
+          "id": "25-gestao-projetos/09-colaboracao-e-comunicacao.md",
+          "titulo": "09 — Colaboração e Comunicação",
+          "trilha": "25-gestao-projetos",
+          "moduloPath": "/trilha/25-gestao-projetos/09-colaboracao-e-comunicacao.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
           "id": "32-engenharia-dados/01-pipeline-etl-elt.md",
           "titulo": "01 — Pipeline ETL/ELT",
           "trilha": "32-engenharia-dados",
@@ -884,6 +911,15 @@
           "titulo": "05 — Comunicação com Cliente",
           "trilha": "25-gestao-projetos",
           "moduloPath": "/trilha/25-gestao-projetos/05-comunicacao-com-cliente.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "25-gestao-projetos/08-etica-profissional.md",
+          "titulo": "08 — Ética Profissional",
+          "trilha": "25-gestao-projetos",
+          "moduloPath": "/trilha/25-gestao-projetos/08-etica-profissional.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -1737,7 +1773,7 @@
         "localStorage",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-24T18:10:12-03:00",
+      "ultimaAtividade": "2026-07-24T18:11:43-03:00",
       "sideQuests": [
         {
           "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",

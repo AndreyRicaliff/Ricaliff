@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-24T21:10:36.451Z",
+  "geradoEm": "2026-07-24T22:09:50.306Z",
   "totalTrilhas": 23,
   "trilhas": [
     {
@@ -309,7 +309,7 @@
       "icone": "📋",
       "prioridade": "alta",
       "horas": 30,
-      "totalModulos": 7,
+      "totalModulos": 9,
       "modulos": [
         {
           "id": "25-gestao-projetos/01-escopo-e-fatiamento.md",
@@ -352,6 +352,18 @@
           "arquivo": "07-documentar-decisoes.md",
           "titulo": "07 — Documentar Decisões",
           "caminho": "/trilha/25-gestao-projetos/07-documentar-decisoes.md"
+        },
+        {
+          "id": "25-gestao-projetos/08-etica-profissional.md",
+          "arquivo": "08-etica-profissional.md",
+          "titulo": "08 — Ética Profissional",
+          "caminho": "/trilha/25-gestao-projetos/08-etica-profissional.md"
+        },
+        {
+          "id": "25-gestao-projetos/09-colaboracao-e-comunicacao.md",
+          "arquivo": "09-colaboracao-e-comunicacao.md",
+          "titulo": "09 — Colaboração e Comunicação",
+          "caminho": "/trilha/25-gestao-projetos/09-colaboracao-e-comunicacao.md"
         }
       ]
     },

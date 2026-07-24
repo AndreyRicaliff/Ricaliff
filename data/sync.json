@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-24T18:10:14",
+    "lastSync": "2026-07-24T19:09:19",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 16915,
+    "xp": 16965,
     "xpToNext": 19001,
     "streak": 1,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 249,
+        "value": 252,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-24",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[PULSAR-FINANCE] entrada completa no padrao RH — cenario vivo, apresentacao e novidades na porta"
+    },
     {
       "date": "2026-07-24",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 20,
       "type": "review",
       "desc": "[Ricaliff] registra sessao da expansao da trilha (s-62)"
-    },
-    {
-      "date": "2026-07-20",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[Ricaliff] 8 dominios novos + expansao de seguranca (66 modulos)"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-24",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[PULSAR-FINANCE] entrada completa no padrao RH — cenario vivo, apresentacao e novidades na porta",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-24",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[Ricaliff] onda 4 v2.1 — design, motion e 3D com base cientifica",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[PULSAR-FINANCE] tokens de apoio, Space Grotesk como display e escape ?static=1",
       "xp": 50
-    },
-    {
-      "date": "2026-07-24",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[Ricaliff] registra onda 2",
-      "xp": 20
     }
   ]
 }
