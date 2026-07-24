@@ -1,6 +1,6 @@
 {
- "geradoEm": "2026-07-24T21:09:49.311Z",
- "total": 257,
+ "geradoEm": "2026-07-24T22:44:25.815Z",
+ "total": 261,
  "cards": [
   {
    "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md#1",
@@ -753,6 +753,38 @@
    "tituloModulo": "07 — Documentar Decisões",
    "pergunta": "Me conte uma decisão técnica difícil que você tomou e do que abriu mão.",
    "resposta": "No meu pipeline financeiro, execuções simultâneas de sync duplicavam registros. Comparei fila de jobs, lockfile e idempotência total. Escolhi lockfile com timeout — fila exigia infra nova pra um cron de 1x/h, e idempotência, o ideal, custava um refactor inteiro; virou dívida consciente. Abri mão de robustez máxima por custo proporcional ao risco. Está no DECISIONS.md do projeto, com as alternativas rejeitadas — posso mostrar."
+  },
+  {
+   "id": "25-gestao-projetos/08-etica-profissional.md#1",
+   "trilha": "25-gestao-projetos",
+   "modulo": "25-gestao-projetos/08-etica-profissional.md",
+   "tituloModulo": "08 — Ética Profissional",
+   "pergunta": "Seu gestor pede uma feature que você considera antiética ou perigosa para o usuário. O que você faz?",
+   "resposta": "Não é 'obedeço' nem 'bato o pé'. Primeiro nomeio o dano concreto e quem é afetado além de quem pediu, e classifico reversibilidade e escala — é o 2.5 da ACM, avaliar e comunicar o risco. Aí registro a objeção **por escrito**, porque o IEEE coloca o interesse público (1) acima do empregador (2), e a independência de julgamento (4) existe justamente para eu poder dizer não. Se for grave e ignorado, escalo. O que não faço é a defesa do engenheiro da VW — 'eu só executei a task' — que rendeu 40 meses de prisão. Executar não isenta."
+  },
+  {
+   "id": "25-gestao-projetos/08-etica-profissional.md#2",
+   "trilha": "25-gestao-projetos",
+   "modulo": "25-gestao-projetos/08-etica-profissional.md",
+   "tituloModulo": "08 — Ética Profissional",
+   "pergunta": "Um sistema seu passou em todos os testes. Ele é seguro?",
+   "resposta": "Passar em teste é confiabilidade, não segurança, e o Therac-25 é a prova: o modelo anterior tinha o mesmo bug e não matava, porque tinha intertravamento de hardware; o -25 removeu o hardware, confiou só no software, e matou. A lição de Leveson é que acidente vem do *sistema e do processo*, não de uma linha isolada — havia dois defeitos distintos, corrigir um não resolveria. 'Passou nos testes' só me diz que os casos que imaginei funcionam; segurança exige análise de risco, revisão independente e não remover a rede de proteção porque o software 'parece' confiável."
+  },
+  {
+   "id": "25-gestao-projetos/09-colaboracao-e-comunicacao.md#1",
+   "trilha": "25-gestao-projetos",
+   "modulo": "25-gestao-projetos/09-colaboracao-e-comunicacao.md",
+   "tituloModulo": "09 — Colaboração e Comunicação",
+   "pergunta": "Para que serve code review, na sua opinião? E como você reage a um review duro no seu código?",
+   "resposta": "O estudo do Google (Sadowski, 2018) mostra que a intuição de 'review serve pra achar bug' está errada — o que ele mais entrega é educação, transferência de conhecimento e consistência do time; os bugs achados costumam ser rasos. Então eu trato review como canal de aprendizado nos dois sentidos, e mantenho as PRs pequenas — a mediana no Google muda ~24 linhas — pra ele ser rápido e real, não um 'LGTM' vazio. Sobre crítica dura: código não é a pessoa, isso é programação egoless do Weinberg; uma falha que o revisor acha é uma falha evitada em produção, trabalhando a meu favor. Respondo ao ponto técnico e ignoro o tom."
+  },
+  {
+   "id": "25-gestao-projetos/09-colaboracao-e-comunicacao.md#2",
+   "trilha": "25-gestao-projetos",
+   "modulo": "25-gestao-projetos/09-colaboracao-e-comunicacao.md",
+   "tituloModulo": "09 — Colaboração e Comunicação",
+   "pergunta": "Como você lida com interrupções e trabalho de time distribuído?",
+   "resposta": "Trato foco como recurso caro, com base em dado: o estudo da Gloria Mark mediu que leva ~23 minutos pra retomar uma tarefa depois de uma interrupção, e o Peopleware mostra que o trabalho de engenharia acontece em *flow*, que leva ~15 min pra atingir. Então eu prefiro assíncrono por padrão — PR bem escrita, doc, mensagem com contexto — em vez de 'só uma perguntinha' que custa o flow do outro. Escrever bem, pra mim, é habilidade de engenharia: respeita o foco de quem lê, cria registro durável e me força a pensar antes de interromper alguém. Reunião só quando o texto genuinamente não resolve."
   },
   {
    "id": "32-engenharia-dados/01-pipeline-etl-elt.md#1",
