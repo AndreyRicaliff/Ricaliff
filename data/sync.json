@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-24T17:13:12",
+    "lastSync": "2026-07-24T17:33:21",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 16425,
+    "xp": 16475,
     "xpToNext": 19001,
     "streak": 1,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 222,
+        "value": 225,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-24",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[Ricaliff] onda 2 v2.1 — testes e seguranca com lastro em fonte primaria"
+    },
     {
       "date": "2026-07-24",
       "xp": 20,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-varejo] relatorio consolidado (com folha) + cards Smartphones vs Servicos"
-    },
-    {
-      "date": "2026-07-17",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[cliente-varejo] alinha 'serviços mais vendidos' com a linha do gráfico + estados"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-24",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[Ricaliff] onda 2 v2.1 — testes e seguranca com lastro em fonte primaria",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-24",
       "type": "review",
       "icon": "👁️",
       "title": "[Ricaliff] contrato v2.1 — rigor cientifico obrigatorio nas ondas",
@@ -759,13 +766,6 @@
       "icon": "👁️",
       "title": "[Ricaliff] registra sessao craft gojo",
       "xp": 20
-    },
-    {
-      "date": "2026-07-22",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[Ricaliff] destrava animacoes no RDP + passe de craft Gojo",
-      "xp": 30
     }
   ]
 }
