@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-24T17:33:49",
+    "lastSync": "2026-07-24T17:37:37",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 16495,
+    "xp": 16545,
     "xpToNext": 19001,
     "streak": 1,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 225,
+        "value": 228,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-24",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[PULSAR-FINANCE] tokens de apoio, Space Grotesk como display e escape ?static=1"
+    },
     {
       "date": "2026-07-24",
       "xp": 20,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[cliente-varejo] erro so derruba sem dado em cache + funde caruaru-2 no PDV pai"
-    },
-    {
-      "date": "2026-07-17",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[cliente-varejo] relatorio casa vendas por colaborador_id, escopo de loja e estados"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-24",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[PULSAR-FINANCE] tokens de apoio, Space Grotesk como display e escape ?static=1",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-24",
       "type": "review",
       "icon": "👁️",
       "title": "[Ricaliff] registra onda 2",
@@ -759,13 +766,6 @@
       "icon": "👁️",
       "title": "[Ricaliff] registra sessao do formato v2",
       "xp": 20
-    },
-    {
-      "date": "2026-07-22",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[Ricaliff] modulo padrao-v2 — por que a IA programa bem",
-      "xp": 50
     }
   ]
 }
