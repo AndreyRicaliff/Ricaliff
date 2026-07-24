@@ -1,6 +1,6 @@
 {
- "geradoEm": "2026-07-24T20:53:17.802Z",
- "total": 234,
+ "geradoEm": "2026-07-24T21:09:49.311Z",
+ "total": 257,
  "cards": [
   {
    "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md#1",
@@ -1067,12 +1067,28 @@
    "resposta": "Primeiro defino o ponto focal — um só por tela. Num dashboard comercial que fiz, o número-mestre é um hero card e os KPIs secundários ficam menores, porque o dono abre a tela pra responder uma pergunta: 'como está o faturamento?'. Uso quatro alavancas em ordem: tamanho, peso, contraste e espaço — e valido com teste de 5 segundos: mostro a tela a alguém de fora e pergunto o que era mais importante. Se a resposta diverge da intenção, a hierarquia falhou e eu ajusto uma alavanca por vez."
   },
   {
+   "id": "42-design/01-hierarquia-visual.md#2",
+   "trilha": "42-design",
+   "modulo": "42-design/01-hierarquia-visual.md",
+   "tituloModulo": "01 — Hierarquia Visual",
+   "pergunta": "Por que hierarquia visual funciona? É subjetivo?",
+   "resposta": "Não é subjetivo, tem lastro em percepção. As leis de Gestalt do Wertheimer mostram que o cérebro agrupa por similaridade e separa figura de fundo antes de a gente ler — então seis KPIs iguais viram uma massa, e um maior vira figura. E a feature-integration theory da Treisman explica por que é instantâneo: tamanho, cor e contraste são processados pré-atentivamente, em uns 200 ms, antes da atenção focada. As quatro alavancas são exatamente esses canais. O que é convenção de praticante — tipo 'peso destaca melhor que tamanho', do Refactoring UI — eu trato como heurística, não como ciência. E um cuidado: hierarquia não funciona por 'estilo de aprendizagem visual', que é mito documentado; funciona porque a percepção é universal."
+  },
+  {
    "id": "42-design/02-tipografia.md#1",
    "trilha": "42-design",
    "modulo": "42-design/02-tipografia.md",
    "tituloModulo": "02 — Tipografia",
    "pergunta": "Quais decisões tipográficas você toma ao começar uma interface nova?",
    "resposta": "Quatro: escala modular — base 16 e razão 1.2 pra dashboard, 1.25 pra uso geral, assim tamanho de fonte vira degrau, não debate. Line-height por contexto — 1.5 no corpo, 1.1 em título grande, e quanto mais larga a linha, mais entrelinha. Medida de 45 a 75 caracteres com `max-width: 65ch`. E família única com vários pesos, tipo Inter, antes de pensar em par. Num pipeline de DRE que fiz, o detalhe decisivo foi `tabular-nums`: sem ele coluna de valor financeiro não alinha e a tabela parece quebrada."
+  },
+  {
+   "id": "42-design/02-tipografia.md#2",
+   "trilha": "42-design",
+   "modulo": "42-design/02-tipografia.md",
+   "tituloModulo": "02 — Tipografia",
+   "pergunta": "A regra dos 66 caracteres por linha é ciência ou convenção?",
+   "resposta": "É convenção do Bringhurst, mas com um lastro mecânico. O que é ciência é como o olho lê: em sacadas e fixações, com uma varredura de retorno no fim de cada linha — a revisão do Rayner de 98 é a referência. Linha longa demais e o olho erra o alvo do retorno; curta demais e as varreduras quebram o ritmo. A pesquisa de legibilidade do Tinker mediu isso e é honestamente ambígua — linha longa às vezes lê mais rápido, mas as pessoas preferem e erram menos em larguras moderadas. Então eu uso `max-width: 65ch` como aposta segura ancorada na mecânica ocular, não como número mágico. Já a escala modular eu trato como convenção pura — o ganho dela é eliminar decisão, não legibilidade comprovada."
   },
   {
    "id": "42-design/03-cor-com-intencao.md#1",
@@ -1083,12 +1099,28 @@
    "resposta": "Não é inversão — é re-projeto de quatro coisas. Fundo cinza-azulado escuro, nunca preto puro. Elevação vira superfície mais clara, porque sombra some no escuro. Cores saturadas do light vibram — eu dessaturo. E refaço a verificação de contraste AA par a par, porque os pares se refazem. Trabalho com produto dark-first onde a cor da marca é só acento em área pequena — acento saturado em área grande no escuro cansa o olho. E semântica se mantém nos dois temas: verde é positivo nos dois, com ícone dobrando o sinal por causa de daltonismo."
   },
   {
+   "id": "42-design/03-cor-com-intencao.md#2",
+   "trilha": "42-design",
+   "modulo": "42-design/03-cor-com-intencao.md",
+   "tituloModulo": "03 — Cor com Intenção",
+   "pergunta": "Como você garante que um par de cores passa em acessibilidade?",
+   "resposta": "Contraste no WCAG não é opinião, é fórmula: razão igual a (L1 + 0,05) sobre (L2 + 0,05), onde L é a luminância relativa — os canais sRGB linearizados e ponderados, com o verde pesando 0,72 porque o olho é mais sensível a ele. O AA pede 4,5:1 pra texto normal e 3:1 pra texto grande e componente. Eu listo cada par texto/fundo, inclusive placeholder e texto sobre a cor da marca, e meço — o WebAIM faz, ou o meu próprio verificador que implementa a fórmula. Se reprova, eu mexo só na lightness do HSL até passar, preservando o matiz. E cor nunca é canal único: como ~8% dos homens têm daltonismo vermelho-verde, todo sinal semântico ganha um ícone junto."
+  },
+  {
    "id": "42-design/04-espacamento-grid.md#1",
    "trilha": "42-design",
    "modulo": "42-design/04-espacamento-grid.md",
    "tituloModulo": "04 — Espaçamento e Grid",
    "pergunta": "Como você decide os espaçamentos de uma tela? É no olho?",
    "resposta": "Não — escala fixa de múltiplos de 4, na prática degraus de 8: 8, 16, 24, 32, 48. O Tailwind já embute isso, então valor arbitrário tipo `p-[13px]` é red flag que eu audito com grep. A regra que mais uso é de Gestalt: espaço dentro de um grupo sempre menor que espaço entre grupos — resolve formulário e card sem precisar de borda. E densidade é decisão de contexto: dashboard que fiz pra operação é denso de propósito, o usuário compara números todo dia; landing é generosa porque o visitante precisa de um foco só."
+  },
+  {
+   "id": "42-design/04-espacamento-grid.md#2",
+   "trilha": "42-design",
+   "modulo": "42-design/04-espacamento-grid.md",
+   "tituloModulo": "04 — Espaçamento e Grid",
+   "pergunta": "Por que você evita colocar borda em tudo pra separar as coisas?",
+   "resposta": "Porque separar é trabalho do espaço, não da borda — e isso é Gestalt, não preferência. A lei da proximidade do Wertheimer diz que o olho já lê elementos próximos como um grupo, então espaço 'dentro menor que entre' agrupa sozinho, sem nenhum pixel de borda. Borda e fundo são a lei da região comum, do Palmer — são mais fortes que o espaço, então eu guardo pra quando a proximidade não basta, tipo um card que precisa se destacar do fundo. Quando vejo borda em tudo, geralmente é sintoma de espaçamento mal resolvido: a pessoa tapou com linha um agrupamento que o espaço já daria. Menos tinta, mesma clareza — no espírito do data-ink do Tufte."
   },
   {
    "id": "42-design/05-estados-da-interface.md#1",
@@ -1099,12 +1131,28 @@
    "resposta": "Enumero os cinco estados antes de codar: vazio, carregando, erro, parcial e cheio. O vazio é o mais crítico — é a primeira impressão de todo usuário novo; num dashboard com sync de ERP que fiz, o primeiro acesso acontece antes da primeira sincronização, então a tela diz 'sincronizando' em vez de mostrar zeros que parecem dado real. Carregando é skeleton com a geometria do conteúdo pra evitar layout shift. Erro é acionável, com retry — e nunca zero silencioso, porque zero silencioso mente. Aí forço cada estado no DevTools antes de dar como pronto."
   },
   {
+   "id": "42-design/05-estados-da-interface.md#2",
+   "trilha": "42-design",
+   "modulo": "42-design/05-estados-da-interface.md",
+   "tituloModulo": "05 — Estados da Interface",
+   "pergunta": "Por que mostrar 'erro' é melhor que mostrar zero quando o fetch falha?",
+   "resposta": "Porque a interface é a única evidência que o usuário tem pra construir o modelo mental do sistema — é o golfo de avaliação do Norman. Se o fetch falha e eu mostro R$ 0, o dono lê 'não vendi nada': eu não só falhei em informar, eu desinformei ativamente, alimentei um modelo falso. Zero silencioso é a interface mentindo. A regra é fail-closed: falhou, diga que falhou, com uma mensagem humana e um retry. É a mesma disciplina anti-alucinação que eu uso em código — não afirmar 'zero' quando o que eu tenho é 'não sei se carregou'. E ordeno o `if (error)` antes do `if (isLoading)` justamente pra não esconder a falha atrás de um skeleton eterno."
+  },
+  {
    "id": "42-design/06-acessibilidade-minima.md#1",
    "trilha": "42-design",
    "modulo": "42-design/06-acessibilidade-minima.md",
    "tituloModulo": "06 — Acessibilidade Mínima",
    "pergunta": "O que você faz de acessibilidade no dia a dia? Sem equipe dedicada.",
    "resposta": "Tenho um mínimo não-negociável de cinco itens: foco visível com `:focus-visible`, navegação completa por teclado — meu teste é largar o mouse e tabular a tela, inclusive focus trap em modal —, HTML semântico antes de ARIA, porque button nativo dá teclado e foco de graça, alvo de toque de 44px e contraste AA. Rodo axe DevTools, mas sei que scanner cobre só uns 30% dos critérios — o teste de teclado pega o que ele não vê. E respeito prefers-reduced-motion em produto; já tive caso de RDP forçando essa flag e congelando animação, então sei na pele que ela existe."
+  },
+  {
+   "id": "42-design/06-acessibilidade-minima.md#2",
+   "trilha": "42-design",
+   "modulo": "42-design/06-acessibilidade-minima.md",
+   "tituloModulo": "06 — Acessibilidade Mínima",
+   "pergunta": "Por que o alvo de toque tem que ser grande? 24 ou 44 pixels, tanto faz?",
+   "resposta": "Não é capricho, é a lei de Fitts, de 1954: o tempo pra acertar um alvo é proporcional ao log de distância sobre largura do alvo. Dobrar o tamanho do alvo derruba o tempo e a taxa de erro — e como é logarítmico, alvo pequeno custa desproporcionalmente caro, ainda mais pra quem tem tremor ou baixa visão. O WCAG 2.2 numerou isso: SC 2.5.8 pede no mínimo 24 CSS pixels no nível AA, e o 2.5.5 pede 44 no AAA, que bate com o Apple HIG. Minha regra prática é mirar 44 de área clicável: o ícone pode ter 20, o padding completa o alvo. Então 24 é o piso legal, 44 é o alvo de qualidade."
   },
   {
    "id": "42-design/07-design-system-pratico.md#1",
@@ -1115,12 +1163,28 @@
    "resposta": "Temos a versão pragmática: tokens em dois níveis — primitivo, tipo `purple-500`, e semântico, tipo `accent` — e componente só consome o semântico, que é o que deixa dark mode e theming baratos. Componentes com variantes via CVA em vez de cópias: um Button com variant e size tipados. E documentamos o porquê de cada token numa linha, porque token sem racional é forkado no primeiro prazo apertado. Aprendi na prática um gotcha: canvas não resolve `var()` — gráfico recebe a cor computada via getComputedStyle. O princípio que defendo é consistência acima de originalidade: o usuário aprende o sistema uma vez."
   },
   {
+   "id": "42-design/07-design-system-pratico.md#2",
+   "trilha": "42-design",
+   "modulo": "42-design/07-design-system-pratico.md",
+   "tituloModulo": "07 — Design System Prático",
+   "pergunta": "Por que 'consistência acima de originalidade'? Não é papel do design ser criativo?",
+   "resposta": "Porque originalidade gratuita é imposto cognitivo, e isso tem lastro. Hick-Hyman: o tempo de decisão cresce com o log do número de opções — então padrão consistente reduz as micro-decisões do usuário, ele reconhece em vez de deliberar. E Miller-Cowan: a memória de trabalho é limitada, uns quatro chunks; 'isso é um botão primário' vira um chunk aprendido e reusado em toda tela, enquanto cada padrão novo-e-criativo cobra um chunk novo. Um design system é basicamente essas duas leis aplicadas à interface inteira. A criatividade eu gasto onde muda o resultado do usuário, não em reinventar o botão a cada tela — por isso na AG as identidades vivem como tokens canonizados, pra não reinventar."
+  },
+  {
    "id": "42-design/08-critica-estruturada.md#1",
    "trilha": "42-design",
    "modulo": "42-design/08-critica-estruturada.md",
    "tituloModulo": "08 — Crítica Estruturada",
    "pergunta": "Olha essa tela do nosso produto. O que você mudaria?",
    "resposta": "Antes de mudar, eu perguntaria a intenção: pra que serve a tela e qual a informação crítica — sem isso, crítica é gosto. Aí rodo cinco eixos: hierarquia — tem um ponto focal só? —, os cinco estados, consistência com o sistema, acessibilidade de teclado e contraste, e respiro do espaçamento. Formulo cada achado como hipótese testável: 'isso parece confuso porque há dois pontos focais — um teste de 5 segundos confirma'. E mudaria incrementalmente: top 3 por impacto, re-testa, repete — big-bang destrói a evidência de o que melhorou o quê."
+  },
+  {
+   "id": "42-design/08-critica-estruturada.md#2",
+   "trilha": "42-design",
+   "modulo": "42-design/08-critica-estruturada.md",
+   "tituloModulo": "08 — Crítica Estruturada",
+   "pergunta": "Qual a diferença entre dar sua opinião sobre uma tela e criticá-la de verdade?",
+   "resposta": "A diferença é falseabilidade — é Popper. 'Não gostei' não pode estar errado, então não é crítica, é opinião. Crítica de verdade é formulada como hipótese refutável com teste nomeado: 'isso parece confuso porque há dois pontos focais — um teste de 5 segundos confirmaria'; se o teste der certo, minha crítica cai, e tudo bem. E eu respeito a ordem observação → diagnóstico → prescrição, com o vocabulário do Norman: 'meu olho foi no gráfico antes do total' é dado, 'o gráfico é figura demais' é diagnóstico, 'diminui o gráfico' é prescrição. Pular pro 'diminui' rouba o problema do autor e esconde o dado que motivou. Um cuidado extra: rejeito pseudo-critério tipo 'usuário visual prefere', que é o mito dos estilos de aprendizagem — critério tem que ter lastro em percepção ou norma."
   },
   {
    "id": "44-motion-design/01-motion-com-proposito.md#1",
@@ -1131,12 +1195,28 @@
    "resposta": "Eu classifico por propósito: orientar, confirmar ou encantar. Se não faz nenhum dos três, removo — animação sem propósito rouba atenção, e atenção é serial. Confirmação de ação precisa chegar em menos de 100ms ou o usuário clica de novo. Encantamento eu reservo pra momentos raros, tipo intro de apresentação — nos dashboards de trabalho que fiz pra clientes, o miolo é quase estático de propósito, porque quem usa 50 vezes por dia não pode pagar 300ms por clique."
   },
   {
+   "id": "44-motion-design/01-motion-com-proposito.md#2",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/01-motion-com-proposito.md",
+   "tituloModulo": "01 — Motion com Propósito",
+   "pergunta": "Você citou os 12 princípios da Disney. Todos se aplicam a interface?",
+   "resposta": "Não, e achar que sim é o erro clássico. Eles foram feitos pra animação de personagem em cinema, público passivo, uma exibição. Uns cinco transferem bem: slow-in/slow-out virou easing, staging virou coreografia, timing virou duração por peso, anticipation e follow-through entram sutis. Mas exaggeration e squash-and-stretch, se você importa literalmente, viram aquele overshoot elástico em tudo que faz o produto parecer brinquedo. E solid drawing ou appeal nem existem em UI. Então eu uso o subconjunto e nomeio quais — não recito os 12 como se fossem checklist."
+  },
+  {
    "id": "44-motion-design/02-easing-timing.md#1",
    "trilha": "44-motion-design",
    "modulo": "44-motion-design/02-easing-timing.md",
    "tituloModulo": "02 — Easing & Timing",
    "pergunta": "Como você escolhe easing e duração de uma animação?",
    "resposta": "Easing pelo papel: ease-out pra entrada, porque a parte rápida acontece primeiro e o elemento responde na hora; ease-in pra saída, porque o final de quem sai não importa; linear só pra opacidade ou spinner. Duração pelo porte: 100–150ms pra micro-interação, até 400ms pra transição de tela — acima disso o usuário está esperando a UI. E se a interação é um gesto interrompível, tipo drag, eu troco bezier por spring, porque spring preserva a velocidade quando o usuário intervém no meio."
+  },
+  {
+   "id": "44-motion-design/02-easing-timing.md#2",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/02-easing-timing.md",
+   "tituloModulo": "02 — Easing & Timing",
+   "pergunta": "Cubic-bezier tem quatro números. O que eles são, e por que uma curva autoral parece mais 'cara' que ease-out?",
+   "resposta": "Os extremos da curva são fixos em (0,0) e (1,1); os quatro números são os dois pontos de controle. O eixo x é o tempo, o y é o progresso, e a inclinação da curva é a velocidade instantânea. Uma curva tipo quint-out, cubic-bezier(0.22, 1, 0.36, 1), sobe o progresso pra perto de 100% quase de imediato e depois assenta longo — então o elemento responde instantâneo e acomoda devagar, que é a sensação premium. Ease-out keyword é morno, cubic-bezier(0, 0, 0.58, 1), sobe mais devagar. Não é magia, é ler a inclinação inicial da curva."
   },
   {
    "id": "44-motion-design/03-coreografia-stagger.md#1",
@@ -1147,12 +1227,28 @@
    "resposta": "Stagger de 40 a 50ms entre itens, cada um com fade + translateY curto de uns 12px, ease-out, 300–400ms. A ordem segue a hierarquia: cabeçalho antes dos itens. E eu ponho um teto — se a lista tem 30 itens, só os 8 primeiros ganham stagger e o resto entra junto, senão o usuário espera 1,5s de puro delay. O princípio é que atenção é serial: tudo junto, nada se destaca; em sequência, eu controlo a ordem de leitura. Uso esse padrão nos reveals de slide das apresentações que faço."
   },
   {
+   "id": "44-motion-design/03-coreografia-stagger.md#2",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/03-coreografia-stagger.md",
+   "tituloModulo": "03 — Coreografia & Stagger",
+   "pergunta": "Por que dez elementos entrando ao mesmo tempo parecem 'um só'? Qual é o fundamento?",
+   "resposta": "É uma lei de Gestalt: o destino comum. Wertheimer mostrou que elementos que se movem juntos, mesma direção e velocidade, o cérebro agrupa como um objeto único — é um dos agrupamentos perceptuais mais fortes. Então dez fade-ins simultâneos não comunicam dez coisas, comunicam uma massa. O stagger existe justamente pra quebrar esse destino comum: escalonando o início, eu separo os elementos no tempo, o agrupamento se desfaz e o olho volta a lê-los como sequência. É por isso que 30ms é o piso — abaixo disso o olho não separa os inícios e o destino comum se restabelece."
+  },
+  {
    "id": "44-motion-design/04-transicoes-de-estado.md#1",
    "trilha": "44-motion-design",
    "modulo": "44-motion-design/04-transicoes-de-estado.md",
    "tituloModulo": "04 — Transições de Estado & FLIP",
    "pergunta": "Como você animaria um item de lista que muda de posição após um sort?",
    "resposta": "FLIP: meço a posição antes com getBoundingClientRect, deixo o DOM reordenar, meço de novo, aplico um transform que devolve o item visualmente pro lugar antigo e transiciono até transform none. O layout acontece uma vez só e a animação inteira é transform no compositor. Usei esse padrão em ranking de vendedores que reordena com filtro de período. Hoje eu testaria também View Transitions API, que faz isso nativo — mas com fallback, porque é progressive enhancement, não baseline."
+  },
+  {
+   "id": "44-motion-design/04-transicoes-de-estado.md#2",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/04-transicoes-de-estado.md",
+   "tituloModulo": "04 — Transições de Estado & FLIP",
+   "pergunta": "Por que não animar direto o top/left até a posição nova? O que o FLIP resolve exatamente?",
+   "resposta": "Dois problemas. Primeiro, top/left disparam reflow a cada frame — layout, paint, composite — então animar geometria 60 vezes por segundo engasga. Segundo, e mais sutil: numa reordenação eu não *tenho* o layout final de antemão pra interpolar; ele é o resultado de o browser recalcular a árvore depois que o DOM muda. O FLIP inverte isso: deixo o layout final acontecer de graça, meço os dois estados reais, e animo a diferença como transform, que roda só no compositor. Em vez de animar até um destino desconhecido, eu meço o destino e animo a partir dele, de trás pra frente. A prova de que está certo é uma barra de Layout no Performance panel e o resto só Composite."
   },
   {
    "id": "44-motion-design/05-microinteracoes.md#1",
@@ -1163,12 +1259,28 @@
    "resposta": "O botão vira a máquina de estados: no clique ele desabilita — isso mata duplo-submit — e mostra loading; no sucesso, vira '✓ Salvo' por uns 2 segundos e volta sozinho; no erro, mostra o quê e o porquê, não 'algo deu errado'. Feedback visual do press em menos de 100ms, que é o limiar de instantâneo. E eu testo com throttling de rede, porque em localhost o loading nem aparece — foi assim que peguei um duplo-submit num formulário de RH que em rede rápida nunca se manifestava."
   },
   {
+   "id": "44-motion-design/05-microinteracoes.md#2",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/05-microinteracoes.md",
+   "tituloModulo": "05 — Microinterações",
+   "pergunta": "Como você reduz a sensação de lentidão de um carregamento sem deixá-lo mais rápido de verdade?",
+   "resposta": "Espera percebida não é espera medida — dá pra projetar a percebida. Três alavancas: skeleton em vez de spinner, porque mostra a estrutura chegando e reduz incerteza, que é o que realmente incomoda; progresso determinado em vez de indeterminado quando dá pra estimar, porque uma barra que anda baixa a ansiedade mesmo com a mesma duração; e delay de exibição no spinner, pra request rápido não piscar um loading que parece bug. Os limites vêm da psicologia cognitiva — Miller e Card: até 1 segundo o usuário mantém o fluxo, acima de 10 ele troca de aba. Então eu decido o feedback pela faixa em que a latência cai."
+  },
+  {
    "id": "44-motion-design/06-performance-de-animacao.md#1",
    "trilha": "44-motion-design",
    "modulo": "44-motion-design/06-performance-de-animacao.md",
    "tituloModulo": "06 — Performance de Animação",
    "pergunta": "Uma animação está engasgando. Como você investiga?",
    "resposta": "Primeiro meço: Performance panel com CPU 4x, gravo a interação e olho os frames que estouram 16,7ms. Se tem Layout roxo em todo frame, alguém está animando top/width ou intercalando leitura e escrita de geometria — troco por transform, que roda só no compositor. Se é Paint, suspeito de box-shadow ou filter animado — pré-pinto num pseudo-elemento e animo opacity. Aplico um fix por vez e meço de novo; se não confirmar, a hipótese estava errada. Foi assim que estabilizei os efeitos 3D dos decks de apresentação que faço."
+  },
+  {
+   "id": "44-motion-design/06-performance-de-animacao.md#2",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/06-performance-de-animacao.md",
+   "tituloModulo": "06 — Performance de Animação",
+   "pergunta": "De onde vem o número 16,67ms, e por que transform escapa da main thread?",
+   "resposta": "16,67ms é 1000 dividido por 60 — a tela atualiza 60 vezes por segundo, então o browser tem esse tempo pra montar cada frame, e na prática uns 10ms úteis porque tem overhead. Transform e opacity são a única dupla que o browser resolve só na etapa de composição: o elemento já foi pintado numa textura, e a GPU só reposiciona ou esmaece essa textura numa thread separada da main. Por isso, mesmo que o JavaScript trave a main thread, uma animação de transform continua fluida — enquanto width ou top forçam recalcular a geometria da árvore inteira, que é layout, na main thread, o caminho mais caro do pipeline."
   },
   {
    "id": "44-motion-design/07-motion-acessivel-e-armadilhas.md#1",
@@ -1179,12 +1291,28 @@
    "resposta": "Reduzo, não congelo: troco translações grandes e parallax por fade ou corte seco, e mantenho feedback funcional. Estruturalmente, o estado final vive no CSS normal e a animação só descreve a viagem — assim, animação que não roda nunca esconde conteúdo. E aprendi na prática que o flag pode vir do ambiente, não do usuário: sessão RDP no Windows liga reduced-motion sozinha e congelou uma apresentação minha em opacity zero. Verifiquei com matchMedia antes de culpar o código — e a exceção pra decks ficou documentada em DECISIONS.md com escopo fechado."
   },
   {
+   "id": "44-motion-design/07-motion-acessivel-e-armadilhas.md#2",
+   "trilha": "44-motion-design",
+   "modulo": "44-motion-design/07-motion-acessivel-e-armadilhas.md",
+   "tituloModulo": "07 — Motion Acessível & Armadilhas",
+   "pergunta": "Qual a diferença entre WCAG 2.2.2 e 2.3.3, e qual é obrigatória?",
+   "resposta": "São critérios diferentes com níveis diferentes. O 2.2.2, Pause Stop Hide, é Nível A — o mínimo: conteúdo que se move sozinho, dura mais de 5 segundos e aparece junto de outro conteúdo tem que poder ser pausado. Mira carrossel e autoplay. O 2.3.3, Animation from Interactions, é Nível AAA — mais alto: animação disparada por interação, tipo parallax e reveal por scroll, tem que poder ser desativada, e é o que fundamenta respeitar prefers-reduced-motion. Então o autoplay sem botão de pausa viola o A; o parallax sem opção de reduzir fere o AAA. Na prática eu trato os dois, mas se preciso priorizar, o 2.2.2 é o piso legal."
+  },
+  {
    "id": "46-3d-web/01-mapa-do-3d.md#1",
    "trilha": "46-3d-web",
    "modulo": "46-3d-web/01-mapa-do-3d.md",
    "tituloModulo": "01 — Mapa do 3D na Web",
    "pergunta": "Você faria um site 3D com WebGPU hoje?",
    "resposta": "Depende de quem acessa. WebGPU é melhor tecnicamente — menos overhead, compute shaders — mas o suporte ainda não é universal, então em produto de cliente eu escrevo para WebGL e deixo WebGPU como backend opcional, que o three.js já abstrai. Num deck que fiz, fui além: o alvo rodava via RDP, sem GPU real, então nem WebGL — usei CSS3D puro, que o compositor do browser aguenta. Primeiro eu meço o ambiente, depois escolho a API."
+  },
+  {
+   "id": "46-3d-web/01-mapa-do-3d.md#2",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/01-mapa-do-3d.md",
+   "tituloModulo": "01 — Mapa do 3D na Web",
+   "pergunta": "O que acontece, no nível da GPU, entre você chamar `render()` e o pixel aparecer?",
+   "resposta": "É um pipeline de cinco estágios que a spec do OpenGL ES/WebGL define. O vertex shader roda por vértice e transforma cada um para clip space com a matriz MVP. Os triângulos são montados e clipados contra o frustum. A rasterização os quebra em fragmentos e interpola os atributos. O fragment shader roda por fragmento e devolve a cor — é onde vive a iluminação. E o per-fragment: depth test com o z-buffer decide quem está na frente, blending resolve transparência, e escreve no framebuffer. CSS3D não passa por nada disso — é o compositor aplicando matriz 4×4 em DOM, e é por isso que texto continua nítido e selecionável lá, mas não em WebGL."
   },
   {
    "id": "46-3d-web/02-three-fundamentos.md#1",
@@ -1195,12 +1323,28 @@
    "resposta": "Quatro peças: uma Scene, que é o grafo de objetos; uma Camera, que define projeção e ponto de vista; um Mesh, que é geometria mais material; e um Renderer, que a cada frame traduz cena e câmera em draw calls de WebGL. Nada desenha sozinho — eu chamo render num animation loop. Os dois erros que sempre pego em code review: material com luz numa cena sem luz, que renderiza preto, e esquecer `updateProjectionMatrix` no resize, que distorce tudo."
   },
   {
+   "id": "46-3d-web/02-three-fundamentos.md#2",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/02-three-fundamentos.md",
+   "tituloModulo": "02 — three.js: Fundamentos",
+   "pergunta": "Por que a matriz de câmera é 4×4 e não 3×3?",
+   "resposta": "Por duas coisas que uma 3×3 não faz. Uma matriz 3×3 só representa transformações lineares, e toda linear fixa a origem — então translação é impossível com ela. A solução são coordenadas homogêneas: embuto o ponto no 4D com `w=1`, e aí a translação vira uma matriz 4×4 que compõe por multiplicação com rotação e escala; uma transformação afim em 3D é linear em 4D. A segunda razão é a perspectiva: a matriz de projeção usa a quarta linha pra jogar a profundidade no `w`, e a divisão por `w` depois do shader é o que faz objeto distante encolher. Sem a quarta dimensão, não há translação nem perspectiva — por isso 4×4."
+  },
+  {
    "id": "46-3d-web/03-css3d-sem-webgl.md#1",
    "trilha": "46-3d-web",
    "modulo": "46-3d-web/03-css3d-sem-webgl.md",
    "tituloModulo": "03 — CSS3D: 3D sem WebGL",
    "pergunta": "O que `transform-style: preserve-3d` faz e o que pode quebrá-lo?",
    "resposta": "Por padrão o browser projeta os filhos no plano do pai — achata. `preserve-3d` mantém os filhos no espaço 3D. O detalhe que já me custou debug: propriedades que criam stacking context — `overflow: hidden`, `filter`, `opacity` menor que 1 — reativam o achatamento sem erro nenhum no console. Num deck com cards em esfera, o sintoma foi 'o 3D sumiu'; a causa era um `overflow: hidden` adicionado num contêiner intermediário. Hoje eu isolo: `perspective` no palco, `preserve-3d` só na cadeia que precisa."
+  },
+  {
+   "id": "46-3d-web/03-css3d-sem-webgl.md#2",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/03-css3d-sem-webgl.md",
+   "tituloModulo": "03 — CSS3D: 3D sem WebGL",
+   "pergunta": "CSS3D e WebGL são coisas diferentes ou a mesma?",
+   "resposta": "A matemática é a mesma — os dois aplicam matriz 4×4 homogênea, e o `matrix3d` do CSS são literalmente os 16 números column-major da matriz. A diferença é quem executa: no WebGL é o pipeline programável da GPU, com vertex e fragment shader, z-buffer por fragmento e iluminação; no CSS3D é o compositor do browser aplicando a matriz a layers de DOM, sem shader e sem z-buffer confiável entre stacking contexts. Por isso texto continua nítido e selecionável no CSS3D e vira textura borrada no WebGL — e por isso escolho CSS3D quando o conteúdo é texto, mesmo perdendo iluminação."
   },
   {
    "id": "46-3d-web/04-geometria-materiais.md#1",
@@ -1211,12 +1355,28 @@
    "resposta": "Quase sempre os 300 objetos. Cada mesh com seu material é um draw call — uma ida CPU→GPU com rebind de estado — e é aí que o frame morre, não na rasterização. GPU moderna processa milhões de triângulos, mas centenas de draw calls estrangulam a CPU. Eu verifico em `renderer.info.render.calls` antes de otimizar qualquer coisa; se calls está alto, a resposta é mergear geometria ou instancing, não baixar polígono."
   },
   {
+   "id": "46-3d-web/04-geometria-materiais.md#2",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/04-geometria-materiais.md",
+   "tituloModulo": "04 — Geometria e Materiais",
+   "pergunta": "Por que o workflow metalness/roughness substituiu specular/gloss no PBR?",
+   "resposta": "Porque metalness/roughness codifica a física e fecha a porta pro material impossível. No specular/gloss você pinta a cor especular à mão e é fácil criar um dielétrico com reflexo colorido forte ou um metal sem reflexo — coisas que não existem, e que quebram sob outra luz. Metalness é quase binário: dielétrico tem reflexo branco fixo de uns 4% e cor no difuso, metal não tem difuso e tinge o reflexo com a cor base. Isso vem da microfacet theory de Cook-Torrance e da parametrização que a Disney popularizou em 2012 e o glTF canonizou. Com dois parâmetros de significado físico, o material fica coerente em qualquer iluminação — é menos liberdade, de propósito."
+  },
+  {
    "id": "46-3d-web/05-animacao-3d.md#1",
    "trilha": "46-3d-web",
    "modulo": "46-3d-web/05-animacao-3d.md",
    "tituloModulo": "05 — Animação 3D",
    "pergunta": "Por que animar com `x += 0.01` por frame é bug, e como corrige?",
    "resposta": "Porque frame não é unidade de tempo: em 120 Hz esse código roda o dobro da velocidade, e num engasgo ele salta. Corrijo com delta time — escalo velocidade pelo tempo real entre frames — ou derivo o estado direto do timestamp. E tem a armadilha do retorno de aba: rAF pausa em aba oculta, então o primeiro dt na volta pode ser de segundos; eu clampo o dt pra evitar o teleporte. Pra suavização, uso damping exponencial com dt, que o three já dá pronto no `MathUtils.damp`."
+  },
+  {
+   "id": "46-3d-web/05-animacao-3d.md#2",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/05-animacao-3d.md",
+   "tituloModulo": "05 — Animação 3D",
+   "pergunta": "Você usa lerp com um fator fixo tipo `x += (alvo-x)*0.1` por frame. Tem algo errado nisso?",
+   "resposta": "Sim, sutilmente: esse fator fixo por frame reintroduz dependência de frame rate. Aquele lerp é a integração de Euler da equação `dx/dt = λ(alvo − x)`, cuja solução exata é uma exponencial decaindo. Em 120 Hz ele aplica o fator duas vezes mais, então a suavização fica mais rápida do que em 60. O jeito certo é usar o fator `1 − e^(−λ·dt)`, que amostra a exponencial pelo tempo real — é o que o `MathUtils.damp` do three faz. Na prática quase ninguém percebe a 60 fps fixos, mas quebra assim que o frame rate varia, e num deck que roda de tudo isso acontece."
   },
   {
    "id": "46-3d-web/06-luz-e-atmosfera.md#1",
@@ -1227,6 +1387,14 @@
    "resposta": "Primeiro meço — cada luz com sombra re-renderiza a cena pro shadow map dela, então 4 luzes podem significar 5× o custo de render. Normalmente deixo sombra só na luz-chave direcional, troco as demais por luzes sem sombra ou por um environment map, que ilumina tudo por imagem a custo fixo. E confiro o frustum da shadow camera com um CameraHelper antes de mexer em resolução: sombra ruim geralmente é frustum largo, não mapSize baixo. Num deck nosso a decisão foi mais radical: zero sombras, porque o alvo rodava via RDP sem GPU."
   },
   {
+   "id": "46-3d-web/06-luz-e-atmosfera.md#2",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/06-luz-e-atmosfera.md",
+   "tituloModulo": "06 — Luz e Atmosfera",
+   "pergunta": "Meu metal aparece preto mesmo com três luzes na cena. Por quê?",
+   "resposta": "Porque metal não tem componente difuso — ele é essencialmente reflexo, e mais luz direta não conserta isso: você está mexendo no termo direto da equação de render, e o que falta é o termo indireto. Metal precisa de algo pra refletir, e isso é um environment map: uma imagem panorâmica em `scene.environment`, a ideia de image-based lighting do Debevec. Sem envmap ele reflete o vazio, que é preto. Adicionei um HDRI e o metal ligou na hora. É o erro mais comum de quem começa: empilhar luz pra resolver ausência de reflexo."
+  },
+  {
    "id": "46-3d-web/07-performance-3d.md#1",
    "trilha": "46-3d-web",
    "modulo": "46-3d-web/07-performance-3d.md",
@@ -1235,12 +1403,28 @@
    "resposta": "Meço antes de tocar em código: `renderer.info` me dá draw calls e triângulos; se calls está nas centenas, a hipótese principal é submissão CPU, e instancing ou merge de geometria resolve. Pra separar CPU de GPU, um teste barato: derrubo o pixel ratio pra 1 — se o fps sobe, o gargalo é fill rate, e eu capo o dpr ou simplifico o shader. Se nada disso explica, capturo um frame no Spector.js e olho call a call. E num caso de SPA, sempre confiro `info.memory` após desmontar — leak de VRAM por falta de dispose degrada aos poucos e não aparece em profiler de JS."
   },
   {
+   "id": "46-3d-web/07-performance-3d.md#2",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/07-performance-3d.md",
+   "tituloModulo": "07 — Performance 3D",
+   "pergunta": "Quantos polígonos são 'seguros' pra uma cena web?",
+   "resposta": "Não existe número fixo, e essa é a resposta — performance 3D na web depende muito de GPU e driver. A mesma cena voa num desktop com GPU dedicada e engasga num integrado sob throttling, ou arrasta a 3 fps sob render por software num RDP. Fora isso, polígono raramente é o gargalo: GPU moderna come milhões de triângulos, o que estrangula é draw call na CPU. Então eu não decoro um teto — eu meço no hardware-alvo com o `renderer.info`, e é esse número que vale, não o do tutorial. Regra de bolso eu tenho, tipo menos de 100 draw calls com UI em cima, mas é ponto de partida pra medir, não garantia."
+  },
+  {
    "id": "46-3d-web/08-3d-integrado-a-ui.md#1",
    "trilha": "46-3d-web",
    "modulo": "46-3d-web/08-3d-integrado-a-ui.md",
    "tituloModulo": "08 — 3D Integrado à UI",
    "pergunta": "Como você poria uma cena 3D atrás de um dashboard sem prejudicar a UX?",
    "resposta": "Três regras. Primeiro: o 3D é decorativo por contrato — nenhuma informação existe só nele, então a degradação pra um gradiente estático não perde nada; eu detecto WebGL antes de importar o three, com import dinâmico, e trato render por software como 'sem GPU', porque já vi cliente rodando via RDP. Segundo: orçamento — pixel ratio capado, sem sombras, draw calls medidos, porque o frame é dividido com a UI. Terceiro: contraste e foco — canvas com pointer-events none atrás de tudo, e a legibilidade da UI garantida por scrim, medida, não estimada."
+  },
+  {
+   "id": "46-3d-web/08-3d-integrado-a-ui.md#2",
+   "trilha": "46-3d-web",
+   "modulo": "46-3d-web/08-3d-integrado-a-ui.md",
+   "tituloModulo": "08 — 3D Integrado à UI",
+   "pergunta": "Não existe `onClick` num mesh. Como você detecta clique num objeto 3D?",
+   "resposta": "Com raycasting, que é a técnica clássica de lançar um raio da câmera pela posição do cursor e testar interseção com a geometria — o `Raycaster` do three faz isso. O pulo do gato é a conversão de coordenada: o clique vem em pixels, mas o raio precisa do ponto em NDC, de −1 a 1, e eu calculo isso com o `getBoundingClientRect` do canvas, não com `innerWidth` — senão erra quando o canvas não é tela cheia, que é o caso de um fundo atrás de UI. O `intersectObjects` me devolve os alvos ordenados por distância, e eu pego o primeiro. Se fosse conteúdo CSS3D em vez de WebGL, nem precisaria disso: é DOM, o click nativo já funciona."
   },
   {
    "id": "50-backend/01-express-estrutura-middlewares.md#1",
