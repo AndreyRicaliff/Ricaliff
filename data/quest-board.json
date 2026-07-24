@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-24T20:45:33.497Z",
+  "geradoEm": "2026-07-24T20:47:57.274Z",
   "projetos": [
     {
       "id": "PULSAR-RH",
@@ -16,7 +16,7 @@
         "HTML+JS",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-20T17:18:36-03:00",
+      "ultimaAtividade": "2026-07-24T17:47:49-03:00",
       "sideQuests": [
         {
           "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
@@ -593,6 +593,15 @@
           "titulo": "05 — Modelos clássicos antes do deep learning",
           "trilha": "35-ia-ml",
           "moduloPath": "/trilha/35-ia-ml/05-modelos-classicos.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "35-ia-ml/06-redes-neurais-deep-learning.md",
+          "titulo": "06 — Redes neurais e deep learning",
+          "trilha": "35-ia-ml",
+          "moduloPath": "/trilha/35-ia-ml/06-redes-neurais-deep-learning.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -1719,7 +1728,7 @@
         "localStorage",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-24T17:42:57-03:00",
+      "ultimaAtividade": "2026-07-24T17:45:33-03:00",
       "sideQuests": [
         {
           "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
