@@ -28,6 +28,15 @@
   --purple:var(--primary);--phi:var(--secondary);--phlo:var(--tertiary);
   --green:var(--accent);--red:var(--danger);--yellow:var(--warn);--white:var(--text);
 }
+/* tema "persona" — o rice P3 original (restaurado do commit c0620ef) */
+:root[data-theme="persona"]{
+  --bg:#05070F;--surface:#0B1B33;--surface2:#12294D;--surface3:#1C3A5E;
+  --border:#1C3A5E;--primary:#0099FF;--secondary:#33C6FF;--tertiary:#8CEBFF;
+  --accent:#22D07A;--danger:#FF4D5E;--warn:#FFC24B;--cyan:#5DE0FF;
+  --text:#EAF6FF;--muted:#5C82B8;--muted2:#8AAED4;
+  --p3-pink:#FF3D7F;--ring:#1CC9D9;
+  --wipe-1:#0D1A3A;--wipe-2:#1A6AFF;--wipe-3:#7DD4FC;
+}
 /* tema "pro" — espelho do toggle Win+T do rice (theme-toggle.sh + ThemeMode.qml) */
 :root[data-theme="pro"]{
   --primary:#7C8494;--secondary:#9AA5B3;--tertiary:#C6CDD6;--cyan:#AEB9C6;
@@ -1223,6 +1232,30 @@ html[data-static] #pomo-pulse{animation:none!important}
 .btn-primary:hover{box-shadow:0 4px 20px color-mix(in srgb,var(--accent) 45%,transparent)}
 /* colapso estático explícito também pro craft */
 html[data-static] .trilha-card,html[data-static] .fm-card{transition:none}
+/* ── MENU RETRÁTIL (fórmula dos apps AG: rail de ícones, .28s, persistido) ── */
+.sidebar{transition:width .28s cubic-bezier(.22,1,.36,1)}
+.main{transition:margin-left .28s cubic-bezier(.22,1,.36,1)}
+.sb-collapse{position:absolute;top:12px;right:-12px;width:24px;height:24px;border-radius:50%;
+  background:var(--surface2);border:1px solid var(--border);color:var(--muted);cursor:pointer;
+  display:grid;place-items:center;z-index:60;transition:color .15s,transform .28s cubic-bezier(.22,1,.36,1)}
+.sb-collapse:hover{color:var(--secondary);border-color:var(--primary)}
+body.sb-mini .sb-collapse{transform:rotate(180deg)}
+body.sb-mini .sidebar{width:68px}
+body.sb-mini .main{margin-left:68px}
+body.sb-mini .sb-brand-txt,body.sb-mini .nav-item span{display:none}
+body.sb-mini .nav-item{justify-content:center;gap:0;font-size:0;padding-left:0;padding-right:0}
+body.sb-mini .nav-item svg{width:18px;height:18px}
+body.sb-mini .sb-brand{justify-content:center}
+html[data-static] .sidebar,html[data-static] .main,html[data-static] .sb-collapse{transition:none}
+/* ── rede de segurança (padrao-atrativo §9): loop decorativo esquecido morre; ──
+   spinners/estados vivos declarados sobrevivem */
+*,*::before,*::after{animation-iteration-count:1}
+[class*="spin"],[class*="loading"],.skel,#pomo-pulse,.sb-wall{animation-iteration-count:infinite!important}
+/* skeleton de carregamento (5 estados: loading nunca é texto solto) */
+.skel{border-radius:8px;background:linear-gradient(100deg,var(--surface2) 40%,var(--surface3) 50%,var(--surface2) 60%);
+  background-size:200% 100%;animation:skelShimmer 1.2s linear infinite}
+@keyframes skelShimmer{to{background-position:-200% 0}}
+.skel-line{height:14px;margin:10px 0}
 </style>
 </head>
 <body>
@@ -1235,9 +1268,12 @@ html[data-static] .trilha-card,html[data-static] .fm-card{transition:none}
 
 <!-- SIDEBAR -->
 <nav class="sidebar" id="sidebar">
+  <button class="sb-collapse" id="sb-collapse" onclick="sbToggle()" title="Recolher menu" aria-label="Recolher menu">
+    <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
   <div class="sb-brand">
     <div class="sb-mark" onclick="p3JackPoke()" title="Jack Frost — hee-ho!"><img id="sb-mark-img" src="assets/jackfrost.png" alt="Jack Frost"></div>
-    <div><div class="sb-name">Ricaliff</div><div class="sb-sub">Dev & Estudos</div></div>
+    <div class="sb-brand-txt"><div class="sb-name">Ricaliff</div><div class="sb-sub">Dev & Estudos</div></div>
   </div>
   <div class="sb-nav">
     <button class="nav-item active" onclick="go('dash')" id="nav-dash">

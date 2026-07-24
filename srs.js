@@ -144,7 +144,7 @@
 
   window.renderRevisar = async function () {
     const body = document.getElementById('revisar-body'); if (!body) return;
-    body.innerHTML = '<div style="color:var(--muted);text-align:center;padding:40px">Carregando cards…</div>';
+    body.innerHTML = '<div class="skel skel-line" style="width:60%"></div><div class="skel skel-line" style="width:90%"></div><div class="skel skel-line" style="width:75%"></div>';
     const cards = await loadCards();
     if (!cards.length) {
       body.innerHTML = '<div class="empty"><div class="empty-t">Cards indisponíveis</div><div class="empty-s">Verifique data/recall-cards.json (bin/build-cards.sh gera).</div></div>';

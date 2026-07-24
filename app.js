@@ -360,19 +360,26 @@ document.addEventListener('DOMContentLoaded', () => {
   if (el) el.textContent = p3SfxEnabled() ? 'on' : 'off';
 });
 
-// ── P3 THEME (persona ↔ pro — espelho do ThemeMode.qml / Win+T do rice) ──
+// ── THEME (ciclo gojo → persona → pro; gojo = default do :root) ──
 const P3_THEME_KEY = 'p3_theme';
-function p3Theme() { return localStorage.getItem(P3_THEME_KEY) === 'pro' ? 'pro' : 'persona'; }
+const THEMES = ['gojo', 'persona', 'pro'];
+function p3Theme() {
+  const t = localStorage.getItem(P3_THEME_KEY);
+  return THEMES.includes(t) ? t : 'gojo';
+}
 function p3ThemeApply() {
   const mode = p3Theme();
-  document.documentElement.dataset.theme = mode;
+  // gojo é o :root default — sem data-theme (o fx.js relê os tokens e recolore o void)
+  if (mode === 'gojo') delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = mode;
   const img = document.getElementById('sb-mark-img');
   if (img) img.src = mode === 'pro' ? 'assets/start_neutral.png' : 'assets/jackfrost.png';
   const st = document.getElementById('p3-theme-state');
   if (st) st.textContent = mode;
 }
 function p3ThemeUiToggle() {
-  localStorage.setItem(P3_THEME_KEY, p3Theme() === 'pro' ? 'persona' : 'pro');
+  const next = THEMES[(THEMES.indexOf(p3Theme()) + 1) % THEMES.length];
+  localStorage.setItem(P3_THEME_KEY, next);
   p3ThemeApply();
   p3Sfx();
 }
@@ -391,6 +398,35 @@ document.addEventListener('keydown', e => {
   p3ThemeUiToggle();
 });
 document.addEventListener('DOMContentLoaded', p3ThemeApply);
+
+// ── SIDEBAR RETRÁTIL (rail de ícones, persistido — fórmula dos apps AG) ──
+function sbToggle() {
+  const mini = document.body.classList.toggle('sb-mini');
+  localStorage.setItem('agh_sb_mini', mini ? '1' : '0');
+  p3Sfx();
+}
+document.addEventListener('DOMContentLoaded', () => {
+  if (localStorage.getItem('agh_sb_mini') === '1') document.body.classList.add('sb-mini');
+});
+
+// ── NÚMEROS VIVOS (padrao-atrativo §3: count-up 620ms ease-out cúbico, rAF) ──
+function countUp(el, alvo, sufixo = '') {
+  const t0 = performance.now(), dur = 620;
+  function frame(now) {
+    const t = Math.min(1, (now - t0) / dur);
+    const k = 1 - Math.pow(1 - t, 3);
+    el.textContent = Math.round(alvo * k) + sufixo;
+    if (t < 1) requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+function animateNums(root) {
+  (root || document).querySelectorAll('[data-count]').forEach(el => {
+    const alvo = parseInt(el.dataset.count, 10);
+    if (Number.isFinite(alvo)) countUp(el, alvo, el.dataset.suffix || '');
+    delete el.dataset.count; // anima 1× — repouso é parado (regra v3)
+  });
+}
 
 // ── NAV ───────────────────────────────────────────────────────────
 let curView = 'dash';
@@ -515,7 +551,7 @@ async function renderFormacaoCard() {
           <div class="fm-t">FORMAÇÃO — ${formadas}/${data.trilhas.length} disciplinas</div>
           <div class="fm-s">${modDone}/${modTotal} módulos · ~${Math.round(horasCursadas)}h de ${horasTotal}h estimadas</div>
         </div>
-        <div class="fm-pct">${pctGeral}%</div>
+        <div class="fm-pct" data-count="${pctGeral}" data-suffix="%">0%</div>
       </div>
       <div class="fm-bar"><div class="fm-fill" style="width:${pctGeral}%"></div></div>
       ${emCurso ? `<div class="fm-cta" onclick="event.stopPropagation();go('trilha');setTimeout(()=>renderTrilhaModulos('${emCurso.id}'),480)">
@@ -523,6 +559,7 @@ async function renderFormacaoCard() {
       : `<div class="fm-cta" onclick="event.stopPropagation();go('trilha');setTimeout(()=>renderTrilhaModulos('05-raciocinio'),480)">
         ${icon('book-open', 13)} Começar por: <b>Raciocínio de Engenheiro</b> (30h, a espinha das outras)</div>`}
     </div>`;
+  animateNums(el);
 }
 
 function renderDash() {
@@ -549,11 +586,12 @@ function renderDash() {
   const todayEv = evs.filter(e=>e.date===t).length;
 
   document.getElementById('dash-qs').innerHTML = `
-    <div class="qs"><div class="qs-val" style="color:var(--phi)">${pending}</div><div class="qs-lbl">pendentes</div></div>
-    <div class="qs"><div class="qs-val" style="color:var(--green)">${done}</div><div class="qs-lbl">concluídas</div></div>
-    <div class="qs"><div class="qs-val" style="color:var(--cyan)">${activeP}</div><div class="qs-lbl">projetos ativos</div></div>
-    <div class="qs"><div class="qs-val" style="color:var(--yellow)">${todayEv}</div><div class="qs-lbl">eventos hoje</div></div>
+    <div class="qs"><div class="qs-val" style="color:var(--phi)" data-count="${pending}">0</div><div class="qs-lbl">pendentes</div></div>
+    <div class="qs"><div class="qs-val" style="color:var(--green)" data-count="${done}">0</div><div class="qs-lbl">concluídas</div></div>
+    <div class="qs"><div class="qs-val" style="color:var(--cyan)" data-count="${activeP}">0</div><div class="qs-lbl">projetos ativos</div></div>
+    <div class="qs"><div class="qs-val" style="color:var(--yellow)" data-count="${todayEv}">0</div><div class="qs-lbl">eventos hoje</div></div>
   `;
+  animateNums(document.getElementById('dash-qs'));
 
   // focus: sprint da semana (Scrum solo) quando existe; senão tasks legadas
   const sp = (typeof sprintFocusItems === 'function') ? sprintFocusItems() : null;
@@ -2102,7 +2140,7 @@ async function renderSyllabus(trilhaId) {
       </div>
     </div>`;
   const body = document.getElementById('trilha-body');
-  body.innerHTML = '<div style="color:var(--muted);text-align:center;padding:40px">Carregando…</div>';
+  body.innerHTML = '<div class="skel skel-line" style="width:60%"></div><div class="skel skel-line" style="width:90%"></div><div class="skel skel-line" style="width:75%"></div>';
   try {
     const r = await fetch(`/trilha/${trilhaId}/SYLLABUS.md?v=` + Date.now());
     if (!r.ok) throw new Error(r.status);
@@ -2205,7 +2243,7 @@ async function renderTrilhaModulo(moduloId, trilhaId) {
   updateCheckpointBtn(moduloId);
 
   document.getElementById('trilha-body').innerHTML =
-    '<div id="trilha-md-content"><div style="color:var(--muted);text-align:center;padding:40px">Carregando...</div></div>';
+    '<div id="trilha-md-content"><div class="skel skel-line" style="width:60%"></div><div class="skel skel-line" style="width:90%"></div><div class="skel skel-line" style="width:75%"></div></div>';
 
   try {
     const r = await fetch(modulo.caminho + '?v=' + Date.now());
