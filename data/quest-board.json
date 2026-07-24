@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-22T21:06:49.153Z",
+  "geradoEm": "2026-07-24T20:15:31.320Z",
   "projetos": [
     {
       "id": "PULSAR-RH",
@@ -686,6 +686,15 @@
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
+        },
+        {
+          "id": "FORMATO-V2.md",
+          "titulo": "Contrato do módulo v2.1 — profundidade com lastro científico",
+          "trilha": "FORMATO-V2.md",
+          "moduloPath": "/trilha/FORMATO-V2.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
         }
       ],
       "bounties": [
@@ -736,28 +745,10 @@
           "concluida": false
         },
         {
-          "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
-          "titulo": "01 — Tipos, Memória, Valor vs Referência",
-          "trilha": "00-fundamentos",
-          "moduloPath": "/trilha/00-fundamentos/01-tipos-memoria-valor-referencia.md",
-          "xpBase": 40,
-          "xpBonus": 40,
-          "concluida": false
-        },
-        {
           "id": "00-fundamentos/04-sql-vs-nosql-quando-cada.md",
           "titulo": "04 — SQL vs NoSQL: Quando Usar Cada",
           "trilha": "00-fundamentos",
           "moduloPath": "/trilha/00-fundamentos/04-sql-vs-nosql-quando-cada.md",
-          "xpBase": 40,
-          "xpBonus": 40,
-          "concluida": false
-        },
-        {
-          "id": "00-fundamentos/06-git-fluxo-rebase-merge.md",
-          "titulo": "06 — Git: Fluxo, Rebase, Merge e Ferramentas",
-          "trilha": "00-fundamentos",
-          "moduloPath": "/trilha/00-fundamentos/06-git-fluxo-rebase-merge.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -1049,6 +1040,15 @@
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
+        },
+        {
+          "id": "FORMATO-V2.md",
+          "titulo": "Contrato do módulo v2.1 — profundidade com lastro científico",
+          "trilha": "FORMATO-V2.md",
+          "moduloPath": "/trilha/FORMATO-V2.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
         }
       ],
       "bounties": [
@@ -1092,15 +1092,6 @@
       ],
       "ultimaAtividade": "2026-06-01T17:16:49-03:00",
       "sideQuests": [
-        {
-          "id": "00-fundamentos/03-http-rest-status-codes.md",
-          "titulo": "03 — HTTP, REST e Status Codes",
-          "trilha": "00-fundamentos",
-          "moduloPath": "/trilha/00-fundamentos/03-http-rest-status-codes.md",
-          "xpBase": 40,
-          "xpBonus": 40,
-          "concluida": false
-        },
         {
           "id": "10-codigo-limpo/02-early-return-guard-clauses.md",
           "titulo": "02 — Early Return e Guard Clauses",
@@ -1710,7 +1701,7 @@
         "localStorage",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-22T18:05:52-03:00",
+      "ultimaAtividade": "2026-07-24T17:13:09-03:00",
       "sideQuests": [
         {
           "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
