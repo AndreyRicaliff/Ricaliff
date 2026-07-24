@@ -1,33 +1,45 @@
 # 05 — Secrets Management e Rotação
 
+> **Formato expandido (v2.1):** este módulo tem §Base (o fundamento com lastro científico),
+> §Estruturação (como o conhecimento se organiza) e §Metodologia (o passo-a-passo replicável)
+> — além da prática, P/R e checkpoint. Segue o padrão do módulo `05-raciocinio/00-metodologia-da-ia`.
+
 ## O que é
 
-**Secret** é qualquer valor que dá acesso a um recurso: API key, token de serviço, connection string com credencial, chave privada, senha de banco, OAuth client secret. O princípio é simples: secret nunca vai para repositório, log, screenshot ou qualquer lugar com acesso mais amplo do que o serviço que usa o secret.
-
-O caso que define a gravidade: **Uber (2022)**. Attacker encontrou credenciais hardcoded em repositório interno → acessou AWS, GCP, HackerOne, repositórios de código, Slack, ferramentas internas. Compromisso total da infraestrutura. O problema não foi ausência de 2FA — foi secret em lugar errado.
+**Secret** é qualquer valor que concede acesso a um recurso: API key, token de serviço, connection string com credencial, chave privada, senha de banco, OAuth client secret. A regra é simples de enunciar e difícil de manter: **o secret nunca vai para um lugar com acesso mais amplo do que o serviço que ele protege** — não para o repositório, o log, o screenshot, o bundle do frontend. Este módulo mostra por que essa regra é uma consequência direta de um princípio de 1883, e o que fazer quando ela é violada.
 
 ---
 
-### A hierarquia de onde secrets moram
+## § BASE — o fundamento
 
-```
-Pior ←————————————————————————————→ Melhor
+**Por que existe "secret" separado do código: Kerckhoffs (1883).** Auguste Kerckhoffs, em *La Cryptographie Militaire* (Journal des sciences militaires, 1883), formulou o princípio que sustenta toda a criptografia moderna: **um sistema deve permanecer seguro mesmo que tudo sobre ele, exceto a chave, seja de conhecimento público.** A segurança mora na **chave**, não no segredo do mecanismo. Saltzer & Schroeder (1975) generalizaram isso no princípio de **open design** (módulo 01): não confie no segredo da arquitetura. A consequência prática é exatamente a disciplina de secrets: **o código pode ser público** (repositório, bundle, review) porque a segurança não depende dele — ela depende do secret, que por isso precisa ser rigorosamente separado do que é público. "Segurança por obscuridade" (esconder o algoritmo) é o antônimo direto; secrets management é Kerckhoffs aplicado à engenharia do dia a dia.
 
-Hardcoded    .env      .env         Variável    Vault /
-em código    commitado ignorado     de env      Secret Manager
-             no git    no git       no servidor  gerenciado
-```
+**Um secret é um segredo de alta entropia.** Ele só funciona enquanto for **inadivinhável**: sua força é medida em bits de entropia, `H = log₂(N)`, onde N é o espaço de valores possíveis. Uma chave de 256 bits tem 2²⁵⁶ possibilidades — inatacável por força bruta. Isso importa para o design: secret **não é senha de humano** (que precisa ser memorizável e por isso tem baixa entropia); secret é gerado por CSPRNG e tratado como material criptográfico. E, ao contrário de dado comum, um secret **não tem valor de negócio** — só de acesso — então não há razão para ele estar em lugar nenhum além de onde é consumido.
 
-**O mínimo aceitável:** `.env` local ignorado pelo `.gitignore`, com `.env.example` documentando as variáveis sem valores.
+**Least privilege define a gravidade de cada secret: o blast radius.** Nem todo secret é igual. O princípio de **least privilege** (Saltzer & Schroeder) diz que cada credencial deve conceder o mínimo — e o "raio de explosão" (*blast radius*) de um vazamento é proporcional ao privilégio da chave vazada. A `ANON_KEY` do Supabase, sujeita a RLS, tem raio pequeno; a `SERVICE_ROLE_KEY`, que **bypassa RLS por completo**, tem raio máximo: quem a tem lê, escreve e apaga qualquer dado de qualquer tenant, via HTTPS, de qualquer lugar do mundo. É por isso que ela é **mais perigosa que a senha do banco** — a senha exige acesso de rede ao Postgres; a service key funciona por HTTPS de qualquer IP. Classificar secrets por blast radius é o que decide a urgência de contenção.
 
-**Padrão AG produção:** arquivo `.env` em `/opt/<projeto>/.env` no servidor, permissão `600`, owner `root`. Não commitado, não logado, não em cloud storage público.
+**Rotação é gestão de risco, não paranoia: o cryptoperiod.** A premissa correta é que todo secret **será** exposto um dia — a única variável é *quando* e por *quanto tempo* ele fica válido depois. O NIST, em **SP 800-57 Part 1 (Recommendation for Key Management)**, formaliza o conceito de **cryptoperiod**: o intervalo em que uma chave permanece autorizada. Rotação periódica **encurta a janela de exposição** de um vazamento silencioso — se a chave é trocada a cada 6 meses, um leak não detectado tem no máximo 6 meses de vida. Rotação não previne o vazamento; ela **limita o dano** de um vazamento que você ainda não sabe que aconteceu.
+
+**O caso real.** Em setembro de 2022, um atacante comprometeu a Uber: após obter acesso inicial, encontrou **credenciais hardcoded em um script interno** e as usou para pivotar para AWS, GCP, painéis internos e ferramentas de segurança — comprometimento amplo da infraestrutura. Segundo a própria comunicação da Uber sobre o incidente, o problema-chave não foi ausência de MFA, e sim **secret no lugar errado** dando movimento lateral. É o blast radius em ação: uma credencial mal-guardada virou acesso a tudo.
 
 ---
 
-### Estrutura obrigatória em todo projeto AG
+## § ESTRUTURAÇÃO — como esse conhecimento se organiza
+
+A hierarquia de onde secrets moram, do pior ao melhor:
+
+```
+Pior ←──────────────────────────────────────────────────────→ Melhor
+Hardcoded      .env commitado    .env ignorado    var de env      Vault /
+no código      no git            no git           no servidor     Secret Manager
+(blast total)  (histórico git    (mínimo           (padrão AG      (rotação
+               = permanente)      aceitável)        produção)       automática, TTL)
+```
+
+**Mínimo aceitável:** `.env` local ignorado pelo `.gitignore`, com `.env.example` documentando as variáveis **sem valores**. **Padrão AG produção:** `.env` em `/opt/<projeto>/.env` no servidor, permissão `600`, owner `root`. Não commitado, não logado, não em storage público.
 
 ```bash
-# .gitignore — deve ter ANTES do primeiro commit
+# .gitignore — ANTES do primeiro commit
 .env
 .env.local
 .env.*.local
@@ -37,208 +49,101 @@ em código    commitado ignorado     de env      Secret Manager
 ```
 
 ```bash
-# .env.example — commitado, sem valores reais
+# .env.example — commitado, SEM valores reais
 DATABASE_URL=postgresql://user:password@host:5432/dbname
-SUPABASE_URL=https://xxxx.supabase.co
 SUPABASE_ANON_KEY=eyJ...
-SUPABASE_SERVICE_ROLE_KEY=eyJ...  # NUNCA usar no frontend
-GOOGLE_CLIENT_ID=xxx.apps.googleusercontent.com
+SUPABASE_SERVICE_ROLE_KEY=eyJ...   # blast radius MÁXIMO — nunca no frontend
 GOOGLE_CLIENT_SECRET=GOCSPX-...
-REDIS_URL=redis://localhost:6379
 ```
 
----
+**Rotação por blast radius** (cryptoperiod menor para chave mais perigosa):
 
-### Caso real (cliente anonimizado) — SERVICE_ROLE_KEY
-
-Num projeto de cliente, a retrospectiva registrou: **`SERVICE_ROLE_KEY` exposta** durante o desenvolvimento.
-
-`SERVICE_ROLE_KEY` do Supabase bypassa RLS completamente. Quem tem essa chave tem acesso de superusuário ao banco — pode ler, escrever e deletar qualquer dado de qualquer tenant sem nenhuma política de segurança.
-
-**O que o SERVICE_ROLE_KEY não deve ser:**
-- Incluído no bundle do frontend
-- Commitado em repositório (mesmo privado)
-- Passado em variável de ambiente de cliente
-- Logado em qualquer sistema
-
-**Por que é pior que uma senha de banco:** a senha de banco exige acesso de rede ao servidor Postgres. A SERVICE_ROLE_KEY funciona via HTTPS de qualquer lugar do mundo.
-
-**Plano de contenção quando exposto:**
-
-```bash
-# 1. IMEDIATAMENTE: revogar a chave atual no Supabase
-# Dashboard → Settings → API → Service Role Key → Regenerate
-# A chave antiga para de funcionar instantaneamente
-
-# 2. Verificar se foi usada de forma maliciosa
-# Supabase Dashboard → Logs → API logs
-# Buscar por requests com Authorization: Bearer <chave_antiga>
-# Verificar IPs e timestamps suspeitos
-
-# 3. Atualizar o .env no servidor com a nova chave
-ssh root@<servidor>
-nano /opt/cliente-oficina-backend/.env
-# Substituir SERVICE_ROLE_KEY pelo novo valor
-
-# 4. Reiniciar a aplicação
-cd /opt/cliente-oficina-backend
-docker compose restart api
-
-# 5. Verificar se estava em outros lugares
-git log --all -p | grep -i "service_role\|SUPABASE_SERVICE"
-# Se aparecer em commit histórico, o repositório está comprometido
-# Ação: git filter-repo para limpar histórico + force push (somente após revogar)
-```
-
----
-
-### Detecção de leak antes do commit
-
-```bash
-# gitleaks — scanner de secrets em repositório git
-# Instalação:
-brew install gitleaks  # macOS
-# ou: https://github.com/gitleaks/gitleaks/releases
-
-# Escanear repositório atual (histórico completo):
-gitleaks detect --source . --verbose
-
-# Escanear só arquivos não commitados (pre-commit):
-gitleaks protect --staged
-
-# Adicionar como pre-commit hook:
-# .git/hooks/pre-commit:
-#!/bin/sh
-gitleaks protect --staged --redact
-if [ $? -ne 0 ]; then
-  echo "BLOQUEADO: gitleaks detectou possível secret. Verifique antes de commitar."
-  exit 1
-fi
-
-# TruffleHog — alternativa com maior cobertura:
-pip install truffleHog
-trufflehog git file://. --only-verified
-```
-
-**Atenção:** gitleaks e trufflehog têm falsos positivos. Examinar cada hit antes de agir.
-
----
-
-### Rotação periódica
-
-| Secret | Frequência AG | Quando rotacionar imediatamente |
+| Secret | Frequência AG | Rotacionar já quando |
 |---|---|---|
-| Google OAuth client secret | 6 meses | Suspeita de comprometimento; ex-colaborador com acesso |
-| Supabase SERVICE_ROLE_KEY | 6 meses | Qualquer exposição confirmada ou suspeita |
-| Supabase ANON_KEY | 12 meses | Exposição em repositório público |
-| Redis password | 6 meses | Mudança de colaboradores |
-| Tokens de bot (agata@) | 6 meses | Qualquer suspeita |
-| Chaves SSH de deploy | Anual | Compromisso de máquina |
+| Supabase `SERVICE_ROLE_KEY` | 6 meses | qualquer exposição confirmada ou suspeita |
+| Google OAuth client secret | 6 meses | suspeita; ex-colaborador com acesso |
+| Redis password / tokens de bot | 6 meses | mudança de colaboradores |
+| Supabase `ANON_KEY` | 12 meses | exposição em repositório público |
+| Chaves SSH de deploy | anual | comprometimento de máquina |
 
-**Fluxo de rotação sem downtime:**
+**Fluxo de rotação sem downtime:** gerar nova no provider → adicionar no servidor → app aceita ambas (dual-write, se a arquitetura permitir) → deploy com a nova como primária → smoke test → revogar a antiga → deploy final limpo. Para app simples sem dual-write: aceitar janela de 1-2 min na troca.
 
-```
-1. Gerar nova chave no provider (Supabase, Google, etc.)
-2. Adicionar nova chave no servidor: .env com NOVO_SECRET=<novo>
-3. Atualizar aplicação para aceitar ambas (dual-write period) — se arquitetura permitir
-4. Deploy com nova chave como primária
-5. Verificar que está funcionando (smoke test)
-6. Revogar chave antiga no provider
-7. Remover NOVO_SECRET=<novo>; renomear para SECRET=<novo>
-8. Deploy final limpo
-```
-
-Para apps simples sem dual-write: aceitar janela de downtime de 1-2 minutos durante a troca.
-
----
-
-### Vault e gerenciadores de secrets para projetos maiores
-
-A AG não usa hoje, mas o vocabulário importa em entrevista:
+**Gerenciadores (vocabulário de entrevista — a AG hoje usa `.env` no servidor):**
 
 | Ferramenta | Quando faz sentido |
 |---|---|
-| **HashiCorp Vault** | Time com >5 devs; rotação automática; dynamic secrets (Vault gera credencial de banco por demanda com TTL) |
-| **Doppler** | SaaS, UI amigável, sync automático para Vercel/Railway/Heroku; começa gratuito |
-| **AWS Secrets Manager** | Stack AWS; rotação automática de RDS passwords nativa |
-| **Vercel/Railway Env Vars** | Apps hospedados nesses providers — padrão já embutido |
-| **GitHub Secrets** | CI/CD pipelines apenas — não disponível em runtime da app |
-| **.env no servidor** | AG atual — ok para times pequenos com acesso SSH restrito |
+| HashiCorp Vault | time >5 devs; dynamic secrets com TTL |
+| Doppler / Infisical | SaaS, sync automático p/ Vercel/Railway; começa grátis |
+| AWS Secrets Manager | stack AWS; rotação nativa de RDS |
+| Vercel/Railway Env Vars | apps hospedados lá — já embutido |
+| GitHub Secrets | só CI/CD — não disponível em runtime |
 
 ---
 
-## Por que cai em entrevista
+## § METODOLOGIA — o passo-a-passo replicável
 
-Pergunta frequente em pleno/sênior e em entrevistas de empresas que já levaram breach. A pergunta não é "o que é .env" — é "me descreve como você gerenciaria secrets num projeto com 3 ambientes (dev/staging/prod) e 2 devs".
+**1. INVENTARIAR os secrets e seu blast radius.** Liste cada credencial do projeto e classifique o raio: bypassa RLS/tem acesso admin (máximo) → sessão/leitura restrita (menor). A urgência de tudo o mais deriva daqui.
+
+**2. GARANTIR a separação (Kerckhoffs aplicado).** `.gitignore` com `.env*` antes do primeiro commit; `.env.example` sem valores; secret só onde é consumido, nunca no bundle/log/screenshot.
+
+**3. DETECTAR leak antes do commit.** `gitleaks protect --staged` como pre-commit hook; `gitleaks detect` para varrer o histórico. Examinar cada hit (há falso-positivo).
+
+**4. Se vazou — CONTER na ordem certa.** **Revogar primeiro** (a chave antiga morre na hora), *depois* auditar uso, *depois* limpar histórico. Inverter a ordem (limpar antes de revogar) deixa a chave viva enquanto você trabalha.
+
+**5. ROTACIONAR periodicamente (cryptoperiod).** Frequência por blast radius; a chave de raio máximo tem o menor cryptoperiod.
+
+**Anti-padrões:**
+- **Confiar no repo privado:** privado hoje pode virar público, ou o histórico vaza. Secret nunca entra no git, privado ou não.
+- **Limpar o histórico antes de revogar:** enquanto você roda `git filter-repo`, a chave continua válida. Revogue primeiro, sempre.
+- **`SERVICE_ROLE_KEY` no frontend:** blast radius máximo exposto no bundle público. É o erro mais caro da lista.
+- **"Rotação é paranoia":** rotação não previne o leak — limita a janela do leak que você ainda não descobriu.
 
 ---
 
-## Trade-offs
-
-| Abordagem | Vantagem | Custo |
-|---|---|---|
-| `.env` local + `.gitignore` | Simples, funciona | Sem histórico; não escala para time |
-| Doppler / Infisical | Sync automático, auditoria, rotação | Outro ponto de falha; custo em escala |
-| Vault | Dynamic secrets, zero-trust | Operacionalmente complexo; infra extra |
-| Secrets no CI/CD (GitHub/Vercel) | Zero fricção para deploy | Não disponível para código de runtime; separação de ambientes manual |
-| Hardcoded (nunca) | Nenhuma | Compromisso imediato |
-
----
-
-## Exercício aplicado (projeto AG real)
+## Passo-a-passo aplicado (faça agora, ~30min)
 
 ```bash
-# 1. Verificar .gitignore de todos os projetos AG
-for project in ~/projetos/*/; do
-  echo "=== $project ==="
-  if [ -f "$project/.gitignore" ]; then
-    grep -E "\.env|secret|credential|key" "$project/.gitignore"
-  else
-    echo "SEM .gitignore!"
-  fi
-done
+# 1. .gitignore de todos os projetos AG cobre secrets?
+for p in ~/projetos/*/; do echo "=== $p ==="; \
+  [ -f "$p/.gitignore" ] && grep -E "\.env|secret|credential|key" "$p/.gitignore" || echo "SEM .gitignore!"; done
 
-# 2. Verificar se algum .env foi commitado por engano
-for project in ~/projetos/*/; do
-  cd "$project" 2>/dev/null || continue
-  if git rev-parse --git-dir > /dev/null 2>&1; then
-    result=$(git log --all --full-history -- ".env" "*.env" 2>/dev/null)
-    if [ -n "$result" ]; then
-      echo "ALERTA: $project tem .env no histórico git!"
-    fi
-  fi
-done
+# 2. Algum .env foi commitado por engano (histórico)?
+for p in ~/projetos/*/; do cd "$p" 2>/dev/null || continue; \
+  git rev-parse --git-dir >/dev/null 2>&1 && \
+  [ -n "$(git log --all --full-history -- '.env' '*.env' 2>/dev/null)" ] && echo "ALERTA: $p tem .env no histórico!"; done
 
-# 3. Rodar gitleaks em pelo menos um projeto AG
-cd ~/projetos/meet-hub
-gitleaks detect --source . --verbose 2>&1 | head -50
+# 3. gitleaks em pelo menos um projeto
+cd ~/projetos/meet-hub && gitleaks detect --source . --verbose 2>&1 | head -50
 
-# 4. Verificar SERVICE_ROLE_KEY do OFICINA — está onde?
+# 4. Onde está a SERVICE_ROLE_KEY do OFICINA? (blast radius máximo)
 cd ~/projetos/cliente-oficina-backend
-grep -rn "SERVICE_ROLE\|service_role" . \
-  --exclude-dir=node_modules --exclude-dir=.git \
+grep -rn "SERVICE_ROLE\|service_role" . --exclude-dir=node_modules --exclude-dir=.git \
   --include="*.ts" --include="*.js" --include="*.env*" --include="*.json"
+```
+
+**Contenção quando um secret vaza (a ordem é lei):**
+
+```bash
+# 1º REVOGAR — Supabase Dashboard → Settings → API → Service Role Key → Regenerate (antiga morre na hora)
+# 2º AUDITAR — Dashboard → Logs → API: requests com a chave antiga? IPs/timestamps suspeitos?
+# 3º ATUALIZAR — ssh root@<servidor>; editar /opt/<projeto>/.env; docker compose restart
+# 4º LIMPAR HISTÓRICO (só depois de revogar) — se apareceu em commit:
+git log --all -p | grep -i "service_role\|SUPABASE_SERVICE"   # confirmar
+# git filter-repo para expurgar + force push (repo já comprometido — a revogação é o que protege)
 ```
 
 ```markdown
 ## DECISIONS.md — 2026-06-XX — [security] secrets audit
-
-**Projetos auditados:** [listar]
+**Inventário por blast radius:** [SERVICE_ROLE_KEY (máx), OAuth secret, ANON_KEY (mín)...]
 **Resultado gitleaks:** [achados ou "nenhum secret detectado"]
 **SERVICE_ROLE_KEY OFICINA:** [status — exposto/contido/rotacionado]
-**Projetos sem .gitignore adequado:** [listar]
-**Ações imediatas:**
-1. Revogar e rotacionar SERVICE_ROLE_KEY do OFICINA se necessário
-2. Adicionar gitleaks como pre-commit hook em projetos AG
-3. Criar .env.example em projetos que não têm
-
-**Rotação programada:**
-- [listar próximas datas de rotação dos secrets críticos]
+**Ações:** revogar+rotacionar se necessário; gitleaks como pre-commit; .env.example onde falta
+**Cryptoperiod programado:** [próximas datas por secret crítico]
 ```
 
----
+## Por que cai em entrevista
 
-## Pergunta de entrevista esperada + resposta exemplar
+Frequente em pleno/sênior e em empresas que já levaram breach. A pergunta não é "o que é `.env`" — é "como você gerenciaria secrets num projeto com 3 ambientes (dev/staging/prod) e 2 devs, e o que faz se um vazar".
 
 > **P:** "Como você gerencia secrets em projetos Node.js? E o que faz se descobrir que um secret vazou no repositório?"
 >
@@ -250,22 +155,26 @@ grep -rn "SERVICE_ROLE\|service_role" . \
 > **R (30s):**
 > "É a chave de superusuário do Supabase — bypassa todas as políticas de RLS. Quem tem a chave pode ler e escrever qualquer dado de qualquer tenant sem restrição, via HTTPS de qualquer IP. É mais perigosa que a senha do banco porque não precisa de acesso de rede ao servidor. Deve ficar só no backend, nunca no bundle do frontend, e ser rotacionada a cada 6 meses ou imediatamente se houver suspeita de exposição."
 
----
+> **P:** "Por que a gente separa secret do código, se o repositório é privado? E por que rotacionar se nada vazou?"
+>
+> **R (30s):**
+> "Pelo princípio de Kerckhoffs, de 1883: a segurança tem que morar na chave, não no segredo do código. Isso me deixa tratar o código como potencialmente público — repo, bundle, review — porque a proteção não depende dele; depende do secret, que por isso fica rigorosamente separado. Repo privado vira público, histórico vaza, bundle vai pro browser. Sobre rotação: eu parto do princípio de que todo secret será exposto um dia — a rotação é o cryptoperiod do NIST, ela não previne o leak, encurta a janela de um leak que eu ainda não descobri. Chave de blast radius maior, como a service role, tem o menor cryptoperiod."
 
 ## Checkpoint
 
-- [ ] Todos os projetos AG têm `.env` em `.gitignore` e `.env.example` commitado
-- [ ] Rodei gitleaks em pelo menos 1 projeto AG e analisei os resultados
-- [ ] Sei o plano de contenção de secret vazado sem consultar (revogar → auditar → limpar → rotacionar)
-- [ ] Documentei o status do SERVICE_ROLE_KEY do OFICINA e a ação tomada
+- [ ] Todos os projetos AG têm `.env` no `.gitignore` e `.env.example` commitado
+- [ ] Classifico cada secret por blast radius e explico por que a `SERVICE_ROLE_KEY` é a mais crítica
+- [ ] Explico secrets management como Kerckhoffs/open design aplicado (segurança na chave, não no código)
+- [ ] Sei o plano de contenção na ordem certa: revogar → auditar → limpar → rotacionar
+- [ ] Rodei gitleaks num projeto AG e documentei o status da `SERVICE_ROLE_KEY` do OFICINA
 - [ ] Recitei a resposta de entrevista em voz alta em menos de 30 segundos
-
----
 
 ## Recursos
 
-- [gitleaks](https://github.com/gitleaks/gitleaks) — scanner de secrets, instalação e uso
-- [OWASP Secrets Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html)
-- [Supabase — API keys](https://supabase.com/docs/guides/api/api-keys) — diferença entre ANON_KEY e SERVICE_ROLE_KEY
-- [Doppler](https://www.doppler.com/) — gerenciador de secrets SaaS com free tier
-- Uber breach 2022: [relatório SEC](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=uber) e cobertura no Krebs on Security
+- *La Cryptographie Militaire* — Auguste Kerckhoffs (1883): a segurança mora na chave, não no segredo do mecanismo (o fundamento de todo secrets management)
+- *The Protection of Information in Computer Systems* — Saltzer & Schroeder (1975): os princípios de open design e least privilege (o blast radius)
+- NIST SP 800-57 Part 1 — *Recommendation for Key Management*: o conceito de cryptoperiod (por que e a cada quanto rotacionar)
+- OWASP *Secrets Management Cheat Sheet* — armazenamento, rotação, detecção
+- gitleaks e TruffleHog — scanners de secret em git (detecção pré-commit e no histórico)
+- Supabase docs — *API keys*: a diferença de privilégio entre `ANON_KEY` e `SERVICE_ROLE_KEY`
+- Comunicação oficial da Uber sobre o incidente de segurança de setembro/2022 — credencial hardcoded como vetor de movimento lateral

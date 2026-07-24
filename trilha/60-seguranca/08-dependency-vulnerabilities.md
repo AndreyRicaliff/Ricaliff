@@ -1,253 +1,146 @@
 # 08 — Vulnerabilidades em Dependências
 
+> **Formato expandido (v2.1):** este módulo tem §Base (o fundamento, com lastro em fonte
+> primária), §Estruturação (como o conhecimento se organiza) e §Metodologia (o passo-a-passo
+> replicável) — além da prática, P/R e checkpoint. Segue o padrão do módulo `00-metodologia-da-ia`.
+
 ## O que é
 
-Dependências são código de terceiros que você roda no seu servidor. Uma vulnerabilidade em qualquer dep sua é uma vulnerabilidade no seu produto. A OWASP chama isso de **A06 — Vulnerable and Outdated Components** — subiu para o top 10 e continua subindo porque o número de ataques via supply chain aumentou.
-
-O caso definitivo: **Log4Shell (CVE-2021-44228, CVSS 10.0)**. A biblioteca `log4j` — usada em metade dos sistemas Java no mundo — tinha uma vulnerabilidade de execução remota de código (RCE) trivial de explorar: qualquer string no formato `${jndi:ldap://...}` no log causava o servidor a fazer request para o endereço indicado e executar o código retornado. Uma linha. CVSS 10.0 — máximo possível. Patched em 72h, mas a janela de exploração já era.
-
-Para Node.js o risco é real: `event-stream` (2018) foi comprometido via transferência de ownership no npm e injetou código malicioso que roubava bitcoin wallets. Um pacote com 2 milhões de downloads/semana, infectado por meses.
+Dependência é código de terceiro que você roda no seu servidor com os seus privilégios. Uma vulnerabilidade em qualquer dep sua é uma vulnerabilidade no seu produto — você não escreveu a linha, mas ela executa dentro da sua fronteira de confiança. A OWASP cataloga isso como **A06:2021 — Vulnerable and Outdated Components**, e a categoria sobe no ranking justamente porque a superfície de código de terceiro cresce mais rápido que a capacidade de auditá-la. Este módulo é sobre o vocabulário (CVE, CVSS), o instrumento (audit/scanner) e — o que separa júnior de pleno — a **priorização**: severidade não é risco, e tratar as duas como sinônimo faz você apagar incêndio em `devDependency` enquanto a casa queima no runtime.
 
 ---
 
-### CVE e CVSS: o vocabulário
+## § BASE — o fundamento
 
-**CVE (Common Vulnerabilities and Exposures):** identificador único de vulnerabilidade. Formato: `CVE-YYYY-NNNNN`. Exemplo: `CVE-2021-44228` (Log4Shell).
+**O identificador: CVE.** Em 1999, a MITRE Corporation criou o **CVE (Common Vulnerabilities and Exposures)** para resolver um problema de Babel: cada fornecedor de antivírus nomeava a mesma falha de um jeito, e ninguém conseguia cruzar informação. O CVE é só um nome canônico — `CVE-YYYY-NNNNN` — para que "a falha do log4j de dezembro de 2021" tenha um endereço único, `CVE-2021-44228`, que todo mundo referencia. Não é um score, não é uma correção: é o registro de identidade da vulnerabilidade, mantido hoje num programa federado (MITRE + CNAs, os *CVE Numbering Authorities*).
 
-**CVSS (Common Vulnerability Scoring System):** score de 0 a 10 que quantifica severidade.
+**A régua: CVSS.** O **Common Vulnerability Scoring System**, mantido pelo **FIRST.org** (spec v3.1, 2019; v4.0, 2023), tenta transformar "quão grave é isso?" num número de 0 a 10. A pegadinha que quase todo júnior comete é achar que esse número é o risco. Não é. O **Base Score** do CVSS combina dois grupos de métricas: **Exploitability** (Attack Vector — rede/local/físico? Attack Complexity, Privileges Required, User Interaction) e **Impact** (Confidentiality, Integrity, Availability). Ele mede a **severidade intrínseca** da falha *isolada* — não sabe nada sobre o *seu* deployment. A própria especificação do FIRST diz isso com todas as letras: o Base Score deve ser *ajustado* pelas métricas Temporal e Environmental para virar risco. Quase ninguém ajusta, e aí um `9.8` numa lib que só roda no build gera pânico do mesmo tamanho de um `9.8` no seu parser de request público — que é errado.
 
-| Score | Severidade | Ação recomendada |
+**Severidade não é risco.** A relação honesta, e a tese central deste módulo:
+
+```
+Risco ≈ Severidade (CVSS base) × Exploitabilidade (o código vulnerável é alcançável no MEU uso?) × Exposição (runtime em prod? dev-only? atrás de WAF?)
+```
+
+Um `CVE 10.0` numa `devDependency` que nunca vai pra produção tem exposição ~0 — é risco pra máquina do dev e pro CI, não pros usuários. Um `CVE 6.5` no seu middleware de autenticação exposto na internet pode ser risco maior. O CVSS Base entrega só o primeiro fator; os outros dois são análise sua, e são onde mora a decisão.
+
+**A controvérsia (declarada).** A comunidade sabe que o CVSS Base é enviesado pra severidade teórica e péssimo pra prever exploração real — por isso o próprio FIRST publica o **EPSS (Exploit Prediction Scoring System)**, um modelo que estima a *probabilidade* de uma CVE ser explorada nos próximos 30 dias. A maioria das CVEs de score alto **nunca é explorada in-the-wild**; um punhado de score médio vira arma em massa. Complementarmente, scanners modernos (Snyk, Socket, GitHub) fazem **reachability analysis** — o caminho de código vulnerável é de fato chamado pela sua aplicação? Se a função afetada está numa parte da lib que você não importa, a CVE existe mas não te alcança. Priorizar por CVSS puro é o estado da arte de 2015, não de 2026.
+
+**O caso definitivo — Log4Shell.** `CVE-2021-44228`, CVSS **10.0** (o máximo). A lib de log Java `log4j` — presente em metade dos sistemas Java do planeta — interpretava qualquer string no formato `${jndi:ldap://host/a}` que passasse por um log como um *lookup* JNDI: o servidor fazia request ao endereço e **executava o código retornado**. RCE (execução remota de código) trivial, disparada por qualquer input logado — um User-Agent, um nome de usuário. O advisory da Apache e a entrada no NVD são a fonte; o patch saiu em ~72h, mas a janela já tinha sido varrida por scanners de exploração em escala global. A lição do §BASE: a lib mais inofensiva do mundo (um *logger*) processa **todo input do usuário** e por isso é superfície de ataque de primeira classe.
+
+---
+
+## § ESTRUTURAÇÃO — como esse conhecimento se organiza
+
+O `node_modules` não é uma lista — é uma **árvore**. Você declara deps diretas no `package.json`; cada uma arrasta as suas (transitivas), recursivamente. Um app Node modesto tem dezenas de diretas e **centenas** de transitivas. A CVE quase sempre mora numa transitiva que você nunca escolheu — daí o campo `Dependency of` do audit ser o dado mais importante que ele te dá:
+
+```
+seu-app  (package.json — você escolheu)
+├── express            (direta, PRODUÇÃO → runtime exposto)
+│   └── body-parser
+│       └── qs         (transitiva — CVE aqui É risco de runtime)
+├── jest               (direta, DEV → só roda no seu CI/máquina)
+│   └── @jest/core
+│       └── semver     (transitiva — CVE aqui é risco de dev, não de usuário)
+└── prisma             (direta, PRODUÇÃO)
+
+Fronteira que decide a prioridade:  ┌ runtime/prod ┐  vs  ┌ dev-only ┐
+```
+
+A régua de ação nasce do cruzamento **severidade × exposição** (não da severidade sozinha):
+
+| CVSS | em dep de **runtime/prod** | em **devDependency** |
 |---|---|---|
-| 9.0–10.0 | Critical | Patch imediato — horas, não dias |
-| 7.0–8.9 | High | Patch no máximo em 48h se em prod |
-| 4.0–6.9 | Medium | Planejar para próxima sprint |
-| 0.1–3.9 | Low | Agendar; pode esperar |
-| 0.0 | None | Informacional |
+| 9.0–10.0 Critical | patch em **horas** | documentar + agendar; fix se sem breaking |
+| 7.0–8.9 High | patch em ≤48h | próxima sprint |
+| 4.0–6.9 Medium | próxima sprint | revisão trimestral |
+| 0.1–3.9 Low | agenda | ruído — agrupar |
 
-**O que CVSS NÃO captura:** contexto de deployment. Um CVE 9.0 em uma lib que só corre em `devDependencies` tem impacto real próximo de zero em produção — é um risco para a máquina do dev, não para os usuários. CVSS não sabe disso.
+A leitura do `Dependency of` do `npm audit` é a chave: começa com `jest`/`eslint`/`vite` (dev)? Risco contido. Começa com `express`/`prisma`/`axios` (prod)? Risco real, sobe na fila.
 
 ---
 
-### npm audit: como usar de verdade
+## § METODOLOGIA — o passo-a-passo replicável
+
+**1. INVENTARIAR com lockfile.** Sem `package-lock.json`/`pnpm-lock.yaml` commitado você nem sabe qual versão exata roda — prod pode instalar uma diferente da que dev testou. O lockfile grava a versão exata de cada nó da árvore. É pré-requisito de qualquer auditoria séria.
+
+**2. ESCANEAR.** `npm audit` (grátis, embutido) cruza sua árvore com o GitHub Advisory Database. Snyk/Dependabot adicionam reachability e monitoramento contínuo.
+
+**3. CLASSIFICAR por severidade × exposição.** Para cada achado, responda três perguntas *antes* de agir: (a) runtime ou dev? (b) o código vulnerável é alcançável no meu uso? (c) há mitigação já no sistema (WAF, o path não é chamado)? Só o cruzamento vira prioridade.
+
+**4. DECIDIR: patch, mitigar ou ignorar-documentado.** Patch disponível sem breaking → aplica. Só major disponível → planeja migration. Sem fix ainda → mitiga ou aceita com documentação.
+
+**5. AUTOMATIZAR.** Auditoria manual "quando lembra" não detecta nada entre as lembranças. Dependabot/Snyk monitoram e abrem PR quando um advisory novo cai.
+
+**Anti-padrões:**
+- **`npm audit fix --force` no escuro.** O `--force` sobe versões major (breaking) sem dó — pode "consertar" a CVE e quebrar a app. Sempre rodar os testes depois; ler o que ele vai fazer com `--dry-run` antes.
+- **CVSS como risco.** Priorizar pelo número sem olhar exposição/exploitabilidade é gastar o dia no `9.8` de devDep e deixar o `6.5` de runtime aberto.
+- **Ignorar sem documentar.** "Depois eu vejo" some. Ignorar é decisão válida — *documentada*: qual CVE, por quê (dev-only / unreachable / mitigado), quando reavaliar, quem decidiu. Snyk tem `snyk ignore --expiry`; sem ferramenta, uma linha no `DECISIONS.md`.
+- **Patchar o ruído de dev e ignorar o runtime.** O inverso da prioridade correta — comum em quem persegue o "0 vulnerabilidades" do relatório em vez do risco real.
 
 ```bash
-# Análise completa
-npm audit
-
-# Saída típica:
-# ┌───────────────┬──────────────────────────────────────────────────┐
-# │ high          │ Regular Expression Denial of Service in semver   │
-# ├───────────────┼──────────────────────────────────────────────────┤
-# │ Package       │ semver                                           │
-# │ Dependency of │ jest > @jest/core > jest-resolve > semver        │
-# │ Path          │ jest > ... > semver                              │
-# │ More info     │ https://github.com/advisories/GHSA-...           │
-# └───────────────┴──────────────────────────────────────────────────┘
-
-# Leitura do campo "Dependency of":
-# - Começa com nome de devDependency (jest, eslint, vite)? → risco só em dev
-# - Começa com dep de produção (express, prisma, axios)? → risco real
-
-# Ver só severidade crítica/alta
-npm audit --audit-level=high
-
-# Ver o que tem fix disponível sem instalar
-npm audit fix --dry-run
-
-# Instalar fixes (patch level — sem breaking change)
-npm audit fix
-
-# Instalar fixes com breaking change (cuidado — pode quebrar a app)
-npm audit fix --force
-# Sempre testar depois de --force
-
-# Listar vulnerabilidades em formato JSON para análise
-npm audit --json | node -e "
-  const data = JSON.parse(require('fs').readFileSync('/dev/stdin','utf8'));
-  const vulns = Object.values(data.vulnerabilities);
-  vulns.filter(v => v.severity === 'critical' || v.severity === 'high')
-       .forEach(v => console.log(v.severity, v.name, v.range));
-"
+npm audit --audit-level=high     # só o que importa; filtra o ruído low/info
+npm audit fix --dry-run          # o que ELE faria, sem tocar em nada
+npm audit fix                    # patch/minor: seguro
+# npm audit fix --force          # major/breaking: SÓ com testes rodando depois
 ```
-
----
-
-### Snyk: análise mais rica
-
-```bash
-npm install -g snyk
-snyk auth   # login com GitHub ou email
-
-# Análise do projeto atual
-snyk test
-
-# Snyk diferencia deps de produção de devDependencies automaticamente
-# Mostra: CVE, CVSS, se tem fix disponível, se afeta produção
-# Monitora em background (via snyk monitor) e avisa quando nova vuln é publicada
-
-# Ver apenas vulnerabilidades com exploit disponível
-snyk test --severity-threshold=high
-
-# Ignorar um item por 30 dias (quando já avaliou e decidiu não corrigir agora)
-snyk ignore --id=SNYK-JS-XXXXXXXX --expiry=2026-07-01 --reason="devDep only"
-```
-
----
-
-### Dependabot: automação via GitHub
-
-Para projetos com repositório no GitHub:
 
 ```yaml
-# .github/dependabot.yml
+# .github/dependabot.yml — automatiza o passo 5
 version: 2
 updates:
   - package-ecosystem: "npm"
     directory: "/"
-    schedule:
-      interval: "weekly"
-      day: "monday"
+    schedule: { interval: "weekly", day: "monday" }
     open-pull-requests-limit: 5
     groups:
-      dev-dependencies:
-        dependency-type: "development"
+      dev-dependencies:    { dependency-type: "development" }
       production-dependencies:
         dependency-type: "production"
-        update-types:
-          - "security"     # só PRs de segurança em prod automaticamente
-          - "patch"        # e patches (x.y.Z)
-```
-
-Dependabot abre PRs automáticos com a atualização. Você revisa e merge. Para patches de segurança em deps de produção, auto-merge pode ser configurado.
-
----
-
-### Patch vs Major: a decisão difícil
-
-```
-semver: MAJOR.MINOR.PATCH
-
-PATCH (1.2.3 → 1.2.4): bug fix, sem breaking change
-→ Atualizar sem hesitar, especialmente se é fix de segurança
-
-MINOR (1.2.3 → 1.3.0): funcionalidade nova, retrocompatível
-→ Atualizar na próxima sprint, rodar testes depois
-
-MAJOR (1.2.3 → 2.0.0): breaking change — API mudou
-→ Avaliar changelog, planejar migration, testar extensivamente
-→ Pode exigir mudança de código
-```
-
-**Quando ignorar uma vulnerabilidade (documentado):**
-
-```
-Critérios para ignorar:
-1. É em devDependency e nunca vai para produção
-2. O código vulnerável não é chamado pela sua aplicação (unreachable code path)
-3. Já tem mitigação diferente no sistema (WAF, firewall)
-4. Não existe versão com fix disponível ainda (CVE publicado, fix pendente)
-
-Nunca ignorar sem documentar: por que, quando reavaliar, quem decidiu
+        update-types: ["security", "patch"]   # prod: só segurança e patch automáticos
 ```
 
 ---
 
-### Lockfile: obrigação em aplicação
+## Passo-a-passo aplicado (faça agora, ~30min)
+
+Rode a auditoria em 3 projetos AG reais e priorize por risco, não por score.
 
 ```bash
-# package-lock.json (npm) ou pnpm-lock.yaml (pnpm):
-# - Grava a versão EXATA de cada dep instalada
-# - Garante que prod instala exatamente o que dev testou
-# - Sem lockfile: npm install pode trazer versão diferente com bug novo
-
-# Deve ser commitado em aplicação (meet-hub, PULSAR-RH, etc.)
-# NÃO deve ser commitado em biblioteca/SDK (para não forçar versões no consumidor)
-
-# Atualizar lockfile após npm audit fix:
-npm install  # regenera lockfile
-git add package-lock.json
-git commit -m "chore(deps): update lockfile after security patches"
-```
-
----
-
-## Por que cai em entrevista
-
-Não é pergunta técnica profunda — é pergunta de processo. "Como você garante que as deps do seu projeto estão seguras?" Candidatos que não têm processo definido passam uma imagem de descuido. A AG tem projetos reais — rodar o audit e ter uma resposta baseada em números reais é diferencial.
-
----
-
-## Trade-offs
-
-| Abordagem | Vantagem | Custo |
-|---|---|---|
-| `npm audit` manual quando lembra | Zero custo | Não detecta nada entre as auditorias manuais |
-| Dependabot auto PRs | Automático, visível | PRs demais em repos com muitas deps |
-| Snyk + monitoramento | Alerta proativo quando nova CVE publicada | Custo em planos maiores; mais uma ferramenta |
-| Atualizar tudo toda sprint | Deps sempre atuais | Risco de breaking change; testagem constante |
-| Só atualizar critical em prod | Foco no risco real | Medium/High acumulam; eventual dívida maior |
-
-Regra prática AG: Critical em prod → patch em 48h. High em prod → próxima sprint. Medium+ em devDep → agenda trimestral.
-
----
-
-## Exercício aplicado (projeto AG real)
-
-```bash
-# Rodar npm audit em 3 projetos AG e priorizar
-
 PROJECTS=("meet-hub" "PULSAR-RH" "cliente-oficina-backend")
-
-for project in "${PROJECTS[@]}"; do
-  echo ""
-  echo "════════════════════════════"
-  echo "Projeto: $project"
-  echo "════════════════════════════"
-
-  if [ -d ~/projetos/$project ]; then
-    cd ~/projetos/$project
-
-    # Total de vulnerabilidades
-    echo "--- Resumo ---"
-    npm audit --audit-level=none 2>/dev/null | tail -5
-
-    # Só high e critical
-    echo "--- High/Critical ---"
-    npm audit --audit-level=high 2>/dev/null | grep -E "high|critical|Package|Dependency" | head -20
-  else
-    echo "Projeto não encontrado"
-  fi
+for p in "${PROJECTS[@]}"; do
+  echo "════ $p ════"
+  [ -d ~/projetos/$p ] || { echo "não encontrado"; continue; }
+  cd ~/projetos/$p
+  npm audit --audit-level=high --json 2>/dev/null | node -e "
+    const d=JSON.parse(require('fs').readFileSync(0,'utf8')).vulnerabilities||{};
+    Object.values(d).filter(v=>['critical','high'].includes(v.severity))
+      .forEach(v=>console.log(v.severity.padEnd(9), v.name.padEnd(24),
+        (v.nodes?.[0]||'').includes('node_modules') ? 'transitiva' : 'direta'));
+  "
 done
 ```
 
+Registre a decisão — não o número cru, mas a análise de risco:
+
 ```markdown
-## DECISIONS.md — 2026-06-XX — [security] npm audit 3 projetos AG
+## DECISIONS.md — 2026-06-XX — [security] auditoria de deps 3 projetos AG
 
-**Data da auditoria:** 2026-06-XX
+| Projeto | Critical prod | High prod | Dev-only | Ação |
+|---|---|---|---|---|
+| meet-hub | ? | ? | ? | ? |
+| PULSAR-RH | ? | ? | ? | ? |
+| cliente-oficina-backend | ? | ? | ? | ? |
 
-| Projeto | Critical | High | Medium | Low | Ação |
-|---|---|---|---|---|---|
-| meet-hub | ? | ? | ? | ? | ? |
-| PULSAR-RH | ? | ? | ? | ? | ? |
-| cliente-oficina-backend | ? | ? | ? | ? | ? |
-
-**Vulnerabilidades críticas em produção:**
-- [listar cada uma: nome da dep, CVE, path de dependência, fix disponível?]
-
-**Decisões:**
-- [dep X]: patch disponível → aplicar agora com npm audit fix
-- [dep Y]: major update necessário → planejar migration para próxima sprint
-- [dep Z]: só devDependency → ignorar com documentação, reavaliar em 30 dias
-
-**Próxima auditoria programada:** [data]
-
-**Como explicar em entrevista (30s):**
-> "Rodei npm audit nos 3 projetos principais. Encontrei N vulnerabilidades em deps de produção — X critical, Y high. Das critical, 2 tinham fix via patch automático (npm audit fix), 1 exigia major update que planejei para a sprint seguinte. As High em devDependencies foram documentadas como risco baixo e agendadas para revisão trimestral."
+**Runtime/prod (risco real):** [dep, CVE, alcançável? fix disponível?]
+**Dev-only (risco contido):** [dep, CVE, motivo de agendar]
+**Ignorados com documentação:** [CVE, motivo, reavaliar em, quem]
+**Próxima auditoria:** [data] — ou automatizada via Dependabot (link do PR)
 ```
 
----
+## Por que cai em entrevista
 
-## Pergunta de entrevista esperada + resposta exemplar
+Não é pergunta de algoritmo — é de **processo e maturidade**. "Como você garante que as deps do seu projeto estão seguras?" mede se você opera com responsabilidade ou reza pra não dar ruim. Quem responde com números reais de um audit que rodou, e sabe separar severidade de risco, passa uma imagem completamente diferente de quem nunca abriu o relatório.
 
 > **P:** "Você encontrou uma vulnerabilidade critical no npm audit, mas é numa devDependency. O que você faz?"
 >
@@ -259,23 +152,24 @@ done
 > **R (30s):**
 > "CVE-2021-44228, CVSS 10.0: a biblioteca de log Java `log4j` interpretava strings como `${jndi:ldap://...}` como comandos — qualquer input logado podia executar código remoto. Detecção: npm audit teria mostrado a vulnerabilidade, ou Dependabot teria aberto PR automaticamente assim que o advisory foi publicado. No nosso caso usamos Node, não Java, então log4j não era risco direto — mas a lição é que log libraries são attack surface porque processam todo input do usuário."
 
----
+> **P (nova):** "Um scanner apontou 40 vulnerabilidades no seu projeto. Como você prioriza?"
+>
+> **R (30s):** "Não pelo CVSS, que é a armadilha. CVSS Base mede severidade intrínseca da falha isolada, não o meu risco — e risco é severidade × exploitabilidade × exposição. Então primeiro separo runtime de dev-only pelo path de dependência: metade das 40 costuma ser devDep que nunca vai pra prod. Das de runtime, olho se o código vulnerável é de fato alcançável no meu uso — scanner com reachability ou EPSS ajuda, porque a maioria das CVEs de score alto nunca é explorada de verdade. O que sobra — critical alcançável em runtime exposto — é o que patcho primeiro; o resto vira agenda documentada. O erro clássico é gastar o dia zerando o número do relatório com fixes de devDep e deixar aberto o médio que está no caminho do request."
 
 ## Checkpoint
 
-- [ ] Rodei `npm audit` nos 3 projetos AG e classifiquei os resultados em produção vs devDep
-- [ ] Sei a diferença entre CVSS e contexto de deployment na priorização
-- [ ] Consigo configurar `dependabot.yml` básico para um repositório AG
-- [ ] Documentei o resultado da auditoria com decisões explícitas para cada item
-- [ ] Recitei a resposta de entrevista em voz alta em menos de 30 segundos
-
----
+- [ ] Sei o que é CVE (MITRE) e CVSS (FIRST) e por que Base Score ≠ risco
+- [ ] Explico risco como severidade × exploitabilidade × exposição, com exemplo de cada fator
+- [ ] Leio o campo `Dependency of` pra separar runtime de devDependency
+- [ ] Rodei `npm audit` nos 3 projetos AG e classifiquei por risco, não por score
+- [ ] Sei quando `npm audit fix --force` é perigoso e o que fazer depois dele
+- [ ] Documentei cada "ignorar" com motivo, prazo e responsável
 
 ## Recursos
 
-- [npm audit docs](https://docs.npmjs.com/cli/v10/commands/npm-audit) — flags e opções
-- [NVD (National Vulnerability Database)](https://nvd.nist.gov/) — buscar qualquer CVE pelo número
-- [Snyk Vulnerability Database](https://security.snyk.io/) — mais orientado a devs que o NVD
-- [GitHub Dependabot docs](https://docs.github.com/en/code-security/dependabot)
-- CVE-2021-44228 Log4Shell: [lunasec analysis](https://www.lunasec.io/docs/blog/log4j-zero-day/) — análise técnica detalhada da exploração
-- `event-stream` incident (2018): pesquisar "event-stream npm malicious 2018 flatmap-stream" — case de supply chain attack
+- **CVSS v3.1 Specification Document** — FIRST.org: as métricas Base/Temporal/Environmental e por que só o Base não é risco (fonte primária da §BASE)
+- **CVE Program** — MITRE: o que é um CVE e o papel dos CNAs
+- **NVD — CVE-2021-44228 (Log4Shell)** e o **Apache Log4j Security page**: o advisory e o mecanismo JNDI
+- **EPSS (Exploit Prediction Scoring System)** — FIRST.org: probabilidade de exploração como complemento ao CVSS
+- **OWASP Top 10 — A06:2021 Vulnerable and Outdated Components**: a categoria e as defesas
+- npm docs — `npm audit`; **GitHub Advisory Database** e **Dependabot docs**; **Snyk Vulnerability Database**

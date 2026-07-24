@@ -1,207 +1,160 @@
 # 04 — CSRF e SameSite Cookies
 
+> **Formato expandido (v2.1):** este módulo tem §Base (o fundamento com lastro científico),
+> §Estruturação (como o conhecimento se organiza) e §Metodologia (o passo-a-passo replicável)
+> — além da prática, P/R e checkpoint. Segue o padrão do módulo `05-raciocinio/00-metodologia-da-ia`.
+
 ## O que é
 
-**Cross-Site Request Forgery (CSRF)** é quando um site malicioso faz o browser da vítima enviar uma request autenticada para outro site sem que a vítima saiba. O browser inclui cookies automaticamente em todas as requests para o domínio — se a sessão está em cookie, o atacante usa isso.
-
-O ataque clássico:
+**Cross-Site Request Forgery (CSRF)** é quando um site malicioso faz o browser da vítima enviar uma request **autenticada** para outro site sem que ela saiba. O browser anexa cookies automaticamente a toda request para o domínio — se a sessão vive em cookie, o atacante usa isso. XSS rouba a credencial; CSRF não precisa roubá-la, ele **usa a que o browser já anexa sozinho**.
 
 ```html
-<!-- Site do atacante: evil.com -->
-<!-- Vítima está logada em bank.com com sessão em cookie -->
-
-<img src="https://bank.com/transfer?to=attacker&amount=5000">
-<!-- O browser faz GET para bank.com automaticamente ao carregar a página -->
-<!-- Inclui o cookie de sessão de bank.com — o banco executa a transferência -->
-
-<!-- Para POST, o atacante usa formulário auto-submit: -->
-<form id="f" action="https://bank.com/transfer" method="POST">
-  <input name="to" value="attacker">
-  <input name="amount" value="5000">
-</form>
-<script>document.getElementById('f').submit()</script>
+<!-- evil.com; vítima logada em bank.com com sessão em cookie -->
+<img src="https://bank.com/transfer?to=attacker&amount=5000">  <!-- GET dispara ao carregar -->
+<form id="f" action="https://bank.com/transfer" method="POST">   <!-- POST via auto-submit -->
+  <input name="to" value="attacker"><input name="amount" value="5000">
+</form><script>document.getElementById('f').submit()</script>
 ```
 
-A vítima visita `evil.com` e sem clicar em nada a request é enviada com a autenticação dela.
+A vítima só visita `evil.com` — e a request sai com a autenticação dela.
 
 ---
 
-### Por que isso é possível
+## § BASE — o fundamento
 
-O browser envia cookies para `bank.com` em QUALQUER request para esse domínio — independente de qual site iniciou a request. Esse comportamento é design histórico do HTTP. CSRF existe porque:
+**A fraqueza tem nome e número: CWE-352** — *Cross-Site Request Forgery*. Mas o nome que *explica* CSRF é mais antigo e mais fundo: é o problema do **confused deputy** (delegado confuso), descrito por **Norm Hardy em 1988** (*The Confused Deputy*, ACM SIGOPS Operating Systems Review). A ideia: um programa com autoridade legítima é **enganado por um terceiro** a usar essa autoridade em benefício do atacante. No CSRF, o *deputy* é o **browser da vítima** — ele carrega a autoridade dela (o cookie de sessão) e é induzido, por uma página do atacante, a exercê-la contra o servidor. O servidor recebe uma request perfeitamente autenticada e não tem como saber que a *intenção* não veio do usuário.
 
-1. Sessão autenticada está em cookie
-2. Cookie é enviado automaticamente pelo browser
-3. O servidor não consegue distinguir request legítima de request forjada apenas pelo cookie
+**A causa mecânica: ambient authority.** O cookie é uma **credencial ambiente** — o browser o anexa a *toda* request para o domínio, independentemente de qual site originou a request. Esse é o comportamento histórico do HTTP, anterior à noção de origem como fronteira de segurança. CSRF existe pela conjunção de três fatos:
+1. a sessão autenticada está em cookie;
+2. o cookie é enviado **automaticamente** pelo browser;
+3. o servidor não distingue request legítima de forjada olhando só o cookie.
+
+**A precondição que quase ninguém cita: métodos que mudam estado por GET.** O `<img src="https://bank.com/transfer?...">` só funciona porque o endpoint de transferência aceitou um **GET com efeito colateral**. A **RFC 7231, §4.2.1 (Safe Methods)** é explícita: GET e HEAD são *safe* — não devem ter efeito de estado no servidor. Um endpoint que transfere dinheiro por GET viola a spec e abre o vetor CSRF mais barato que existe. Respeitar a semântica dos métodos (mutação só em POST/PUT/PATCH/DELETE) já elimina a forma mais simples do ataque.
+
+**A defesa moderna está na spec do cookie: `SameSite`.** O atributo `SameSite` é definido na **RFC 6265bis** (*Cookies: HTTP State Management Mechanism*, a revisão em andamento da RFC 6265), seção 5.2, com três valores — `Strict`, `Lax`, `None`. Ele instrui o browser a **não anexar o cookie** em requests *cross-site*, cortando o passo (2) da causa. Ponto de precisão: o comportamento **`Lax` por padrão** (quando o atributo é omitido) é **política de browser**, adotada pelo Chrome 80 em fevereiro de 2020 e seguida pelos demais — a spec recomenda, mas o default efetivo veio da implementação. Ou seja: em browser moderno o default é `Lax`; num cliente antigo ou não-browser, o comportamento sem atributo é indefinido — por isso a AG **sempre declara** o `SameSite` explicitamente.
+
+**A defesa que protege o token é a Same-Origin Policy.** O padrão do CSRF token (abaixo) só funciona porque a SOP impede o JavaScript de `evil.com` de **ler** o DOM ou a response de `app.com`. O atacante consegue *disparar* a request, mas não consegue *ler* o token embutido na página — e sem o token, o servidor rejeita. CSRF é, no fundo, uma assimetria: o atacante escreve, mas não lê.
 
 ---
 
-### Solução 1: SameSite Cookie Attribute
+## § ESTRUTURAÇÃO — como esse conhecimento se organiza
 
-`SameSite` instrui o browser a **não enviar o cookie** em requests cross-site.
+As defesas se empilham; cada uma corta um passo da causa:
+
+```
+CAUSA (3 passos)                    DEFESA QUE CORTA                        CAMADA
+1. sessão em cookie                 → JWT em Authorization header            elimina o vetor
+2. cookie anexado automaticamente   → SameSite=Strict/Lax (RFC 6265bis)      1ª linha
+3. servidor não distingue intenção  → CSRF token (SOP protege o token)       fallback / legado
+   + endpoint muda estado por GET   → respeitar RFC 7231 (mutação ≠ GET)     higiene de base
+```
+
+**SameSite — os três valores:**
+
+| Valor | Comportamento | Caso de uso |
+|---|---|---|
+| `Strict` | nunca enviado cross-site — nem em navegação simples | banco, admin — máxima proteção |
+| `Lax` | enviado em navegação top-level (clicar link, digitar URL), não em sub-resource (img, iframe, fetch) | default dos browsers modernos; adequado à maioria |
+| `None` | enviado em todas as cross-site — **exige** `Secure` | cookie de terceiro (analytics, widget) — evitar |
 
 ```
 Set-Cookie: session=abc123; SameSite=Strict; HttpOnly; Secure
 ```
 
-| Valor | Comportamento | Caso de uso |
-|---|---|---|
-| `Strict` | Cookie nunca enviado em requests cross-site — nem navegação simples | Apps bancários, admin panels — máxima proteção |
-| `Lax` | Cookie enviado em navegação de nível superior (clicar link, digitar URL), não em sub-resources (imagens, iframes, fetch) | Default atual dos browsers; adequado para maioria dos apps |
-| `None` | Enviado em todas as requests cross-site — precisa de `Secure` | Para cookies de terceiros (analytics, widgets) — evitar quando possível |
+**Regra AG:** cookie de sessão tem `SameSite=Lax` no mínimo, `Strict` em rotas críticas — sempre explícito.
 
-`SameSite=Lax` é o default nos browsers modernos (Chrome desde 2020) — mas não é o default quando você configura manualmente o `Set-Cookie`. Se você não especifica, comportamento varia por browser.
-
-**Regra AG:** qualquer cookie de sessão deve ter `SameSite=Lax` no mínimo, `Strict` em rotas críticas.
-
----
-
-### Solução 2: CSRF Token
-
-Para casos onde SameSite não é suficiente (legado, terceiros, `SameSite=None`):
-
-```
-1. Servidor gera token aleatório criptograficamente seguro por sessão
-2. Token é incluído em todo formulário como campo hidden
-3. Token é enviado no header em requests AJAX (X-CSRF-Token ou similar)
-4. Servidor valida o token em toda request de escrita (POST/PUT/DELETE/PATCH)
-5. Atacante não tem acesso ao token (Same-Origin Policy impede ler o DOM do outro domínio)
-```
+**CSRF token (para legado, terceiros, `SameSite=None`):**
 
 ```ts
-// Express com csurf (ou equivalente):
 import csrf from 'csurf'
 const csrfProtection = csrf({ cookie: true })
-
-app.get('/form', csrfProtection, (req, res) => {
-  res.render('form', { csrfToken: req.csrfToken() })
-})
-
-app.post('/submit', csrfProtection, (req, res) => {
-  // csurf valida o token automaticamente — lança erro se inválido
-  res.json({ success: true })
-})
+app.get('/form', csrfProtection, (req, res) => res.render('form', { csrfToken: req.csrfToken() }))
+app.post('/submit', csrfProtection, (req, res) => res.json({ success: true }))  // valida automático
 ```
 
-```html
-<!-- Template com token: -->
-<form method="POST" action="/submit">
-  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-  <!-- demais campos -->
-</form>
-```
+O fluxo: servidor gera token aleatório por sessão → embute no form (`<input type=hidden>`) ou no header (`X-CSRF-Token`) → valida em toda escrita (POST/PUT/DELETE/PATCH). O atacante não lê o token (SOP). Variante sem estado no servidor: **double-submit** — token vai como cookie *e* como campo; o servidor compara os dois (o atacante não consegue escrever cookie para outro domínio).
 
-**Double-submit pattern** (sem estado no servidor):
+**JWT em header dispensa CSRF por design:**
 
 ```
-1. Servidor gera token aleatório
-2. Token enviado como cookie E como campo de formulário (ou header)
-3. No request: server compara o cookie com o campo/header
-4. Se iguais: legítimo (atacante não pode escrever cookie para outro domínio)
+Authorization: Bearer <token>  → o browser NÃO anexa headers custom em cross-site automático.
+Form e <img> nunca incluem Authorization → atacante não forja a request com credencial.
 ```
 
----
+**Mas o armazenamento troca um risco por outro:**
 
-### Por que JWT em header também ajuda
-
-Se você usa JWT em `Authorization: Bearer <token>` em vez de cookie:
-
-```
-- Browser não envia headers Authorization automaticamente em requests cross-site
-- Atacante precisaria de JavaScript no mesmo domínio para ler o token
-- Same-Origin Policy bloqueia JS de evil.com ler storage de app.com
-- Logo: JWT em header = CSRF não se aplica por design
-```
-
-**Atenção:** se você guarda o JWT em cookie (para SSR ou simplicidade), volta a ser vulnerável a CSRF e precisa de SameSite.
-
-| Armazenamento de JWT | CSRF vulnerability | XSS vulnerability |
+| Armazenamento do JWT | CSRF | XSS |
 |---|---|---|
-| `localStorage` | Não vulnerável | Vulnerável (JS pode ler) |
-| `sessionStorage` | Não vulnerável | Vulnerável (JS pode ler) |
-| Cookie `HttpOnly` | Vulnerável (precisa SameSite) | Não vulnerável (JS não lê) |
-| Cookie `HttpOnly` + `SameSite=Strict` | Não vulnerável | Não vulnerável | 
+| `localStorage` / `sessionStorage` | não vulnerável | vulnerável (JS lê) |
+| Cookie `HttpOnly` | vulnerável (precisa SameSite) | não vulnerável (JS não lê) |
+| Cookie `HttpOnly` + `SameSite=Strict` | não vulnerável | não vulnerável |
 
-Para a AG (apps internos com Google OAuth): o token de sessão provavelmente está em cookie ou localStorage. Se em cookie, adicionar `SameSite=Strict`.
+O par ideal é a última linha. Para a AG (apps internos com Google OAuth): se o token de sessão está em cookie, adicionar `SameSite=Strict`.
 
----
-
-## Por que cai em entrevista
-
-CSRF é diferenciador — poucos candidatos júnior sabem explicar o mecanismo com precisão. Os que sabem se destacam. A pergunta costuma ser:
-
-- "O que é CSRF e como você protege uma API REST?"
-- "Qual a diferença entre CSRF token e SameSite?"
-- "Se minha API aceita só JSON, preciso de proteção CSRF?"
-
-Resposta para a última: APIs REST que aceitam só `Content-Type: application/json` são naturalmente mais resistentes (forms HTML só enviam `application/x-www-form-urlencoded` ou `multipart/form-data`). Mas `fetch` cross-site com `credentials: 'include'` pode enviar JSON — então SameSite continua importante.
-
----
-
-## Trade-offs
+**Trade-off das proteções:**
 
 | Proteção | Vantagem | Custo |
 |---|---|---|
-| `SameSite=Strict` | Zero CSRF sem estado extra | Quebra links externos para página autenticada (usuário chega sem cookie) |
-| `SameSite=Lax` | Boa proteção com UX normal | Não cobre requests AJAX cross-site com `credentials: 'include'` |
-| CSRF Token | Funciona em qualquer browser, mesmo legado | Estado no servidor ou double-submit; complexidade |
-| JWT em header (Bearer) | CSRF grátis; stateless | Token em localStorage é vulnerável a XSS |
-| CORS restrito + SameSite=Lax | Defense in depth | Não é bala de prata — CORS é para browser, não para curl/Postman |
+| `SameSite=Strict` | zero CSRF sem estado extra | quebra link externo p/ página autenticada (chega sem cookie) |
+| `SameSite=Lax` | boa proteção, UX normal | não cobre fetch cross-site com `credentials: 'include'` |
+| CSRF token | funciona em qualquer browser, mesmo legado | estado no servidor ou double-submit; complexidade |
+| JWT em header | CSRF grátis; stateless | token em localStorage é vulnerável a XSS |
 
 ---
 
-## Exercício aplicado (projeto AG real)
+## § METODOLOGIA — o passo-a-passo replicável
+
+**1. LOCALIZAR onde a sessão vive.** Cookie ou header? Se cookie, CSRF se aplica e SameSite é obrigatório. Se `Authorization: Bearer`, CSRF não se aplica — o risco vira XSS.
+
+**2. AUDITAR a semântica dos métodos.** Nenhum endpoint muda estado por GET (RFC 7231). `git grep` por rotas `app.get` que fazem `INSERT/UPDATE/DELETE` — cada uma é um vetor CSRF trivial.
+
+**3. DECLARAR SameSite explicitamente.** `Lax` no mínimo, `Strict` em rota crítica. Nunca depender do default implícito do browser. Junto: `HttpOnly` (corta XSS de leitura) e `Secure` (só em prod HTTPS).
+
+**4. ADICIONAR CSRF token onde SameSite não basta.** Fluxo com terceiros, `SameSite=None`, ou navegador legado no público-alvo. Preferir double-submit se não quiser estado no servidor.
+
+**5. VERIFICAR com request cross-origin.** Uma página de teste em outra origem disparando POST para o endpoint: com a defesa correta, o servidor rejeita (cookie não anexado ou token ausente).
+
+**Anti-padrões:**
+- **Mutação por GET:** o vetor mais barato de todos, e viola a RFC 7231. Mutação só em POST/PUT/PATCH/DELETE.
+- **Confiar no default implícito do SameSite:** varia por browser e não existe fora de browser. Declare sempre.
+- **JWT em localStorage "porque é simples":** troca CSRF por XSS — e XSS é mais comum. Se puder, cookie `HttpOnly` + `SameSite`.
+- **Achar que "API só-JSON" é imune:** forms HTML só mandam `urlencoded`/`multipart`, mas `fetch` cross-site com `credentials:'include'` manda JSON — SameSite continua necessário.
+
+---
+
+## Passo-a-passo aplicado (faça agora, ~30min)
 
 ```bash
-# Meet Hub tem Express com rotas autenticadas — revisar os cookies de sessão
-
 cd ~/projetos/meet-hub
-
-# 1. Encontrar onde cookies de sessão são configurados
-grep -rn "cookie\|session\|SameSite\|httpOnly\|secure" \
-  apps/api/src/ --include="*.ts" | grep -v "//\|node_modules"
-
-# 2. Verificar o express-session config ou cookie-parser
-grep -rn "express-session\|cookie-parser\|helmet" \
-  apps/api/ --include="*.ts" --include="*.json"
-
-# 3. Verificar onde JWT é armazenado no frontend
-grep -rn "localStorage\|sessionStorage\|cookie" \
-  apps/web/src/ --include="*.ts" --include="*.tsx"
-
-# 4. Para cada cookie encontrado, classificar:
-#    - Tem SameSite? Qual valor?
-#    - Tem HttpOnly? (protege de XSS)
-#    - Tem Secure? (só HTTPS — obrigatório em prod)
-#    - É cookie de sessão de auth? Se sim, SameSite=Strict é o ideal
-
-# 5. Em desenvolvimento local (HTTP), Secure=false é ok
-#    Em produção (HTTPS), Secure deve ser true
+# 1. Onde os cookies de sessão são configurados
+grep -rn "cookie\|session\|SameSite\|httpOnly\|secure" apps/api/src/ --include="*.ts" | grep -v "//\|node_modules"
+# 2. Config de express-session / cookie-parser / helmet
+grep -rn "express-session\|cookie-parser\|helmet" apps/api/ --include="*.ts" --include="*.json"
+# 3. Onde o JWT é armazenado no frontend
+grep -rn "localStorage\|sessionStorage\|cookie" apps/web/src/ --include="*.ts" --include="*.tsx"
+# 4. Endpoints que mudam estado por GET (vetor CSRF trivial — RFC 7231)
+grep -rn "app\.get\|router\.get" apps/api/src/ --include="*.ts" -A3 | grep -i "insert\|update\|delete\|create"
 ```
 
-Tabela de classificação esperada ao final:
+Para cada cookie: tem `SameSite`? qual valor? `HttpOnly`? `Secure`? É sessão de auth (então `Strict` é o ideal)?
 
 ```markdown
 ## DECISIONS.md — 2026-06-XX — [security] cookie audit Meet Hub
-
 | Cookie | HttpOnly | SameSite | Secure | Ação |
 |---|---|---|---|---|
 | session | ? | ? | ? | ? |
-| [jwt] | ? | ? | ? | ? |
-
-**Conclusões:**
-- [listar o que está ok e o que precisa de fix]
-**Próximos passos:**
-- Adicionar helmet() em todos os projetos AG com Express
-- Garantir SameSite=Lax no mínimo em cookies de sessão
-
-**Como explicar em entrevista (30s):**
-> "Auditei os cookies do Meet Hub. Encontrei cookie de sessão sem SameSite explícito — comportamento variava por browser. Adicionei SameSite=Lax (adequado para app interno) e HttpOnly para proteção adicional contra XSS. Para rotas de admin adotamos JWT em Bearer header — CSRF não se aplica por design."
+| [jwt]   | ? | ? | ? | ? |
+**Endpoints que mutam por GET:** [listar — corrigir p/ POST/PATCH]
+**Próximos passos:** helmet() em todos os projetos AG; SameSite=Lax mínimo em sessão.
+**Em entrevista (30s):**
+> "Auditei os cookies do Meet Hub. Cookie de sessão sem SameSite explícito — comportamento
+> variava por browser. Adicionei SameSite=Lax (app interno) + HttpOnly. Rotas de admin usam
+> JWT em Bearer header — CSRF não se aplica por design."
 ```
 
----
+## Por que cai em entrevista
 
-## Pergunta de entrevista esperada + resposta exemplar
+CSRF é **diferenciador** — poucos júnior explicam o mecanismo com precisão; quem sabe se destaca. Perguntas típicas: "o que é CSRF e como proteger uma API REST?", "diferença entre CSRF token e SameSite?", "se minha API aceita só JSON, preciso de proteção CSRF?". (Resposta da última: mais resistente, mas não imune — `fetch` cross-site com `credentials:'include'` manda JSON; SameSite continua importando.)
 
 > **P:** "O que é CSRF e como SameSite resolve isso?"
 >
@@ -213,21 +166,26 @@ Tabela de classificação esperada ao final:
 > **R (30s):**
 > "Não, se o JWT está em `Authorization: Bearer` header. O browser não envia headers customizados em requests cross-site automáticas — form e tag de imagem nunca incluem Authorization. Então o atacante não tem como forjar a request com credenciais. O risco vira XSS: se o JWT está em localStorage, JavaScript malicioso pode lê-lo. Por isso o par ideal é JWT em cookie `HttpOnly` (protege de XSS) com `SameSite=Strict` (protege de CSRF)."
 
----
+> **P:** "Por que CSRF é chamado de 'confused deputy' e o que isso te diz sobre a defesa?"
+>
+> **R (30s):**
+> "Porque o browser é um delegado que carrega a autoridade da vítima — o cookie de sessão — e é enganado por uma página de terceiro a usar essa autoridade contra o servidor. É o problema do confused deputy, do Norm Hardy, de 1988: quem age tem a permissão, mas a intenção veio de outro. Isso me diz que a defesa não é 'validar o cookie' — o cookie é válido — é reamarrar a autoridade à intenção do usuário: SameSite (o browser só anexa se a navegação partiu do meu site) ou um token que o atacante não consegue ler por causa da Same-Origin Policy. E respeitar a RFC 7231, nunca mutar estado por GET, que é o que deixa um `<img>` disparar a ação."
 
 ## Checkpoint
 
-- [ ] Consigo explicar o mecanismo do CSRF sem consultar (por que o browser envia cookies automaticamente)
-- [ ] Sei a diferença entre `SameSite=Strict`, `Lax` e `None` e quando usar cada um
-- [ ] Auditei os cookies do Meet Hub e documentei o resultado
-- [ ] Entendo por que JWT em `Authorization` header elimina CSRF por design
+- [ ] Explico o mecanismo do CSRF via confused deputy / ambient authority, sem consultar
+- [ ] Sei que é CWE-352 e que `SameSite` é definido na RFC 6265bis §5.2
+- [ ] Sei a diferença entre `Strict`, `Lax` e `None` e por que declaro sempre explícito
+- [ ] Explico por que mutar estado por GET (contra a RFC 7231) é o vetor CSRF mais barato
+- [ ] Entendo por que JWT em `Authorization` header elimina CSRF, e o risco que ele adiciona (XSS)
 - [ ] Recitei a resposta de entrevista em voz alta em menos de 30 segundos
-
----
 
 ## Recursos
 
-- [OWASP CSRF Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Cross-Site_Request_Forgery_Prevention_Cheat_Sheet.html)
-- [MDN — SameSite cookies](https://developer.mozilla.org/docs/Web/HTTP/Headers/Set-Cookie/SameSite)
-- [web.dev — SameSite cookies explained](https://web.dev/samesite-cookies-explained/) — explicação visual do comportamento por valor
-- [helmet.js](https://helmetjs.github.io/) — inclui configuração de cookies seguros para Express
+- CWE-352 (MITRE) — *Cross-Site Request Forgery*: a definição canônica
+- *The Confused Deputy* — Norm Hardy (ACM SIGOPS OSR, 1988): o modelo mental que explica CSRF (e por que a defesa é reamarrar autoridade à intenção)
+- RFC 6265bis — *Cookies: HTTP State Management Mechanism*, §5.2: o atributo `SameSite` (Strict/Lax/None)
+- RFC 7231, §4.2.1 — *Safe Methods*: por que GET não pode ter efeito de estado (a precondição do CSRF via `<img>`)
+- OWASP *CSRF Prevention Cheat Sheet* — SameSite, synchronizer token, double-submit
+- MDN — *Set-Cookie / SameSite* (comportamento por valor, por seção)
+- Módulo-irmão `02-xss` — a defesa complementar: `HttpOnly` cobre XSS, `SameSite` cobre CSRF; o token ideal precisa dos dois

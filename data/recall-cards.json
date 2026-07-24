@@ -1,6 +1,6 @@
 {
- "geradoEm": "2026-07-24T19:19:38.350Z",
- "total": 186,
+ "geradoEm": "2026-07-24T20:32:36.617Z",
+ "total": 200,
  "cards": [
   {
    "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md#1",
@@ -339,12 +339,28 @@
    "resposta": "Base unitária, meio integração, topo e2e — porque custo e fidelidade sobem juntos. Mas nos meus dashboards (React + Supabase) a pirâmide inverte pro formato troféu: quase não há lógica pura, o risco mora nos contratos com o banco e no RLS multi-tenant, então concentro em testes de integração contra um banco real. Unit eu reservo pros cálculos financeiros, que extraio pra funções puras. E2E só nos 4-5 fluxos que derrubam o cliente: login, troca de tenant, lançamento."
   },
   {
+   "id": "12-testes/01-piramide-de-testes.md#2",
+   "trilha": "12-testes",
+   "modulo": "12-testes/01-piramide-de-testes.md",
+   "tituloModulo": "01 — Pirâmide de Testes",
+   "pergunta": "Sua suíte roda em 40 minutos e falha aleatoriamente às vezes. Onde você olha primeiro?",
+   "resposta": "Suspeito de cone de sorvete: pirâmide invertida, e2e demais provando coisa que unit ou integração provariam mais barato e mais estável. Confirmo contando os testes por camada. O plano é empurrar cobertura pra baixo — cada e2e que só valida uma regra de cálculo vira um unit sobre a função pura extraída; cada e2e que valida um contrato de banco vira um teste de integração. No topo eu deixo só o smoke dos fluxos que derrubam o cliente. É o modo de falha que o próprio Google documentou: suíte top-heavy fica tão lenta e flaky que o time para de confiar nela e volta ao teste manual — a automação é desperdiçada."
+  },
+  {
    "id": "12-testes/02-primeiro-teste-vitest.md#1",
    "trilha": "12-testes",
    "modulo": "12-testes/02-primeiro-teste-vitest.md",
    "tituloModulo": "02 — Primeiro Teste com Vitest",
    "pergunta": "Você tem um projeto React sem nenhum teste. Por onde começa?",
    "resposta": "Não começo instalando ferramenta — começo achando a lógica pura de maior risco, geralmente cálculo financeiro que vive inline em componente. Extraio pra uma função sem I/O, instalo Vitest — que num projeto Vite usa o mesmo pipeline do app, config quase zero — e escrevo três casos: o feliz e duas bordas. Antes de confiar no verde, quebro o teste de propósito pra provar que ele detecta falha. Depois ligo `vitest run` no GitHub Actions pra virar gate de merge. Um teste que bloqueia PR vale mais que cinquenta que ninguém roda."
+  },
+  {
+   "id": "12-testes/02-primeiro-teste-vitest.md#2",
+   "trilha": "12-testes",
+   "modulo": "12-testes/02-primeiro-teste-vitest.md",
+   "tituloModulo": "02 — Primeiro Teste com Vitest",
+   "pergunta": "Qual a estrutura de um bom teste unitário?",
+   "resposta": "Sigo o Arrange-Act-Assert, que é a versão enxuta do Four-Phase Test do Meszaros: arranjo o input conhecido, executo o código sob teste numa linha, e afirmo a saída — cada fase separada e legível como uma frase, 'dado isto, quando faço aquilo, espero isto'. Quando as fases se misturam num bloco só, o teste vira o smell Obscure Test: passa a ser difícil de ler e frágil de manter. E o teste tem que ser determinístico e isolado — mesma entrada, mesma saída, sem depender de banco, relógio ou de outro teste. Essa anatomia não é do Vitest; é a linhagem xUnit que o Kent Beck fundou lá no SUnit."
   },
   {
    "id": "12-testes/03-testar-logica-de-negocio.md#1",
@@ -355,12 +371,28 @@
    "resposta": "Primeiro extraio a regra pra função pura — entrada: lista de vendas; saída: número; zero fetch, zero data interna. Isso paga sozinho: já vi dois dashboards divergirem porque a 'mesma' fórmula existia em dois lugares com arredondamentos diferentes. Depois escrevo a tabela de casos antes dos asserts — vazio, corte exato da faixa, cancelada, centavos no limite. As lacunas da tabela viram pergunta pro cliente, não suposição minha. Cálculo crítico eu fecho com propriedades no fast-check."
   },
   {
+   "id": "12-testes/03-testar-logica-de-negocio.md#2",
+   "trilha": "12-testes",
+   "modulo": "12-testes/03-testar-logica-de-negocio.md",
+   "tituloModulo": "03 — Testar Lógica de Negócio",
+   "pergunta": "Qual a diferença entre teste por exemplo e property-based, e quando usar cada um?",
+   "resposta": "Teste por exemplo prova os casos que eu imaginei — a tabela de bordas que documenta a regra. Property-based, que vem do QuickCheck do Claessen e Hughes, faz o contrário: eu declaro invariantes tipo 'comissão nunca é negativa' ou 'cancelada não muda o total', e a lib gera centenas de inputs aleatórios tentando quebrar isso. O ouro do QuickCheck é o shrinking: quando acha uma falha, encolhe o input até o menor contra-exemplo, então em vez de um array de 400 itens eu recebo os 2 que importam. Um não substitui o outro — a tabela documenta, as propriedades caçam a borda que eu não previ. Uso em cálculo financeiro; em UI quase nunca vale."
+  },
+  {
    "id": "12-testes/04-mocks-so-em-boundary.md#1",
    "trilha": "12-testes",
    "modulo": "12-testes/04-mocks-so-em-boundary.md",
    "tituloModulo": "04 — Mocks Só em Boundary",
    "pergunta": "Quando você usa mock e quando evita?",
    "resposta": "Mocko só boundary: rede, banco, relógio — o que não controlo. No sync de ERP que mantenho, mocko o fetch com fixture capturada de payload real anonimizado — fixture inventada testa minha imaginação, não o contrato. Módulo interno nunca: se preciso mockar meu próprio código pra testar, isso é acoplamento, e o teste passa a travar refactor em vez de proteger. Quando dá, nem mocko: injeto a dependência — relógio como parâmetro em vez de `vi.setSystemTime`. Mock é plano B; design é o plano A."
+  },
+  {
+   "id": "12-testes/04-mocks-so-em-boundary.md#2",
+   "trilha": "12-testes",
+   "modulo": "12-testes/04-mocks-so-em-boundary.md",
+   "tituloModulo": "04 — Mocks Só em Boundary",
+   "pergunta": "Qual a diferença entre stub e mock, e por que isso muda a robustez do teste?",
+   "resposta": "Na taxonomia do Meszaros, stub devolve resposta pronta e serve o teste de estado — 'dado X, a saída foi Y' — que só olha entrada e saída e por isso sobrevive a refactor. Mock é pré-programado com as chamadas que espera e verifica interação — 'chamou tal método duas vezes' — que quebra com qualquer reorganização interna, mesmo correta. Como o Fowler põe em 'Mocks Aren't Stubs': interação é legítima no boundary, onde 'mandei o request certo' É o comportamento observável; internamente vira change detector, o Fragile Test do Meszaros — o teste especifica *como* em vez de *o quê* e passa a impedir o refactor que deveria proteger."
   },
   {
    "id": "12-testes/05-e2e-playwright.md#1",
@@ -371,6 +403,14 @@
    "resposta": "Pelo custo da quebra, não pela facilidade de testar. E2E é a camada mais cara — lenta, exige estado conhecido, quebra por motivo que não é bug — então reservo pros fluxos onde produção quebrada custa caro: login, lançamento de dinheiro, isolamento entre tenants. Uso Playwright com seletores por role, credencial de teste via secret e trace ligado no retry. Minha meta é um smoke de meia dúzia de fluxos em poucos minutos no CI, não oitenta testes que o time aprende a ignorar."
   },
   {
+   "id": "12-testes/05-e2e-playwright.md#2",
+   "trilha": "12-testes",
+   "modulo": "12-testes/05-e2e-playwright.md",
+   "tituloModulo": "05 — E2E com Playwright",
+   "pergunta": "Seus testes de e2e falham de vez em quando sem mudança no código. Como você ataca isso?",
+   "resposta": "A causa número um é espera por tempo em vez de espera por estado — aquele `sleep(3000)` que às vezes não basta. O Playwright resolve na raiz com auto-waiting: antes de cada ação ele checa que o elemento está visível, estável e habilitado, então eu troco todo sleep por `expect(...).toBeVisible()`. As outras causas clássicas são dado residual entre testes — que eu mato com seed/reset pra cada teste ser hermético — e relógio ou rede reais. E ligo o trace no retry: a falha vira um filme navegável com o request que voltou 500, então paro de chutar. É o mesmo diagnóstico que o Fowler descreve em 'Eradicating Non-Determinism in Tests'."
+  },
+  {
    "id": "12-testes/06-tdd-quando-vale.md#1",
    "trilha": "12-testes",
    "modulo": "12-testes/06-tdd-quando-vale.md",
@@ -379,12 +419,28 @@
    "resposta": "Pratico onde ele rende: lógica de negócio com regra conhecida e bugfix — bug vira teste vermelho antes do fix, o que prova o fix e me dá regressão de graça. Em UI exploratória eu deliberadamente não uso: ali estou descobrindo o requisito, e teste escrito antes congela um chute que vai mudar três vezes no dia — escrevo o teste quando a regra estabiliza e extraio a lógica pra função pura. O que considero inegociável não é a ordem, é ver o teste falhar em algum momento: teste que nasceu verde e nunca ficou vermelho não provou nada."
   },
   {
+   "id": "12-testes/06-tdd-quando-vale.md#2",
+   "trilha": "12-testes",
+   "modulo": "12-testes/06-tdd-quando-vale.md",
+   "tituloModulo": "06 — TDD: Quando Vale",
+   "pergunta": "Tem evidência de que TDD melhora a qualidade do código?",
+   "resposta": "A evidência é mista, e eu prefiro ser honesto sobre isso. O estudo da Microsoft e IBM do Nagappan em 2008 achou de 40 a 90% menos defeitos com TDD, mas ao custo de mais tempo inicial e sem grupo de controle. Replicações controladas depois, tipo o Fucci em 2016, sugerem que o ordenamento 'teste primeiro' em si tem efeito pequeno — o que parece render é trabalhar em passos pequenos e uniformes, que teste-depois disciplinado também dá. Então eu trato o ganho de qualidade como plausível, não provado, e vendo o TDD pelo que ele comprovadamente entrega: me obriga a desenhar a interface antes da implementação e me dá regressão de graça. O que eu não faço é vender TDD como bala de prata baseado em número de multiplicador que nem o Boehm original sustenta direito."
+  },
+  {
    "id": "12-testes/07-regressao-e-ci.md#1",
    "trilha": "12-testes",
    "modulo": "12-testes/07-regressao-e-ci.md",
    "tituloModulo": "07 — Regressão e CI",
    "pergunta": "Sua suíte tem um teste que falha às vezes. O que você faz?",
    "resposta": "Trato como incidente, porque flaky é pior que sem teste — treina o time a dar re-run no vermelho, e aí o vermelho verdadeiro passa junto. Primeiro reproduzo e meço: rodo 20 vezes, embaralho a ordem. As causas quase sempre são estado residual entre testes, relógio real ou espera implícita. Se não consigo corrigir no dia, quarenteno com skip e registro pendência datada com dono — o que não faço é deixar falhando intermitente nem esconder com retry global, porque retry mascara exatamente o sinal que o teste existe pra dar."
+  },
+  {
+   "id": "12-testes/07-regressao-e-ci.md#2",
+   "trilha": "12-testes",
+   "modulo": "12-testes/07-regressao-e-ci.md",
+   "tituloModulo": "07 — Regressão e CI",
+   "pergunta": "Por que investir em testes automatizados? Qual o retorno?",
+   "resposta": "O retorno não é provar que o código novo funciona — é poder mudar o código velho sem medo. O Feathers define legado como 'código sem testes' justamente por isso: sem rede, todo refactor é aposta, e o time para de refatorar, então a dívida cresce. A suíte é o que mantém o sistema mutável ao longo do tempo. E isso não é opinião: os dados do DORA no livro *Accelerate* mostram que automação de teste e integração contínua predizem as quatro métricas de entrega — deploy mais frequente, lead time menor, menos falha de mudança e restauração mais rápida. A rede não desacelera; é o que deixa entregar rápido e estável ao mesmo tempo."
   },
   {
    "id": "20-arquitetura/01-solid-na-pratica.md#1",
@@ -1059,6 +1115,14 @@
    "resposta": "CVE-2021-44228: a biblioteca de logging Java `log4j` interpretava strings no formato `${jndi:ldap://...}` como comandos — bastava logar input do usuário para executar código remoto. Grave porque: log4j está em metade da internet Java, o exploit tinha uma linha, e funciona contra qualquer serviço que logava qualquer coisa do usuário. É o caso definitivo de A06 (Vulnerable Components) — a lib estava em todo lugar, mas ninguém rastreava a versão."
   },
   {
+   "id": "60-seguranca/01-owasp-top-10-resumo.md#3",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/01-owasp-top-10-resumo.md",
+   "tituloModulo": "01 — OWASP Top 10: Mapa do Território",
+   "pergunta": "Por que o OWASP Top 10 muda de edição em edição, e como você não fica desatualizado?",
+   "resposta": "Porque o Top 10 é empírico — é o retrato do que os dados de milhares de aplicações mostram quebrando *agora*, ranqueado por taxa de incidência. Categorias entram, saem e se fundem: XSS virou subclasse de Injection em 2021, Broken Access Control subiu pra número um. O que não muda são os princípios que estão por baixo — os oito de Saltzer e Schroeder, de 1975: least privilege, fail-safe defaults, complete mediation. Eu ancoro no princípio, não na posição da lista: cada categoria OWASP é a violação de um deles. Assim eu classifico até uma vulnerabilidade que ainda não tem nome na lista."
+  },
+  {
    "id": "60-seguranca/02-xss-stored-reflected-dom.md#1",
    "trilha": "60-seguranca",
    "modulo": "60-seguranca/02-xss-stored-reflected-dom.md",
@@ -1073,6 +1137,14 @@
    "tituloModulo": "02 — XSS: Stored, Reflected e DOM-Based",
    "pergunta": "Você já corrigiu um XSS? Me conta.",
    "resposta": "Sim, no PULSAR-RH em maio de 2026. Era DOM-Based: parâmetros de URL eram lidos com URLSearchParams e inseridos no DOM via innerHTML sem nenhum encoding. Um atacante podia enviar um link com o payload na URL. O fix foi trocar por textContent para os casos simples. Depois adicionamos CSP via helmet como segunda linha de defesa — se encoding falhar em algum ponto, o browser recusa executar script não listado na policy."
+  },
+  {
+   "id": "60-seguranca/02-xss-stored-reflected-dom.md#3",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/02-xss-stored-reflected-dom.md",
+   "tituloModulo": "02 — XSS: Stored, Reflected e DOM-Based",
+   "pergunta": "Por que se diz que XSS é um problema de saída, não de entrada? E por que 'escapar o input' não basta?",
+   "resposta": "Porque a fraqueza — CWE-79 — é gerar a página misturando dado e markup sem neutralizar o dado *no contexto em que ele cai*. E encoding é contextual: o mesmo caractere é inofensivo no corpo de um parágrafo e perigoso dentro de um atributo ou de um bloco `<script>`. Se eu 'escapo o input' na entrada, escapo pra um contexto que ainda não sei qual é, corrompo o dado no banco e não protejo o sink certo. Por isso a regra é encodar na saída, no ponto exato onde o dado vira DOM, e deixar CSP como defesa em profundidade caso eu esqueça um ponto."
   },
   {
    "id": "60-seguranca/03-sql-injection-prepared-statements.md#1",
@@ -1091,6 +1163,14 @@
    "resposta": "Input de usuário concatenado em query: `SELECT * FROM users WHERE email = '${input}'` — se input for `' OR '1'='1`, retorna todos os usuários. A prevenção correta é prepared statement: a query é compilada com placeholder `$1`, e o input chega separado como parâmetro — o banco nunca interpreta o dado como código. Em Node com Prisma isso é automático. Em raw query com `pg`, você passa `[userInput]` como segundo argumento do `pool.query`."
   },
   {
+   "id": "60-seguranca/03-sql-injection-prepared-statements.md#3",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/03-sql-injection-prepared-statements.md",
+   "tituloModulo": "03 — SQL Injection e Prepared Statements",
+   "pergunta": "Por que um prepared statement é imune, e não só 'mais seguro'? Explica o mecanismo.",
+   "resposta": "Porque ele separa os dois planos no tempo. O banco recebe primeiro a estrutura da query — `WHERE email = $1` — e compila o plano de execução com o `$1` marcado como slot de dado. Só depois os valores chegam por um canal separado. Como o plano já está congelado antes de o dado existir, não há como o dado virar estrutura: uma aspa no input é só uma aspa dentro do valor, não o fim de um literal. É a mesma ideia do XSS — manter dado e código em planos separados. O que a concatenação faz é justamente destruir essa separação."
+  },
+  {
    "id": "60-seguranca/04-csrf-e-samesite-cookies.md#1",
    "trilha": "60-seguranca",
    "modulo": "60-seguranca/04-csrf-e-samesite-cookies.md",
@@ -1105,6 +1185,14 @@
    "tituloModulo": "04 — CSRF e SameSite Cookies",
    "pergunta": "Se minha API usa JWT em Authorization header, preciso me preocupar com CSRF?",
    "resposta": "Não, se o JWT está em `Authorization: Bearer` header. O browser não envia headers customizados em requests cross-site automáticas — form e tag de imagem nunca incluem Authorization. Então o atacante não tem como forjar a request com credenciais. O risco vira XSS: se o JWT está em localStorage, JavaScript malicioso pode lê-lo. Por isso o par ideal é JWT em cookie `HttpOnly` (protege de XSS) com `SameSite=Strict` (protege de CSRF)."
+  },
+  {
+   "id": "60-seguranca/04-csrf-e-samesite-cookies.md#3",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/04-csrf-e-samesite-cookies.md",
+   "tituloModulo": "04 — CSRF e SameSite Cookies",
+   "pergunta": "Por que CSRF é chamado de 'confused deputy' e o que isso te diz sobre a defesa?",
+   "resposta": "Porque o browser é um delegado que carrega a autoridade da vítima — o cookie de sessão — e é enganado por uma página de terceiro a usar essa autoridade contra o servidor. É o problema do confused deputy, do Norm Hardy, de 1988: quem age tem a permissão, mas a intenção veio de outro. Isso me diz que a defesa não é 'validar o cookie' — o cookie é válido — é reamarrar a autoridade à intenção do usuário: SameSite (o browser só anexa se a navegação partiu do meu site) ou um token que o atacante não consegue ler por causa da Same-Origin Policy. E respeitar a RFC 7231, nunca mutar estado por GET, que é o que deixa um `<img>` disparar a ação."
   },
   {
    "id": "60-seguranca/05-secrets-management-env-rotacao.md#1",
@@ -1123,6 +1211,14 @@
    "resposta": "É a chave de superusuário do Supabase — bypassa todas as políticas de RLS. Quem tem a chave pode ler e escrever qualquer dado de qualquer tenant sem restrição, via HTTPS de qualquer IP. É mais perigosa que a senha do banco porque não precisa de acesso de rede ao servidor. Deve ficar só no backend, nunca no bundle do frontend, e ser rotacionada a cada 6 meses ou imediatamente se houver suspeita de exposição."
   },
   {
+   "id": "60-seguranca/05-secrets-management-env-rotacao.md#3",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/05-secrets-management-env-rotacao.md",
+   "tituloModulo": "05 — Secrets Management e Rotação",
+   "pergunta": "Por que a gente separa secret do código, se o repositório é privado? E por que rotacionar se nada vazou?",
+   "resposta": "Pelo princípio de Kerckhoffs, de 1883: a segurança tem que morar na chave, não no segredo do código. Isso me deixa tratar o código como potencialmente público — repo, bundle, review — porque a proteção não depende dele; depende do secret, que por isso fica rigorosamente separado. Repo privado vira público, histórico vaza, bundle vai pro browser. Sobre rotação: eu parto do princípio de que todo secret será exposto um dia — a rotação é o cryptoperiod do NIST, ela não previne o leak, encurta a janela de um leak que eu ainda não descobri. Chave de blast radius maior, como a service role, tem o menor cryptoperiod."
+  },
+  {
    "id": "60-seguranca/06-lgpd-na-pratica.md#1",
    "trilha": "60-seguranca",
    "modulo": "60-seguranca/06-lgpd-na-pratica.md",
@@ -1139,6 +1235,14 @@
    "resposta": "São dados que exigem proteção reforçada: saúde, origem racial, religião, opinião política, dados biométricos. No PULSAR-RH temos indicadores NR-1 de risco psicossocial — isso é dado de saúde ocupacional, categoria especial. O impacto no design: precisamos de base legal explícita para processar (não basta interesse legítimo genérico), controle de acesso mais granular (nem todo funcionário da empresa cliente pode ver), retenção mais curta e auditoria de quem acessou o quê."
   },
   {
+   "id": "60-seguranca/06-lgpd-na-pratica.md#3",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/06-lgpd-na-pratica.md",
+   "tituloModulo": "06 — LGPD na Prática",
+   "pergunta": "Qual a diferença entre anonimização e pseudoanonimização — e por que isso importa juridicamente?",
+   "resposta": "Anonimização, no art. 12 da LGPD, é irreversível: o dado não é mais associável a ninguém, e por isso sai do escopo da lei. Pseudoanonimização só troca o identificador por um pseudônimo — mas o dado continua reidentificável, por quem tem a chave ou por cruzamento com outra base. A Latanya Sweeney provou isso: CEP mais data de nascimento mais sexo identificam uniquamente 87% das pessoas. Então dado pseudoanonimizado ainda é dado pessoal e continua sob a LGPD e o GDPR. Importa porque muita gente 'anonimiza' trocando o nome por um id e acha que está fora da lei — não está. No design, eu uso pseudo pra preservar integridade referencial, mas trato a tabela como se ainda tivesse PII, porque tem."
+  },
+  {
    "id": "60-seguranca/07-auditoria-logs-imutavel.md#1",
    "trilha": "60-seguranca",
    "modulo": "60-seguranca/07-auditoria-logs-imutavel.md",
@@ -1153,6 +1257,14 @@
    "tituloModulo": "07 — Auditoria e Logs Imutáveis",
    "pergunta": "O que você loga numa auditoria de acesso a dados sensíveis?",
    "resposta": "User ID, não dados pessoais do usuário — para não criar PII no próprio log. A ação em vocabulário de negócio: 'view_employee_report', não só 'GET /api/reports/123'. O ID do recurso acessado. Timestamp e IP. Sucesso ou falha. O que eu nunca loco: senha, token de sessão, CPF, dados de saúde em texto claro — o log é um dado de auditoria que vai ter acesso mais amplo que o dado original."
+  },
+  {
+   "id": "60-seguranca/07-auditoria-logs-imutavel.md#3",
+   "trilha": "60-seguranca",
+   "modulo": "60-seguranca/07-auditoria-logs-imutavel.md",
+   "tituloModulo": "07 — Auditoria e Logs Imutáveis",
+   "pergunta": "Por que um audit log importa se você já tem prevenção — firewall, RLS, auth? E por que a imutabilidade é a parte inegociável?",
+   "resposta": "Porque prevenção nunca é completa — isso é o princípio de compromise recording, do Saltzer e Schroeder, de 1975: quando um ataque passa, registrar de forma confiável o que aconteceu costuma valer mais do que tentar prevenir tudo. O audit log é o mecanismo de não-repúdio do sistema: liga ator, ação e tempo. E a imutabilidade é inegociável porque um log que pode ser editado não é evidência — o próprio atacante apaga o rastro. Por isso trigger que bloqueia UPDATE e DELETE, role só-INSERT, e hash chain quando preciso provar integridade a um auditor externo. Foi o JPMorgan em 2014: foram os logs de acesso que permitiram medir a extensão do breach depois."
   },
   {
    "id": "60-seguranca/08-dependency-vulnerabilities.md#1",
