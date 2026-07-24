@@ -1,6 +1,6 @@
 {
- "geradoEm": "2026-07-24T20:32:36.617Z",
- "total": 200,
+ "geradoEm": "2026-07-24T20:53:17.802Z",
+ "total": 234,
  "cards": [
   {
    "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md#1",
@@ -283,6 +283,14 @@
    "resposta": "É o princípio de que uma função — ou módulo, ou classe — deve ter uma única razão pra mudar. Não 'faz uma coisa só', que é vago. Uma razão pra mudar quer dizer: existe um único requisito ou responsabilidade de negócio que, ao mudar, exigiria mexer aqui."
   },
   {
+   "id": "10-codigo-limpo/01-srp-funcoes-curtas.md#3",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/01-srp-funcoes-curtas.md",
+   "tituloModulo": "01 — SRP e Funções Curtas",
+   "pergunta": "Um colega diz que funções pequenas viram 'shallow modules' e pioram o design. Como você responde?",
+   "resposta": "Ele está citando o Ousterhout, e ele tem razão — quando o corte é feito por número de linhas. Se você quebra uma função coesa em seis pedaços que só se entendem juntos, você não decompôs nada: criou 'conjoined methods' e ainda pagou overhead de interface em cada um. O McConnell reforça isso: a evidência empírica não sustenta que rotina curta tem menos bug."
+  },
+  {
    "id": "10-codigo-limpo/02-early-return-guard-clauses.md#1",
    "trilha": "10-codigo-limpo",
    "modulo": "10-codigo-limpo/02-early-return-guard-clauses.md",
@@ -297,6 +305,14 @@
    "tituloModulo": "02 — Early Return e Guard Clauses",
    "pergunta": "Por que nesting profundo é um problema?",
    "resposta": "Não é estético — é cognitivo. Cada nível de indentação é uma condição que o leitor precisa manter ativa na memória de trabalho enquanto lê o código dentro. Com 4 níveis, você está rastreando 4 condições ao mesmo tempo pra entender o que aquele bloco interno faz."
+  },
+  {
+   "id": "10-codigo-limpo/02-early-return-guard-clauses.md#3",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/02-early-return-guard-clauses.md",
+   "tituloModulo": "02 — Early Return e Guard Clauses",
+   "pergunta": "Um revisor exige um único `return` por função ('single exit'). Você concorda?",
+   "resposta": "Depende da linguagem, e a regra costuma ser mal-atribuída. O 'single exit' não vem do teorema da programação estruturada — Böhm-Jacopini fala sobre o que é *expressável* com sequência, seleção e iteração, não sobre quantos returns escrever. A regra fazia sentido em C, onde um único ponto de saída garantia que o `free`/`close` de limpeza rodasse — é a origem do `goto cleanup`."
   },
   {
    "id": "10-codigo-limpo/03-nomes-vs-comentarios.md#1",
@@ -315,6 +331,14 @@
    "resposta": "Quando ele descreve o quê o código faz. Se tenho `// loop through employees and filter active` antes de um forEach, o comentário está repetindo o código em inglês. Deleto e possivelmente extrai aquele bloco em uma função `filterActiveEmployees` — o nome passa a carregar o contexto."
   },
   {
+   "id": "10-codigo-limpo/03-nomes-vs-comentarios.md#3",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/03-nomes-vs-comentarios.md",
+   "tituloModulo": "03 — Nomes vs Comentários",
+   "pergunta": "Ouvi que 'código bom se auto-documenta e dispensa comentário'. Você concorda?",
+   "resposta": "Concordo com metade e o Ousterhout ajuda a separar. A metade certa: comentário que repete o código em inglês é muleta de nome fraco — o nome deve carregar o 'o quê', e tem até evidência empírica de que palavra completa é mais rápida de ler que abreviação. Essa parte é auto-documentação de verdade."
+  },
+  {
    "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md#1",
    "trilha": "10-codigo-limpo",
    "modulo": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
@@ -329,6 +353,14 @@
    "tituloModulo": "04 — Abstração e a Regra dos 3",
    "pergunta": "O que é YAGNI?",
    "resposta": "You Aren't Gonna Need It — não construa por antecipação. Se não tem um segundo caso real que justifique a abstração agora, não crie a abstração agora."
+  },
+  {
+   "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md#3",
+   "trilha": "10-codigo-limpo",
+   "modulo": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
+   "tituloModulo": "04 — Abstração e a Regra dos 3",
+   "pergunta": "O que é pior — duplicação ou a abstração errada? Por quê?",
+   "resposta": "A abstração errada, e a Sandi Metz tem um ensaio inteiro sobre isso: prefira duplicação à abstração errada. O mecanismo é o que mata. Você extrai cedo, aí chega um chamador que precisa de algo quase igual e você põe um parâmetro; chega outro, mais um `if`; em pouco tempo a abstração é um emaranhado de flags que ninguém entende, e desfazer custa mais do que nunca ter feito — você paga pra criar e paga pra desmanchar."
   },
   {
    "id": "12-testes/01-piramide-de-testes.md#1",
@@ -441,6 +473,118 @@
    "tituloModulo": "07 — Regressão e CI",
    "pergunta": "Por que investir em testes automatizados? Qual o retorno?",
    "resposta": "O retorno não é provar que o código novo funciona — é poder mudar o código velho sem medo. O Feathers define legado como 'código sem testes' justamente por isso: sem rede, todo refactor é aposta, e o time para de refatorar, então a dívida cresce. A suíte é o que mantém o sistema mutável ao longo do tempo. E isso não é opinião: os dados do DORA no livro *Accelerate* mostram que automação de teste e integração contínua predizem as quatro métricas de entrega — deploy mais frequente, lead time menor, menos falha de mudança e restauração mais rápida. A rede não desacelera; é o que deixa entregar rápido e estável ao mesmo tempo."
+  },
+  {
+   "id": "15-git/01-modelo-mental.md#1",
+   "trilha": "15-git",
+   "modulo": "15-git/01-modelo-mental.md",
+   "tituloModulo": "01 — O Modelo Mental do Git",
+   "pergunta": "O que é o Git, em uma frase — e o que é uma branch nesse modelo?",
+   "resposta": "Git é um grafo de snapshots imutáveis endereçados por conteúdo. Cada commit aponta para uma tree (o snapshot) e para seus pais; o nome de tudo é o SHA-1 do conteúdo, então nada muda sem mudar de identidade. Branch é só um ponteiro para um commit do grafo."
+  },
+  {
+   "id": "15-git/01-modelo-mental.md#2",
+   "trilha": "15-git",
+   "modulo": "15-git/01-modelo-mental.md",
+   "tituloModulo": "01 — O Modelo Mental do Git",
+   "pergunta": "SHA-1 já foi quebrado (SHAttered, 2017). Isso torna o Git inseguro?",
+   "resposta": "Não imediatamente, e a razão é o papel do hash: no Git ele **nomeia e verifica integridade**, não é uma assinatura de segurança. O SHAttered achou uma colisão em ~2⁶³ operações, mas explorar isso exigiria forjar uma colisão *e* fazer a vítima aceitar o objeto venenoso. Ainda assim a comunidade agiu: adotou SHA-1 com detecção de colisão (sha1dc) e especificou um formato de objeto em SHA-256, cuja transição está em andamento. Resumindo: integridade não é o mesmo que resistência a assinatura forjada, e havia mitigação — mas eu não afirmaria que 'o Git já é SHA-256 hoje', porque a migração ainda amadurece."
+  },
+  {
+   "id": "15-git/02-staging.md#1",
+   "trilha": "15-git",
+   "modulo": "15-git/02-staging.md",
+   "tituloModulo": "02 — Os Três Estados: Working Directory, Index e Repositório",
+   "pergunta": "Explica as três áreas do Git e o que `add`, `commit` e os `diff` fazem entre elas.",
+   "resposta": "São três áreas: working directory (disco), staging/index (monta o próximo commit) e o repositório (.git, snapshots gravados). `git add` move do working pro index; `git commit` grava o index como snapshot. `git diff` compara working com index; `git diff --staged` compara index com o último commit."
+  },
+  {
+   "id": "15-git/02-staging.md#2",
+   "trilha": "15-git",
+   "modulo": "15-git/02-staging.md",
+   "tituloModulo": "02 — Os Três Estados: Working Directory, Index e Repositório",
+   "pergunta": "Durante um conflito de merge, o que o `git add` no arquivo conflitado significa? Por que ele 'resolve'?",
+   "resposta": "Porque o index, durante o conflito, guarda **três versões** do arquivo em estágios separados: stage 1 é a base comum, stage 2 é o meu lado (ours), stage 3 é o lado que trago (theirs) — dá pra ver com `git ls-files -u`. Enquanto existirem os três estágios, o caminho está 'unmerged'. Quando eu edito pro código correto e dou `git add`, colapso os três num único stage 0 — ou seja, `add` não está adicionando conteúdo novo, está sinalizando ao Git que aquele conflito virou uma versão só, resolvida. Por isso o passo seguinte é `--continue`, e não um novo commit manual."
+  },
+  {
+   "id": "15-git/03-branches-merge-rebase.md#1",
+   "trilha": "15-git",
+   "modulo": "15-git/03-branches-merge-rebase.md",
+   "tituloModulo": "03 — Branches, Merge e Rebase",
+   "pergunta": "Qual a diferença entre merge e rebase, e o que é uma branch nesse meio?",
+   "resposta": "Branch é um ponteiro pra um commit; HEAD aponta pra onde estou. Merge junta dois ramos preservando ambos — fast-forward se a base não andou, senão um merge commit de dois pais. Rebase reaplica meus commits em cima de outra base, gerando hashes novos e história linear — por isso só rebaseio commits locais que ninguém mais tem."
+  },
+  {
+   "id": "15-git/03-branches-merge-rebase.md#2",
+   "trilha": "15-git",
+   "modulo": "15-git/03-branches-merge-rebase.md",
+   "tituloModulo": "03 — Branches, Merge e Rebase",
+   "pergunta": "Então rebase é melhor porque a história fica mais limpa?",
+   "resposta": "Não trataria como 'melhor' — é um trade-off que o próprio Pro Git apresenta como debate. Um lado diz que o histórico deve ser o registro fiel do que aconteceu, merges e tudo, e rebase falsifica isso; o outro diz que o histórico é uma narrativa pro próximo leitor e deve ser editado pra ficar linear. Minha regra prática resolve na maioria dos casos: rebase só no meu trabalho local ainda não publicado, pra atualizar com a main antes do PR; e merge pra integrar na main, que é compartilhada. A linha que eu nunca cruzo é rebasear commit que outra pessoa já tem — aí eu criaria uma história divergente da dela e forçaria um `push --force`."
+  },
+  {
+   "id": "15-git/04-conflitos.md#1",
+   "trilha": "15-git",
+   "modulo": "15-git/04-conflitos.md",
+   "tituloModulo": "04 — Resolver Conflitos",
+   "pergunta": "O que é um conflito de merge e como você resolve? E em rebase, muda algo?",
+   "resposta": "Conflito é sobreposição na mesma região; o Git pausa e marca os dois lados com `<<<< ==== >>>>` (ours/HEAD vs theirs). Eu edito pra deixar o código correto — que pode misturar os dois —, apago os marcadores, `git add` pra marcar resolvido e `--continue`. Se me perco, `--abort` volta ao estado anterior. Em rebase, ours/theirs ficam invertidos, então reviso com atenção."
+  },
+  {
+   "id": "15-git/04-conflitos.md#2",
+   "trilha": "15-git",
+   "modulo": "15-git/04-conflitos.md",
+   "tituloModulo": "04 — Resolver Conflitos",
+   "pergunta": "Por que o Git resolve a maioria dos merges sozinho e só te chama em alguns? E como você evita resolver errado?",
+   "resposta": "Porque ele faz um merge de três vias: acha a base comum das duas pontas e, região por região, se só um lado mudou em relação à base, ele aceita sozinho; só chama quando os dois mudaram a mesma região. Pra não resolver errado eu ligo o estilo `diff3`/`zdiff3`, que mostra a base **junto** com os dois lados — aí eu não escolho entre A e B no escuro, eu vejo que a base era X, um fez +Y e o outro +Z, e decido pela intenção. E confirmo que não sobrou nenhum marcador com `git diff --check` antes do `add`. Resolver conflito sem ver a base é como debugar sem ler o log."
+  },
+  {
+   "id": "15-git/05-desfazer.md#1",
+   "trilha": "15-git",
+   "modulo": "15-git/05-desfazer.md",
+   "tituloModulo": "05 — Desfazer Qualquer Coisa",
+   "pergunta": "Como você desfaz coisas no Git — `reset`, `restore`, `revert` — e o que fazer se apagar um commit sem querer?",
+   "resposta": "Desfazer é mover ponteiros, não apagar. `reset` move o branch — `--soft` preserva index e working, `--mixed` limpa o index, `--hard` apaga tudo do disco. `restore` mexe em arquivos sem mover branch. Em branch compartilhada uso `revert`, que cria um commit inverso sem reescrever história. E se eu apagar commits sem querer, o `reflog` guarda todos os SHAs por onde HEAD passou — recupero de lá."
+  },
+  {
+   "id": "15-git/05-desfazer.md#2",
+   "trilha": "15-git",
+   "modulo": "15-git/05-desfazer.md",
+   "tituloModulo": "05 — Desfazer Qualquer Coisa",
+   "pergunta": "Por que `reset` é perigoso na main e `revert` não? E tem alguma armadilha em reverter um merge?",
+   "resposta": "`reset` move a branch pra trás, ou seja, **reescreve** o histórico — na main isso some com commits que os outros já têm e cria divergência. `revert` não mexe em nada existente: cria um commit novo que aplica o inverso do alvo, então o histórico fica intacto e ninguém dessincroniza — por isso é o certo em branch pública. A armadilha do merge: reverter um merge exige `-m` pra dizer qual pai é a mainline, e ele desfaz só o **conteúdo**, não o registro da fusão — se eu tentar re-mergear o mesmo branch depois, o Git acha que já entrou e não traz nada; eu teria que 'reverter o revert'. Por isso prefiro desfazer antes de mergear."
+  },
+  {
+   "id": "15-git/06-ferramentas-cirurgicas.md#1",
+   "trilha": "15-git",
+   "modulo": "15-git/06-ferramentas-cirurgicas.md",
+   "tituloModulo": "06 — Ferramentas Cirúrgicas",
+   "pergunta": "Pra que servem `stash`, `cherry-pick`, `bisect` e `tag`?",
+   "resposta": "`stash` guarda o working dir numa pilha pra eu trocar de contexto sem commitar. `cherry-pick` copia um commit específico pra cá. `bisect` acha o commit que introduziu um bug por busca binária — log₂(n) testes em vez de n, e dá pra automatizar com `bisect run`. `tag` marca uma versão fixa; pra release uso tag anotada e empurro com `push --tags`."
+  },
+  {
+   "id": "15-git/06-ferramentas-cirurgicas.md#2",
+   "trilha": "15-git",
+   "modulo": "15-git/06-ferramentas-cirurgicas.md",
+   "tituloModulo": "06 — Ferramentas Cirúrgicas",
+   "pergunta": "Por que `git bisect` é tão mais rápido que testar commit por commit, e o que pode fazer ele errar?",
+   "resposta": "Porque ele faz busca binária em vez de linear. O bug, uma vez introduzido, permanece — então o histórico é monotônico entre um `good` e um `bad`, e a cada teste eu descubro em qual metade ele está e descarto a outra. Isso é O(log n): 1000 commits saem em ~10 testes em vez de 1000. É o delta debugging do Zeller, e é o mesmo princípio de refutação que corta o espaço de busca pela metade a cada pergunta sim/não. O que faz errar é a precondição: se eu marco como `good` um commit que já tinha o bug, a busca binária conclui o commit errado com toda a confiança — os limites iniciais têm que estar corretos, senão é lixo entra, lixo sai. E se tenho um teste automatizado, `git bisect run` roda tudo sozinho."
+  },
+  {
+   "id": "15-git/07-fluxo-profissional.md#1",
+   "trilha": "15-git",
+   "modulo": "15-git/07-fluxo-profissional.md",
+   "tituloModulo": "07 — Fluxo de Trabalho Profissional",
+   "pergunta": "Descreve seu fluxo de Git no dia a dia.",
+   "resposta": "Cada mudança nasce numa feature branch, com commits atômicos no padrão Conventional Commits (feat/fix/refactor...). Sincronizo com `pull --rebase` pra manter o histórico linear sem merge commits de sync, abro PR pra revisão — nunca merge direto na main — e mantenho `.gitignore` desde o primeiro commit pra builds, deps e `.env` jamais entrarem. `fetch` baixa sem tocar no meu trabalho; `pull` é fetch + integra."
+  },
+  {
+   "id": "15-git/07-fluxo-profissional.md#2",
+   "trilha": "15-git",
+   "modulo": "15-git/07-fluxo-profissional.md",
+   "tituloModulo": "07 — Fluxo de Trabalho Profissional",
+   "pergunta": "git-flow ou trunk-based? Qual é melhor?",
+   "resposta": "Depende do contexto, e essa é a resposta honesta. git-flow, do Driessen em 2010, tem branches de vida longa (develop, release, hotfix) e foi pensado pra software com releases versionados explícitos. O próprio Driessen adicionou uma nota em 2020 dizendo que, pra times de entrega contínua, ele costuma ser complexo demais e um fluxo mais simples encaixa melhor. Trunk-based — branches curtos, integrados na main pelo menos diariamente — é o outro pólo, e a pesquisa DORA do *Accelerate* achou que ele **correlaciona** com alta performance de entrega, embora seja correlação de survey, não prova causal. Pra web/SaaS com deploy contínuo eu escolho o lado trunk-based; pra um app empacotado em versões, git-flow ainda faz sentido. O erro é tratar qualquer um dos dois como dogma."
   },
   {
    "id": "20-arquitetura/01-solid-na-pratica.md#1",
@@ -673,6 +817,134 @@
    "tituloModulo": "08 — Privacidade por Design",
    "pergunta": "Como você garante anonimato numa pesquisa interna, sabendo que admin tem acesso total ao banco?",
    "resposta": "Por construção, não por política. No PULSAR-RH separei em duas tabelas sem chave de ligação: o ledger de participação — quem respondeu, para lembrete e adesão — e a tabela de respostas, sem user_id. A escrita é uma transação nas duas, mas não existe join possível: nem eu reconstruo quem disse o quê. E ataquei o próprio design: timestamp preciso permitiria correlação temporal, então o ledger guarda só a data; recorte pequeno identifica sem nome, então agregado respeita k mínimo. Hash não bastaria — pseudonimização revertível continua dado pessoal perante a LGPD."
+  },
+  {
+   "id": "35-ia-ml/01-o-que-e-ml.md#1",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/01-o-que-e-ml.md",
+   "tituloModulo": "01 — O que é Machine Learning de verdade",
+   "pergunta": "Qual a diferença entre machine learning e programação tradicional, e quando você usaria ML?",
+   "resposta": "Programação tradicional é DADOS + REGRAS → resultado; ML é DADOS + RESULTADO → regras. Em vez de escrever a lógica, eu dou exemplos e o modelo infere o padrão. Uso ML quando o padrão existe mas é complexo demais pra codar à mão — tipo detectar spam ou fraude — e quando tenho muitos exemplos rotulados."
+  },
+  {
+   "id": "35-ia-ml/01-o-que-e-ml.md#2",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/01-o-que-e-ml.md",
+   "tituloModulo": "01 — O que é Machine Learning de verdade",
+   "pergunta": "Se ML aprende sozinho, por que não usar ML pra tudo?",
+   "resposta": "Porque não existe modelo universalmente melhor — é o teorema No Free Lunch do Wolpert e Macready: todo ganho vem de um viés que casa com a estrutura do problema, então num problema de estrutura diferente o mesmo modelo é ruim. Na prática: se eu consigo escrever o `if`, escrevo o `if` — é determinístico, auditável e barato. ML entra quando o padrão é real mas escapa de qualquer regra mantível, e mesmo aí eu pago o preço de uma caixa-preta que erra por design, porque ela generaliza por indução e o dado novo pode não se parecer com o treino."
+  },
+  {
+   "id": "35-ia-ml/02-tipos-de-aprendizado.md#1",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/02-tipos-de-aprendizado.md",
+   "tituloModulo": "02 — Os 3 tipos de aprendizado",
+   "pergunta": "Quais são os tipos de aprendizado de máquina? Dá um exemplo de cada.",
+   "resposta": "Supervisionado aprende com gabarito — entrada e resposta certa, tipo prever preço ou classificar spam. Não-supervisionado só recebe os dados e acha padrão sozinho, tipo agrupar clientes parecidos. Por reforço é tentativa e erro com recompensa, tipo treinar cachorro com petisco — é o que faz o AlphaGo, e o RLHF que alinha os LLMs."
+  },
+  {
+   "id": "35-ia-ml/02-tipos-de-aprendizado.md#2",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/02-tipos-de-aprendizado.md",
+   "tituloModulo": "02 — Os 3 tipos de aprendizado",
+   "pergunta": "Como o RLHF se encaixa nessas três famílias, e por que ele importa?",
+   "resposta": "RLHF é aprendizado por reforço: o LLM é o agente, e a recompensa vem de humanos que ranqueiam respostas — um reward model aprende essa nota e o modelo é ajustado pra maximizá-la, é o que o InstructGPT do Ouyang mostrou em 2022. Importa porque o pré-treino só ensina a prever o próximo token; é o RLHF que transforma isso num assistente útil e seguro. A Anthropic fez uma variante, a Constitutional AI, onde o próprio modelo se critica por princípios em vez de depender só de rótulo humano. O risco de qualquer RL é o reward hacking: se a recompensa é mal desenhada, o agente maximiza a nota sem resolver o problema."
+  },
+  {
+   "id": "35-ia-ml/03-dados-features-treino-teste.md#1",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/03-dados-features-treino-teste.md",
+   "tituloModulo": "03 — Dados, features e o ciclo treino/teste",
+   "pergunta": "O que é overfitting e como você divide seus dados pra detectá-lo?",
+   "resposta": "Features são as colunas de entrada, label é o que eu quero prever. Eu divido o dataset em treino, validação e teste — o teste eu só toco no fim, pra não enganar a mim mesmo. Overfitting é decorar o treino e ir mal em dado novo; o sinal é erro de treino baixo e de teste alto. E na prática, mais dados bons costuma render mais que um modelo mais sofisticado."
+  },
+  {
+   "id": "35-ia-ml/03-dados-features-treino-teste.md#2",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/03-dados-features-treino-teste.md",
+   "tituloModulo": "03 — Dados, features e o ciclo treino/teste",
+   "pergunta": "Por que 'mais dados' costuma ganhar de 'modelo melhor'? Isso tem limite?",
+   "resposta": "Tem base empírica: o Banko e Brill em 2001 mostraram algoritmos simples com muito dado batendo algoritmos sofisticados com pouco, e o ensaio 'Unreasonable Effectiveness of Data' da Google generalizou isso. Mais exemplos cobrem mais casos reais e forçam a generalizar em vez de decorar. A versão moderna são as scaling laws do Kaplan em 2020 — a perda cai de forma previsível com dados, params e compute. Mas tem nuance: o Chinchilla, em 2022, corrigiu a receita mostrando que params e dados têm que crescer juntos, os modelos estavam subtreinados em dados. E o limite óbvio é qualidade: dado sujo ou enviesado não escala, garbage in garbage out."
+  },
+  {
+   "id": "35-ia-ml/04-como-um-modelo-aprende.md#1",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/04-como-um-modelo-aprende.md",
+   "tituloModulo": "04 — Como um modelo \"aprende\"",
+   "pergunta": "Explica, sem fórmula pesada, como um modelo de ML aprende.",
+   "resposta": "Aprender é ajustar os pesos pra minimizar uma função de perda, que mede o quão errado o modelo está. O algoritmo é gradient descent: como descer uma montanha no escuro sentindo a inclinação com os pés e dando um passo ladeira abaixo — o gradiente é a inclinação, o learning rate é o tamanho do passo. Uma época é uma passada por todos os dados, e a gente repete até a perda parar de cair."
+  },
+  {
+   "id": "35-ia-ml/04-como-um-modelo-aprende.md#2",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/04-como-um-modelo-aprende.md",
+   "tituloModulo": "04 — Como um modelo \"aprende\"",
+   "pergunta": "Qual a diferença entre backpropagation e gradient descent?",
+   "resposta": "São peças distintas que se encaixam. Backpropagation é como se calcula o gradiente numa rede de várias camadas — aplica a regra da cadeia de trás pra frente, propagando o erro da saída até a entrada, e dá o gradiente de cada peso num passe só; foi o paper do Rumelhart, Hinton e Williams em 1986 que popularizou isso e destravou o deep learning. Gradient descent é o que anda com esse gradiente: `peso menos learning rate vezes gradiente`, a ideia do Cauchy lá de 1847. Backprop calcula pra que lado descer; gradient descent dá o passo. Confundir os dois é o erro clássico."
+  },
+  {
+   "id": "35-ia-ml/05-modelos-classicos.md#1",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/05-modelos-classicos.md",
+   "tituloModulo": "05 — Modelos clássicos antes do deep learning",
+   "pergunta": "Que modelos clássicos você conhece e quando ainda valem a pena?",
+   "resposta": "Antes do deep learning tem um arsenal que ainda é o melhor pra dados tabulares: regressão linear pra prever número, logística pra classificar com probabilidade, árvores de decisão que viram um fluxograma de if/else legível, e k-NN que classifica pelo vizinho mais parecido. Em planilha, um XGBoost normalmente bate uma rede neural — treina rápido, custa pouco e dá pra explicar a decisão."
+  },
+  {
+   "id": "35-ia-ml/05-modelos-classicos.md#2",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/05-modelos-classicos.md",
+   "tituloModulo": "05 — Modelos clássicos antes do deep learning",
+   "pergunta": "Por que juntar muitas árvores (Random Forest, XGBoost) funciona melhor que uma só?",
+   "resposta": "Uma árvore sozinha decora o treino — overfitting. Juntar muitas ataca isso de dois jeitos. Random Forest é bagging, do Breiman em 2001: cada árvore vê um subconjunto aleatório de dados e features e todas votam, então o erro idiossincrático de uma é cancelado pela média das outras. Gradient boosting, tipo o XGBoost do Chen e Guestrin de 2016, é o oposto: as árvores vêm em sequência, cada uma corrigindo o erro residual da anterior. As duas abordagens reduzem a variância sem virar caixa-preta indecifrável, e por isso ensemble de árvore ainda é campeão em dados tabulares e domina o Kaggle."
+  },
+  {
+   "id": "35-ia-ml/06-redes-neurais-deep-learning.md#1",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/06-redes-neurais-deep-learning.md",
+   "tituloModulo": "06 — Redes neurais e deep learning",
+   "pergunta": "O que é uma rede neural e por que o deep learning só decolou nos anos 2010?",
+   "resposta": "Uma rede neural é uma pilha de neurônios, e cada neurônio é só uma soma ponderada das entradas passada por uma ativação não-linear tipo ReLU — é a não-linearidade que deixa a rede aprender padrões curvos que uma reta não pega. 'Deep' é ter muitas camadas, e cada nível aprende uma abstração maior: borda, depois olho, depois 'gato' — a rede inventa as features sozinha. Treina com backpropagation. E o motivo de ter explodido em 2012 não foi a teoria, que é antiga, foi a chegada de dados em massa e das GPUs."
+  },
+  {
+   "id": "35-ia-ml/06-redes-neurais-deep-learning.md#2",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/06-redes-neurais-deep-learning.md",
+   "tituloModulo": "06 — Redes neurais e deep learning",
+   "pergunta": "Se a rede aprende as features sozinha, a gente entende o que ela aprendeu?",
+   "resposta": "Só em parte, e é honesto admitir isso. A gente sabe *que* ela aprende uma hierarquia — o Zeiler e Fergus em 2014 até visualizaram, de bordas a objetos — mas *ler* o que cada neurônio de uma rede grande representa é campo aberto de pesquisa, a interpretabilidade mecanicista, com trabalhos do Chris Olah e da Anthropic. Na prática a rede é majoritariamente uma caixa-preta: funciona sem que ninguém consiga explicar completamente por quê, neurônio a neurônio. A consequência é concreta — auditar e depurar uma rede profunda é bem mais difícil que um modelo clássico legível, e por isso eu não prometo 'explicar cada decisão' quando uso deep learning."
+  },
+  {
+   "id": "35-ia-ml/07-llms-transformers.md#1",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/07-llms-transformers.md",
+   "tituloModulo": "07 — LLMs e Transformers por dentro",
+   "pergunta": "Explica, por alto, como um LLM funciona por dentro.",
+   "resposta": "Um LLM é uma rede neural treinada só pra prever o próximo token, mas em escala da internet isso força ele a aprender gramática, fatos e lógica. O texto vira tokens, cada token vira um embedding — um ponto num espaço onde significados parecidos ficam perto — e o mecanismo de atenção deixa cada token olhar os outros pra se desambiguar pelo contexto. Treino é a fase única e cara que ajusta os pesos; inferência é cada chamada, com os pesos congelados — por isso ele não aprende da minha conversa, só relê o histórico que cabe na context window. E alucinação acontece porque ele gera o mais plausível, não o mais verdadeiro."
+  },
+  {
+   "id": "35-ia-ml/07-llms-transformers.md#2",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/07-llms-transformers.md",
+   "tituloModulo": "07 — LLMs e Transformers por dentro",
+   "pergunta": "As tais 'habilidades emergentes' dos LLMs são reais?",
+   "resposta": "Depende de quem você lê, e é honesto dizer isso. O Wei e colegas em 2022 reportaram que certas habilidades aparecem de repente acima de uma escala crítica — abaixo o modelo não faz, acima faz. Mas em 2023 o Schaeffer publicou 'Are Emergent Abilities a Mirage?' argumentando que boa parte desse salto é artefato da métrica: métricas de tudo-ou-nada criam degraus abruptos, e com uma métrica contínua a melhora vira suave e previsível. Não tem consenso fechado — provavelmente tem dos dois. Então eu não afirmo que o modelo 'ganhou uma capacidade mágica' num tamanho X; descrevo o comportamento observável e reconheço que parte do efeito é escolha de medição."
+  },
+  {
+   "id": "35-ia-ml/08-usar-ia-na-pratica.md#1",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/08-usar-ia-na-pratica.md",
+   "tituloModulo": "08 — Usar IA na prática como dev",
+   "pergunta": "Como você usa um LLM num produto e como dá a ele conhecimento dos seus dados?",
+   "resposta": "Como dev eu consumo o LLM por API: mando mensagens com um system prompt e pago por token de entrada e saída, com temperature baixa pra tarefa factual. Pra dar conhecimento dos meus dados ao modelo tem três caminhos: colar no prompt pra coisa pontual; RAG, que busca os trechos relevantes por embedding e injeta no contexto pra reduzir alucinação e citar fonte — é o que eu uso na maioria dos casos; e fine-tuning, que re-treina o modelo, mas serve pra estilo, não pra fatos. A ordem certa é prompt → RAG → fine-tuning só em último caso."
+  },
+  {
+   "id": "35-ia-ml/08-usar-ia-na-pratica.md#2",
+   "trilha": "35-ia-ml",
+   "modulo": "35-ia-ml/08-usar-ia-na-pratica.md",
+   "tituloModulo": "08 — Usar IA na prática como dev",
+   "pergunta": "Quando RAG e quando fine-tuning? Qual o erro comum?",
+   "resposta": "RAG quando o conhecimento muda, precisa citar fonte ou o acervo é grande demais pro contexto — eu busco os trechos relevantes por embedding e injeto no prompt, o que ancora a resposta e reduz alucinação; foi o que o Lewis formalizou em 2020. Fine-tuning quando eu quero um estilo, tom ou formato muito específico e consistente — ele muda *como* o modelo responde, ajustando pesos, não *o que* ele sabe. O erro clássico é usar fine-tuning pra 'ensinar fatos novos': é caro, lento, e todo update de fato exige re-treinar. Fato que muda é RAG, sempre. E na dúvida, a ordem é prompt primeiro, RAG depois, fine-tuning só se os dois não bastarem."
   },
   {
    "id": "40-frontend/01-render-cycle-e-reconciliation.md#1",
