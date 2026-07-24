@@ -1,6 +1,6 @@
 {
- "geradoEm": "2026-07-22T22:33:52.082Z",
- "total": 173,
+ "geradoEm": "2026-07-24T19:19:38.350Z",
+ "total": 186,
  "cards": [
   {
    "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md#1",
@@ -19,6 +19,14 @@
    "resposta": "Crio uma cópia antes de mexer. Para objetos e arrays simples (sem aninhamento que me importa), uso spread: `{ ...obj }` ou `[...arr]`. Para estruturas profundamente aninhadas, uso `structuredClone` — disponível nativo desde Node 17. Evito `JSON.parse(JSON.stringify(obj))` porque perde Dates, funções e undefined. Em TypeScript, declaro o parâmetro como `Readonly<T>` ou `ReadonlyArray<T>` para o compilador me avisar se eu tentar mutar."
   },
   {
+   "id": "00-fundamentos/01-tipos-memoria-valor-referencia.md#3",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/01-tipos-memoria-valor-referencia.md",
+   "tituloModulo": "01 — Tipos, Memória, Valor vs Referência",
+   "pergunta": "Por que `0.1 + 0.2` não dá `0.3` em JavaScript?",
+   "resposta": "Porque todo `number` em JS é um float64 do padrão IEEE-754 — não existe tipo inteiro. 0.1 e 0.2 não têm representação binária exata, do mesmo jeito que 1/3 não tem representação decimal exata. A soma acumula o erro de arredondamento e dá `0.30000000000000004`. Na prática, isso significa nunca comparar floats com `===` — uso uma tolerância (epsilon) — e nunca guardar dinheiro em float: uso centavos como inteiro ou um tipo decimal."
+  },
+  {
    "id": "00-fundamentos/02-async-event-loop-promises.md#1",
    "trilha": "00-fundamentos",
    "modulo": "00-fundamentos/02-async-event-loop-promises.md",
@@ -33,6 +41,14 @@
    "tituloModulo": "02 — Async, Event Loop e Promises",
    "pergunta": "Por que `console.log('B')` aparece depois de `console.log('C')` no exemplo do topo?",
    "resposta": "Porque `Promise.resolve().then` enfileira na fila de **microtasks**, e `setTimeout` na de **macrotasks**. Depois que a call stack esvazia, o event loop drena **toda** a fila de microtasks antes de pegar a próxima macrotask. Por isso C (microtask) sai antes de B (macrotask), mesmo com timeout 0."
+  },
+  {
+   "id": "00-fundamentos/02-async-event-loop-promises.md#3",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/02-async-event-loop-promises.md",
+   "tituloModulo": "02 — Async, Event Loop e Promises",
+   "pergunta": "O `setTimeout` roda o código na hora? De quem é o timer?",
+   "resposta": "Não roda na hora, e o timer não é do JavaScript. `setTimeout` é uma API do host — o browser (Web API) ou o Node (libuv). O motor só entrega o pedido e segue; a stack não espera. Quando o tempo passa, o host enfileira o callback como macrotask, e ele só executa quando a call stack esvazia e as microtasks pendentes são drenadas. Por isso o timeout é um **mínimo**, não um exato: se a thread está ocupada, o callback espera. `setTimeout(fn, 0)` não é 'agora', é 'na próxima volta livre do loop'."
   },
   {
    "id": "00-fundamentos/03-http-rest-status-codes.md#1",
@@ -51,6 +67,14 @@
    "resposta": "Idempotente significa que chamar o endpoint N vezes produz o mesmo estado final que chamar uma vez. GET, PUT e DELETE são idempotentes por definição HTTP. POST não é — dois POSTs criam dois recursos. Isso importa porque redes são instáveis: se um DELETE ou PUT der timeout, o cliente pode tentar de novo com segurança. Com POST, o cliente não pode fazer retry cego — pode criar duplicatas. Por isso APIs bem desenhadas usam idempotency keys em POST quando retry é necessário."
   },
   {
+   "id": "00-fundamentos/03-http-rest-status-codes.md#3",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/03-http-rest-status-codes.md",
+   "tituloModulo": "03 — HTTP, REST e Status Codes",
+   "pergunta": "Por que HTTP é stateless, e o que isso te obriga a fazer?",
+   "resposta": "Stateless significa que cada request é independente — o servidor não guarda memória da conversa anterior. Isso foi decisão de design pra escalar horizontalmente: qualquer servidor atrás do load balancer atende qualquer request, porque nenhum depende de estado local. O custo é que identidade tem que viajar em todo request — é exatamente por isso que existem cookies de sessão e tokens. 'Stateless' não quer dizer sem estado nenhum: o banco tem estado. Quer dizer sem estado de sessão retido no servidor de aplicação."
+  },
+  {
    "id": "00-fundamentos/04-sql-vs-nosql-quando-cada.md#1",
    "trilha": "00-fundamentos",
    "modulo": "00-fundamentos/04-sql-vs-nosql-quando-cada.md",
@@ -65,6 +89,14 @@
    "tituloModulo": "04 — SQL vs NoSQL: Quando Usar Cada",
    "pergunta": "O que é eventual consistency e quando ela é aceitável?",
    "resposta": "Eventual consistency significa que, após uma escrita, os dados podem ficar desatualizados por um tempo antes de propagar por todos os nós do cluster — mas eventualmente convergem. É aceitável quando o negócio tolera leitura levemente defasada: feed de redes sociais, contador de curtidas, dashboard de analytics com delay de segundos. Não é aceitável quando a consistência é invariante do negócio: saldo bancário, estoque, permissões de acesso. No PULSAR-RH, por exemplo, uma pesquisa marcada como publicada precisa aparecer imediatamente para todos os respondentes — eventual consistency quebraria a UX."
+  },
+  {
+   "id": "00-fundamentos/04-sql-vs-nosql-quando-cada.md#3",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/04-sql-vs-nosql-quando-cada.md",
+   "tituloModulo": "04 — SQL vs NoSQL: Quando Usar Cada",
+   "pergunta": "Como o banco garante que uma transação é 'tudo ou nada' mesmo se cair a energia no meio?",
+   "resposta": "Pelo Write-Ahead Log. Antes de tocar os dados de verdade, o banco escreve num log sequencial o que vai fazer, e só confirma o commit depois de garantir que esse log foi para o disco (fsync). Se cair a energia no meio, na recuperação ele relê o WAL: transações confirmadas que não chegaram aos dados são refeitas (redo), transações incompletas são desfeitas (undo). É o WAL que entrega a atomicidade e a durabilidade do ACID — o log é a fonte da verdade, não os arquivos de dados."
   },
   {
    "id": "00-fundamentos/05-auth-oauth-jwt-session.md#1",
@@ -83,6 +115,14 @@
    "resposta": "O app redireciona o usuário pro Google com um client_id e redirect_uri. O Google autentica, redireciona de volta com um code de uso único. O app troca esse code por tokens server-side. O code tem vida de segundos — mesmo que vaze na URL, é inútil sozinho. PKCE (Proof Key for Code Exchange) resolve o caso de SPAs e apps mobile que não podem guardar um client_secret: antes do redirect, o app gera um code_verifier e manda o hash (code_challenge). Ao trocar o code, manda o verifier original — só quem iniciou o fluxo consegue completar."
   },
   {
+   "id": "00-fundamentos/05-auth-oauth-jwt-session.md#3",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/05-auth-oauth-jwt-session.md",
+   "tituloModulo": "05 — Auth: OAuth, JWT e Session",
+   "pergunta": "O que a assinatura de um JWT prova? O payload é criptografado?",
+   "resposta": "O payload não é criptografado — é só base64url, qualquer um decodifica e lê. Por isso nunca ponho segredo lá. O que dá segurança é a assinatura: um HMAC ou assinatura assimétrica sobre header e payload. Ela prova integridade e autenticidade — se alguém mexer no payload pra virar admin, a assinatura não bate e o servidor rejeita, porque o atacante não tem a chave pra re-assinar. O que ela não garante é confidencialidade nem que o token não foi roubado — é um bearer token, quem tem é tratado como dono. Daí token curto e sempre HTTPS."
+  },
+  {
    "id": "00-fundamentos/06-git-fluxo-rebase-merge.md#1",
    "trilha": "00-fundamentos",
    "modulo": "00-fundamentos/06-git-fluxo-rebase-merge.md",
@@ -97,6 +137,14 @@
    "tituloModulo": "06 — Git: Fluxo, Rebase, Merge e Ferramentas",
    "pergunta": "Como você encontraria em qual commit um bug foi introduzido numa base com 500 commits?",
    "resposta": "Usaria `git bisect`. Digo pro Git qual commit tem o bug (`git bisect bad`) e qual era bom (`git bisect good <sha>`) — o Git faz uma busca binária no histórico, dando checkout no commit do meio. Eu testo, digo se é bom ou ruim, e repito. Em ~9 passos ele isola o commit culpado num histórico de 500. É exatamente busca binária O(log n) aplicada a commits. Se o projeto tem testes automatizados, dá para fazer `git bisect run npm test` e o processo roda sozinho."
+  },
+  {
+   "id": "00-fundamentos/06-git-fluxo-rebase-merge.md#3",
+   "trilha": "00-fundamentos",
+   "modulo": "00-fundamentos/06-git-fluxo-rebase-merge.md",
+   "tituloModulo": "06 — Git: Fluxo, Rebase, Merge e Ferramentas",
+   "pergunta": "Git guarda diffs entre versões? Por que rebase muda os SHAs dos commits?",
+   "resposta": "Não guarda diffs — guarda snapshots. Cada commit aponta pro hash da árvore inteira do projeto e pro hash do commit pai; o diff que eu vejo é calculado na hora comparando as árvores. Como o hash do commit inclui o hash do pai, ele depende de toda a história até ali — é uma cadeia de Merkle. Rebase troca a base, então o pai muda; se o pai muda, o hash do commit muda, e o de todos os descendentes junto. Por isso rebase cria commits novos e nunca deve ser feito em história que outros já têm — eu criaria uma linha divergente da deles."
   },
   {
    "id": "05-raciocinio/00-metodologia-da-ia.md#1",
@@ -115,12 +163,28 @@
    "resposta": "Só digo 'resolvido' com três provas: reproduzi o bug antes do fix, rodei a mesma reprodução depois e li o output mudar, e conferi o estado final no alvo certo — banco, não log; prod, não local. Se não deu tempo de rodar, falo 'implementei mas não verifiquei' — é informação diferente de 'resolvido', e quem decide o deploy precisa saber a diferença. O custo de assumir tem caso famoso: a Knight Capital perdeu 440 milhões de dólares em 45 minutos por um 'deployado' sem prova."
   },
   {
+   "id": "05-raciocinio/01-verificar-antes-de-afirmar.md#2",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/01-verificar-antes-de-afirmar.md",
+   "tituloModulo": "01 — Verificar Antes de Afirmar",
+   "pergunta": "Você afirma coisas com muita segurança. Como sei que posso confiar?",
+   "resposta": "Porque eu marco a fonte da confiança em cada afirmação. Se eu digo 'verificado', rodei e li o output; se digo 'acredito', tenho base na doc mas não confirmei nesta instância; e eu falo 'não sei' sem enfeitar quando não tenho base. Isso não é falsa modéstia — é que quem decide em cima da minha palavra precisa saber se é fato ou hipótese. O Kahneman explica por que isso é difícil: o cérebro gera a mesma sensação de certeza com pouca e com muita evidência, então a sensação não serve de prova — só o experimento serve."
+  },
+  {
    "id": "05-raciocinio/02-hipotese-e-refutacao.md#1",
    "trilha": "05-raciocinio",
    "modulo": "05-raciocinio/02-hipotese-e-refutacao.md",
    "tituloModulo": "02 — Hipótese e Refutação",
    "pergunta": "Descreve um bug difícil que você resolveu e como.",
    "resposta": "Num dashboard multi-tenant, um registro sumia para um cliente. Três hipóteses, por probabilidade: RLS filtrando, filtro do front, dado não ingerido. Desenhei o teste que refutava a primeira: a mesma query com token do tenant e com service_role. Veio vazio nos dois — então não era RLS, era ingestão. No pipeline de sync, achei a execução travada por um lock de uma rodada anterior. O ponto do processo: não mexi em nenhuma policy, porque o teste provou antes que o problema não estava lá."
+  },
+  {
+   "id": "05-raciocinio/02-hipotese-e-refutacao.md#2",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/02-hipotese-e-refutacao.md",
+   "tituloModulo": "02 — Hipótese e Refutação",
+   "pergunta": "O que você faz quando o bug some mas você não sabe por quê?",
+   "resposta": "Isso me preocupa mais do que o bug aberto, porque 'sumiu' sem causa identificada quase sempre é sintoma mascarado, não causa removida — ele volta em produção no pior momento. Se sumiu depois que mudei várias coisas, eu reverto e reintroduzo uma de cada vez até isolar qual mudança importou; é delta debugging, a mesma ideia do git bisect. Sem saber a causa raiz, eu não consigo garantir que não volta nem escrever o teste de regressão que trava ele — então pra mim o bug não está fechado, está escondido."
   },
   {
    "id": "05-raciocinio/03-trade-offs-explicitos.md#1",
@@ -131,12 +195,28 @@
    "resposta": "Critério decisivo: infra e volume. Eram centenas de registros por dia num sync de ERP e eu não tinha servidor para sustentar Redis — fila adicionaria uma peça de infra inteira para um problema que backoff exponencial mais lock com TTL resolve. Aceitei duas consequências, documentadas no ADR: não escala horizontal e lock órfão depende do TTL. E deixei o gatilho escrito: volume dez vezes maior, a decisão certa passa a ser fila. Não é 'fila é ruim' — é 'fila custa mais do que este problema paga'."
   },
   {
+   "id": "05-raciocinio/03-trade-offs-explicitos.md#2",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/03-trade-offs-explicitos.md",
+   "tituloModulo": "03 — Trade-offs Explícitos",
+   "pergunta": "Qual foi uma decisão técnica sua que envelheceu mal?",
+   "resposta": "O valor da resposta não está no acerto — está em eu saber *por que* decidi e *o que mudou*. Toda decisão minha vira ADR com o critério decisivo e o gatilho de revisão; então quando uma envelhece mal, eu abro o registro e comparo: o critério ainda vale? Geralmente o que mudou foi uma premissa — o volume cresceu, a infra apareceu — e o próprio ADR já previa isso como gatilho de migração. Decisão sem registro não dá pra revisar com honestidade, porque a gente reescreve o passado; com o ADR, eu sei exatamente o que eu sabia na hora."
+  },
+  {
    "id": "05-raciocinio/04-ler-o-erro-de-verdade.md#1",
    "trilha": "05-raciocinio",
    "modulo": "05-raciocinio/04-ler-o-erro-de-verdade.md",
    "tituloModulo": "04 — Ler o Erro de Verdade",
    "pergunta": "Aparece um erro que você nunca viu. Qual é o seu processo?",
    "resposta": "Primeiro leio a mensagem literal e o stack até o primeiro frame que é meu código — a mensagem me dá a camada: ECONNREFUSED é rede, 403 é permissão, exceção minha é lógica. Depois reproduzo com o menor comando possível, geralmente um curl, porque fix sem reprodução não tem prova. Só então pesquiso, com a mensagem exata entre aspas. E se o erro chegou genérico, minha primeira suspeita é um catch no caminho engolindo a causa — já perdi horas com um wrapper que escondia o corpo da resposta onde estava o erro verdadeiro."
+  },
+  {
+   "id": "05-raciocinio/04-ler-o-erro-de-verdade.md#2",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/04-ler-o-erro-de-verdade.md",
+   "tituloModulo": "04 — Ler o Erro de Verdade",
+   "pergunta": "O erro que chegou é genérico demais pra te dizer algo. E agora?",
+   "resposta": "Genérico quase nunca é o erro real — é um embrulho. Minha primeira hipótese é que a causa raiz existe mas foi engolida por um catch no caminho que reembrulhou sem preservar a cause. Então eu vou no ponto de captura e faço ele logar o erro original inteiro: em JS, o Error.cause; muitas vezes o corpo da resposta com a mensagem verdadeira já está lá num campo tipo error.context que ninguém estava lendo. Aconteceu exatamente isso num pipeline financeiro nosso — o FunctionsHttpError era só a casca, o erro de SQL de verdade estava no corpo. Ler a raiz transformou horas de chute em cinco minutos."
   },
   {
    "id": "05-raciocinio/05-decompor-problemas.md#1",
@@ -147,6 +227,14 @@
    "resposta": "Corto em subproblemas independentes e ordeno por risco, não por conforto: o pedaço que eu não sei fazer vai primeiro, como spike curto, porque é onde o plano pode morrer barato. Depois identifico o caminho crítico e o que dá pra paralelizar. E tenho uma regra: bloqueador não me para — frente que trava esperando terceiro vira pendência anotada com contexto, e eu ataco a próxima; no report final entrego 'fiz X e Y, Z bloqueado por W'. Numa sanitização de repo real, isso significou publicar no prazo com um único item pendente documentado, em vez de atrasar tudo por causa dele."
   },
   {
+   "id": "05-raciocinio/05-decompor-problemas.md#2",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/05-decompor-problemas.md",
+   "tituloModulo": "05 — Decompor Problemas",
+   "pergunta": "Como você decide as fronteiras entre módulos/componentes?",
+   "resposta": "Não corto pelo fluxo — ler, processar, escrever — porque isso faz cada módulo depender do interior do outro, e qualquer mudança de formato quebra a cadeia toda. Corto pelo que **vai mudar**: cada módulo esconde uma decisão volátil atrás de uma interface estável, o information hiding do Parnas. Se a regra de negócio do cliente muda toda semana, ela vira um módulo isolado; o resto não precisa saber como ela funciona por dentro. O teste é: consigo mexer num módulo sem abrir os outros? Se não, a fronteira está no lugar errado."
+  },
+  {
    "id": "05-raciocinio/06-verificar-o-alvo-certo.md#1",
    "trilha": "05-raciocinio",
    "modulo": "05-raciocinio/06-verificar-o-alvo-certo.md",
@@ -155,12 +243,28 @@
    "resposta": "Reportei um fix como testado — mas tinha rodado o teste na branch errada; o fix nem estava no código que testei. Foi pego em revisão antes de causar dano, mas me mostrou que 'verificado' sem dizer ONDE não é verificação. Desde então, toda conferência minha sai com carimbo de alvo: branch e hash, URL do ambiente, current_database na query, hard reload no front. É o padrão do incidente do GitLab em 2017 — a ação certa no servidor errado apagou produção. Verificar o resultado não basta; tem que provar o alvo."
   },
   {
+   "id": "05-raciocinio/06-verificar-o-alvo-certo.md#2",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/06-verificar-o-alvo-certo.md",
+   "tituloModulo": "06 — Verificar o Alvo Certo",
+   "pergunta": "Como você opera com segurança em produção?",
+   "resposta": "A regra é: quanto mais destrutiva a ação, mais explícito o alvo antes do Enter. Antes de um DROP, um rm -rf ou um force push, eu imprimo hostname, pwd e current_database e leio — porque o terminal não grita em qual ambiente eu estou, e o erro de modo não avisa. E não trato backup que 'roda' como backup: só é rede de segurança o restore que eu já testei. Os dois erros do GitLab em 2017 foram isso — rm no primário achando que era o secundário, e cinco backups que ninguém tinha restaurado. A defesa não é ter mais cuidado; é tornar o alvo obrigatório de ler."
+  },
+  {
    "id": "05-raciocinio/07-quando-parar.md#1",
    "trilha": "05-raciocinio",
    "modulo": "05-raciocinio/07-quando-parar.md",
    "tituloModulo": "07 — Quando Parar",
    "pergunta": "Como você decide que uma solução está boa o suficiente?",
    "resposta": "Critério de pronto definido antes de começar, e medição contra ele — não sensação. Num deck com animação 3D, o critério era 50 FPS na máquina de apresentação; medi no DevTools, bateu, parei — mesmo com vontade de reescrever em three.js, porque acima do critério a reescrita compra zero valor e custa dias. Sigo o Knuth completo: 97% das otimizações são prematuras, mas os 3% críticos a medição revela. E aprendi a desconfiar de mim: refatorar pela terceira vez sem requisito novo não é qualidade, é procrastinação."
+  },
+  {
+   "id": "05-raciocinio/07-quando-parar.md#2",
+   "trilha": "05-raciocinio",
+   "modulo": "05-raciocinio/07-quando-parar.md",
+   "tituloModulo": "07 — Quando Parar",
+   "pergunta": "Você tem uma semana. Onde investe o tempo de otimização?",
+   "resposta": "Primeiro meço — profiler, EXPLAIN, o que o caso pedir — porque a lei de Amdahl diz que o ganho é limitado pela fração de tempo que a parte ocupa: acelerar algo que consome 5% do tempo dá no máximo 5% de ganho, por mais que eu capriche. Então eu ataco o gargalo que a medição aponta, não o que é divertido de mexer, e paro quando o critério bate. Otimizar sem medir é gastar a semana no lugar errado com código mais complexo e ganho nulo — é literalmente a raiz do mal do Knuth. Prioridade de otimização é uma decisão de dado, não de gosto."
   },
   {
    "id": "10-codigo-limpo/01-srp-funcoes-curtas.md#1",
