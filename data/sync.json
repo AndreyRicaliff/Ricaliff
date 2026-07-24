@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-24T17:46:14",
+    "lastSync": "2026-07-24T17:48:02",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 16695,
+    "xp": 16745,
     "xpToNext": 19001,
     "streak": 1,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 237,
+        "value": 240,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-24",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[PULSAR-RH] camada v3.1 fase 1 — tokens + Space Grotesk display"
+    },
     {
       "date": "2026-07-24",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[PULSAR-RH] guarda cross-tenant no ON CONFLICT de 6 upserts do portal"
-    },
-    {
-      "date": "2026-07-20",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[PULSAR-RH] aspas curvas matavam o i18n + teclado não alcançava nenhuma resposta"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-24",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[PULSAR-RH] camada v3.1 fase 1 — tokens + Space Grotesk display",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-24",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[PULSAR-FINANCE] componentes no padrao §5 — KPI-hero, tabs-pill, badges",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[Ricaliff] onda 1 do formato v2 — 05-raciocinio e 00-fundamentos expandidos",
       "xp": 50
-    },
-    {
-      "date": "2026-07-24",
-      "type": "learning",
-      "icon": "📚",
-      "title": "skills destiladas: alvo-certo + edicao-mecanica-validada (do metodo aplicado no hub)",
-      "xp": 40
     }
   ]
 }

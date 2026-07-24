@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-07-24T20:47:57.274Z",
+  "geradoEm": "2026-07-24T20:49:48.125Z",
   "projetos": [
     {
       "id": "PULSAR-RH",
@@ -602,6 +602,15 @@
           "titulo": "06 — Redes neurais e deep learning",
           "trilha": "35-ia-ml",
           "moduloPath": "/trilha/35-ia-ml/06-redes-neurais-deep-learning.md",
+          "xpBase": 40,
+          "xpBonus": 40,
+          "concluida": false
+        },
+        {
+          "id": "35-ia-ml/08-usar-ia-na-pratica.md",
+          "titulo": "08 — Usar IA na prática como dev",
+          "trilha": "35-ia-ml",
+          "moduloPath": "/trilha/35-ia-ml/08-usar-ia-na-pratica.md",
           "xpBase": 40,
           "xpBonus": 40,
           "concluida": false
@@ -1728,7 +1737,7 @@
         "localStorage",
         "Vercel"
       ],
-      "ultimaAtividade": "2026-07-24T17:45:33-03:00",
+      "ultimaAtividade": "2026-07-24T17:47:57-03:00",
       "sideQuests": [
         {
           "id": "10-codigo-limpo/04-abstracao-regra-dos-3.md",
