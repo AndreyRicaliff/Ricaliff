@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-25T20:29:34",
+    "lastSync": "2026-07-25T20:36:29",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 17715,
+    "xp": 17765,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 288,
+        "value": 291,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-25",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[PULSAR-FINANCE] wordmark oficial no app — asset raster da familia Pulsar"
+    },
     {
       "date": "2026-07-25",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[Ricaliff] recall espacado + projeto de conclusao com rubrica"
-    },
-    {
-      "date": "2026-07-21",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[Ricaliff] add pulsar-site project with 3 session blocks (immersive landing journey)"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-25",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[PULSAR-FINANCE] wordmark oficial no app — asset raster da familia Pulsar",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-25",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[PULSAR-RH] versao fina da logo (800x126) para RH e Finance",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[PULSAR-FINANCE] 2FA por codigo de e-mail com o gate na RLS",
       "xp": 50
-    },
-    {
-      "date": "2026-07-25",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[Ricaliff] shader cortado (replaced element) e rotulo do rail (style inline)",
-      "xp": 30
     }
   ]
 }
