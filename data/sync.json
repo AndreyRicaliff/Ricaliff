@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-25T20:04:49",
+    "lastSync": "2026-07-25T20:08:55",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 17515,
+    "xp": 17565,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 276,
+        "value": 279,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-25",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[PULSAR-RH] sobreposicao do r igual a original — braco atravessa o stem"
+    },
     {
       "date": "2026-07-25",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[ag-crm] gestão de usuários e papéis (admin via edge)"
-    },
-    {
-      "date": "2026-07-21",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[ag-crm] KPIs agregados + funil e próximas atividades"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-25",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[PULSAR-RH] sobreposicao do r igual a original — braco atravessa o stem",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-25",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[PULSAR-RH] R e F na frente do braco do r (encaixe roxo sobre branco)",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[Ricaliff] rodape do rail, fundo cortado, fluidez e marca nova",
       "xp": 30
-    },
-    {
-      "date": "2026-07-25",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[Ricaliff] registra sessao dos fixes visuais",
-      "xp": 20
     }
   ]
 }
