@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ricaliff</title>
-<link rel="icon" type="image/png" href="assets/jackfrost.png">
+<link rel="icon" type="image/svg+xml" href="assets/mark-void.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -63,7 +63,11 @@ body{font-family:'Montserrat','Inter',system-ui,sans-serif;background:var(--bg);
   border:2px solid var(--ring);background:#04070F;overflow:hidden;
   cursor:pointer;transition:transform .35s cubic-bezier(.34,1.8,.44,1),border-color .3s;
 }
-.sb-mark img{width:100%;height:100%;object-fit:cover;display:block}
+.sb-mark img{width:100%;height:100%;object-fit:contain;display:block}
+/* marca autoral do tema Gojo: SVG centrado, herda a cor do tema (sem crop de bitmap) */
+.sb-mark.sb-mark-svg{display:grid;place-items:center;color:var(--secondary);
+  background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--primary) 22%,transparent),#04070F 70%)}
+.sb-mark.sb-mark-svg .ico{filter:drop-shadow(0 0 5px color-mix(in srgb,var(--primary) 65%,transparent))}
 .sb-mark:hover{transform:scale(1.08)}
 .sb-mark.shake{animation:p3Shake .4s}
 @keyframes p3Shake{0%,100%{transform:translateX(0)}12%{transform:translateX(-10px)}37%{transform:translateX(10px)}62%{transform:translateX(-10px)}87%{transform:translateX(10px)}}
@@ -88,12 +92,21 @@ body{font-family:'Montserrat','Inter',system-ui,sans-serif;background:var(--bg);
 .sb-date{font-size:.68rem;color:var(--muted);padding:6px 10px;line-height:1.5}
 
 /* MAIN */
-.main{margin-left:240px;flex:1;min-height:100vh}
+/* overflow-x:clip = rede de segurança contra vazamento lateral de animação/conteúdo.
+   `clip` (não `hidden`): não cria contexto de scroll, então não quebra position:sticky
+   descendente nem rouba o scroll da página. min-width:0 evita o piso de min-content
+   em item flex (a causa clássica de overflow com tabela/código largo). */
+.main{margin-left:240px;flex:1;min-height:100vh;min-width:0;overflow-x:clip}
 .view{display:none;padding:32px 36px;max-width:1060px}
 .view.active{display:block}
 
 /* SECTION HEADER */
-.view-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:28px}
+/* flex-wrap + gap: em telas estreitas o par título/ações não cabe lado a lado e
+   as ações vazavam pra fora do container (medido em 390px). min-width:0 no texto
+   evita o piso de min-content empurrar os botões. */
+.view-header{display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.view-header>*{min-width:0}
 .view-title{font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
 .view-sub{font-size:.8rem;color:var(--muted);margin-top:3px}
 
@@ -990,7 +1003,11 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
 /* fill backwards, nunca both: transform retido vira containing block de fixed
    (bug já pago em PULSAR-RH e Lúmen) */
 .view.active{animation:p3ViewIn .38s cubic-bezier(.16,1,.3,1) backwards}
-@keyframes p3ViewIn{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
+/* translateY, NUNCA translateX: deslocamento horizontal vaza do container e vira
+   scroll lateral durante a animação — e fica PERMANENTE se ela travar (aba oculta/
+   RDP congela o frame 0). Vertical não gera overflow: a página já rola em Y.
+   8-10px + fade é o vocabulário da casa (padrao-atrativo §2). */
+@keyframes p3ViewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 
 /* stagger dos blocos da tela (cascata Persona) */
 .view.active>*{animation:p3ItemIn .5s cubic-bezier(.16,1,.3,1) backwards}
@@ -1038,6 +1055,39 @@ body::after{content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
   48%{transform:translateX(0) skewX(-8.5deg)}
   65%{transform:translateX(0) skewX(-8.5deg);animation-timing-function:cubic-bezier(.55,.085,.68,.53)}
   100%{transform:translateX(108%) skewX(-8.5deg)}
+}
+/* ── TRANSIÇÃO DO TEMA GOJO — "domain expansion" ────────────────────
+   O wipe diagonal é a assinatura do Persona 3; no Gojo o domínio se
+   ABRE do centro: um disco de void cobre a tela (a view troca no pico)
+   e dois anéis ecoam pra fora. Só transform/opacity = compositor-only. */
+/* 100vw (não inset:0): o containing block do fixed exclui a scrollbar e deixava
+   uma faixa de ~10px sem cobertura durante a transição. */
+:root:not([data-theme]) #p3-wipe{inset:0 auto 0 0;width:100vw;height:100vh;overflow:hidden}
+:root:not([data-theme]) #p3-wipe i{
+  top:50%;left:50%;right:auto;
+  width:150vmax;height:150vmax;margin:-75vmax 0 0 -75vmax;
+  border-radius:50%;transform:scale(0);
+}
+:root:not([data-theme]) #p3-wipe i:nth-child(1){
+  background:radial-gradient(circle,var(--wipe-2) 0%,var(--wipe-1) 62%,var(--wipe-1) 100%);
+}
+:root:not([data-theme]) #p3-wipe i:nth-child(2),
+:root:not([data-theme]) #p3-wipe i:nth-child(3){
+  background:none;border:3px solid var(--wipe-3);opacity:.55;
+}
+:root:not([data-theme]) #p3-wipe.run i{animation:gojoDomain .74s both}
+:root:not([data-theme]) #p3-wipe.run i:nth-child(2){animation:gojoRing .74s both .05s}
+:root:not([data-theme]) #p3-wipe.run i:nth-child(3){animation:gojoRing .74s both .12s}
+@keyframes gojoDomain{
+  0%{transform:scale(0);opacity:1;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+  46%{transform:scale(1);opacity:1}
+  62%{transform:scale(1);opacity:1;animation-timing-function:cubic-bezier(.55,.085,.68,.53)}
+  100%{transform:scale(1.9);opacity:0}
+}
+@keyframes gojoRing{
+  0%{transform:scale(0);opacity:0;animation-timing-function:cubic-bezier(.22,1,.36,1)}
+  20%{opacity:.55}
+  100%{transform:scale(1.35);opacity:0}
 }
 
 /* tipografia display (BebasNeue do rice; corpo já é Montserrat) */
@@ -1138,6 +1188,10 @@ html[data-static] #pomo-pulse{animation:none!important}
 .sp-acoes button{background:transparent;border:1px solid var(--line);border-radius:6px;color:var(--muted);font-size:.66rem;padding:3px 8px;cursor:pointer}
 .sp-acoes button:hover{color:var(--txt);border-color:var(--accent)}
 .sp-vazio{font-size:.72rem;color:var(--muted);text-align:center;padding:12px 0;font-style:italic}
+/* input flex:1 tem piso de min-content (~170px) e empurra o botão pra fora em tela
+   estreita — min-width:0 libera o encolhimento; wrap garante a quebra quando não cabe */
+.sp-retro,.sp-novo,.sp-plan-form,.pc-evid,.hw-treino-form{flex-wrap:wrap}
+.sp-retro input,.sp-novo input,.sp-plan-form input,.pc-evid input{min-width:0}
 .sp-retro{display:flex;gap:10px;margin-bottom:16px}
 .sp-retro input{flex:1;background:var(--card);border:1px dashed var(--line);border-radius:8px;color:var(--txt);padding:9px 12px;font-size:.78rem}
 .sp-backlog{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:14px}
@@ -1518,7 +1572,7 @@ html[data-static] .sidebar,html[data-static] .main,html[data-static] .sb-collaps
         <div class="view-title">Estudos</div>
         <div class="view-sub">Trilhas de estudo · aprendizado defensável em entrevista</div>
       </div>
-      <div id="trilha-tree-toggle" style="display:flex;gap:8px;align-items:center"></div>
+      <div id="trilha-tree-toggle" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"></div>
     </div>
     <div id="trilha-body"></div>
     <div id="st-tooltip-el" class="st-tooltip" style="display:none"></div>

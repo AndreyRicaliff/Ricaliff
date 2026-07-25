@@ -372,8 +372,19 @@ function p3ThemeApply() {
   // gojo é o :root default — sem data-theme (o fx.js relê os tokens e recolore o void)
   if (mode === 'gojo') delete document.documentElement.dataset.theme;
   else document.documentElement.dataset.theme = mode;
-  const img = document.getElementById('sb-mark-img');
-  if (img) img.src = mode === 'pro' ? 'assets/start_neutral.png' : 'assets/jackfrost.png';
+  // marca por tema: Jack Frost é Persona 3 — no Gojo entra a marca autoral (olho no vazio)
+  const mark = document.querySelector('.sb-mark');
+  if (mark) {
+    if (mode === 'gojo') {
+      mark.classList.add('sb-mark-svg');
+      mark.title = 'Six Eyes';
+      mark.innerHTML = icon('mark-void', 22);
+    } else {
+      mark.classList.remove('sb-mark-svg');
+      mark.title = mode === 'pro' ? 'Marca neutra' : 'Jack Frost — hee-ho!';
+      mark.innerHTML = `<img id="sb-mark-img" src="assets/${mode === 'pro' ? 'start_neutral' : 'jackfrost'}.png" alt="">`;
+    }
+  }
   const st = document.getElementById('p3-theme-state');
   if (st) st.textContent = mode;
 }

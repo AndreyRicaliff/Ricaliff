@@ -82,6 +82,12 @@
     square:      '<rect x="5" y="5" width="14" height="14" rx="2"/>',
     'chevron-up':'<path d="M6 15l6-6 6 6"/>',
     'chevron-down':'<path d="M6 9l6 6 6-6"/>',
+
+    // ── marca do tema Gojo: olho geométrico dentro do vazio (autoral, não o personagem) ──
+    'mark-void':'<circle cx="12" cy="12" r="10.2" opacity=".35"/>'
+      + '<path d="M2.6 12c2.6-3.9 5.7-5.9 9.4-5.9s6.8 2 9.4 5.9c-2.6 3.9-5.7 5.9-9.4 5.9S5.2 15.9 2.6 12Z"/>'
+      + '<circle cx="12" cy="12" r="3.5"/>'
+      + '<circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>',
   };
 
   const FALLBACK = '<circle cx="12" cy="12" r="8"/>';
