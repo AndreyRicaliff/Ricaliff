@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-25T18:39:10",
+    "lastSync": "2026-07-25T18:40:23",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 17195,
+    "xp": 17215,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -33,7 +33,7 @@
         "rule": "+4 por bugfix, +2 por refactor"
       },
       "wis": {
-        "value": 128,
+        "value": 131,
         "label": "Sabedoria",
         "icon": "🦉",
         "rule": "+5 por entrada DECISIONS.md, +3 por revisao"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-25",
+      "xp": 20,
+      "type": "review",
+      "desc": "[Ricaliff] registra sessao dos fixes do screenshot"
+    },
     {
       "date": "2026-07-25",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[ag-crm] módulo de contatos (feature-first)"
-    },
-    {
-      "date": "2026-07-20",
-      "xp": 20,
-      "type": "review",
-      "desc": "[Ricaliff] registra sessao dos icones autorais"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-25",
+      "type": "review",
+      "icon": "👁️",
+      "title": "[Ricaliff] registra sessao dos fixes do screenshot",
+      "xp": 20
+    },
+    {
+      "date": "2026-07-25",
       "type": "bugfix",
       "icon": "🐛",
       "title": "[Ricaliff] rodape do rail, fundo cortado, fluidez e marca nova",
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[PULSAR-FINANCE] entrada na gramatica do PULSAR-RH e interior mais sobrio",
       "xp": 50
-    },
-    {
-      "date": "2026-07-24",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[PULSAR-FINANCE] registra as 6 fases, os desvios conscientes da spec e o perfil atualizado",
-      "xp": 20
     }
   ]
 }
