@@ -62,7 +62,12 @@ const GLBG = (() => {
   if (!old || REDUCED) return null;                 // reduced: mantém o 2D parado que já existe
   const cv = document.createElement('canvas');
   cv.id = 'fx-gl'; cv.setAttribute('aria-hidden', 'true');
-  cv.style.cssText = 'position:fixed;inset:0;z-index:-1;pointer-events:none';
+  // width/height 100% são OBRIGATÓRIOS: canvas é replaced element, então `inset:0`
+  // sozinho NÃO o estica — ele fica do tamanho do buffer (que é meia-res: 66% da
+  // tela), deixando um retângulo pintado e o resto preto. Bug visto em produção.
+  // 100vw/100vh (não 100%): o containing block do fixed exclui a scrollbar e deixava
+  // uma faixa de ~10px sem pintura. fixed não gera scroll, então extrapolar é seguro.
+  cv.style.cssText = 'position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none';
   old.after(cv);
   const gl = cv.getContext('webgl', { antialias: false, alpha: false });
   if (!gl) { cv.remove(); return null; }            // sem WebGL: void.js segue no comando

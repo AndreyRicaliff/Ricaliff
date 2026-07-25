@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Escolha a marca</title>
+<style>
+  :root{--bg:#040309;--card:#0C0E20;--line:#232B58;--txt:#EDF4FF;--mut:#5F79AD;
+    --primary:#2EA8FF;--accent:#9D6FFF;--sec:#6FD3FF}
+  *{box-sizing:border-box;margin:0}
+  body{background:var(--bg);color:var(--txt);font-family:system-ui,sans-serif;padding:34px}
+  h1{font-size:20px;font-weight:700;margin-bottom:6px}
+  .sub{color:var(--mut);font-size:13px;margin-bottom:30px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+  .opt{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .num{font-size:11px;color:var(--accent);font-weight:800;letter-spacing:.1em;margin-bottom:14px}
+  .row{display:flex;align-items:center;gap:18px;margin-bottom:14px}
+  /* contexto real: círculo de 34px da sidebar */
+  .ctx{width:34px;height:34px;border-radius:50%;flex-shrink:0;display:grid;place-items:center;
+    border:2px solid var(--sec);color:var(--sec);
+    background:radial-gradient(circle at 50% 45%,color-mix(in srgb,var(--primary) 22%,transparent),#04070F 70%)}
+  .ctx svg{filter:drop-shadow(0 0 5px color-mix(in srgb,var(--primary) 65%,transparent))}
+  .big{color:var(--sec)}
+  .nome{font-size:13px;font-weight:600}
+  .desc{font-size:11.5px;color:var(--mut);line-height:1.45;margin-top:3px}
+</style></head>
+<body>
+  <h1>Escolha a marca do tema Gojo</h1>
+  <div class="sub">Cada uma no tamanho real da sidebar (34px) e ampliada. Me diga só o número.</div>
+  <div class="grid" id="g"></div>
+<script>
+const S = (inner, sw=2) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+  stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+
+const OPCOES = [
+  { n:'Anéis do vazio', d:'Anéis concêntricos que se abrem — o domínio como espaço puro. Abstrato, sem figura.',
+    i:'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6" opacity=".65"/><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/>' },
+  { n:'Convergência (atual)', d:'Duas energias que se cruzam num núcleo — hollow purple geométrico.',
+    i:'<circle cx="12" cy="12" r="10.4" opacity=".28"/><circle cx="8.9" cy="12" r="4.9"/><circle cx="15.1" cy="12" r="4.9"/><circle cx="12" cy="12" r="1.9" fill="currentColor" stroke="none"/>' },
+  { n:'Monograma R', d:'A tua inicial em traço geométrico. Marca pessoal, nada de anime.',
+    i:'<path d="M7.5 20V4h5.6a4.4 4.4 0 0 1 0 8.8H7.5"/><path d="M12.4 12.8 17 20"/>', sw:2.2 },
+  { n:'Prisma', d:'Losango com núcleo — cristal/domínio. Angular, combina com a tipografia display.',
+    i:'<path d="M12 2.6 21.4 12 12 21.4 2.6 12Z"/><path d="M12 7.6 16.4 12 12 16.4 7.6 12Z" opacity=".7"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/>' },
+  { n:'Órbita', d:'Núcleo com anel inclinado — energia em rotação. Assimétrico, mais dinâmico.',
+    i:'<circle cx="12" cy="12" r="3.6"/><ellipse cx="12" cy="12" rx="10.2" ry="4.6" transform="rotate(-32 12 12)"/>' },
+  { n:'Portal hexagonal', d:'Hexágono com centro aberto — domínio selado. Lê muito bem em tamanho pequeno.',
+    i:'<path d="M12 2.4 20.3 7.2v9.6L12 21.6 3.7 16.8V7.2Z"/><path d="M12 8.2 16.3 10.7v5L12 18.2 7.7 15.7v-5Z" opacity=".55"/>' },
+  { n:'Olho no vazio (v1)', d:'A primeira versão — olho geométrico. Aqui pra comparar.',
+    i:'<circle cx="12" cy="12" r="10.2" opacity=".35"/><path d="M2.6 12c2.6-3.9 5.7-5.9 9.4-5.9s6.8 2 9.4 5.9c-2.6 3.9-5.7 5.9-9.4 5.9S5.2 15.9 2.6 12Z"/><circle cx="12" cy="12" r="3.5"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>' },
+  { n:'Barra dupla', d:'Duas barras verticais e um núcleo — mínimo absoluto, quase um logotipo de marca.',
+    i:'<path d="M8 4.5v15M16 4.5v15" opacity=".8"/><circle cx="12" cy="12" r="2.6"/>', sw:2.4 },
+];
+
+document.getElementById('g').innerHTML = OPCOES.map((o,idx) => `
+  <div class="opt">
+    <div class="num">OPÇÃO ${idx+1}</div>
+    <div class="row">
+      <div class="ctx">${S(o.i, o.sw||2).replace('<svg','<svg width="22" height="22"')}</div>
+      <div class="big">${S(o.i, o.sw||2).replace('<svg','<svg width="46" height="46"')}</div>
+    </div>
+    <div class="nome">${o.n}</div>
+    <div class="desc">${o.d}</div>
+  </div>`).join('');
+</script>
+</body></html>

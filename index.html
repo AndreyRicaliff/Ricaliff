@@ -1315,9 +1315,14 @@ body.sb-mini .sb-brand{justify-content:center}
    A data vira invisível — 3 linhas de "sáb., 25 de jul." não cabem num rail. */
 body.sb-mini .sb-date{display:none}
 body.sb-mini .sb-footer{padding:10px 6px}
-body.sb-mini .sb-footer .btn{font-size:0;line-height:0;gap:0;padding:9px 0;width:100%!important;
-  margin:4px 0 0!important;justify-content:center;min-width:0}
-body.sb-mini .sb-footer .btn svg{width:15px;height:15px}
+/* !important em font-size/padding: os botões trazem `font-size:.7rem` INLINE no
+   markup, e style inline vence CSS externo — sem o !important o rótulo continuava
+   visível e quebrando no rail (bug visto em produção). */
+body.sb-mini .sb-footer .btn{font-size:0!important;line-height:0!important;gap:0!important;
+  padding:9px 0!important;width:100%!important;margin:4px 0 0!important;
+  justify-content:center;min-width:0}
+body.sb-mini .sb-footer .btn svg{width:15px;height:15px;flex-shrink:0}
+body.sb-mini .sb-footer .btn span{display:none}
 body.sb-mini .sb-footer .btn span{display:none}
 body.sb-mini .sb-footer>div{flex-direction:column;gap:4px;padding:0}
 html[data-static] .sidebar,html[data-static] .main,html[data-static] .sb-collapse{transition:none}
