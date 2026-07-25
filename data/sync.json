@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-25T18:40:23",
+    "lastSync": "2026-07-25T18:46:12",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 17215,
+    "xp": 17265,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 261,
+        "value": 264,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-25",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[PULSAR-RH] wordmark PulsaRH -> PulsarRH (r inserido por cirurgia raster)"
+    },
     {
       "date": "2026-07-25",
       "xp": 20,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[ag-crm] módulo de leads (feature-first)"
-    },
-    {
-      "date": "2026-07-21",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[ag-crm] módulo de contatos (feature-first)"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-25",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[PULSAR-RH] wordmark PulsaRH -> PulsarRH (r inserido por cirurgia raster)",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-25",
       "type": "review",
       "icon": "👁️",
       "title": "[Ricaliff] registra sessao dos fixes do screenshot",
@@ -758,13 +765,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[Ricaliff] onda 4 v2.1 — design, motion e 3D com base cientifica",
-      "xp": 50
-    },
-    {
-      "date": "2026-07-24",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[PULSAR-FINANCE] entrada na gramatica do PULSAR-RH e interior mais sobrio",
       "xp": 50
     }
   ]
