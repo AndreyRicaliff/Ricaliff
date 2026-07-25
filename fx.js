@@ -153,7 +153,16 @@ void main(){
     if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; gl.viewport(0, 0, w, h); }
     return true;
   }
-  addEventListener('resize', resize, { passive: true });
+  // redimensionar o buffer LIMPA o canvas; sem redesenhar aqui, a área nova fica
+  // preta até o próximo frame — e o rAF pausa em aba oculta/RDP, então "até o
+  // próximo frame" pode ser nunca. Redraw síncrono no resize (bug visto em prod).
+  let rzT = 0;
+  addEventListener('resize', () => {
+    resize();
+    clearTimeout(rzT);
+    rzT = setTimeout(() => draw(performance.now()), 16);  // debounce: 1 draw por rajada
+    draw(performance.now());                              // e 1 imediato, pra não piscar
+  }, { passive: true });
 
   function draw(t) {
     if (!resize()) return;

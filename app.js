@@ -456,8 +456,8 @@ function go(view) {
   }
   p3WipeBusy = true;
   wipe.classList.add('run');
-  setTimeout(() => activateView(view), 350); // troca no pico do wipe (48% de 720ms)
-  setTimeout(() => { wipe.classList.remove('run'); p3WipeBusy = false; }, 740);
+  setTimeout(() => activateView(view), 240); // troca no pico (46% de 520ms)
+  setTimeout(() => { wipe.classList.remove('run'); p3WipeBusy = false; }, 540);
 }
 
 function activateView(view) {
