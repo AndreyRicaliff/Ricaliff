@@ -1,10 +1,10 @@
-// seed.js v29 — v28 + sessão s-78 (ag-hub, 2026-07-24)
+// seed.js v30 — v29 + sessão s-79 (ag-hub, 2026-07-25)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '29') return;
+  if (localStorage.getItem('agh_seed_v') === '30') return;
 
   const now = new Date().toISOString();
 
@@ -278,6 +278,7 @@
     { id:'s-76', title:'Formula das skills aplicada: 3 temas nomeados, menu retratil, numeros vivos', projectId:'ag-hub', type:'design', date:'2026-07-24', impact:'medio', notes:'Ciclo gojo/persona/pro persistido (P3 restaurado do git), rail de icones 68px, count-up 620ms, rede anti-loop e skeletons. Verify com aba oculta: prova por CSS aplicado e rAF simulado.', createdAt: now },
     { id:'s-77', title:'Onda 1 da faculdade v2: raciocinio e fundamentos com teoria por extenso (13 modulos)', projectId:'ag-hub', type:'feature', date:'2026-07-24', impact:'alto', notes:'De ~5KB para 11-16KB por modulo: §BASE ancorada em Popper/Kahneman/Parnas/V8/MVCC/Merkle DAG, §METODOLOGIA replicavel, P/R dobrado (+13 cards). Verificacao independente + leak scan antes do deploy.', createdAt: now },
     { id:'s-78', title:'Onda 2 v2.1: testes e seguranca em nivel cientifico (21 modulos)', projectId:'ag-hub', type:'feature', date:'2026-07-24', impact:'alto', notes:'Beck/Feathers/QuickCheck nos testes com controversias declaradas; Saltzer-Schroeder, Kerckhoffs, Thompson 1984 e NIST na seguranca. Dois mitos corrigidos com fonte primaria. 200 cards de recall.', createdAt: now },
+    { id:'s-79', title:'Marca e transicao proprias do tema Gojo + 4 bugs de forma corrigidos', projectId:'ag-hub', type:'bugfix', date:'2026-07-25', impact:'medio', notes:'Jack Frost sai do Gojo (marca SVG autoral) e o wipe do P3 vira domain expansion. Entrada de view com translateX vazava e travava torta; flex sem wrap/min-width-0 empurrava botao.', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -325,7 +326,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '29');
+  localStorage.setItem('agh_seed_v',   '30');
 
-  console.log('[Ricaliff seed v29 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v30 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
