@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-25T18:59:42",
+    "lastSync": "2026-07-25T19:06:11",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 17365,
+    "xp": 17415,
     "xpToNext": 19001,
     "streak": 2,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 267,
+        "value": 270,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-25",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[PULSAR-RH] r do PulsarRH mais evidente e interligado no R"
+    },
     {
       "date": "2026-07-25",
       "xp": 20,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[ag-crm] módulo de atividades (agenda de follow-ups)"
-    },
-    {
-      "date": "2026-07-21",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[ag-crm] kanban de oportunidades com dnd-kit"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-25",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[PULSAR-RH] r do PulsarRH mais evidente e interligado no R",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-25",
       "type": "review",
       "icon": "👁️",
       "title": "[PULSAR-FINANCE] registra a decisao do 2FA e as duas pendencias",
@@ -758,13 +765,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[PULSAR-FINANCE] integracao Resend — edge enviar-email + boas-vindas na aba Acessos",
-      "xp": 50
-    },
-    {
-      "date": "2026-07-25",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[PULSAR-RH] camada v3.1 fase 2 — marca viva (simbolo cardiaco + splash)",
       "xp": 50
     }
   ]
