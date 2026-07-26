@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-26T17:20:56",
+    "lastSync": "2026-07-26T17:21:34",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 18075,
+    "xp": 18125,
     "xpToNext": 19001,
     "streak": 3,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 306,
+        "value": 309,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-26",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[PULSAR-RH] miniatura de video limpa + varredura de pulso nela"
+    },
     {
       "date": "2026-07-26",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[Ricaliff] dash estudos-first + videoteca YouTube nas 23 disciplinas"
-    },
-    {
-      "date": "2026-07-22",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[Ricaliff] camada imersiva — void WebGL theme-aware, intro 1x/sessao e reveals com stagger"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-26",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[PULSAR-RH] miniatura de video limpa + varredura de pulso nela",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-26",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[PULSAR-FINANCE] atmosfera e palco em paridade real com o login do RH",
       "xp": 50
     },
@@ -758,13 +765,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[PULSAR-RH] versao fina da logo (800x126) para RH e Finance",
-      "xp": 50
-    },
-    {
-      "date": "2026-07-25",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[PULSAR-RH] logo final — freestyle (eco de batimento) achatada com tagline compacta",
       "xp": 50
     }
   ]
