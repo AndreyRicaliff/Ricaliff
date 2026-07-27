@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-27T16:31:32",
+    "lastSync": "2026-07-27T16:35:14",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 18605,
+    "xp": 18635,
     "xpToNext": 19001,
     "streak": 4,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 190,
+        "value": 194,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-27",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[algoritmo-lideranca-checkout] fechar o fail-open do precoVisto e o Purchase com valor inexistente"
+    },
     {
       "date": "2026-07-27",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[PULSAR-FINANCE] marca viva — simbolo cardiaco no header, favicon e splash"
-    },
-    {
-      "date": "2026-07-24",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[PULSAR-FINANCE] tokens de apoio, Space Grotesk como display e escape ?static=1"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-27",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[algoritmo-lideranca-checkout] fechar o fail-open do precoVisto e o Purchase com valor inexistente",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-27",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[algoritmo-lideranca-checkout] limitar taxa exibida a 2 casas decimais",
       "xp": 30
     },
@@ -758,13 +765,6 @@
       "type": "bugfix",
       "icon": "🐛",
       "title": "[PULSAR-FINANCE] tema claro legivel de novo e fontes deixam de depender de CDN",
-      "xp": 30
-    },
-    {
-      "date": "2026-07-27",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[PULSAR-FINANCE] pulso volta a percorrer a linha de EKG da tela",
       "xp": 30
     }
   ]
