@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-26T17:33:41",
+    "lastSync": "2026-07-27T11:08:29",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 18145,
+    "xp": 18275,
     "xpToNext": 19001,
-    "streak": 3,
+    "streak": 4,
     "longestStreak": 16,
-    "lastActiveDate": "2026-07-26",
+    "lastActiveDate": "2026-07-27",
     "attributes": {
       "int": {
         "value": 15,
@@ -21,13 +21,13 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 309,
+        "value": 315,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 174,
+        "value": 178,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -45,7 +45,7 @@
         "rule": "+10 por post LinkedIn, +20 por talk, +30 por PR OSS"
       },
       "con": {
-        "value": 27,
+        "value": 28,
         "label": "Constituição",
         "icon": "🛡",
         "rule": "+1 por dia de streak ativo"
@@ -243,6 +243,24 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-27",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[PULSAR-FINANCE] pulso volta a percorrer a linha de EKG da tela"
+    },
+    {
+      "date": "2026-07-26",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[PULSAR-FINANCE] telas demonstrativas no \"Conheca o Pulsar Finance\""
+    },
+    {
+      "date": "2026-07-26",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[PULSAR-RH] telas demonstrativas no \"Conheca o Pulsar RH\""
+    },
     {
       "date": "2026-07-26",
       "xp": 20,
@@ -524,24 +542,6 @@
       "xp": 20,
       "type": "review",
       "desc": "[Ricaliff] registra sessao do formato v2"
-    },
-    {
-      "date": "2026-07-22",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[Ricaliff] modulo padrao-v2 — por que a IA programa bem"
-    },
-    {
-      "date": "2026-07-22",
-      "xp": 20,
-      "type": "review",
-      "desc": "[Ricaliff] registra sessao craft gojo"
-    },
-    {
-      "date": "2026-07-22",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[Ricaliff] destrava animacoes no RDP + passe de craft Gojo"
     }
   ],
   "achievements": [
@@ -698,6 +698,27 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-07-27",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "[PULSAR-FINANCE] pulso volta a percorrer a linha de EKG da tela",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-26",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[PULSAR-FINANCE] telas demonstrativas no \"Conheca o Pulsar Finance\"",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-26",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[PULSAR-RH] telas demonstrativas no \"Conheca o Pulsar RH\"",
+      "xp": 50
+    },
+    {
       "date": "2026-07-26",
       "type": "review",
       "icon": "👁️",
@@ -744,27 +765,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[PULSAR-RH] login com lockup no formato do Pulsar Finance",
-      "xp": 50
-    },
-    {
-      "date": "2026-07-26",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[PULSAR-FINANCE] wordmark acompanha o tamanho do mark no Logo (size*0.42) — travado no font-size ficava ~25px ao lado de marks grandes",
-      "xp": 30
-    },
-    {
-      "date": "2026-07-26",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[PULSAR-RH] enquadramento da marca — asset tight + tagline fora do PNG",
-      "xp": 30
-    },
-    {
-      "date": "2026-07-25",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[PULSAR-FINANCE] wordmark oficial no app — asset raster da familia Pulsar",
       "xp": 50
     }
   ]
