@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-28T18:07:29",
+    "lastSync": "2026-07-28T18:26:59",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 19375,
+    "xp": 19405,
     "xpToNext": 27001,
     "streak": 5,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 202,
+        "value": 206,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-28",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[PULSAR-FINANCE] alerta \"editado\" minimalista + pop-up de mudancas com restauracao"
+    },
     {
       "date": "2026-07-28",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 20,
       "type": "review",
       "desc": "[PULSAR-FINANCE] registra a decisao do 2FA e as duas pendencias"
-    },
-    {
-      "date": "2026-07-25",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[PULSAR-FINANCE] 2FA por codigo de e-mail com o gate na RLS"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-28",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "[PULSAR-FINANCE] alerta \"editado\" minimalista + pop-up de mudancas com restauracao",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-28",
       "type": "feat",
       "icon": "⚙️",
       "title": "[cliente-oficina-backend] dossiê de loja — clique na tabela Por loja abre mini-dashboard",
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[cliente-oficina-backend] produtos monitorados — unidades vendidas por loja/período",
       "xp": 50
-    },
-    {
-      "date": "2026-07-28",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[cliente-oficina-backend] review findings — stale-fetch guards, daily series aligned to DRE",
-      "xp": 30
     }
   ]
 }
