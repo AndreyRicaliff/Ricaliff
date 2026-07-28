@@ -1,15 +1,15 @@
 {
   "meta": {
-    "lastSync": "2026-07-28T17:25:08",
+    "lastSync": "2026-07-28T17:39:02",
     "syncedBy": "claude",
     "version": 1
   },
   "player": {
     "name": "Ricaliff",
-    "level": 9,
-    "title": "Staff",
-    "xp": 18975,
-    "xpToNext": 19001,
+    "level": 10,
+    "title": "Principal",
+    "xp": 19025,
+    "xpToNext": 27001,
     "streak": 5,
     "longestStreak": 16,
     "lastActiveDate": "2026-07-28",
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 342,
+        "value": 345,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-28",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-oficina-backend] produtos monitorados — unidades vendidas por loja/período"
+    },
     {
       "date": "2026-07-28",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[PULSAR-RH] camada v3.1 fase 2 — marca viva (simbolo cardiaco + splash)"
-    },
-    {
-      "date": "2026-07-24",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[Ricaliff] bons costumes — etica profissional e colaboracao (v2.1)"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-28",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-oficina-backend] produtos monitorados — unidades vendidas por loja/período",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-28",
       "type": "bugfix",
       "icon": "🐛",
       "title": "[cliente-oficina-backend] review findings — stale-fetch guards, daily series aligned to DRE",
@@ -759,13 +766,6 @@
       "icon": "👁️",
       "title": "[algoritmo-lideranca-checkout] detalhar a pendencia de rate limit com o resultado da revisao",
       "xp": 20
-    },
-    {
-      "date": "2026-07-27",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[algoritmo-lideranca-checkout] fechar o fail-open do precoVisto e o Purchase com valor inexistente",
-      "xp": 30
     }
   ]
 }
