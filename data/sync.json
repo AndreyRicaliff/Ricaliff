@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-28T17:50:37",
+    "lastSync": "2026-07-28T18:07:29",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 19325,
+    "xp": 19375,
     "xpToNext": 27001,
     "streak": 5,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 360,
+        "value": 363,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-28",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-oficina-backend] dossiê de loja — clique na tabela Por loja abre mini-dashboard"
+    },
     {
       "date": "2026-07-28",
       "xp": 20,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[PULSAR-FINANCE] 2FA por codigo de e-mail com o gate na RLS"
-    },
-    {
-      "date": "2026-07-25",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[Ricaliff] shader cortado (replaced element) e rotulo do rail (style inline)"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-28",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-oficina-backend] dossiê de loja — clique na tabela Por loja abre mini-dashboard",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-28",
       "type": "review",
       "icon": "👁️",
       "title": "[cliente-oficina-backend] registrar deploy 2026-07-28 (migrations v9-v11 + app em prod); restam coletores",
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[cliente-oficina-backend] review findings — stale-fetch guards, daily series aligned to DRE",
       "xp": 30
-    },
-    {
-      "date": "2026-07-28",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-oficina-backend] DRE rastreável — lucro do dash vira subtotal, despesas por plano",
-      "xp": 50
     }
   ]
 }
