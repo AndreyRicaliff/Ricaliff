@@ -1,10 +1,10 @@
-// seed.js v31 — v30 + sessão s-80 (ag-hub, 2026-07-25)
+// seed.js v32 — v31 + sessão s-81 (ag-hub, 2026-07-28)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '31') return;
+  if (localStorage.getItem('agh_seed_v') === '32') return;
 
   const now = new Date().toISOString();
 
@@ -280,6 +280,7 @@
     { id:'s-78', title:'Onda 2 v2.1: testes e seguranca em nivel cientifico (21 modulos)', projectId:'ag-hub', type:'feature', date:'2026-07-24', impact:'alto', notes:'Beck/Feathers/QuickCheck nos testes com controversias declaradas; Saltzer-Schroeder, Kerckhoffs, Thompson 1984 e NIST na seguranca. Dois mitos corrigidos com fonte primaria. 200 cards de recall.', createdAt: now },
     { id:'s-79', title:'Marca e transicao proprias do tema Gojo + 4 bugs de forma corrigidos', projectId:'ag-hub', type:'bugfix', date:'2026-07-25', impact:'medio', notes:'Jack Frost sai do Gojo (marca SVG autoral) e o wipe do P3 vira domain expansion. Entrada de view com translateX vazava e travava torta; flex sem wrap/min-width-0 empurrava botao.', createdAt: now },
     { id:'s-80', title:'Rodape do rail, fundo cortado no resize e jank de compositor corrigidos', projectId:'ag-hub', type:'bugfix', date:'2026-07-25', impact:'alto', notes:'Screenshot revelou 3 bugs que a auditoria por medicao nao pegou: rotulo solto quebrando no rail de 68px, canvas sem redraw no resize, backdrop-filter em 23 cards. Tela assenta em 0.84s (era 1.23s).', createdAt: now },
+    { id:'s-81', title:'Pagina de guitarra reescrita 100% visual para iniciante absoluto', projectId:'ag-hub', type:'feature', date:'2026-07-28', impact:'medio', notes:'Poster anatomico clicavel, experimentos de vibracao com som, acordes na visao do jogador (ADR: cifra padrao e espelhada e confunde quem sabe zero), batida animada no clock do AudioContext.', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -327,7 +328,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '31');
+  localStorage.setItem('agh_seed_v',   '32');
 
-  console.log('[Ricaliff seed v31 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v32 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
