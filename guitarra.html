@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Guitarra — do zero ao primeiro acorde</title>
+<link rel="icon" type="image/svg+xml" href="assets/mark-void.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#040309;--surface:#0C0E20;--surface2:#141838;--surface3:#1D2350;
+  --border:#232B58;--primary:#2EA8FF;--secondary:#6FD3FF;--tertiary:#B3ECFF;
+  --accent:#9D6FFF;--danger:#FF3B4E;--warn:#FFC24B;
+  --text:#EDF4FF;--muted:#5F79AD;--muted2:#92A9DB;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;
+  line-height:1.6;padding:0 0 80px;overflow-x:clip}
+body::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(900px 600px at 78% 12%,rgba(46,168,255,.10),transparent 60%),
+             radial-gradient(800px 620px at 12% 82%,rgba(157,111,255,.09),transparent 62%)}
+.wrap{max-width:960px;margin:0 auto;padding:0 22px}
+
+header{padding:52px 0 32px;position:relative}
+h1{font-family:'Bebas Neue',Inter,sans-serif;font-size:clamp(2.4rem,7vw,3.6rem);
+  letter-spacing:.02em;line-height:1;
+  background:linear-gradient(92deg,var(--tertiary),var(--primary) 45%,var(--accent));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sub{color:var(--muted2);font-size:1rem;margin-top:8px;max-width:62ch}
+.hint{color:var(--muted);font-size:.8rem;margin-top:14px;display:flex;gap:7px;align-items:flex-start}
+
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 8px}
+nav.toc a{font-size:.76rem;color:var(--muted2);text-decoration:none;padding:6px 13px;
+  border:1px solid var(--border);border-radius:20px;transition:color .15s,border-color .15s}
+nav.toc a:hover{color:var(--secondary);border-color:var(--primary)}
+
+section{margin:44px 0;scroll-margin-top:20px}
+h2{font-family:'Bebas Neue',Inter,sans-serif;font-size:1.7rem;letter-spacing:.03em;
+  display:flex;align-items:center;gap:11px;margin-bottom:6px}
+h2 .n{font-size:.72rem;font-family:Inter;font-weight:800;color:var(--accent);
+  border:1px solid var(--accent);border-radius:6px;padding:2px 8px;letter-spacing:.06em}
+.lead{color:var(--muted2);font-size:.94rem;margin-bottom:20px;max-width:70ch}
+h3{font-size:1rem;font-weight:700;margin:22px 0 8px;color:var(--tertiary)}
+p{margin-bottom:12px;max-width:72ch}
+strong{color:var(--tertiary);font-weight:600}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px 22px;margin:16px 0}
+ul{margin:0 0 12px 20px}li{margin-bottom:7px;max-width:70ch}
+.tip{border-left:3px solid var(--accent);background:color-mix(in srgb,var(--accent) 7%,transparent);
+  border-radius:0 10px 10px 0;padding:13px 16px;margin:16px 0;font-size:.9rem}
+.tip b{color:var(--accent)}
+.warn{border-left:3px solid var(--warn);background:color-mix(in srgb,var(--warn) 7%,transparent);
+  border-radius:0 10px 10px 0;padding:13px 16px;margin:16px 0;font-size:.9rem}
+.warn b{color:var(--warn)}
+
+/* ── afinador ── */
+.strings{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:10px;margin-top:6px}
+.str{background:var(--surface2);border:1px solid var(--border);border-radius:12px;
+  padding:14px 12px;text-align:center;cursor:pointer;transition:border-color .15s,transform .12s}
+.str:hover{border-color:var(--primary)}
+.str:active{transform:scale(.97)}
+.str.on{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--surface2))}
+.str .nota{font-family:'Bebas Neue',Inter;font-size:1.9rem;line-height:1;color:var(--secondary)}
+.str .pt{font-size:.82rem;font-weight:600;margin-top:2px}
+.str .meta{font-size:.66rem;color:var(--muted);margin-top:4px;font-variant-numeric:tabular-nums}
+
+/* ── braço ── */
+.braco-wrap{overflow-x:auto;padding-bottom:8px;margin-top:8px}
+table.braco{border-collapse:collapse;min-width:660px;width:100%}
+table.braco th{font-size:.66rem;color:var(--muted);font-weight:600;padding:4px;text-align:center}
+table.braco td{border:1px solid var(--border);padding:0}
+table.braco tr td:first-child{border:none;padding-right:9px;text-align:right;
+  font-size:.74rem;color:var(--muted2);font-weight:700;white-space:nowrap}
+.casa{width:100%;height:34px;background:transparent;border:0;color:var(--muted2);
+  font-family:Inter;font-size:.74rem;font-weight:600;cursor:pointer;transition:background .12s,color .12s}
+.casa:hover{background:color-mix(in srgb,var(--primary) 18%,transparent);color:var(--text)}
+.casa.mark{background:color-mix(in srgb,var(--accent) 26%,transparent);color:var(--text)}
+.casa.solta{background:color-mix(in srgb,var(--primary) 10%,transparent)}
+
+/* ── acordes ── */
+.acordes{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:14px;margin-top:8px}
+.ac{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px 12px 13px;text-align:center}
+.ac h4{font-family:'Bebas Neue',Inter;font-size:1.5rem;letter-spacing:.04em;color:var(--secondary);line-height:1}
+.ac .pt2{font-size:.68rem;color:var(--muted);margin-bottom:9px}
+.ac .dif{font-size:.62rem;color:var(--muted);margin-top:7px}
+.ac svg{display:block;margin:0 auto}
+
+/* ── metrônomo ── */
+.metro{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.bpm{font-family:'Bebas Neue',Inter;font-size:2.6rem;line-height:1;color:var(--accent);
+  min-width:78px;font-variant-numeric:tabular-nums}
+input[type=range]{flex:1;min-width:150px;accent-color:var(--primary)}
+button.btn{background:linear-gradient(135deg,var(--primary),var(--accent));border:0;color:#fff;
+  font-family:Inter;font-weight:700;font-size:.84rem;padding:11px 20px;border-radius:10px;cursor:pointer;
+  transition:transform .12s,box-shadow .2s;box-shadow:0 2px 14px rgba(46,168,255,.28)}
+button.btn:hover{box-shadow:0 4px 20px rgba(157,111,255,.4)}
+button.btn:active{transform:scale(.97)}
+button.gh{background:transparent;border:1px solid var(--border);color:var(--muted2);
+  font-family:Inter;font-weight:600;font-size:.78rem;padding:9px 15px;border-radius:9px;cursor:pointer}
+button.gh:hover{color:var(--text);border-color:var(--primary)}
+.beats{display:flex;gap:8px;margin-top:14px}
+.beat{width:15px;height:15px;border-radius:50%;background:var(--surface3);transition:background .08s,transform .08s}
+.beat.hit{background:var(--accent);transform:scale(1.3)}
+.beat.hit.um{background:var(--secondary)}
+
+/* ── batida / tablatura ── */
+.ritmo{font-family:ui-monospace,Consolas,monospace;font-size:1.05rem;letter-spacing:.34em;
+  color:var(--secondary);background:var(--surface2);border-radius:10px;padding:14px 16px;
+  overflow-x:auto;white-space:nowrap}
+.ritmo-lbl{font-size:.72rem;color:var(--muted);margin-top:6px;letter-spacing:normal}
+pre.tab{font-family:ui-monospace,Consolas,monospace;font-size:.8rem;line-height:1.8;
+  background:var(--surface2);border:1px solid var(--border);border-radius:10px;
+  padding:14px 16px;overflow-x:auto;color:var(--muted2)}
+
+table.prog{width:100%;border-collapse:collapse;margin-top:8px;font-size:.86rem}
+table.prog th{text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--border)}
+table.prog td{padding:10px;border-bottom:1px solid var(--border)}
+table.prog td:first-child{font-weight:700;color:var(--tertiary);white-space:nowrap}
+.seq{font-family:ui-monospace,Consolas,monospace;color:var(--secondary);font-size:.84rem}
+
+footer{margin-top:56px;padding-top:22px;border-top:1px solid var(--border);
+  color:var(--muted);font-size:.78rem}
+footer a{color:var(--secondary)}
+@media(max-width:560px){.wrap{padding:0 16px}.strings{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Guitarra — do zero ao primeiro acorde</h1>
+  <div class="sub">O mínimo que você precisa pra tirar som de verdade: afinar, montar 7 acordes,
+    manter o tempo e tocar suas primeiras músicas. Sem teoria desnecessária.</div>
+  <div class="hint">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;margin-top:2px">
+      <circle cx="12" cy="12" r="9"/><path d="M12 16v-5M12 8h.01"/></svg>
+    <span>Tem som nesta página (afinador e metrônomo). Clique em qualquer botão pra liberar o áudio —
+      o navegador só permite som depois do primeiro clique.</span>
+  </div>
+  <nav class="toc">
+    <a href="#anatomia">1 · Anatomia</a>
+    <a href="#postura">2 · Postura</a>
+    <a href="#afinar">3 · Afinar</a>
+    <a href="#braco">4 · O braço</a>
+    <a href="#acordes">5 · Acordes</a>
+    <a href="#ritmo">6 · Ritmo</a>
+    <a href="#exercicios">7 · Exercícios</a>
+    <a href="#musicas">8 · Primeiras músicas</a>
+    <a href="#rotina">9 · Rotina</a>
+  </nav>
+</header>
+
+<section id="anatomia">
+  <h2><span class="n">01</span> Anatomia — o vocabulário</h2>
+  <div class="lead">Você não precisa decorar tudo, mas precisa saber o nome das partes que a gente vai usar.</div>
+  <div class="card">
+    <ul>
+      <li><strong>Corpo</strong> — a caixa. No violão é oca (ressoa sozinha); na guitarra é maciça e precisa de amplificador.</li>
+      <li><strong>Braço</strong> — onde a mão esquerda trabalha (se você é destro).</li>
+      <li><strong>Trastes</strong> — as barrinhas de metal. O espaço <em>entre</em> duas barras é a <strong>casa</strong>.</li>
+      <li><strong>Casa</strong> — onde você aperta. Casa 1, casa 2… Cada casa sobe <strong>meio tom</strong>.</li>
+      <li><strong>Cordas</strong> — 6 no total. A <strong>1ª é a mais fina</strong> (embaixo, quando você toca) e a <strong>6ª é a mais grossa</strong> (em cima). Isso confunde todo iniciante: numeração vai de baixo pra cima.</li>
+      <li><strong>Tarraxas</strong> — as chavinhas da cabeça. Giram pra afinar.</li>
+      <li><strong>Pestana (nut)</strong> — a peça branca no fim do braço, antes das tarraxas.</li>
+      <li><strong>Rastilho / ponte</strong> — onde as cordas prendem no corpo.</li>
+      <li><strong>Palheta</strong> — a peça triangular. Comece com uma <strong>fina (0,60–0,73mm)</strong>: perdoa mais.</li>
+    </ul>
+  </div>
+  <div class="tip"><b>A regra da numeração:</b> corda 1 = mais fina = som mais agudo. Corda 6 = mais grossa = som mais grave.
+    Casa 1 = perto da cabeça. Sempre que um diagrama disser "3ª corda, casa 2", é isso.</div>
+</section>
+
+<section id="postura">
+  <h2><span class="n">02</span> Postura — o que evita dor e trava</h2>
+  <div class="lead">90% da dificuldade inicial em fazer acorde soar limpo é postura de mão, não falta de força.</div>
+  <div class="card">
+    <h3>Sentado</h3>
+    <ul>
+      <li>Pés no chão, coluna reta. Instrumento apoiado na <strong>perna direita</strong> (destros) — ou na esquerda, se quiser a postura clássica, que dá mais alcance no braço.</li>
+      <li>O braço do instrumento aponta <strong>levemente pra cima</strong>, nunca pro chão.</li>
+      <li>Não "abrace" o instrumento. Se você está curvado pra olhar as cordas, o pulso vai sofrer.</li>
+    </ul>
+    <h3>Mão que aperta (esquerda, pra destros)</h3>
+    <ul>
+      <li><strong>Polegar atrás do braço</strong>, mais ou menos no meio — não enganchado por cima.</li>
+      <li>Aperte com a <strong>ponta do dedo</strong>, unhas curtas, dedo quase perpendicular ao braço.</li>
+      <li>Aperte <strong>logo atrás do traste</strong>, não em cima nem no meio da casa. Isso sozinho resolve metade dos sons abafados.</li>
+      <li>Pulso relaxado. Se está doendo em 2 minutos, você está apertando forte demais.</li>
+    </ul>
+    <h3>Mão que toca (direita)</h3>
+    <ul>
+      <li>Palheta entre polegar e indicador, sobrando pouco (~5mm). Segure firme, sem tensionar o braço.</li>
+      <li>O movimento vem do <strong>pulso</strong>, não do cotovelo.</li>
+    </ul>
+  </div>
+  <div class="warn"><b>Dor é sinal, não medalha.</b> Ponta do dedo doer/formar calo nas primeiras semanas é normal.
+    Dor em <em>pulso, tendão ou antebraço</em> não é: pare, relaxe a pegada e diminua a sessão.</div>
+</section>
+
+<section id="afinar">
+  <h2><span class="n">03</span> Afinar — antes de qualquer coisa</h2>
+  <div class="lead">Instrumento desafinado faz o acorde certo soar errado — e você vai achar que o erro é seu.
+    Afine <strong>toda vez</strong> que for tocar.</div>
+  <p>A afinação padrão, da corda mais grossa (6ª) para a mais fina (1ª), é <strong>E A D G B E</strong> —
+    em português, <strong>Mi Lá Ré Sol Si Mi</strong>. Clique em cada corda pra ouvir a nota de referência
+    e gire a tarraxa até o som da sua corda "casar" com o da página.</p>
+
+  <div class="strings" id="strings"></div>
+
+  <div class="tip"><b>Como usar de verdade:</b> toque a nota daqui, depois toque sua corda solta.
+    Se a sua estiver <em>mais grave</em> (abaixo), aperte a tarraxa devagar. Se estiver <em>mais aguda</em>,
+    afrouxe até passar do ponto e suba de novo — corda sempre afina melhor <em>subindo</em>.</div>
+  <div class="warn"><b>Vá devagar na 1ª e 2ª corda.</b> São finas e arrebentam fácil se você apertar demais.
+    Meia volta de tarraxa já muda bastante.</div>
+</section>
+
+<section id="braco">
+  <h2><span class="n">04</span> O braço — onde fica cada nota</h2>
+  <div class="lead">Não decore. Entenda a lógica: cada casa é <strong>meio tom</strong>, e as notas seguem
+    sempre a mesma sequência de 12, repetindo. Clique numa casa pra ver a nota.</div>
+  <div class="card" style="padding:16px">
+    <div class="braco-wrap" id="braco"></div>
+    <div style="font-size:.74rem;color:var(--muted);margin-top:10px" id="braco-info">
+      Clique numa casa para marcar. As casas destacadas em azul são as cordas soltas.
+    </div>
+  </div>
+  <div class="tip"><b>A única regra de teoria que importa agora:</b> a sequência é
+    <strong>C · C# · D · D# · E · F · F# · G · G# · A · A# · B</strong> e volta pro C.
+    Entre <strong>E→F</strong> e <strong>B→C</strong> a distância é de <em>meio tom</em> (uma casa só);
+    entre as outras é de um tom (duas casas). É por isso que não existe E# nem B#.</div>
+</section>
+
+<section id="acordes">
+  <h2><span class="n">05</span> Os 7 primeiros acordes</h2>
+  <div class="lead">Com estes sete você toca literalmente milhares de músicas. Aprenda nesta ordem —
+    do mais fácil pro mais difícil.</div>
+  <p><strong>Como ler o diagrama:</strong> as 6 linhas verticais são as cordas (a da esquerda é a 6ª, mais grossa).
+    As horizontais são os trastes. Bolinha = onde apertar, com o número do dedo
+    (<strong>1</strong>=indicador, <strong>2</strong>=médio, <strong>3</strong>=anelar, <strong>4</strong>=mínimo).
+    <strong>O</strong> em cima = corda solta (toca sem apertar). <strong>X</strong> = não toca essa corda.</p>
+  <div class="acordes" id="acordes"></div>
+  <div class="tip"><b>Ordem de estudo:</b> comece por <strong>Em</strong> (só dois dedos) e <strong>Am</strong>.
+    Depois <strong>C</strong>, <strong>G</strong>, <strong>D</strong>. O <strong>D</strong> costuma ser o que mais
+    demora a sair limpo — é normal.</div>
+  <div class="warn"><b>Som abafado ou "chiado"?</b> Quase sempre é uma destas três: dedo encostando na corda vizinha,
+    aperto longe do traste, ou unha grande. Toque corda por corda do acorde pra descobrir <em>qual</em> está muda —
+    não regule tudo de uma vez.</div>
+</section>
+
+<section id="ritmo">
+  <h2><span class="n">06</span> Ritmo — o que separa quem "sabe acordes" de quem toca</h2>
+  <div class="lead">Trocar acorde no tempo certo importa mais que o acorde ser perfeito.
+    Use o metrônomo abaixo desde a primeira semana.</div>
+
+  <div class="card">
+    <div class="metro">
+      <div class="bpm"><span id="bpmv">70</span><span style="font-size:.9rem;color:var(--muted)"> bpm</span></div>
+      <input type="range" id="bpm" min="40" max="160" value="70" step="1" aria-label="Andamento em BPM">
+      <button class="btn" id="metroBtn">▶ Iniciar</button>
+    </div>
+    <div class="beats" id="beats" aria-hidden="true">
+      <div class="beat"></div><div class="beat"></div><div class="beat"></div><div class="beat"></div>
+    </div>
+    <div style="font-size:.74rem;color:var(--muted);margin-top:10px">
+      O primeiro tempo de cada compasso é mais claro — é onde a música "recomeça".
+    </div>
+  </div>
+
+  <h3>A batida universal do iniciante</h3>
+  <p>Numa música em 4 tempos, esta batida serve pra quase tudo. <strong>↓</strong> = mão descendo,
+    <strong>↑</strong> = subindo. O "x" é onde você <em>não</em> toca, mas o braço continua se movendo.</p>
+  <div class="ritmo">↓&nbsp;&nbsp;↓&nbsp;&nbsp;↑&nbsp;&nbsp;x&nbsp;&nbsp;↑&nbsp;&nbsp;↓&nbsp;&nbsp;↑</div>
+  <div class="ritmo-lbl">1&nbsp;&nbsp;&nbsp;&nbsp;2&nbsp;&nbsp;&nbsp;&nbsp;e&nbsp;&nbsp;&nbsp;&nbsp;3&nbsp;&nbsp;&nbsp;&nbsp;e&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;e</div>
+  <div class="tip"><b>O segredo:</b> mantenha a mão <strong>sempre balançando</strong> no tempo, mesmo nas batidas
+    que não tocam. É isso que dá constância — não a memorização da sequência.</div>
+</section>
+
+<section id="exercicios">
+  <h2><span class="n">07</span> Exercícios que realmente funcionam</h2>
+  <div class="lead">Três exercícios cobrem o essencial do primeiro mês: dedos, troca e ritmo.</div>
+
+  <div class="card">
+    <h3>1. Cromático 1-2-3-4 (5 min) — independência dos dedos</h3>
+    <p>Um dedo por casa, corda por corda, subindo e descendo. Comece bem devagar (60 bpm) e
+      <strong>só aumente quando sair limpo</strong>.</p>
+    <pre class="tab">e|--1--2--3--4-------------------|
+B|-----------1--2--3--4----------|
+G|-----------------------1--2--3-|
+  dedo:      1  2  3  4  (uma casa cada)</pre>
+    <p style="font-size:.85rem;color:var(--muted2)">Regra de ouro: <strong>deixe cada dedo apoiado</strong>
+      enquanto coloca o próximo. É o que constrói força útil.</p>
+
+    <h3>2. Troca de acordes cronometrada (5 min) — o exercício mais valioso</h3>
+    <p>Escolha <strong>dois</strong> acordes (comece com <strong>Em → Am</strong>). Ponha 1 minuto no relógio
+      e conte quantas trocas limpas você faz. Anote. Repita amanhã.</p>
+    <ul>
+      <li>Semana 1: ~15–20 trocas por minuto já é bom.</li>
+      <li>Meta de fluência: <strong>60 trocas/minuto</strong> (uma por segundo).</li>
+      <li>Só troque de par quando o atual estiver confortável.</li>
+    </ul>
+
+    <h3>3. Batida com metrônomo (5 min) — constância</h3>
+    <p>Um acorde só (Em serve), batida do item 6, metrônomo em 70 bpm. O objetivo <strong>não</strong> é
+      variar — é não acelerar nem atrasar. Toque 2 minutos sem parar.</p>
+  </div>
+
+  <div class="tip"><b>15 minutos por dia batem 2 horas no domingo.</b> O calo do dedo, a memória muscular e a
+    coordenação se constroem por <em>frequência</em>, não por duração. Todo dia, mesmo que pouco.</div>
+</section>
+
+<section id="musicas">
+  <h2><span class="n">08</span> Primeiras músicas — progressões que você já consegue</h2>
+  <div class="lead">Sequências de acordes que sustentam um repertório enorme. Toque cada acorde por
+    4 tempos e repita em loop.</div>
+  <table class="prog">
+    <thead><tr><th>Progressão</th><th>Sequência</th><th>Por que começar por ela</th></tr></thead>
+    <tbody>
+      <tr><td>A mais fácil</td><td class="seq">Em · Am · Em · Am</td><td>Só 2 acordes, ambos de 2 dedos. Serve pra treinar troca com música de verdade.</td></tr>
+      <tr><td>Os 4 acordes</td><td class="seq">G · D · Em · C</td><td>A progressão mais usada do pop. Centenas de músicas cabem aqui.</td></tr>
+      <tr><td>Clássica do violão</td><td class="seq">C · G · Am · F</td><td>O F é com pestana — deixe pra quando os outros estiverem firmes.</td></tr>
+      <tr><td>Blues simples</td><td class="seq">E · A · E · B7</td><td>Base do blues e do rock antigo. Ritmo arrastado, bom pra soltar a mão.</td></tr>
+      <tr><td>Melancólica</td><td class="seq">Am · F · C · G</td><td>Soa "profissional" com pouquíssimo esforço.</td></tr>
+    </tbody>
+  </table>
+  <div class="tip"><b>Como achar cifra:</b> procure "cifra simplificada" do nome da música em sites de cifras.
+    Comece por músicas que usam <strong>só os acordes que você já sabe</strong> — a sensação de tocar algo
+    reconhecível é o que sustenta a prática.</div>
+</section>
+
+<section id="rotina">
+  <h2><span class="n">09</span> Rotina de 20 minutos</h2>
+  <div class="lead">Se você fizer só isto, todo dia, em 4 semanas você toca música inteira.</div>
+  <div class="card">
+    <table class="prog">
+      <thead><tr><th>Tempo</th><th>O quê</th><th>Objetivo</th></tr></thead>
+      <tbody>
+        <tr><td>2 min</td><td>Afinar (seção 3)</td><td>Ouvido + instrumento certo</td></tr>
+        <tr><td>5 min</td><td>Cromático 1-2-3-4</td><td>Dedos e precisão</td></tr>
+        <tr><td>5 min</td><td>Troca cronometrada de 2 acordes</td><td>O gargalo real do iniciante</td></tr>
+        <tr><td>5 min</td><td>Batida com metrônomo</td><td>Constância de tempo</td></tr>
+        <tr><td>3 min</td><td>Tocar uma progressão da seção 8</td><td>Prazer — o que faz voltar amanhã</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="tip"><b>Marco de 30 dias:</b> trocar Em↔Am 60 vezes por minuto, tocar a progressão
+    G·D·Em·C em loop sem parar por 2 minutos, e uma música simples do início ao fim.
+    Se chegou aí, você não é mais iniciante.</div>
+</section>
+
+<footer>
+  Feito pro hub do Ricaliff · afinador e metrônomo por Web Audio (sem arquivos de som) ·
+  <a href="/">voltar ao hub</a>
+</footer>
+</div>
+
+<script>
+'use strict';
+/* ── áudio: um AudioContext só, criado no PRIMEIRO GESTO ──
+   (autoplay policy: criar/resumir fora de um gesto do usuário deixa o som mudo pra sempre) */
+let ac = null;
+function audio(){
+  if (!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
+  if (ac.state === 'suspended') ac.resume();
+  return ac;
+}
+/* nota com envelope — corte seco estala o alto-falante */
+function tocar(freq, dur = 1.6, tipo = 'triangle', vol = .22){
+  const c = audio(), o = c.createOscillator(), g = c.createGain();
+  o.type = tipo; o.frequency.value = freq;
+  const t = c.currentTime;
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(vol, t + .02);
+  g.gain.exponentialRampToValueAtTime(.001, t + dur);
+  o.connect(g); g.connect(c.destination);
+  o.start(t); o.stop(t + dur + .05);
+}
+
+/* ── 3. AFINADOR ── afinação padrão E2 A2 D3 G3 B3 E4 */
+const CORDAS = [
+  { n:6, nota:'E', pt:'Mi',  oct:2, hz:82.41,  desc:'a mais grossa' },
+  { n:5, nota:'A', pt:'Lá',  oct:2, hz:110.00, desc:'' },
+  { n:4, nota:'D', pt:'Ré',  oct:3, hz:146.83, desc:'' },
+  { n:3, nota:'G', pt:'Sol', oct:3, hz:196.00, desc:'' },
+  { n:2, nota:'B', pt:'Si',  oct:3, hz:246.94, desc:'' },
+  { n:1, nota:'E', pt:'Mi',  oct:4, hz:329.63, desc:'a mais fina' },
+];
+document.getElementById('strings').innerHTML = CORDAS.map((c,i) => `
+  <div class="str" data-i="${i}" role="button" tabindex="0">
+    <div class="nota">${c.nota}</div>
+    <div class="pt">${c.pt}</div>
+    <div class="meta">${c.n}ª corda · ${c.hz} Hz</div>
+    <div class="meta">${c.desc}</div>
+  </div>`).join('');
+document.querySelectorAll('.str').forEach(el => {
+  const disparar = () => {
+    const c = CORDAS[+el.dataset.i];
+    tocar(c.hz, 2.4, 'triangle', .25);
+    document.querySelectorAll('.str').forEach(s => s.classList.remove('on'));
+    el.classList.add('on');
+    setTimeout(() => el.classList.remove('on'), 2400);
+  };
+  el.addEventListener('click', disparar);
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); disparar(); } });
+});
+
+/* ── 4. BRAÇO ── cromática a partir da corda solta */
+const CROM = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const CASAS = 12;
+const idxDe = n => CROM.indexOf(n);
+/* monta a <table> INTEIRA numa div: setar innerHTML com <tr> solto direto numa <table>
+   faz o parser HTML5 descartar tr/td e deixar só o texto (foster parenting). */
+let bracoTbl = '<tr><th></th>' + Array.from({length:CASAS+1},(_,i)=>`<th>${i===0?'solta':i}</th>`).join('') + '</tr>';
+CORDAS.slice().reverse().forEach(c => {          // 1ª corda no topo (como se vê tocando)
+  bracoTbl += `<tr><td>${c.n}ª · ${c.nota}</td>`;
+  for (let casa = 0; casa <= CASAS; casa++) {
+    const nota = CROM[(idxDe(c.nota) + casa) % 12];
+    bracoTbl += `<td><button class="casa${casa===0?' solta':''}" data-nota="${nota}" data-corda="${c.n}" data-casa="${casa}">${nota}</button></td>`;
+  }
+  bracoTbl += '</tr>';
+});
+document.getElementById('braco').innerHTML = '<table class="braco">' + bracoTbl + '</table>';
+const info = document.getElementById('braco-info');
+document.getElementById('braco').addEventListener('click', e => {
+  const b = e.target.closest('.casa'); if (!b) return;
+  const marcada = b.classList.contains('mark');
+  document.querySelectorAll('.casa').forEach(x => x.classList.remove('mark'));
+  if (marcada) { info.textContent = 'Clique numa casa para marcar. As casas destacadas em azul são as cordas soltas.'; return; }
+  b.classList.add('mark');
+  const corda = +b.dataset.corda, casa = +b.dataset.casa, nota = b.dataset.nota;
+  const base = CORDAS.find(c => c.n === corda);
+  tocar(base.hz * Math.pow(2, casa/12), 1.3, 'triangle', .2);   // 1 casa = 1 semitom = 2^(1/12)
+  info.innerHTML = `<strong style="color:var(--secondary)">${nota}</strong> — ${corda}ª corda, ` +
+    (casa === 0 ? 'solta (sem apertar)' : `casa ${casa}`) +
+    `. Mesma nota aparece em outros pontos do braço: é a mesma altura, timbre diferente.`;
+});
+
+/* ── 5. ACORDES ──
+   posições: da 6ª à 1ª corda. -1 = não toca (X), 0 = solta (O), n = casa.
+   dedos: 0 = nenhum (solta), 1..4 = indicador..mínimo */
+const ACORDES = [
+  { nome:'Em',  pt:'Mi menor',  pos:[0,2,2,0,0,0],   dedos:[0,2,3,0,0,0], dif:'o mais fácil — 2 dedos' },
+  { nome:'Am',  pt:'Lá menor',  pos:[-1,0,2,2,1,0],  dedos:[0,0,2,3,1,0], dif:'não toque a 6ª corda' },
+  { nome:'E',   pt:'Mi maior',  pos:[0,2,2,1,0,0],   dedos:[0,2,3,1,0,0], dif:'igual ao Em + 1 dedo' },
+  { nome:'A',   pt:'Lá maior',  pos:[-1,0,2,2,2,0],  dedos:[0,0,1,2,3,0], dif:'3 dedos na mesma casa' },
+  { nome:'D',   pt:'Ré maior',  pos:[-1,-1,0,2,3,2], dedos:[0,0,0,1,3,2], dif:'só as 4 cordas finas' },
+  { nome:'C',   pt:'Dó maior',  pos:[-1,3,2,0,1,0],  dedos:[0,3,2,0,1,0], dif:'esticada — vá devagar' },
+  { nome:'G',   pt:'Sol maior', pos:[3,2,0,0,0,3],   dedos:[3,2,0,0,0,4], dif:'abre bem a mão' },
+];
+function diagrama(a){
+  const W=104, H=118, x0=14, y0=24, dx=15, dy=17, TR=5;      // 6 cordas, 5 trastes
+  let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-label="Diagrama do acorde ${a.nome}">`;
+  s += `<rect x="${x0}" y="${y0-3}" width="${dx*5}" height="3.5" rx="1" fill="#B3ECFF"/>`;  // pestana
+  for (let i=0;i<6;i++) s += `<line x1="${x0+i*dx}" y1="${y0}" x2="${x0+i*dx}" y2="${y0+dy*TR}" stroke="#3A4680" stroke-width="1.2"/>`;
+  for (let t=0;t<=TR;t++) s += `<line x1="${x0}" y1="${y0+t*dy}" x2="${x0+dx*5}" y2="${y0+t*dy}" stroke="#3A4680" stroke-width="1.2"/>`;
+  a.pos.forEach((p,i)=>{
+    const x = x0 + i*dx;
+    if (p === -1) s += `<text x="${x}" y="${y0-9}" text-anchor="middle" font-size="10" fill="#5F79AD" font-family="Inter">✕</text>`;
+    else if (p === 0) s += `<circle cx="${x}" cy="${y0-12}" r="3.6" fill="none" stroke="#6FD3FF" stroke-width="1.4"/>`;
+    else {
+      const y = y0 + (p-.5)*dy;
+      s += `<circle cx="${x}" cy="${y}" r="6.2" fill="#9D6FFF"/>`;
+      if (a.dedos[i]) s += `<text x="${x}" y="${y+3.4}" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff" font-family="Inter">${a.dedos[i]}</text>`;
+    }
+  });
+  return s + '</svg>';
+}
+document.getElementById('acordes').innerHTML = ACORDES.map((a,i) => `
+  <div class="ac" data-a="${i}" role="button" tabindex="0" title="Clique para ouvir">
+    <h4>${a.nome}</h4><div class="pt2">${a.pt}</div>
+    ${diagrama(a)}
+    <div class="dif">${a.dif}</div>
+  </div>`).join('');
+/* ouvir o acorde: arpeja as cordas tocadas, da mais grave pra mais aguda */
+document.querySelectorAll('.ac').forEach(el => {
+  const tocarAcorde = () => {
+    const a = ACORDES[+el.dataset.a];
+    a.pos.forEach((p,i) => {
+      if (p === -1) return;
+      const base = CORDAS[i].hz;                       // CORDAS está da 6ª à 1ª, igual a pos
+      setTimeout(() => tocar(base * Math.pow(2, p/12), 2.2, 'triangle', .16), i * 55);
+    });
+  };
+  el.addEventListener('click', tocarAcorde);
+  el.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tocarAcorde(); } });
+});
+
+/* ── 6. METRÔNOMO ── agendado no relógio do AudioContext (setInterval derrapa) */
+let metroOn = false, proxTempo = 0, tempoAtual = 0, timerId = null;
+const bpmEl = document.getElementById('bpm'), bpmv = document.getElementById('bpmv');
+const beats = [...document.querySelectorAll('.beat')], btn = document.getElementById('metroBtn');
+bpmEl.addEventListener('input', () => bpmv.textContent = bpmEl.value);
+function agendar(){
+  const c = audio();
+  while (proxTempo < c.currentTime + .12) {            // olha 120ms à frente
+    const forte = tempoAtual % 4 === 0;
+    const o = c.createOscillator(), g = c.createGain();
+    o.frequency.value = forte ? 1600 : 1100;
+    g.gain.setValueAtTime(0, proxTempo);
+    g.gain.linearRampToValueAtTime(forte ? .5 : .3, proxTempo + .001);
+    g.gain.exponentialRampToValueAtTime(.001, proxTempo + .05);
+    o.connect(g); g.connect(c.destination);
+    o.start(proxTempo); o.stop(proxTempo + .06);
+    const idx = tempoAtual % 4, atraso = Math.max(0, (proxTempo - c.currentTime) * 1000);
+    setTimeout(() => {
+      beats.forEach(b => b.classList.remove('hit','um'));
+      beats[idx].classList.add('hit'); if (idx === 0) beats[idx].classList.add('um');
+      setTimeout(() => beats[idx].classList.remove('hit','um'), 110);
+    }, atraso);
+    proxTempo += 60 / +bpmEl.value;
+    tempoAtual++;
+  }
+  timerId = setTimeout(agendar, 25);
+}
+btn.addEventListener('click', () => {
+  if (metroOn) {
+    metroOn = false; clearTimeout(timerId); btn.textContent = '▶ Iniciar';
+    beats.forEach(b => b.classList.remove('hit','um'));
+  } else {
+    const c = audio();                                  // criado DENTRO do gesto
+    metroOn = true; tempoAtual = 0; proxTempo = c.currentTime + .1;
+    btn.textContent = '■ Parar'; agendar();
+  }
+});
+</script>
+</body>
+</html>
