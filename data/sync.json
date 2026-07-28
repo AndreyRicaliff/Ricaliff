@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-28T15:50:24",
+    "lastSync": "2026-07-28T16:37:15",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 9,
     "title": "Staff",
-    "xp": 18895,
+    "xp": 18945,
     "xpToNext": 19001,
     "streak": 5,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 339,
+        "value": 342,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-28",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-oficina-backend] DRE rastreável — lucro do dash vira subtotal, despesas por plano"
+    },
     {
       "date": "2026-07-28",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[PULSAR-FINANCE] entrada completa no padrao RH — cenario vivo, apresentacao e novidades na porta"
-    },
-    {
-      "date": "2026-07-24",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[Ricaliff] onda 4 v2.1 — design, motion e 3D com base cientifica"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-28",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[cliente-oficina-backend] DRE rastreável — lucro do dash vira subtotal, despesas por plano",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-28",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[cliente-oficina-backend] dossiê de produto — modal com vendas, evolução e estoque por loja",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[algoritmo-lideranca-checkout] limitar taxa exibida a 2 casas decimais",
       "xp": 30
-    },
-    {
-      "date": "2026-07-27",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[algoritmo-lideranca-checkout] 2a turma (18-20/09) com preco por lote e antecipacao repassada",
-      "xp": 50
     }
   ]
 }
