@@ -1,10 +1,10 @@
-// seed.js v32 — v31 + sessão s-81 (ag-hub, 2026-07-28)
+// seed.js v36 — v35 + sessão s-85 (pulsar-finance, 2026-07-29)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '32') return;
+  if (localStorage.getItem('agh_seed_v') === '36') return;
 
   const now = new Date().toISOString();
 
@@ -281,6 +281,10 @@
     { id:'s-79', title:'Marca e transicao proprias do tema Gojo + 4 bugs de forma corrigidos', projectId:'ag-hub', type:'bugfix', date:'2026-07-25', impact:'medio', notes:'Jack Frost sai do Gojo (marca SVG autoral) e o wipe do P3 vira domain expansion. Entrada de view com translateX vazava e travava torta; flex sem wrap/min-width-0 empurrava botao.', createdAt: now },
     { id:'s-80', title:'Rodape do rail, fundo cortado no resize e jank de compositor corrigidos', projectId:'ag-hub', type:'bugfix', date:'2026-07-25', impact:'alto', notes:'Screenshot revelou 3 bugs que a auditoria por medicao nao pegou: rotulo solto quebrando no rail de 68px, canvas sem redraw no resize, backdrop-filter em 23 cards. Tela assenta em 0.84s (era 1.23s).', createdAt: now },
     { id:'s-81', title:'Pagina de guitarra reescrita 100% visual para iniciante absoluto', projectId:'ag-hub', type:'feature', date:'2026-07-28', impact:'medio', notes:'Poster anatomico clicavel, experimentos de vibracao com som, acordes na visao do jogador (ADR: cifra padrao e espelhada e confunde quem sabe zero), batida animada no clock do AudioContext.', createdAt: now },
+    { id:'s-82', title:'2FA por e-mail com gate na RLS + integracao Resend', projectId:'pulsar-finance', type:'feature', date:'2026-07-25', impact:'alto', notes:'signInWithPassword ja devolve sessao valida, entao o gate mora nas policies (sessao_verificada por session_id); codigo so em hash, 5 tentativas, reenvio 45s', createdAt: now },
+    { id:'s-83', title:'Migracao Netlify->Vercel + paridade visual do login com o RH', projectId:'pulsar-finance', type:'design', date:'2026-07-26', impact:'medio', notes:'wordmark oficial, raio de pulso L->R, showcase de telas; fix do tema claro (regressao de fundo global) e fontes self-hosted sem CDN', createdAt: now },
+    { id:'s-84', title:'Aprovacao de contas a pagar + lancamentos manuais + aparelho confiavel', projectId:'pulsar-finance', type:'feature', date:'2026-07-27', impact:'alto', notes:'maquina de estados em trigger, trilha imutavel gerada pelo banco, RPC client-ready; lancamento manual como 3a fonte do funil; token de dispositivo so em hash', createdAt: now },
+    { id:'s-85', title:'Fix do aparelho confiavel + alerta de demonstracao legivel pro financeiro', projectId:'pulsar-finance', type:'bugfix', date:'2026-07-29', impact:'medio', notes:'checagem rodava antes do login existir (5 tokens emitidos, 0 resgatados); listener SIGNED_IN revalida; riscados vs padrao viraram pop-up com restauracao por item', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -328,7 +332,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '32');
+  localStorage.setItem('agh_seed_v',   '36');
 
-  console.log('[Ricaliff seed v32 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v36 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
