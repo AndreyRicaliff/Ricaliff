@@ -1,10 +1,10 @@
-// seed.js v40 — v39 + sessão s-89 (cliente-oficina, 2026-07-29)
+// seed.js v42 — v41 + sessão s-91 (pulsar-finance, 2026-07-25)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '40') return;
+  if (localStorage.getItem('agh_seed_v') === '42') return;
 
   const now = new Date().toISOString();
 
@@ -289,6 +289,8 @@
     { id:'s-87', title:'Watchlist de produtos monitorados com unidades por loja e periodo', projectId:'cliente-oficina', type:'feature', date:'2026-07-14', impact:'medio', notes:'RPCs agregando no servidor (evita truncamento do PostgREST); busca trigram; grao item devolvido ao sync incremental de 15min para numero de hoje nao ficar 24h defasado.', createdAt: now },
     { id:'s-88', title:'DRE rastreavel + dossies de produto e loja; 3 migrations e deploy em producao', projectId:'cliente-oficina', type:'deploy', date:'2026-07-28', impact:'alto', notes:'Lucro do dash de vendas virou subtotal do DRE (divergencia impossivel por construcao); cada linha expande formula, coluna-fonte e frescor; modais via portal; deploy Vercel CLI.', createdAt: now },
     { id:'s-89', title:'Analise dimensional: funil linha, fabricante e produto com curva ABC', projectId:'cliente-oficina', type:'feature', date:'2026-07-29', impact:'medio', notes:'RPC unica calcula resultado em qualquer grao com filtros empilhaveis, curva ABC por receita e participacao; funil por clique encadeando no dossie de produto.', createdAt: now },
+    { id:'s-90', title:'Padronizacao visual v3.1 completa: 6 fases aplicadas em um dia', projectId:'pulsar-finance', type:'design', date:'2026-07-24', impact:'alto', notes:'Tokens+Space Grotesk, marca viva com splash, nav numerada, KPI-hero/tabs-pill, changelog in-app com dot e count-up no numero-mestre; escape ?static=1', createdAt: now },
+    { id:'s-91', title:'2FA por codigo de e-mail com gate na RLS + integracao Resend', projectId:'pulsar-finance', type:'feature', date:'2026-07-25', impact:'alto', notes:'Codigo de 6 digitos via edge enviar-email (Resend); o gate mora na RLS, nao no front — sem o segundo fator a policy nega leitura; boas-vindas na aba Acessos', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -336,7 +338,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '40');
+  localStorage.setItem('agh_seed_v',   '42');
 
-  console.log('[Ricaliff seed v40 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v42 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
