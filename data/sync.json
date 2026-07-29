@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-29T14:20:00",
+    "lastSync": "2026-07-29T14:25:54",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 19635,
+    "xp": 19685,
     "xpToNext": 27001,
     "streak": 6,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 372,
+        "value": 375,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-29",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[Ricaliff] 4 sessoes pulsar-finance (2FA+Resend, Vercel+brand, aprovacoes+lancamentos+dispositivo, fixes)"
+    },
     {
       "date": "2026-07-29",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[PULSAR-RH] versao fina da logo (800x126) para RH e Finance"
-    },
-    {
-      "date": "2026-07-25",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[PULSAR-RH] logo final — freestyle (eco de batimento) achatada com tagline compacta"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-29",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[Ricaliff] 4 sessoes pulsar-finance (2FA+Resend, Vercel+brand, aprovacoes+lancamentos+dispositivo, fixes)",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-29",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[cliente-oficina-backend] análise dimensional — funil linha > fabricante > produto com curva ABC",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "👁️",
       "title": "[cliente-oficina-backend] registrar deploy 2026-07-28 (migrations v9-v11 + app em prod); restam coletores",
       "xp": 20
-    },
-    {
-      "date": "2026-07-28",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[cliente-oficina-backend] review findings — stale-fetch guards, daily series aligned to DRE",
-      "xp": 30
     }
   ]
 }
