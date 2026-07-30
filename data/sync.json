@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-30T17:42:06",
+    "lastSync": "2026-07-30T17:53:05",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 20275,
+    "xp": 20305,
     "xpToNext": 27001,
     "streak": 7,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 234,
+        "value": 238,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-30",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[PULSAR-RH] gatilho de modal-formulario e colapso do form-row no mobile"
+    },
     {
       "date": "2026-07-30",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 25,
       "type": "refactor",
       "desc": "[PULSAR-RH] familia unica Inter — mesmo padrao do Pulsar Finance"
-    },
-    {
-      "date": "2026-07-27",
-      "xp": 25,
-      "type": "refactor",
-      "desc": "[PULSAR-FINANCE] familia unica Inter — mesmo padrao do PULSAR-RH"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-30",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "[PULSAR-RH] gatilho de modal-formulario e colapso do form-row no mobile",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-30",
       "type": "feat",
       "icon": "⚙️",
       "title": "[PULSAR-FINANCE] modais largos — mesma doutrina do PULSAR-RH",
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[cliente-oficina-backend] v12 — codigo_linha/codigo_fabricante sao integer em prod (cast ::text)",
       "xp": 30
-    },
-    {
-      "date": "2026-07-29",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-oficina-backend] auto-gate da aba Análise — só aparece quando fn_resultado_dim existir",
-      "xp": 50
     }
   ]
 }
