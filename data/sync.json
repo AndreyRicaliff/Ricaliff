@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-30T15:44:12",
+    "lastSync": "2026-07-30T16:59:35",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 20095,
+    "xp": 20145,
     "xpToNext": 27001,
     "streak": 7,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 390,
+        "value": 393,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-30",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-oficina-backend] visão de vendedor — consulta mobile de peças com papel no banco"
+    },
     {
       "date": "2026-07-30",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[PULSAR-FINANCE] telas demonstrativas no \"Conheca o Pulsar Finance\""
-    },
-    {
-      "date": "2026-07-26",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[PULSAR-RH] telas demonstrativas no \"Conheca o Pulsar RH\""
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-30",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[cliente-oficina-backend] visão de vendedor — consulta mobile de peças com papel no banco",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-30",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[cliente-varejo] ranking mostra de qual terminal do PDV veio o consolidado",
       "xp": 50
     },
@@ -758,13 +765,6 @@
       "type": "bugfix",
       "icon": "🐛",
       "title": "[cliente-oficina-backend] review round — client-safe empty states, no 1000-row cap, DRY extraction",
-      "xp": 30
-    },
-    {
-      "date": "2026-07-29",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[PULSAR-FINANCE] os 5 achados ALTOS da auditoria de 2026-07-29",
       "xp": 30
     }
   ]
