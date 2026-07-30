@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-30T16:59:35",
+    "lastSync": "2026-07-30T17:38:50",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 20145,
+    "xp": 20175,
     "xpToNext": 27001,
     "streak": 7,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 230,
+        "value": 234,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-30",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[cliente-oficina-backend] pop-ups alargados — dossies mostram tudo sem arrastar"
+    },
     {
       "date": "2026-07-30",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[PULSAR-FINANCE] pulso volta a percorrer a linha de EKG da tela"
-    },
-    {
-      "date": "2026-07-26",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[PULSAR-FINANCE] telas demonstrativas no \"Conheca o Pulsar Finance\""
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-30",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "[cliente-oficina-backend] pop-ups alargados — dossies mostram tudo sem arrastar",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-30",
       "type": "feat",
       "icon": "⚙️",
       "title": "[cliente-oficina-backend] visão de vendedor — consulta mobile de peças com papel no banco",
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[PULSAR-RH] avaliacao 360/180 direcionada pelo cadastro",
       "xp": 50
-    },
-    {
-      "date": "2026-07-29",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[cliente-oficina-backend] review round — client-safe empty states, no 1000-row cap, DRY extraction",
-      "xp": 30
     }
   ]
 }
