@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-29T16:25:52",
+    "lastSync": "2026-07-30T15:44:12",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 20045,
+    "xp": 20095,
     "xpToNext": 27001,
-    "streak": 6,
+    "streak": 7,
     "longestStreak": 16,
-    "lastActiveDate": "2026-07-29",
+    "lastActiveDate": "2026-07-30",
     "attributes": {
       "int": {
         "value": 15,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 387,
+        "value": 390,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -45,7 +45,7 @@
         "rule": "+10 por post LinkedIn, +20 por talk, +30 por PR OSS"
       },
       "con": {
-        "value": 30,
+        "value": 31,
         "label": "Constituição",
         "icon": "🛡",
         "rule": "+1 por dia de streak ativo"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-30",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] ranking mostra de qual terminal do PDV veio o consolidado"
+    },
     {
       "date": "2026-07-29",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[PULSAR-RH] telas demonstrativas no \"Conheca o Pulsar RH\""
-    },
-    {
-      "date": "2026-07-26",
-      "xp": 20,
-      "type": "review",
-      "desc": "[PULSAR-FINANCE] vercel.json para a migracao Netlify -> Vercel"
     }
   ],
   "achievements": [
@@ -698,6 +698,13 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-07-30",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-varejo] ranking mostra de qual terminal do PDV veio o consolidado",
+      "xp": 50
+    },
+    {
       "date": "2026-07-29",
       "type": "feat",
       "icon": "⚙️",
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[PULSAR-FINANCE] os 5 achados ALTOS da auditoria de 2026-07-29",
       "xp": 30
-    },
-    {
-      "date": "2026-07-29",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[Ricaliff] registra padronizacao v3.1 e 2FA+Resend do pulsar-finance (seed v42)",
-      "xp": 20
     }
   ]
 }
