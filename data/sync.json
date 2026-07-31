@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-31T17:11:49",
+    "lastSync": "2026-07-31T17:33:10",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 20535,
+    "xp": 20585,
     "xpToNext": 27001,
     "streak": 8,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 405,
+        "value": 408,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-31",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] supervisor lanca o proprio salario — via funcao reversivel"
+    },
     {
       "date": "2026-07-31",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 20,
       "type": "review",
       "desc": "[algoritmo-lideranca-checkout] detalhar a pendencia de rate limit com o resultado da revisao"
-    },
-    {
-      "date": "2026-07-27",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[algoritmo-lideranca-checkout] fechar o fail-open do precoVisto e o Purchase com valor inexistente"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-07-31",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[cliente-varejo] supervisor lanca o proprio salario — via funcao reversivel",
+      "xp": 50
+    },
+    {
+      "date": "2026-07-31",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[cliente-oficina-backend] full-year sync accepts target year for backfill (node sync-full-year.js 2025)",
       "xp": 50
     },
@@ -758,13 +765,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[PULSAR-FINANCE] modais largos — mesma doutrina do PULSAR-RH",
-      "xp": 50
-    },
-    {
-      "date": "2026-07-30",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[PULSAR-RH] modais largos — largura pelo conteudo, sem arrastar pro lado",
       "xp": 50
     }
   ]
