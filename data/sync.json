@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-07-31T17:33:10",
+    "lastSync": "2026-07-31T17:46:43",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 20585,
+    "xp": 20615,
     "xpToNext": 27001,
     "streak": 8,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 250,
+        "value": 254,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-07-31",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[cliente-varejo] trim no match de nome, erros nao engolidos e msg amigavel de RLS"
+    },
     {
       "date": "2026-07-31",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 20,
       "type": "review",
       "desc": "[PULSAR-RH] deploy do RH bloqueado na Vercel + fases 2 e 3 do 2FA"
-    },
-    {
-      "date": "2026-07-27",
-      "xp": 20,
-      "type": "review",
-      "desc": "[algoritmo-lideranca-checkout] detalhar a pendencia de rate limit com o resultado da revisao"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-07-31",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "[cliente-varejo] trim no match de nome, erros nao engolidos e msg amigavel de RLS",
+      "xp": 30
+    },
+    {
+      "date": "2026-07-31",
       "type": "feat",
       "icon": "⚙️",
       "title": "[cliente-varejo] supervisor lanca o proprio salario — via funcao reversivel",
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[PULSAR-RH] gatilho de modal-formulario e colapso do form-row no mobile",
       "xp": 30
-    },
-    {
-      "date": "2026-07-30",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[PULSAR-FINANCE] modais largos — mesma doutrina do PULSAR-RH",
-      "xp": 50
     }
   ]
 }
