@@ -1,10 +1,10 @@
-// seed.js v44 — v43 + sessão s-93 (pulsar-finance, 2026-07-31)
+// seed.js v45 — v44 + sessão s-94 (pulsar-finance, 2026-08-02)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '44') return;
+  if (localStorage.getItem('agh_seed_v') === '45') return;
 
   const now = new Date().toISOString();
 
@@ -293,6 +293,7 @@
     { id:'s-91', title:'2FA por codigo de e-mail com gate na RLS + integracao Resend', projectId:'pulsar-finance', type:'feature', date:'2026-07-25', impact:'alto', notes:'Codigo de 6 digitos via edge enviar-email (Resend); o gate mora na RLS, nao no front — sem o segundo fator a policy nega leitura; boas-vindas na aba Acessos', createdAt: now },
     { id:'s-92', title:'Dedup Omie lancamento x baixa + biblioteca de apresentacoes como explorador', projectId:'pulsar-finance', type:'bugfix', date:'2026-07-30', impact:'alto', notes:'mf devolve 2 linhas do mesmo titulo pago (MANP x BAXP): dedup por idTitulo|natureza na ingestao + limpeza dos 22 tenants; apresentacoes viraram arquivos com kanban, temas por empresa e backup previo', createdAt: now },
     { id:'s-93', title:'Caixa de entrada do operador + aprovacoes em lote + sync em background', projectId:'pulsar-finance', type:'feature', date:'2026-07-31', impact:'alto', notes:'home cross-cliente (aprovacoes/sync/orfas); lote nos dois lados (12 contas em 3 cliques); edge responde na hora e varre via waitUntil com sync-status — tenant de 24k movimentos nao estoura mais o teto', createdAt: now },
+    { id:'s-94', title:'Relatorios: eixo Y com valores, export com erro visivel e guard de conta na publicacao', projectId:'pulsar-finance', type:'feature', date:'2026-08-02', impact:'medio', notes:'Grafico ganhou eixo Y legivel; export de apresentacao deixou de falhar calado (erro na tela); publicar exige conta vinculada do cliente', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -340,7 +341,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '44');
+  localStorage.setItem('agh_seed_v',   '45');
 
-  console.log('[Ricaliff seed v44 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v45 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
