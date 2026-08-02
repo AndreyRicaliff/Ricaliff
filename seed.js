@@ -1,10 +1,10 @@
-// seed.js v47 — v46 + sessão s-96 (pulsar-finance, 2026-08-02)
+// seed.js v48 — v47 + sessão s-97 (pulsar-finance, 2026-08-02)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '47') return;
+  if (localStorage.getItem('agh_seed_v') === '48') return;
 
   const now = new Date().toISOString();
 
@@ -296,6 +296,7 @@
     { id:'s-94', title:'Relatorios: eixo Y com valores, export com erro visivel e guard de conta na publicacao', projectId:'pulsar-finance', type:'feature', date:'2026-08-02', impact:'medio', notes:'Grafico ganhou eixo Y legivel; export de apresentacao deixou de falhar calado (erro na tela); publicar exige conta vinculada do cliente', createdAt: now },
     { id:'s-95', title:'4 bugs confirmados por revisao multi-agente corrigidos + gate de papel na edge de sync', projectId:'pulsar-finance', type:'bugfix', date:'2026-08-02', impact:'alto', notes:'Orfa-por-no invisivel na conciliacao; override de classe gravado em chave que o motor nao lia; download abortado por revoke sincrono; edge de sync sem checagem de papel (cross-tenant)', createdAt: now },
     { id:'s-96', title:'Onda visual dos relatorios: orcado x atual por categoria, grafico divergente e oscilacao', projectId:'pulsar-finance', type:'feature', date:'2026-08-02', impact:'medio', notes:'Tabelas de categoria com barra de % do orcado + anel de execucao; barras mensais divergentes com polyline nos vertices; linha dupla nos neutros; agregacao em lib pura testada', createdAt: now },
+    { id:'s-97', title:'CAPEX (3 fases) em producao + gate da edge de sync provado em prod', projectId:'pulsar-finance', type:'deploy', date:'2026-08-02', impact:'alto', notes:'Indicador capex por no da Matriz, relatorio base caixa e adesao vs orcado; edge com gate de papel deployada e provada; producao confirmada no Vercel por marcador de bundle', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -343,7 +344,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '47');
+  localStorage.setItem('agh_seed_v',   '48');
 
-  console.log('[Ricaliff seed v47 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v48 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
