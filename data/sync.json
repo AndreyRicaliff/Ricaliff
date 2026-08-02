@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-08-02T02:48:18",
+    "lastSync": "2026-08-02T02:48:22",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 20725,
+    "xp": 20755,
     "xpToNext": 27001,
     "streak": 1,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 266,
+        "value": 270,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-08-02",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[PULSAR-FINANCE] filiais sem neutros (Regra Mae) e ano dinamico no Previsto x Realizado"
+    },
     {
       "date": "2026-08-02",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-oficina-backend] dossiê de produto — modal com vendas, evolução e estoque por loja"
-    },
-    {
-      "date": "2026-07-28",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[PULSAR-FINANCE] mercadoria recebida + contas recorrentes (da planilha real)"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-08-02",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[PULSAR-FINANCE] filiais sem neutros (Regra Mae) e ano dinamico no Previsto x Realizado",
+      "xp": 30
+    },
+    {
+      "date": "2026-08-02",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[PULSAR-FINANCE] ancora no DOM e revoke adiado nos downloads (HTML e CSV)",
       "xp": 30
     },
@@ -758,13 +765,6 @@
       "type": "bugfix",
       "icon": "🐛",
       "title": "[cliente-oficina-backend] v14 — FOREACH exige keyword ARRAY + construtor array[...] (sintaxe 42601)",
-      "xp": 30
-    },
-    {
-      "date": "2026-07-31",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[cliente-oficina-backend] v13 derruba assinaturas antigas antes de recriar",
       "xp": 30
     }
   ]
