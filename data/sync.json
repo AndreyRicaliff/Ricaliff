@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-08-02T02:48:09",
+    "lastSync": "2026-08-02T02:48:18",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 20695,
+    "xp": 20725,
     "xpToNext": 27001,
     "streak": 1,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 262,
+        "value": 266,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-08-02",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[PULSAR-FINANCE] ancora no DOM e revoke adiado nos downloads (HTML e CSV)"
+    },
     {
       "date": "2026-08-02",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[PULSAR-FINANCE] mercadoria recebida + contas recorrentes (da planilha real)"
-    },
-    {
-      "date": "2026-07-27",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[PULSAR-FINANCE] fila de aprovacao de contas a pagar (lado do financeiro)"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-08-02",
       "type": "bugfix",
       "icon": "🐛",
+      "title": "[PULSAR-FINANCE] ancora no DOM e revoke adiado nos downloads (HTML e CSV)",
+      "xp": 30
+    },
+    {
+      "date": "2026-08-02",
+      "type": "bugfix",
+      "icon": "🐛",
       "title": "[PULSAR-FINANCE] override por classe sem agrupadora deixava de ser lido",
       "xp": 30
     },
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[cliente-oficina-backend] v13 derruba assinaturas antigas antes de recriar",
       "xp": 30
-    },
-    {
-      "date": "2026-07-31",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[cliente-oficina-backend] agendar sync-gestao (3a tarefa, 03h) + wrapper que faltava",
-      "xp": 20
     }
   ]
 }
