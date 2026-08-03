@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-08-03T09:44:36",
+    "lastSync": "2026-08-03T15:24:40",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 20925,
+    "xp": 20945,
     "xpToNext": 27001,
     "streak": 2,
     "longestStreak": 16,
@@ -33,7 +33,7 @@
         "rule": "+4 por bugfix, +2 por refactor"
       },
       "wis": {
-        "value": 191,
+        "value": 194,
         "label": "Sabedoria",
         "icon": "🦉",
         "rule": "+5 por entrada DECISIONS.md, +3 por revisao"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-08-03",
+      "xp": 20,
+      "type": "review",
+      "desc": "[Ricaliff] registra 4 sessoes pulsar-finance 03/08 (graficos+capex, duplicatas+etiquetas, revisao ux, auditoria lancamentos)"
+    },
     {
       "date": "2026-08-03",
       "xp": 20,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[cliente-oficina-backend] review findings — stale-fetch guards, daily series aligned to DRE"
-    },
-    {
-      "date": "2026-07-28",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-oficina-backend] DRE rastreável — lucro do dash vira subtotal, despesas por plano"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-08-03",
       "type": "review",
       "icon": "👁️",
+      "title": "[Ricaliff] registra 4 sessoes pulsar-finance 03/08 (graficos+capex, duplicatas+etiquetas, revisao ux, auditoria lancamentos)",
+      "xp": 20
+    },
+    {
+      "date": "2026-08-03",
+      "type": "review",
+      "icon": "👁️",
       "title": "[Ricaliff] registra sessao pulsar-finance 03/08 (auditoria de auth)",
       "xp": 20
     },
@@ -758,13 +765,6 @@
       "type": "bugfix",
       "icon": "🐛",
       "title": "[PULSAR-FINANCE] filiais sem neutros (Regra Mae) e ano dinamico no Previsto x Realizado",
-      "xp": 30
-    },
-    {
-      "date": "2026-08-02",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[PULSAR-FINANCE] ancora no DOM e revoke adiado nos downloads (HTML e CSV)",
       "xp": 30
     }
   ]
