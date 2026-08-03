@@ -1,10 +1,10 @@
-// seed.js v49 — v48 + sessão s-98 (pulsar-finance, 2026-08-02)
+// seed.js v50 — v49 + sessão s-99 (pulsar-finance, 2026-08-02)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '49') return;
+  if (localStorage.getItem('agh_seed_v') === '50') return;
 
   const now = new Date().toISOString();
 
@@ -298,6 +298,7 @@
     { id:'s-96', title:'Onda visual dos relatorios: orcado x atual por categoria, grafico divergente e oscilacao', projectId:'pulsar-finance', type:'feature', date:'2026-08-02', impact:'medio', notes:'Tabelas de categoria com barra de % do orcado + anel de execucao; barras mensais divergentes com polyline nos vertices; linha dupla nos neutros; agregacao em lib pura testada', createdAt: now },
     { id:'s-97', title:'CAPEX (3 fases) em producao + gate da edge de sync provado em prod', projectId:'pulsar-finance', type:'deploy', date:'2026-08-02', impact:'alto', notes:'Indicador capex por no da Matriz, relatorio base caixa e adesao vs orcado; edge com gate de papel deployada e provada; producao confirmada no Vercel por marcador de bundle', createdAt: now },
     { id:'s-98', title:'Linguagem visual da referencia nas 4 areas + mes a mes em todo lugar que somava', projectId:'pulsar-finance', type:'feature', date:'2026-08-02', impact:'medio', notes:'Matriz mensal estilo DRE gerencial; projecao com aneis e resumo visual; capex com adesao mensal e migracao de defaults; fix do toggle mes a mes no comparativo (intervalo sem borda)', createdAt: now },
+    { id:'s-99', title:'Matriz mes a mes interativa: contas revelaveis com AV/AH e drill ate o movimento', projectId:'pulsar-finance', type:'feature', date:'2026-08-02', impact:'alto', notes:'Resolvedor de chave efetiva extraido do motor (fonte unica, sem formula paralela); tela cheia propria; celula fixa opaca; drill por conta e por mes nos dois comparativos', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -345,7 +346,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '49');
+  localStorage.setItem('agh_seed_v',   '50');
 
-  console.log('[Ricaliff seed v49 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v50 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
