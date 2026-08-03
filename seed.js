@@ -1,10 +1,10 @@
-// seed.js v52 — v51 + sessão s-101 (pulsar-finance, 2026-08-03)
+// seed.js v56 — v55 + sessão s-105 (pulsar-finance, 2026-08-03)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '52') return;
+  if (localStorage.getItem('agh_seed_v') === '56') return;
 
   const now = new Date().toISOString();
 
@@ -301,6 +301,10 @@
     { id:'s-99', title:'Matriz mes a mes interativa: contas revelaveis com AV/AH e drill ate o movimento', projectId:'pulsar-finance', type:'feature', date:'2026-08-02', impact:'alto', notes:'Resolvedor de chave efetiva extraido do motor (fonte unica, sem formula paralela); tela cheia propria; celula fixa opaca; drill por conta e por mes nos dois comparativos', createdAt: now },
     { id:'s-100', title:'Convite por e-mail real destravado: trigger de signup validava metadado antes dele existir', projectId:'pulsar-finance', type:'bugfix', date:'2026-08-03', impact:'alto', notes:'GoTrue insere o usuario antes do app_metadata; o trigger BEFORE INSERT nunca via o marcador e bloqueava todo convite. Removido; bloqueio fica no disable_signup nativo, provado nos dois sentidos', createdAt: now },
     { id:'s-101', title:'Auditoria de auth: vazamento de tabela de backup fechado e 2FA no plano de controle', projectId:'pulsar-finance', type:'bugfix', date:'2026-08-03', impact:'alto', notes:'Backup do fix anterior nasceu sem RLS e com grant anon, expondo movimentos de 24 clientes; 3 edges administrativas passaram a exigir 2FA; contador de tentativas virou atomico; logout limpa dado local', createdAt: now },
+    { id:'s-102', title:'Gráficos por largura medida 1:1, zoom semântico e Comparativo de CAPEX configurável', projectId:'pulsar-finance', type:'feature', date:'2026-08-03', impact:'alto', notes:'viewBox = px real do container (ResizeObserver + remedição por commit) mata explosão/letterbox; zoom re-renderiza em vez de escalar pixel; overlay CAPEX×DFC/orçado/projeção com núcleo puro testado', createdAt: now },
+    { id:'s-103', title:'Prevenção de duplicatas, etiquetas de estado, histórico de renomes e sync por papel', projectId:'pulsar-finance', type:'feature', date:'2026-08-03', impact:'alto', notes:'estado vem do cadastro do ERP (ativa=false/órfão) no resolvedor central; duplicatas por nome normalizado com unificar/recolocar; trilha de renomes por tenant; edge escopa cliente ao próprio tenant', createdAt: now },
+    { id:'s-104', title:'Revisão UX minimalista: busca sem acento, Esc em pilha, Ctrl+K e fim do modal órfão', projectId:'pulsar-finance', type:'design', date:'2026-08-03', impact:'alto', notes:'auditoria multi-agente (32 achados) → 10 aplicados: CampoBusca único, pilha de overlay, aba-dona esconde modal sem perder estado, sidebar sem acordeão, scroll por aba, quick-switcher', createdAt: now },
+    { id:'s-105', title:'Auditoria dos lançamentos manuais: guarda natureza×categoria, data local, erro visível', projectId:'pulsar-finance', type:'bugfix', date:'2026-08-03', impact:'medio', notes:'sinal vem da natureza declarada e linha da conciliação — confirmação explícita quando descasados; toISOString datava fim de mês no mês seguinte após 21h; RLS conferida em prod', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -348,7 +352,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '52');
+  localStorage.setItem('agh_seed_v',   '56');
 
-  console.log('[Ricaliff seed v52 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v56 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
