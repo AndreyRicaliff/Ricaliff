@@ -1,10 +1,10 @@
-// seed.js v51 — v50 + sessão s-100 (pulsar-finance, 2026-08-03)
+// seed.js v52 — v51 + sessão s-101 (pulsar-finance, 2026-08-03)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '51') return;
+  if (localStorage.getItem('agh_seed_v') === '52') return;
 
   const now = new Date().toISOString();
 
@@ -300,6 +300,7 @@
     { id:'s-98', title:'Linguagem visual da referencia nas 4 areas + mes a mes em todo lugar que somava', projectId:'pulsar-finance', type:'feature', date:'2026-08-02', impact:'medio', notes:'Matriz mensal estilo DRE gerencial; projecao com aneis e resumo visual; capex com adesao mensal e migracao de defaults; fix do toggle mes a mes no comparativo (intervalo sem borda)', createdAt: now },
     { id:'s-99', title:'Matriz mes a mes interativa: contas revelaveis com AV/AH e drill ate o movimento', projectId:'pulsar-finance', type:'feature', date:'2026-08-02', impact:'alto', notes:'Resolvedor de chave efetiva extraido do motor (fonte unica, sem formula paralela); tela cheia propria; celula fixa opaca; drill por conta e por mes nos dois comparativos', createdAt: now },
     { id:'s-100', title:'Convite por e-mail real destravado: trigger de signup validava metadado antes dele existir', projectId:'pulsar-finance', type:'bugfix', date:'2026-08-03', impact:'alto', notes:'GoTrue insere o usuario antes do app_metadata; o trigger BEFORE INSERT nunca via o marcador e bloqueava todo convite. Removido; bloqueio fica no disable_signup nativo, provado nos dois sentidos', createdAt: now },
+    { id:'s-101', title:'Auditoria de auth: vazamento de tabela de backup fechado e 2FA no plano de controle', projectId:'pulsar-finance', type:'bugfix', date:'2026-08-03', impact:'alto', notes:'Backup do fix anterior nasceu sem RLS e com grant anon, expondo movimentos de 24 clientes; 3 edges administrativas passaram a exigir 2FA; contador de tentativas virou atomico; logout limpa dado local', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -347,7 +348,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '51');
+  localStorage.setItem('agh_seed_v',   '52');
 
-  console.log('[Ricaliff seed v51 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v52 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
