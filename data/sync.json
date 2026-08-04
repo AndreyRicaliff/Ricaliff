@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-08-03T19:06:44",
+    "lastSync": "2026-08-04T01:18:23",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 21025,
+    "xp": 21075,
     "xpToNext": 27001,
-    "streak": 2,
+    "streak": 3,
     "longestStreak": 16,
-    "lastActiveDate": "2026-08-03",
+    "lastActiveDate": "2026-08-04",
     "attributes": {
       "int": {
         "value": 15,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 411,
+        "value": 414,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -45,7 +45,7 @@
         "rule": "+10 por post LinkedIn, +20 por talk, +30 por PR OSS"
       },
       "con": {
-        "value": 34,
+        "value": 35,
         "label": "Constituição",
         "icon": "🛡",
         "rule": "+1 por dia de streak ativo"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-08-04",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] edicao dos lancamentos DENTRO da aba Supervisao"
+    },
     {
       "date": "2026-08-03",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[PULSAR-FINANCE] alerta \"editado\" minimalista + pop-up de mudancas com restauracao"
-    },
-    {
-      "date": "2026-07-28",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-oficina-backend] dossiê de loja — clique na tabela Por loja abre mini-dashboard"
     }
   ],
   "achievements": [
@@ -698,6 +698,13 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-08-04",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-varejo] edicao dos lancamentos DENTRO da aba Supervisao",
+      "xp": 50
+    },
+    {
       "date": "2026-08-03",
       "type": "bugfix",
       "icon": "🐛",
@@ -758,13 +765,6 @@
       "type": "review",
       "icon": "👁️",
       "title": "[Ricaliff] registra sessao pulsar-finance 02/08 (onda visual dos relatorios)",
-      "xp": 20
-    },
-    {
-      "date": "2026-08-02",
-      "type": "review",
-      "icon": "👁️",
-      "title": "[Ricaliff] registra sessao pulsar-finance 02/08 (lote de fixes da revisao multi-agente)",
       "xp": 20
     }
   ]
