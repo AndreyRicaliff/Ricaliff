@@ -1,10 +1,10 @@
-// seed.js v56 — v55 + sessão s-105 (pulsar-finance, 2026-08-03)
+// seed.js v59 — v58 + sessão s-108 (cliente-oficina, 2026-08-04)
 // Em bump de versão: MERGE por id (seed só adiciona o que não existe) — nunca sobrescreve dado do usuário.
 // Exceção deliberada: PATCHES de campos de infra (githubUrl/isPrivate) são fatos do seed,
 // não conteúdo do usuário — esses são sobrescritos para propagar correções a browsers já seedados.
 
 (function () {
-  if (localStorage.getItem('agh_seed_v') === '56') return;
+  if (localStorage.getItem('agh_seed_v') === '59') return;
 
   const now = new Date().toISOString();
 
@@ -305,6 +305,9 @@
     { id:'s-103', title:'Prevenção de duplicatas, etiquetas de estado, histórico de renomes e sync por papel', projectId:'pulsar-finance', type:'feature', date:'2026-08-03', impact:'alto', notes:'estado vem do cadastro do ERP (ativa=false/órfão) no resolvedor central; duplicatas por nome normalizado com unificar/recolocar; trilha de renomes por tenant; edge escopa cliente ao próprio tenant', createdAt: now },
     { id:'s-104', title:'Revisão UX minimalista: busca sem acento, Esc em pilha, Ctrl+K e fim do modal órfão', projectId:'pulsar-finance', type:'design', date:'2026-08-03', impact:'alto', notes:'auditoria multi-agente (32 achados) → 10 aplicados: CampoBusca único, pilha de overlay, aba-dona esconde modal sem perder estado, sidebar sem acordeão, scroll por aba, quick-switcher', createdAt: now },
     { id:'s-105', title:'Auditoria dos lançamentos manuais: guarda natureza×categoria, data local, erro visível', projectId:'pulsar-finance', type:'bugfix', date:'2026-08-03', impact:'medio', notes:'sinal vem da natureza declarada e linha da conciliação — confirmação explícita quando descasados; toISOString datava fim de mês no mês seguinte após 21h; RLS conferida em prod', createdAt: now },
+    { id:'s-106', title:'Visão de vendedor mobile com papéis no banco + onda de UX no painel', projectId:'cliente-oficina', type:'feature', date:'2026-07-30', impact:'alto', notes:'Papel dono/vendedor decidido por RLS + RPC sem custo (esconder aba não protege API); tela de consulta mobile-first; pop-ups full-width e cor com semântica.', createdAt: now },
+    { id:'s-107', title:'RLS fail-closed em 20 tabelas + coletor de gestão agendado', projectId:'cliente-oficina', type:'bugfix', date:'2026-07-31', impact:'alto', notes:'Policy restritiva + enable RLS fechou tabelas de venda/PII abertas à anon key (lista auditada contra prod, não contra o repo); tarefa 03h destravou despesas; backfill anual parametrizado.', createdAt: now },
+    { id:'s-108', title:'Navegação agrupada Financeiro × Estoque + home dashboard', projectId:'cliente-oficina', type:'feature', date:'2026-08-04', impact:'medio', notes:'App abre num painel executivo com os indicadores pedidos pela contabilidade; DRE e boletos viram abas próprias; atalhos navegam pra seção dona do assunto.', createdAt: now },
   ];
 
   // ── ESTUDOS ───────────────────────────────────────────────────────
@@ -352,7 +355,7 @@
     if (patched) localStorage.setItem('agh_projects', JSON.stringify(existing));
   } catch (e) { console.warn('[seed] patch v8 falhou (agh_projects ilegível):', e); }
 
-  localStorage.setItem('agh_seed_v',   '56');
+  localStorage.setItem('agh_seed_v',   '59');
 
-  console.log('[Ricaliff seed v56 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
+  console.log('[Ricaliff seed v59 · merge]', nP, 'projetos ·', nT, 'tarefas ·', nE, 'eventos ·', nS, 'sessões ·', nSt, 'estudos');
 })();
