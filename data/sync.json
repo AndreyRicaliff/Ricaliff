@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-08-04T22:45:10",
+    "lastSync": "2026-08-04T23:08:50",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 21475,
+    "xp": 21525,
     "xpToNext": 27001,
     "streak": 3,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 435,
+        "value": 438,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-08-04",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-varejo] rastro de reatribuicao de vendedor (venda que muda de dono)"
+    },
     {
       "date": "2026-08-04",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[cliente-oficina-backend] review round — client-safe empty states, no 1000-row cap, DRY extraction"
-    },
-    {
-      "date": "2026-07-29",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[PULSAR-FINANCE] os 5 achados ALTOS da auditoria de 2026-07-29"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-08-04",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[cliente-varejo] rastro de reatribuicao de vendedor (venda que muda de dono)",
+      "xp": 50
+    },
+    {
+      "date": "2026-08-04",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[cliente-varejo] complemento manual lancavel na folha de supervisao",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "🐛",
       "title": "[cliente-varejo] supervisores editam TODOS os lancamentos da folha de supervisao",
       "xp": 30
-    },
-    {
-      "date": "2026-08-04",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-varejo] edicao dos lancamentos DENTRO da aba Supervisao",
-      "xp": 50
     }
   ]
 }
