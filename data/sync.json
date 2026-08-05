@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-08-05T08:44:07",
+    "lastSync": "2026-08-05T08:50:05",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 21605,
+    "xp": 21635,
     "xpToNext": 27001,
     "streak": 4,
     "longestStreak": 16,
@@ -27,7 +27,7 @@
         "rule": "+3 por feat, +5 por deploy"
       },
       "dex": {
-        "value": 286,
+        "value": 290,
         "label": "Velocidade",
         "icon": "⚡",
         "rule": "+4 por bugfix, +2 por refactor"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-08-05",
+      "xp": 30,
+      "type": "bugfix",
+      "desc": "[cliente-varejo] loja suporta N gerentes — .find() descartava o 2o em silencio"
+    },
     {
       "date": "2026-08-05",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-oficina-backend] auto-gate da aba Análise — só aparece quando fn_resultado_dim existir"
-    },
-    {
-      "date": "2026-07-29",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[PULSAR-RH] avaliacao 360/180 direcionada pelo cadastro"
     }
   ],
   "achievements": [
@@ -699,6 +699,13 @@
   "recentActivity": [
     {
       "date": "2026-08-05",
+      "type": "bugfix",
+      "icon": "🐛",
+      "title": "[cliente-varejo] loja suporta N gerentes — .find() descartava o 2o em silencio",
+      "xp": 30
+    },
+    {
+      "date": "2026-08-05",
       "type": "feat",
       "icon": "⚙️",
       "title": "[cliente-oficina-backend] /consulta como endereco proprio do balcao",
@@ -758,13 +765,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[cliente-oficina-backend] etiqueta de fórmula em todo indicador calculado + aba Suporte do estoque",
-      "xp": 50
-    },
-    {
-      "date": "2026-08-04",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[Ricaliff] registrar sessões s-106..s-108 do cliente-oficina (seed v59)",
       "xp": 50
     }
   ]
