@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-08-06T17:57:03",
+    "lastSync": "2026-08-06T18:02:14",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,7 +8,7 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 22020,
+    "xp": 22070,
     "xpToNext": 27001,
     "streak": 5,
     "longestStreak": 16,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 459,
+        "value": 462,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-08-06",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-oficina-backend] dossie de produto ganha 3 tipos de grafico com seletor proprio"
+    },
     {
       "date": "2026-08-06",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[PULSAR-RH] gatilho de modal-formulario e colapso do form-row no mobile"
-    },
-    {
-      "date": "2026-07-30",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[PULSAR-FINANCE] modais largos — mesma doutrina do PULSAR-RH"
     }
   ],
   "achievements": [
@@ -701,6 +701,13 @@
       "date": "2026-08-06",
       "type": "feat",
       "icon": "⚙️",
+      "title": "[cliente-oficina-backend] dossie de produto ganha 3 tipos de grafico com seletor proprio",
+      "xp": 50
+    },
+    {
+      "date": "2026-08-06",
+      "type": "feat",
+      "icon": "⚙️",
       "title": "[cliente-oficina-backend] cobertura de estoque, donut de composicao e catalogo com ordem invertida",
       "xp": 50
     },
@@ -759,13 +766,6 @@
       "icon": "⚙️",
       "title": "[cliente-oficina-backend] preco de venda e navegacao de balcao na consulta do vendedor",
       "xp": 50
-    },
-    {
-      "date": "2026-08-05",
-      "type": "bugfix",
-      "icon": "🐛",
-      "title": "[cliente-varejo] loja suporta N gerentes — .find() descartava o 2o em silencio",
-      "xp": 30
     }
   ]
 }
