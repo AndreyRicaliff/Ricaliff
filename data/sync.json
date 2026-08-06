@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-08-05T10:09:57",
+    "lastSync": "2026-08-06T15:38:44",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 21795,
+    "xp": 21845,
     "xpToNext": 27001,
-    "streak": 4,
+    "streak": 5,
     "longestStreak": 16,
-    "lastActiveDate": "2026-08-05",
+    "lastActiveDate": "2026-08-06",
     "attributes": {
       "int": {
         "value": 15,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 447,
+        "value": 450,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -45,7 +45,7 @@
         "rule": "+10 por post LinkedIn, +20 por talk, +30 por PR OSS"
       },
       "con": {
-        "value": 36,
+        "value": 37,
         "label": "Constituição",
         "icon": "🛡",
         "rule": "+1 por dia de streak ativo"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-08-06",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-oficina-backend] reorganiza navegacao e poe estoque no centro do Inicio"
+    },
     {
       "date": "2026-08-05",
       "xp": 30,
@@ -536,12 +542,6 @@
       "xp": 50,
       "type": "feat",
       "desc": "[cliente-varejo] ranking mostra de qual terminal do PDV veio o consolidado"
-    },
-    {
-      "date": "2026-07-29",
-      "xp": 50,
-      "type": "feat",
-      "desc": "[cliente-oficina-backend] transferências sugeridas entre lojas — só com dado já sincronizado"
     }
   ],
   "achievements": [
@@ -698,6 +698,13 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-08-06",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-oficina-backend] reorganiza navegacao e poe estoque no centro do Inicio",
+      "xp": 50
+    },
+    {
       "date": "2026-08-05",
       "type": "bugfix",
       "icon": "🐛",
@@ -758,13 +765,6 @@
       "type": "feat",
       "icon": "⚙️",
       "title": "[cliente-varejo] complemento manual lancavel na folha de supervisao",
-      "xp": 50
-    },
-    {
-      "date": "2026-08-04",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-oficina-backend] app instalavel no celular (manifest + icones)",
       "xp": 50
     }
   ]
