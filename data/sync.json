@@ -1,6 +1,6 @@
 {
   "meta": {
-    "lastSync": "2026-08-06T18:44:11",
+    "lastSync": "2026-08-07T15:54:03",
     "syncedBy": "claude",
     "version": 1
   },
@@ -8,11 +8,11 @@
     "name": "Ricaliff",
     "level": 10,
     "title": "Principal",
-    "xp": 22230,
+    "xp": 22280,
     "xpToNext": 27001,
-    "streak": 5,
+    "streak": 6,
     "longestStreak": 16,
-    "lastActiveDate": "2026-08-06",
+    "lastActiveDate": "2026-08-07",
     "attributes": {
       "int": {
         "value": 15,
@@ -21,7 +21,7 @@
         "rule": "+2 por módulo lido, +5 por checkpoint"
       },
       "str": {
-        "value": 468,
+        "value": 471,
         "label": "Throughput",
         "icon": "💪",
         "rule": "+3 por feat, +5 por deploy"
@@ -45,7 +45,7 @@
         "rule": "+10 por post LinkedIn, +20 por talk, +30 por PR OSS"
       },
       "con": {
-        "value": 37,
+        "value": 38,
         "label": "Constituição",
         "icon": "🛡",
         "rule": "+1 por dia de streak ativo"
@@ -243,6 +243,12 @@
     "decision": 25
   },
   "xpLog": [
+    {
+      "date": "2026-08-07",
+      "xp": 50,
+      "type": "feat",
+      "desc": "[cliente-oficina-backend] DRE mes a mes, janelas por card e linguagem sem jargao"
+    },
     {
       "date": "2026-08-06",
       "xp": 50,
@@ -536,12 +542,6 @@
       "xp": 30,
       "type": "bugfix",
       "desc": "[cliente-oficina-backend] v14 — FOREACH exige keyword ARRAY + construtor array[...] (sintaxe 42601)"
-    },
-    {
-      "date": "2026-07-31",
-      "xp": 30,
-      "type": "bugfix",
-      "desc": "[cliente-oficina-backend] v13 derruba assinaturas antigas antes de recriar"
     }
   ],
   "achievements": [
@@ -698,6 +698,13 @@
   ],
   "recentActivity": [
     {
+      "date": "2026-08-07",
+      "type": "feat",
+      "icon": "⚙️",
+      "title": "[cliente-oficina-backend] DRE mes a mes, janelas por card e linguagem sem jargao",
+      "xp": 50
+    },
+    {
       "date": "2026-08-06",
       "type": "feat",
       "icon": "⚙️",
@@ -759,13 +766,6 @@
       "icon": "♻️",
       "title": "[cliente-oficina-backend] RLS deixa de chamar fn_e_dono por linha + probe da Analise fica barato",
       "xp": 25
-    },
-    {
-      "date": "2026-08-06",
-      "type": "feat",
-      "icon": "⚙️",
-      "title": "[cliente-oficina-backend] reorganiza navegacao e poe estoque no centro do Inicio",
-      "xp": 50
     }
   ]
 }
